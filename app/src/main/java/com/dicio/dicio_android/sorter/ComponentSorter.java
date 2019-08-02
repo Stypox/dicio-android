@@ -118,6 +118,7 @@ public class ComponentSorter {
         }
 
         // nothing was matched
+        fallbackComponent.setInput(words);
         return fallbackComponent;
     }
 }
