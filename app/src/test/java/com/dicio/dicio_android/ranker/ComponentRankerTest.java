@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.sorter;
+package com.dicio.dicio_android.ranker;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.input.InputRecognitionUnit.Specificity;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-public class ComponentSorterTest {
+public class ComponentRankerTest {
     private AssistanceComponent comp(final Specificity specificity, final float score) {
         return new AssistanceComponent() {
             List<String> input = null;
@@ -36,8 +36,8 @@ public class ComponentSorterTest {
             @Override public float score()                     { return score; }
         };
     }
-    private ComponentSorter getSorter(AssistanceComponent fallback, final AssistanceComponent... others) {
-        return new ComponentSorter(fallback) {{
+    private ComponentRanker getSorter(AssistanceComponent fallback, final AssistanceComponent... others) {
+        return new ComponentRanker(fallback) {{
             addAll(others);
         }};
     }
@@ -53,7 +53,7 @@ public class ComponentSorterTest {
                 acLow = comp(low, 1.00f);
         List<String> words = new ArrayList<String>() {{ add("hi"); }};
 
-        ComponentSorter cs = getSorter(comp(low, 0.0f), ac1, acMed);
+        ComponentRanker cs = getSorter(comp(low, 0.0f), ac1, acMed);
         cs.addAll(ac2, acLow);
         cs.add(ac3);
         cs.getBest(words);
@@ -69,7 +69,7 @@ public class ComponentSorterTest {
     public void testHighPrHighScore() {
         AssistanceComponent fallback = comp(low, 0.0f);
         AssistanceComponent best = comp(high, 0.92f);
-        ComponentSorter cs = getSorter(fallback,
+        ComponentRanker cs = getSorter(fallback,
                 comp(medium, 0.95f), comp(high, 0.71f), best, comp(high, 1.00f), comp(low, 1.0f));
 
         AssistanceComponent result = cs.getBest(new ArrayList<String>());
@@ -88,7 +88,7 @@ public class ComponentSorterTest {
     public void testHighPrLowScore() {
         AssistanceComponent fallback = comp(low, 0.0f);
         AssistanceComponent best = comp(low, 1.0f);
-        ComponentSorter cs = getSorter(fallback,
+        ComponentRanker cs = getSorter(fallback,
                 comp(medium, 0.81f), comp(high, 0.71f), comp(low, 0.85f), best, comp(high, 0.32f));
 
         AssistanceComponent result = cs.getBest(new ArrayList<String>());
@@ -107,7 +107,7 @@ public class ComponentSorterTest {
         AssistanceComponent fallback = comp(low, 0.0f);
         List<String> words = new ArrayList<String>() {{ add("hi"); }};
 
-        ComponentSorter cs = getSorter(fallback, comp(low, 0.8f));
+        ComponentRanker cs = getSorter(fallback, comp(low, 0.8f));
         AssistanceComponent result = cs.getBest(words);
 
         assertSame("Fallback component not returned by getBest", result, fallback);

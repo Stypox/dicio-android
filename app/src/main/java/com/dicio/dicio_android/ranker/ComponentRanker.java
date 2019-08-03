@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.sorter;
+package com.dicio.dicio_android.ranker;
 
 import androidx.annotation.NonNull;
 
@@ -7,7 +7,7 @@ import com.dicio.component.AssistanceComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComponentSorter {
+public class ComponentRanker {
     private static final float
             // first round
             highPrThreshold1   = 0.85f,
@@ -35,7 +35,7 @@ public class ComponentSorter {
     private List<AssistanceComponent> lowPrComponents;
     @NonNull private AssistanceComponent fallbackComponent;
 
-    public ComponentSorter(@NonNull AssistanceComponent fallbackComponent) {
+    public ComponentRanker(@NonNull AssistanceComponent fallbackComponent) {
         highPrComponents = new ArrayList<>();
         mediumPrComponents = new ArrayList<>();
         lowPrComponents = new ArrayList<>();
