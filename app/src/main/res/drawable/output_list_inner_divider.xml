@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="@dimen/outputListInnerDividerInset"
+    android:insetBottom="@dimen/outputListInnerDividerInset" >
+
+    <shape android:shape="rectangle" >
+        <size android:height="0dp" />
+    </shape>
+</inset>

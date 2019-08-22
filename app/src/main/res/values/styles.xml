@@ -6,6 +6,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
 
+        <item name="cardBackground">@color/cardBackgroundDark</item>
+        <item name="cardForeground">@color/cardForegroundDark</item>
+
         <item name="actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
     </style>
@@ -23,6 +26,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
+
+        <item name="cardBackground">@color/cardBackgroundLight</item>
+        <item name="cardForeground">@color/cardForegroundLight</item>
 
         <item name="actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>

@@ -1,12 +1,19 @@
 package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.output.views.BaseView;
@@ -110,7 +117,22 @@ public class OutputRenderer {
         LinearLayout result = new LinearLayout(context);
         result.setOrientation(LinearLayout.VERTICAL);
         result.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        result.setDividerDrawable(context.getResources().getDrawable(R.drawable.outputListDivider));
+        result.setDividerDrawable(context.getResources().getDrawable(R.drawable.output_list_inner_divider));
+
+        int padding = (int)context.getResources().getDimension(R.dimen.outputListPadding);
+        result.setPadding(padding, padding, padding, padding);
+
+        Drawable wrappedDrawable = DrawableCompat.wrap(context.getResources().getDrawable(R.drawable.rounded_rectangle));
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.cardForeground, typedValue, true);
+        DrawableCompat.setTint(wrappedDrawable, context.getResources().getColor(typedValue.resourceId));
+        Log.w("COLOR", ""+typedValue.resourceId);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            result.setBackground(wrappedDrawable);
+        } else {
+            result.setBackgroundDrawable(wrappedDrawable);
+        }
 
         List<BaseView> allViews = component.getGraphicalOutput();
         for (BaseView view : allViews) {
