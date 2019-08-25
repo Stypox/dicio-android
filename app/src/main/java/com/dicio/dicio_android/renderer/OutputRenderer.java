@@ -1,9 +1,6 @@
 package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.output.views.BaseView;
@@ -37,7 +33,7 @@ public class OutputRenderer {
         return view;
     }
 
-    private static TextView customizeDescription(String text, HtmlTextView view) {
+    private static HtmlTextView customizeDescription(String text, HtmlTextView view) {
         view.setHtmlText(text);
         view.setTextSize(view.getContext().getResources().getDimension(R.dimen.outputDescriptionTextSize));
 
@@ -88,13 +84,13 @@ public class OutputRenderer {
         LinearLayout result = new LinearLayout(context);
         result.setOrientation(LinearLayout.HORIZONTAL);
 
-        result.setClickable(false);
-        result.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 data.onClick();
             }
-        });
+        };
+        result.setOnClickListener(onClickListener);
 
         ImageView image = customizeImage(data.getImageSource(), data.getImageSourceType(), new ImageView(context));
         image.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.25f));
@@ -104,7 +100,10 @@ public class OutputRenderer {
         LinearLayout textAndHeaderLayout = new LinearLayout(context);
         textAndHeaderLayout.setOrientation(LinearLayout.VERTICAL);
         textAndHeaderLayout.addView(customizeHeader(data.getHeaderText(), new TextView(context)));
-        textAndHeaderLayout.addView(customizeDescription(data.getDescriptionText(), new HtmlTextView(context)));
+
+        HtmlTextView description = customizeDescription(data.getDescriptionText(), new HtmlTextView(context));
+        description.setOnClickListener(onClickListener);
+        textAndHeaderLayout.addView(description);
 
         textAndHeaderLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f));
         result.addView(textAndHeaderLayout);
