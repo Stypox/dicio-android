@@ -2,27 +2,27 @@ package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dicio.component.output.views.DescribedImage;
 import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.util.ImageLoader;
 
-public class DescribedImageView extends FrameLayout {
+public class DescribedImageView extends ConstraintLayout {
     private ImageView image;
     private TextView header;
     private HtmlTextView description;
 
     public DescribedImageView(Context context) {
         super(context);
-        View view = inflate(context, R.layout.output_described_image, null);
-        addView(view);
+        inflate(context, R.layout.output_described_image, this);
 
-        image = view.findViewById(R.id.image);
-        header = view.findViewById(R.id.header);
-        description = view.findViewById(R.id.description);
+        image = findViewById(R.id.image);
+        header = findViewById(R.id.header);
+        description = findViewById(R.id.description);
     }
 
     void customize(final DescribedImage data) throws NoSuchFieldException, IllegalAccessException {
