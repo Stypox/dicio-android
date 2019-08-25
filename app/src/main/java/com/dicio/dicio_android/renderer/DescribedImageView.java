@@ -39,4 +39,10 @@ public class DescribedImageView extends ConstraintLayout {
         setOnClickListener(listener);
         description.setOnClickListener(listener);
     }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        image.setMaxWidth(w/3);
+    }
 }
