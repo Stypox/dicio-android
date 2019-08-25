@@ -5,6 +5,7 @@ import android.text.Html;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.style.ClickableSpan;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -12,6 +13,10 @@ import androidx.appcompat.widget.AppCompatTextView;
 public class HtmlTextView extends AppCompatTextView {
     public HtmlTextView(Context context) {
         super(context);
+    }
+
+    public HtmlTextView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
     }
 
     @Override

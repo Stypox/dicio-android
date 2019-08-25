@@ -80,35 +80,10 @@ public class OutputRenderer {
         return customizeImage(data.getSource(), data.getSourceType(), result);
     }
     
-    private static View renderDescribedImage(final DescribedImage data, Context context) throws NoSuchFieldException, IllegalAccessException {
-        LinearLayout result = new LinearLayout(context);
-        result.setOrientation(LinearLayout.HORIZONTAL);
-
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data.onClick();
-            }
-        };
-        result.setOnClickListener(onClickListener);
-
-        ImageView image = customizeImage(data.getImageSource(), data.getImageSourceType(), new ImageView(context));
-        image.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.25f));
-        result.addView(image);
-
-        
-        LinearLayout textAndHeaderLayout = new LinearLayout(context);
-        textAndHeaderLayout.setOrientation(LinearLayout.VERTICAL);
-        textAndHeaderLayout.addView(customizeHeader(data.getHeaderText(), new TextView(context)));
-
-        HtmlTextView description = customizeDescription(data.getDescriptionText(), new HtmlTextView(context));
-        description.setOnClickListener(onClickListener);
-        textAndHeaderLayout.addView(description);
-
-        textAndHeaderLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f));
-        result.addView(textAndHeaderLayout);
-
-        return result;
+    private static View renderDescribedImage(DescribedImage data, Context context) throws NoSuchFieldException, IllegalAccessException {
+        DescribedImageView describedImageView = new DescribedImageView(context);
+        describedImageView.customize(data);
+        return describedImageView;
     }
 
     

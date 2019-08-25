@@ -6,8 +6,8 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="outputHeaderTextSize">9sp</dimen>
-    <dimen name="outputDescriptionTextSize">5sp</dimen>
+    <dimen name="outputHeaderTextSize">27sp</dimen>
+    <dimen name="outputDescriptionTextSize">15sp</dimen>
     <dimen name="outputListPadding">10dp</dimen>
     <dimen name="outputListOuterDividerInset">20dp</dimen>
     <dimen name="outputListInnerDividerInset">5dp</dimen>
