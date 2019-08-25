@@ -91,25 +91,12 @@ public class MainActivity extends AppCompatActivity
                         });
                     }};
 
-                    final DescribedImage clickableDescribedImage = new DescribedImage("https://i.stack.imgur.com/M5XAy.png", Image.SourceType.url,
-                            "Header", "<b>Description bellissima ieeeeee <a href=\"https://example.org\">link text</a></b> ciao ciao come va ciao ciao come va") {{
-                        setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(String imageSource, Image.SourceType imageSourceType, String headerText, String descriptionText) {
-                                Toast.makeText(getApplicationContext(), headerText, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }};
-
                     return new ArrayList<BaseView>() {{
                         add(new Header("Hello!"));
                         add(new Description("<h1>Hello!</h1>"));
                         add(clickableImage);
                         add(new Image("https://i.stack.imgur.com/6BNcp.png", Image.SourceType.url));
                         add(new Image("http://dakotalapse.com/wp-content/uploads/2015/04/Sequence-07.Still002.jpg",Image.SourceType.url));
-                        add(new Description("<a href=\"https://example.org\">link text</a>"));
-                        add(clickableDescribedImage);
-                        add(new DescribedImage("https://i.stack.imgur.com/6BNcp.png", Image.SourceType.url, "Header", "<b>Description bellissima ieeeeee</b>"));
                     }};
                 }
 
@@ -156,15 +143,6 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public List<BaseView> getGraphicalOutput() {
-                    final Image clickableImage = new Image("https://i.stack.imgur.com/M5XAy.png", Image.SourceType.url) {{
-                        setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(String imageSource, SourceType sourceType) {
-                                Toast.makeText(getApplicationContext(), imageSource, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }};
-
                     final DescribedImage clickableDescribedImage = new DescribedImage("https://i.stack.imgur.com/M5XAy.png", Image.SourceType.url,
                             "Header", "<b>Description bellissima ieeeeee <a href=\"https://example.org\">link text</a></b> ciao ciao come va ciao ciao come va") {{
                         setOnClickListener(new OnClickListener() {
@@ -176,11 +154,6 @@ public class MainActivity extends AppCompatActivity
                     }};
 
                     return new ArrayList<BaseView>() {{
-                        add(new Header("Hello!"));
-                        add(new Description("<h1>Hello!</h1>"));
-                        add(clickableImage);
-                        add(new Image("https://i.stack.imgur.com/6BNcp.png", Image.SourceType.url));
-                        add(new Image("http://dakotalapse.com/wp-content/uploads/2015/04/Sequence-07.Still002.jpg",Image.SourceType.url));
                         add(new Description("<a href=\"https://example.org\">link text</a>"));
                         add(clickableDescribedImage);
                         add(new DescribedImage("https://i.stack.imgur.com/6BNcp.png", Image.SourceType.url, "Header", "<b>Description bellissima ieeeeee</b>"));
