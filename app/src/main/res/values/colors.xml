@@ -6,6 +6,6 @@
 
     <color name="cardBackgroundLight">#f5f5f5</color>
     <color name="cardForegroundLight">#ffffff</color>
-    <color name="cardBackgroundDark">#121212</color>
-    <color name="cardForegroundDark">#1d1d1d</color>
+    <color name="cardBackgroundDark">#141414</color>
+    <color name="cardForegroundDark">#1f1f1f</color>
 </resources>

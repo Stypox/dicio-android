@@ -9,6 +9,7 @@
     <dimen name="outputHeaderTextSize">9sp</dimen>
     <dimen name="outputDescriptionTextSize">5sp</dimen>
     <dimen name="outputListPadding">10dp</dimen>
-    <dimen name="outputListOuterDividerInset">7dp</dimen>
+    <dimen name="outputListOuterDividerInset">20dp</dimen>
     <dimen name="outputListInnerDividerInset">5dp</dimen>
+    <dimen name="outputCardElevation">3dp</dimen>
 </resources>

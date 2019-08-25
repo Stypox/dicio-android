@@ -114,38 +114,36 @@ public class OutputRenderer {
 
     
     public static View renderComponentOutput(AssistanceComponent component, Context context) throws NoSuchFieldException, IllegalAccessException {
-        LinearLayout result = new LinearLayout(context);
-        result.setOrientation(LinearLayout.VERTICAL);
-        result.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        result.setDividerDrawable(context.getResources().getDrawable(R.drawable.output_list_inner_divider));
-
-        int padding = (int)context.getResources().getDimension(R.dimen.outputListPadding);
-        result.setPadding(padding, padding, padding, padding);
-
-        Drawable wrappedDrawable = DrawableCompat.wrap(context.getResources().getDrawable(R.drawable.rounded_rectangle));
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.cardForeground, typedValue, true);
-        DrawableCompat.setTint(wrappedDrawable, context.getResources().getColor(typedValue.resourceId));
-        Log.w("COLOR", ""+typedValue.resourceId);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            result.setBackground(wrappedDrawable);
-        } else {
-            result.setBackgroundDrawable(wrappedDrawable);
-        }
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        layout.setDividerDrawable(context.getResources().getDrawable(R.drawable.output_list_inner_divider));
 
         List<BaseView> allViews = component.getGraphicalOutput();
         for (BaseView view : allViews) {
             if (view instanceof Header) {
-                result.addView(renderHeader((Header) view, context));
+                layout.addView(renderHeader((Header) view, context));
             } else if (view instanceof Description) {
-                result.addView(renderDescription((Description) view, context));
+                layout.addView(renderDescription((Description) view, context));
             } else if (view instanceof Image) {
-                result.addView(renderImage((Image) view, context));
+                layout.addView(renderImage((Image) view, context));
             } else if (view instanceof DescribedImage) {
-                result.addView(renderDescribedImage((DescribedImage) view, context));
+                layout.addView(renderDescribedImage((DescribedImage) view, context));
             }
         }
+
+        CardView result = new CardView(context);
+        result.addView(layout);
+        result.setCardElevation(context.getResources().getDimension(R.dimen.outputCardElevation));
+
+        int padding = (int)context.getResources().getDimension(R.dimen.outputListPadding);
+        result.setRadius(padding);
+        result.setContentPadding(padding, padding, padding, padding);
+        result.setUseCompatPadding(true);
+
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.cardForeground, typedValue, true);
+        result.setCardBackgroundColor(context.getResources().getColor(typedValue.resourceId));
 
         return result;
     }
