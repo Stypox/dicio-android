@@ -2,15 +2,15 @@ package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dicio.component.output.views.DescribedImage;
 import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.util.ImageLoader;
 
-public class DescribedImageView extends LinearLayout {
+public class DescribedImageView extends FrameLayout {
     private ImageView image;
     private TextView header;
     private HtmlTextView description;
