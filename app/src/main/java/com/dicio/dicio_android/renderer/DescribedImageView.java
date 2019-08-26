@@ -3,15 +3,14 @@ package com.dicio.dicio_android.renderer;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dicio.component.output.views.DescribedImage;
 import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.util.ImageLoader;
 
-public class DescribedImageView extends ConstraintLayout {
+public class DescribedImageView extends LinearLayout {
     private ImageView image;
     private TextView header;
     private HtmlTextView description;
@@ -38,11 +37,5 @@ public class DescribedImageView extends ConstraintLayout {
         };
         setOnClickListener(listener);
         description.setOnClickListener(listener);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        image.setMaxWidth(w/3);
     }
 }

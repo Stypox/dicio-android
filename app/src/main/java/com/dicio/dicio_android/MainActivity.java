@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                     return new ArrayList<BaseView>() {{
                         add(new Description("<a href=\"https://example.org\">link text</a>"));
                         add(clickableDescribedImage);
-                        add(new DescribedImage("https://i.stack.imgur.com/6BNcp.png", Image.SourceType.url, "Header", "<b>Description bellissima ieeeeee</b>"));
+                        add(new DescribedImage("https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Ophrys_apifera_Bienen-Ragwurz_2014.jpg/1200px-Ophrys_apifera_Bienen-Ragwurz_2014.jpg", Image.SourceType.url, "Header", "<b>Description bellissima ieeeeee</b>"));
                     }};
                 }
 

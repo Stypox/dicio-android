@@ -8,6 +8,9 @@
 
     <dimen name="outputHeaderTextSize">27sp</dimen>
     <dimen name="outputDescriptionTextSize">15sp</dimen>
+    <integer name="outputDescribedImageImageWeight">8</integer>
+    <integer name="outputDescribedImageDescriptionWeight">13</integer>
+
     <dimen name="outputListPadding">10dp</dimen>
     <dimen name="outputListOuterDividerInset">20dp</dimen>
     <dimen name="outputListInnerDividerInset">5dp</dimen>
