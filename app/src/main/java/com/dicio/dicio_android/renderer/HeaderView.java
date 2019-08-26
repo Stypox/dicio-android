@@ -9,7 +9,7 @@ import com.dicio.dicio_android.R;
 
 public class HeaderView extends FrameLayout {
     TextView header;
-    
+
     public HeaderView(Context context) {
         super(context);
         inflate(context, R.layout.output_header, this);

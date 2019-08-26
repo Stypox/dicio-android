@@ -25,15 +25,6 @@ import java.util.List;
 
 public class OutputRenderer {
 
-    private static HtmlTextView customizeDescription(String text, HtmlTextView view) {
-        view.setHtmlText(text);
-        view.setTextSize(view.getContext().getResources().getDimension(R.dimen.outputDescriptionTextSize));
-
-        view.setGravity(Gravity.CENTER);
-        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        return view;
-    }
-
     private static ImageView customizeImage(String source, Image.SourceType sourceType, ImageView view) throws IllegalAccessException, NoSuchFieldException {
         switch (sourceType) {
             case url: case local:
@@ -58,7 +49,9 @@ public class OutputRenderer {
     }
     
     private static View renderDescription(Description data, Context context) {
-        return customizeDescription(data.getText(), new HtmlTextView(context));
+        DescriptionView descriptionView = new DescriptionView(context);
+        descriptionView.customize(data);
+        return descriptionView;
     }
     
     private static View renderImage(final Image data, Context context) throws IllegalAccessException, NoSuchFieldException {
