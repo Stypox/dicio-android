@@ -24,14 +24,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 public class OutputRenderer {
-    private static TextView customizeHeader(String text, TextView view) {
-        view.setText(text);
-        view.setTextSize(view.getContext().getResources().getDimension(R.dimen.outputHeaderTextSize));
-
-        view.setGravity(Gravity.CENTER);
-        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        return view;
-    }
 
     private static HtmlTextView customizeDescription(String text, HtmlTextView view) {
         view.setHtmlText(text);
@@ -60,7 +52,9 @@ public class OutputRenderer {
     
     
     private static View renderHeader(Header data, Context context) {
-        return customizeHeader(data.getText(), new TextView(context));
+        HeaderView headerView = new HeaderView(context);
+        headerView.customize(data);
+        return headerView;
     }
     
     private static View renderDescription(Description data, Context context) {
