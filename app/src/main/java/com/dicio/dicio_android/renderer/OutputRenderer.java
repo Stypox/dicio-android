@@ -2,12 +2,8 @@ package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
@@ -18,29 +14,10 @@ import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
 import com.dicio.dicio_android.R;
-import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class OutputRenderer {
-
-    private static ImageView customizeImage(String source, Image.SourceType sourceType, ImageView view) throws IllegalAccessException, NoSuchFieldException {
-        switch (sourceType) {
-            case url: case local:
-                Picasso.get().load(source).into(view);
-                break;
-            case other:
-                Field idField = R.drawable.class.getDeclaredField(source);
-                view.setImageResource(idField.getInt(idField));
-                break;
-        }
-
-        view.setScaleType(ImageView.ScaleType.FIT_XY);
-        view.setAdjustViewBounds(true);
-        return view;
-    }
-    
     
     private static View renderHeader(Header data, Context context) {
         HeaderView headerView = new HeaderView(context);
@@ -55,16 +32,9 @@ public class OutputRenderer {
     }
     
     private static View renderImage(final Image data, Context context) throws IllegalAccessException, NoSuchFieldException {
-        ImageView result = new ImageView(context);
-        result.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data.onClick();
-            }
-        });
-
-        result.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        return customizeImage(data.getSource(), data.getSourceType(), result);
+        ImageView imageView = new ImageView(context);
+        imageView.customize(data);
+        return imageView;
     }
     
     private static View renderDescribedImage(DescribedImage data, Context context) throws NoSuchFieldException, IllegalAccessException {
