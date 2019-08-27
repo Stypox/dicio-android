@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="@dimen/outputCardElevation"
-    app:cardCornerRadius="@dimen/outputListPadding"
-    app:contentPadding="@dimen/outputListPadding"
+    app:cardCornerRadius="@dimen/outputContainerPadding"
+    app:contentPadding="@dimen/outputContainerPadding"
     app:cardUseCompatPadding="true"
     app:cardBackgroundColor="?attr/cardForeground"
     app:cardPreventCornerOverlap="true">
@@ -16,5 +16,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:showDividers="middle"
-        android:divider="@drawable/output_list_inner_divider"/>
+        android:divider="@drawable/output_container_inner_divider"/>
 </androidx.cardview.widget.CardView>
