@@ -1,11 +1,13 @@
 package com.dicio.dicio_android.settings;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -13,17 +15,28 @@ import com.dicio.dicio_android.R;
 
 public class SettingsActivity extends AppCompatActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.settings_header);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, new HeaderFragment())
                 .commit();
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    toolbar.setTitle(R.string.settings_header);
+                }
+            }
+        });
     }
 
     @Override
@@ -38,6 +51,8 @@ public class SettingsActivity extends AppCompatActivity
                 .replace(R.id.content, fragment)
                 .addToBackStack(null)
                 .commit();
+
+        toolbar.setTitle(pref.getTitle());
         return true;
     }
 
