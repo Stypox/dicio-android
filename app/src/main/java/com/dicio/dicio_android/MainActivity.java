@@ -18,11 +18,11 @@ import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
 import com.dicio.dicio_android.renderer.OutputRenderer;
 import com.dicio.dicio_android.settings.SettingsActivity;
+import com.dicio.dicio_android.util.ThemedActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends ThemedActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     LinearLayout outputViews;

@@ -1,11 +1,10 @@
 package com.dicio.dicio_android.settings;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,8 +12,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.dicio.dicio_android.R;
+import com.dicio.dicio_android.util.ThemedActivity;
 
-public class SettingsActivity extends AppCompatActivity
+public class SettingsActivity extends ThemedActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     Toolbar toolbar;
 
@@ -78,6 +78,16 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.settings_appearance);
+
+            Preference preference = findPreference("theme");
+            assert preference != null;
+            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Toast.makeText(getContext(), getString(R.string.restart_to_apply_theme), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
         }
     }
 }
