@@ -13,4 +13,7 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_header">Settings</string>
 </resources>

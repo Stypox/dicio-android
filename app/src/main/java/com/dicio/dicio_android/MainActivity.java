@@ -1,5 +1,6 @@
 package com.dicio.dicio_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.view.GravityCompat;
@@ -16,6 +17,7 @@ import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
 import com.dicio.dicio_android.renderer.OutputRenderer;
+import com.dicio.dicio_android.settings.SettingsActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -205,8 +207,9 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
