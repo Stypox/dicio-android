@@ -2,6 +2,7 @@ package com.dicio.dicio_android.settings;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,16 @@ public class SettingsActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.settings_header);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                    finish();
+                } else {
+                    getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, new HeaderFragment())
