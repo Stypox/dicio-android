@@ -37,7 +37,7 @@ public class SettingsActivity extends ThemedActivity
         });
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, new HeaderFragment())
+                .replace(R.id.fragment_holder, new HeaderFragment())
                 .commit();
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -58,7 +58,7 @@ public class SettingsActivity extends ThemedActivity
 
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.content, fragment)
+                .replace(R.id.fragment_holder, fragment)
                 .addToBackStack(null)
                 .commit();
 
