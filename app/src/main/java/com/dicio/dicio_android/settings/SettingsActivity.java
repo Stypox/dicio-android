@@ -1,8 +1,10 @@
 package com.dicio.dicio_android.settings;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -15,7 +17,10 @@ import com.dicio.dicio_android.util.ThemedActivity;
 
 public class SettingsActivity extends ThemedActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    private final String toolbarTitleKey = "toolbarTitle";
+
     Toolbar toolbar;
+    String toolbarTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,7 +29,7 @@ public class SettingsActivity extends ThemedActivity
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.settings_header);
+        toolbarTitle = getString(R.string.settings_header);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,9 +41,6 @@ public class SettingsActivity extends ThemedActivity
             }
         });
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_holder, new HeaderFragment())
-                .commit();
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
@@ -47,6 +49,30 @@ public class SettingsActivity extends ThemedActivity
                 }
             }
         });
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_holder, new HeaderFragment())
+                    .commit();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(toolbarTitleKey, toolbarTitle);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        toolbarTitle = savedInstanceState.getString(toolbarTitleKey);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        toolbar.setTitle(toolbarTitle);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -62,6 +88,7 @@ public class SettingsActivity extends ThemedActivity
                 .addToBackStack(null)
                 .commit();
 
+        toolbarTitle = pref.getTitle().toString();
         toolbar.setTitle(pref.getTitle());
         return true;
     }

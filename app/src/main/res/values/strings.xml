@@ -16,5 +16,4 @@
 
     <string name="settings_appearance">Appearance</string>
     <string name="settings_header">Settings</string>
-    <string name="restart_to_apply_theme">Restart the app to apply the new theme</string>
 </resources>
