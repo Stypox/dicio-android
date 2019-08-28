@@ -6,5 +6,5 @@
     <Preference
         android:icon="@drawable/ic_brush"
         android:title="@string/settings_appearance"
-        android:fragment="com.dicio.dicio_android.settings.SettingsActivity$AppearanceFragment" />
+        android:fragment="com.dicio.dicio_android.settings.AppearanceFragment" />
 </PreferenceScreen>

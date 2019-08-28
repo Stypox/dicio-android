@@ -2,7 +2,6 @@ package com.dicio.dicio_android.settings;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -65,29 +64,5 @@ public class SettingsActivity extends ThemedActivity
 
         toolbar.setTitle(pref.getTitle());
         return true;
-    }
-
-    public static class HeaderFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.settings_header);
-        }
-    }
-
-    public static class AppearanceFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.settings_appearance);
-
-            Preference preference = findPreference("theme");
-            assert preference != null;
-            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Toast.makeText(getContext(), getString(R.string.restart_to_apply_theme), Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-        }
     }
 }
