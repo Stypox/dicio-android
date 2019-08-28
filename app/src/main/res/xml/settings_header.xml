@@ -4,7 +4,7 @@
     android:title="@string/settings_header">
 
     <Preference
-        android:icon="@drawable/ic_brush"
+        android:icon="?attr/iconBrush"
         android:title="@string/settings_appearance"
         android:fragment="com.dicio.dicio_android.settings.AppearanceFragment" />
 </PreferenceScreen>

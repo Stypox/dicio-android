@@ -7,7 +7,7 @@
         android:key="theme"
         android:title="Theme"
         android:summary="Choose the app color set"
-        android:icon="@drawable/ic_palette"
+        android:icon="?attr/iconPalette"
         android:entries="@array/settings_theme_entries"
         android:entryValues="@array/settings_theme_entry_values"/>
 </PreferenceScreen>

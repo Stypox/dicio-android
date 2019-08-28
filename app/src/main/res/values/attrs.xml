@@ -2,4 +2,7 @@
 <resources>
     <attr name="cardBackground" format="reference|color" />
     <attr name="cardForeground" format="reference|color" />
+
+    <attr name="iconBrush" format="reference" />
+    <attr name="iconPalette" format="reference" />
 </resources>

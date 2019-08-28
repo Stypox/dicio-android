@@ -12,6 +12,9 @@
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="iconBrush">@drawable/ic_brush_white</item>
+        <item name="iconPalette">@drawable/ic_palette_white</item>
     </style>
 
 
@@ -29,6 +32,9 @@
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="iconBrush">@drawable/ic_brush_black</item>
+        <item name="iconPalette">@drawable/ic_palette_black</item>
     </style>
 
 </resources>
