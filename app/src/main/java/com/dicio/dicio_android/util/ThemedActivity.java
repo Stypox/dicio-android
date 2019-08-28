@@ -35,9 +35,9 @@ abstract public class ThemedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         currentTheme = getThemeFromPreferences();
         setTheme(currentTheme);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
