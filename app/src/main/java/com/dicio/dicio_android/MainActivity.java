@@ -3,6 +3,7 @@ package com.dicio.dicio_android;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -60,7 +61,7 @@ public class MainActivity extends ThemedActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         try {
-            addComponentOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
+            addGraphicalOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
                 @Override
                 public InputRecognizer.Specificity specificity() {
                     return null;
@@ -121,7 +122,7 @@ public class MainActivity extends ThemedActivity
                     return Optional.empty();
                 }
             }, this));
-            addComponentOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
+            addGraphicalOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
                 @Override
                 public InputRecognizer.Specificity specificity() {
                     return null;
@@ -260,7 +261,12 @@ public class MainActivity extends ThemedActivity
     }
 
     @Override
-    public void addComponentOutput(OutputContainerView componentOutput) {
-        outputViews.addView(componentOutput);
+    public void addGraphicalOutput(@NonNull OutputContainerView graphicalOutput) {
+        outputViews.addView(graphicalOutput);
+    }
+
+    @Override
+    public void addSpeechOutput(@NonNull String speechOutput) {
+        // do nothing, for now
     }
 }
