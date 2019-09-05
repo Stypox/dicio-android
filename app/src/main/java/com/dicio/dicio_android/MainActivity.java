@@ -8,7 +8,6 @@ import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.dicio.component.AssistanceComponent;
@@ -19,6 +18,8 @@ import com.dicio.component.output.views.DescribedImage;
 import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
+import com.dicio.dicio_android.renderer.OutputContainerView;
+import com.dicio.dicio_android.renderer.OutputDisplayer;
 import com.dicio.dicio_android.renderer.OutputRenderer;
 import com.dicio.dicio_android.settings.SettingsActivity;
 import com.dicio.dicio_android.util.ThemedActivity;
@@ -29,7 +30,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MainActivity extends ThemedActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OutputDisplayer {
     DrawerLayout drawer;
     LinearLayout outputViews;
 
@@ -60,7 +60,7 @@ public class MainActivity extends ThemedActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         try {
-            outputViews.addView(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
+            addComponentOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
                 @Override
                 public InputRecognizer.Specificity specificity() {
                     return null;
@@ -121,7 +121,7 @@ public class MainActivity extends ThemedActivity
                     return Optional.empty();
                 }
             }, this));
-            outputViews.addView(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
+            addComponentOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
                 @Override
                 public InputRecognizer.Specificity specificity() {
                     return null;
@@ -257,5 +257,10 @@ public class MainActivity extends ThemedActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void addComponentOutput(OutputContainerView componentOutput) {
+        outputViews.addView(componentOutput);
     }
 }
