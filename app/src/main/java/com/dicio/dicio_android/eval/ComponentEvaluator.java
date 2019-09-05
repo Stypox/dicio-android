@@ -29,7 +29,7 @@ public class ComponentEvaluator {
             component.calculateOutput();
             outputDisplayer.addSpeechOutput(component.getSpeechOutput());
             outputDisplayer.addGraphicalOutput(OutputRenderer.renderComponentOutput(component, context));
-        } catch (final Throwable e) {
+        } catch (Throwable e) {
             outputDisplayer.addSpeechOutput(context.getString(R.string.error_while_evaluating));
             outputDisplayer.addGraphicalOutput(OutputRenderer.renderError(e, context));
         }

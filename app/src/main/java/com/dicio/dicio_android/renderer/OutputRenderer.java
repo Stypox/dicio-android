@@ -64,8 +64,7 @@ public class OutputRenderer {
 
     private static String getStringStackTrace(Throwable e) {
         StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        e.printStackTrace(printWriter);
+        e.printStackTrace(new PrintWriter(stringWriter));
         return stringWriter.toString();
     }
 
