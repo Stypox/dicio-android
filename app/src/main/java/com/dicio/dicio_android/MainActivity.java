@@ -19,13 +19,14 @@ import com.dicio.component.output.views.DescribedImage;
 import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
+import com.dicio.dicio_android.eval.ComponentEvaluator;
+import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.renderer.OutputContainerView;
 import com.dicio.dicio_android.renderer.OutputDisplayer;
 import com.dicio.dicio_android.renderer.OutputRenderer;
 import com.dicio.dicio_android.settings.SettingsActivity;
 import com.dicio.dicio_android.util.ThemedActivity;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -43,6 +44,13 @@ public class MainActivity extends ThemedActivity
         implements NavigationView.OnNavigationItemSelectedListener, OutputDisplayer {
     DrawerLayout drawer;
     LinearLayout outputViews;
+    ComponentRanker componentRanker;
+    ComponentEvaluator componentEvaluator;
+
+
+    ////////////////////////
+    // Activity lifecycle //
+    ////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,133 +69,7 @@ public class MainActivity extends ThemedActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        try {
-            addGraphicalOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
-                @Override
-                public InputRecognizer.Specificity specificity() {
-                    return null;
-                }
-
-                @Override
-                public void setInput(List<String> words) {
-
-                }
-
-                @Override
-                public List<String> getInput() {
-                    return null;
-                }
-
-                @Override
-                public float score() {
-                    return 0;
-                }
-
-                @Override
-                public void calculateOutput() {
-
-                }
-
-                @Override
-                public List<BaseView> getGraphicalOutput() {
-                    final Image clickableImage = new Image("https://i.stack.imgur.com/M5XAy.png", Image.SourceType.url) {{
-                        setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(String imageSource, SourceType sourceType) {
-                                Toast.makeText(getApplicationContext(), imageSource, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }};
-
-                    return new ArrayList<BaseView>() {{
-                        add(new Header("Hello!"));
-                        add(new Description("<h1>Hello!</h1>"));
-                        add(clickableImage);
-                        add(new Image("https://i.stack.imgur.com/6BNcp.png", Image.SourceType.url));
-                        add(new Image("http://dakotalapse.com/wp-content/uploads/2015/04/Sequence-07.Still002.jpg",Image.SourceType.url));
-                    }};
-                }
-
-                @Override
-                public String getSpeechOutput() {
-                    return null;
-                }
-
-                @Override
-                public Optional<OutputGenerator> nextOutputGenerator() {
-                    return Optional.empty();
-                }
-
-                @Override
-                public Optional<List<AssistanceComponent>> nextAssistanceComponents() {
-                    return Optional.empty();
-                }
-            }, this));
-            addGraphicalOutput(OutputRenderer.renderComponentOutput(new AssistanceComponent() {
-                @Override
-                public InputRecognizer.Specificity specificity() {
-                    return null;
-                }
-
-                @Override
-                public void setInput(List<String> words) {
-
-                }
-
-                @Override
-                public List<String> getInput() {
-                    return null;
-                }
-
-                @Override
-                public float score() {
-                    return 0;
-                }
-
-                @Override
-                public void calculateOutput() {
-
-                }
-
-                @Override
-                public List<BaseView> getGraphicalOutput() {
-                    final DescribedImage clickableDescribedImage = new DescribedImage("https://i.stack.imgur.com/M5XAy.png", Image.SourceType.url,
-                            "Header", "<b>Description bellissima ieeeeee <a href=\"https://example.org\">link text</a></b> ciao ciao come va ciao ciao come va") {{
-                        setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(String imageSource, Image.SourceType imageSourceType, String headerText, String descriptionText) {
-                                Toast.makeText(getApplicationContext(), headerText, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }};
-
-                    return new ArrayList<BaseView>() {{
-                        add(new Description("<a href=\"https://example.org\">link text</a>"));
-                        add(clickableDescribedImage);
-                        add(new DescribedImage("https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Ophrys_apifera_Bienen-Ragwurz_2014.jpg/1200px-Ophrys_apifera_Bienen-Ragwurz_2014.jpg", Image.SourceType.url, "Header", "<b>Description bellissima ieeeeee</b>"));
-                    }};
-                }
-
-                @Override
-                public String getSpeechOutput() {
-                    return null;
-                }
-
-                @Override
-                public Optional<OutputGenerator> nextOutputGenerator() {
-                    return Optional.empty();
-                }
-
-                @Override
-                public Optional<List<AssistanceComponent>> nextAssistanceComponents() {
-                    return Optional.empty();
-                }
-            }, this));
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        initAssistanceComponents();
     }
 
     @Override
@@ -225,7 +107,7 @@ public class MainActivity extends ThemedActivity
         textInputView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // process text
+                componentEvaluator.evaluateMatchingComponent(query);
                 textInputItem.collapseActionView();
                 return true;
             }
@@ -259,6 +141,63 @@ public class MainActivity extends ThemedActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    /////////////////////////////////////
+    // Assistance components functions //
+    /////////////////////////////////////
+
+    public void initAssistanceComponents() {
+        componentRanker = new ComponentRanker(new AssistanceComponent() {
+            @Override
+            public InputRecognizer.Specificity specificity() {
+                return null;
+            }
+
+            @Override
+            public void setInput(List<String> words) {
+
+            }
+
+            @Override
+            public List<String> getInput() {
+                return null;
+            }
+
+            @Override
+            public float score() {
+                return 0;
+            }
+
+            @Override
+            public void calculateOutput() {
+
+            }
+
+            @Override
+            public List<BaseView> getGraphicalOutput() {
+                return new ArrayList<BaseView>() {{
+                    add(new Header("I could not process what you told me, sorry :-("));
+                }};
+            }
+
+            @Override
+            public String getSpeechOutput() {
+                return "I don't understand, sorry";
+            }
+
+            @Override
+            public Optional<OutputGenerator> nextOutputGenerator() {
+                return null;
+            }
+
+            @Override
+            public Optional<List<AssistanceComponent>> nextAssistanceComponents() {
+                return null;
+            }
+        });
+        componentEvaluator = new ComponentEvaluator(componentRanker, this, this);
     }
 
     @Override
