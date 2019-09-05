@@ -62,16 +62,25 @@ public class OutputRenderer {
 
 
 
-    private static String getStringStackTrace(Throwable e) {
+    private static String getStackTrace(Throwable e) {
         StringWriter stringWriter = new StringWriter();
         e.printStackTrace(new PrintWriter(stringWriter));
         return stringWriter.toString();
     }
 
+    private static String getMessage(Throwable e) {
+        String message = e.getMessage();
+        if (message == null || message.trim().isEmpty()) {
+            return e.getClass().getSimpleName();
+        } else {
+            return message;
+        }
+    }
+
     public static OutputContainerView renderError(Throwable e, Context context) {
         OutputContainerView outputContainerView = new OutputContainerView(context);
-        outputContainerView.addView(renderHeader(new Header(e.getMessage()), context));
-        outputContainerView.addView(renderDescription(new Description(getStringStackTrace(e)), context));
+        outputContainerView.addView(renderHeader(new Header(getMessage(e)), context));
+        outputContainerView.addView(renderDescription(new Description(getStackTrace(e)), context));
         return outputContainerView;
     }
 }
