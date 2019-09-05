@@ -15,6 +15,7 @@
 
         <item name="iconBrush">@drawable/ic_brush_white</item>
         <item name="iconPalette">@drawable/ic_palette_white</item>
+        <item name="iconQuestionAnswer">@drawable/ic_question_answer_white</item>
     </style>
 
 
@@ -35,6 +36,7 @@
 
         <item name="iconBrush">@drawable/ic_brush_black</item>
         <item name="iconPalette">@drawable/ic_palette_black</item>
+        <item name="iconQuestionAnswer">@drawable/ic_question_answer_black</item>
     </style>
 
 </resources>

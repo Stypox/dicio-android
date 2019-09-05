@@ -16,4 +16,6 @@
 
     <string name="settings_appearance">Appearance</string>
     <string name="settings_header">Settings</string>
+    <string name="action_text_input">Text input</string>
+    <string name="text_input_hint">Ask me anything…</string>
 </resources>

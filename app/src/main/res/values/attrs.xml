@@ -5,4 +5,5 @@
 
     <attr name="iconBrush" format="reference" />
     <attr name="iconPalette" format="reference" />
+    <attr name="iconQuestionAnswer" format="reference" />
 </resources>
