@@ -19,6 +19,10 @@ public class DescriptionView extends FrameLayout {
     }
 
     void customize(final Description data) {
-        description.setHtmlText(data.getText());
+        if (data.getIsHtmlEnabled()) {
+            description.setHtmlText(data.getText());
+        } else {
+            description.setText(data.getText());
+        }
     }
 }

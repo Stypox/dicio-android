@@ -23,6 +23,7 @@ public class ComponentEvaluator {
 
     public void evaluateMatchingComponent(String input) {
         try {
+            if (true) throw new Exception();
             List<String> words = WordExtractor.extractWords(input);
             AssistanceComponent component = componentRanker.getBest(words);
 

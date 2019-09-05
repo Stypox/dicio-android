@@ -80,7 +80,7 @@ public class OutputRenderer {
     public static OutputContainerView renderError(Throwable e, Context context) {
         OutputContainerView outputContainerView = new OutputContainerView(context);
         outputContainerView.addView(renderHeader(new Header(getMessage(e)), context));
-        outputContainerView.addView(renderDescription(new Description(getStackTrace(e)), context));
+        outputContainerView.addView(renderDescription(new Description(getStackTrace(e), false), context));
         return outputContainerView;
     }
 }
