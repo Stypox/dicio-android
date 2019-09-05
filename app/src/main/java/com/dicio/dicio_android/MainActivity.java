@@ -7,6 +7,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -218,6 +219,7 @@ public class MainActivity extends ThemedActivity
 
         SearchView textInputView = (SearchView) textInputItem.getActionView();
         textInputView.setQueryHint(getResources().getString(R.string.text_input_hint));
+        textInputView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
         textInputView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
