@@ -1,9 +1,9 @@
 package com.dicio.dicio_android.ranker;
 
 import com.dicio.component.AssistanceComponent;
-import com.dicio.component.input.InputRecognitionUnit.Specificity;
-import com.dicio.component.output.OutputGenerationUnit;
-import com.dicio.component.output.views.ViewList;
+import com.dicio.component.input.InputRecognizer.Specificity;
+import com.dicio.component.output.OutputGenerator;
+import com.dicio.component.output.views.BaseView;
 
 import org.junit.Test;
 
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.dicio.component.input.InputRecognitionUnit.Specificity.high;
-import static com.dicio.component.input.InputRecognitionUnit.Specificity.low;
-import static com.dicio.component.input.InputRecognitionUnit.Specificity.medium;
+import static com.dicio.component.input.InputRecognizer.Specificity.high;
+import static com.dicio.component.input.InputRecognizer.Specificity.low;
+import static com.dicio.component.input.InputRecognizer.Specificity.medium;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -25,9 +25,9 @@ public class ComponentRankerTest {
 
             // useless in this tests
             public void calculateOutput() {}
-            public ViewList getGraphicalOutput() { return null; }
+            public List<BaseView> getGraphicalOutput() { return null; }
             public String getSpeechOutput() { return null; }
-            public Optional<OutputGenerationUnit> nextOutputGenerator() { return Optional.empty(); }
+            public Optional<OutputGenerator> nextOutputGenerator() { return Optional.empty(); }
             public Optional<List<AssistanceComponent>> nextAssistanceComponents() { return Optional.empty(); }
 
             @Override public void setInput(List<String> words) { input = words; }
