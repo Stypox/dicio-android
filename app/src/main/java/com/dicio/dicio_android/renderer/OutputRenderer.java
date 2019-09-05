@@ -14,32 +14,32 @@ import java.util.List;
 
 public class OutputRenderer {
     
-    private static View renderHeader(Header data, Context context) {
+    private static HeaderView renderHeader(Header data, Context context) {
         HeaderView headerView = new HeaderView(context);
         headerView.customize(data);
         return headerView;
     }
     
-    private static View renderDescription(Description data, Context context) {
+    private static DescriptionView renderDescription(Description data, Context context) {
         DescriptionView descriptionView = new DescriptionView(context);
         descriptionView.customize(data);
         return descriptionView;
     }
     
-    private static View renderImage(final Image data, Context context) throws IllegalAccessException, NoSuchFieldException {
+    private static ImageView renderImage(final Image data, Context context) throws IllegalAccessException, NoSuchFieldException {
         ImageView imageView = new ImageView(context);
         imageView.customize(data);
         return imageView;
     }
     
-    private static View renderDescribedImage(DescribedImage data, Context context) throws NoSuchFieldException, IllegalAccessException {
+    private static DescribedImageView renderDescribedImage(DescribedImage data, Context context) throws NoSuchFieldException, IllegalAccessException {
         DescribedImageView describedImageView = new DescribedImageView(context);
         describedImageView.customize(data);
         return describedImageView;
     }
 
     
-    public static View renderComponentOutput(AssistanceComponent component, Context context) throws NoSuchFieldException, IllegalAccessException {
+    public static OutputContainerView renderComponentOutput(AssistanceComponent component, Context context) throws NoSuchFieldException, IllegalAccessException {
         OutputContainerView outputContainerView = new OutputContainerView(context);
 
         List<BaseView> allViews = component.getGraphicalOutput();
