@@ -10,6 +10,8 @@ import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 public class OutputRenderer {
@@ -55,6 +57,22 @@ public class OutputRenderer {
             }
         }
 
+        return outputContainerView;
+    }
+
+
+
+    private static String getStringStackTrace(Throwable e) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        e.printStackTrace(printWriter);
+        return stringWriter.toString();
+    }
+
+    public static OutputContainerView renderError(Throwable e, Context context) {
+        OutputContainerView outputContainerView = new OutputContainerView(context);
+        outputContainerView.addView(renderHeader(new Header(e.getMessage()), context));
+        outputContainerView.addView(renderDescription(new Description(getStringStackTrace(e)), context));
         return outputContainerView;
     }
 }

@@ -18,4 +18,5 @@
     <string name="settings_header">Settings</string>
     <string name="action_text_input">Text input</string>
     <string name="text_input_hint">Ask me anything…</string>
+    <string name="error_while_evaluating">Dicio encountered an error while evaluating your request, sorry</string>
 </resources>

@@ -3,6 +3,7 @@ package com.dicio.dicio_android.eval;
 import android.content.Context;
 
 import com.dicio.component.AssistanceComponent;
+import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.renderer.OutputDisplayer;
 import com.dicio.dicio_android.renderer.OutputRenderer;
 
@@ -20,11 +21,16 @@ public class ComponentEvaluator {
         this.context = context;
     }
 
-    public void evaluateMatchingComponent(String input) throws NoSuchFieldException, IllegalAccessException {
-        List<String> words = WordExtractor.extractWords(input);
-        AssistanceComponent component = componentRanker.getBest(words);
+    public void evaluateMatchingComponent(String input) {
+        try {
+            List<String> words = WordExtractor.extractWords(input);
+            AssistanceComponent component = componentRanker.getBest(words);
 
-        outputDisplayer.addSpeechOutput(component.getSpeechOutput());
-        outputDisplayer.addGraphicalOutput(OutputRenderer.renderComponentOutput(component, context));
+            outputDisplayer.addSpeechOutput(component.getSpeechOutput());
+            outputDisplayer.addGraphicalOutput(OutputRenderer.renderComponentOutput(component, context));
+        } catch (final Throwable e) {
+            outputDisplayer.addSpeechOutput(context.getString(R.string.error_while_evaluating));
+            outputDisplayer.addGraphicalOutput(OutputRenderer.renderError(e, context));
+        }
     }
 }
