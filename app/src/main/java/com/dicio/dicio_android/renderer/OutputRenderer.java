@@ -1,7 +1,6 @@
 package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
-import android.view.View;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.output.views.BaseView;

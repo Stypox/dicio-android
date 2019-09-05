@@ -2,39 +2,31 @@ package com.dicio.dicio_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
-import android.text.InputType;
-import android.view.MenuItem;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.input.InputRecognizer;
 import com.dicio.component.output.OutputGenerator;
 import com.dicio.component.output.views.BaseView;
-import com.dicio.component.output.views.DescribedImage;
-import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
-import com.dicio.component.output.views.Image;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.renderer.OutputContainerView;
 import com.dicio.dicio_android.renderer.OutputDisplayer;
-import com.dicio.dicio_android.renderer.OutputRenderer;
 import com.dicio.dicio_android.settings.SettingsActivity;
 import com.dicio.dicio_android.util.ThemedActivity;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
