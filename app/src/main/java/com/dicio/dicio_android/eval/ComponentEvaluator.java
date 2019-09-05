@@ -26,6 +26,7 @@ public class ComponentEvaluator {
             List<String> words = WordExtractor.extractWords(input);
             AssistanceComponent component = componentRanker.getBest(words);
 
+            component.calculateOutput();
             outputDisplayer.addSpeechOutput(component.getSpeechOutput());
             outputDisplayer.addGraphicalOutput(OutputRenderer.renderComponentOutput(component, context));
         } catch (final Throwable e) {
