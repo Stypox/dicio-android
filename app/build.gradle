@@ -29,6 +29,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.github.Stypox:dicio-assistance-component:200ddc8544'
+    implementation 'com.github.Stypox:dicio-assistance-component:ff02fb7651'
     implementation 'com.squareup.picasso:picasso:2.71828'
 }
