@@ -25,6 +25,7 @@ import com.dicio.dicio_android.renderer.OutputRenderer;
 import com.dicio.dicio_android.settings.SettingsActivity;
 import com.dicio.dicio_android.util.ThemedActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -267,6 +268,6 @@ public class MainActivity extends ThemedActivity
 
     @Override
     public void addSpeechOutput(@NonNull String speechOutput) {
-        // do nothing, for now
+        Toast.makeText(this, speechOutput, Toast.LENGTH_LONG).show();
     }
 }
