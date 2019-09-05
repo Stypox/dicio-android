@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.ranker;
+package com.dicio.dicio_android.eval;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.input.InputRecognizer.Specificity;

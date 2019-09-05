@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.ranker;
+package com.dicio.dicio_android.eval;
 
 import org.junit.Test;
 
