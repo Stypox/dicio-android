@@ -185,12 +185,12 @@ public class MainActivity extends ThemedActivity
 
             @Override
             public Optional<OutputGenerator> nextOutputGenerator() {
-                return null;
+                return Optional.empty();
             }
 
             @Override
             public Optional<List<AssistanceComponent>> nextAssistanceComponents() {
-                return null;
+                return Optional.empty();
             }
         });
         componentRanker.add(new TestComponent());
