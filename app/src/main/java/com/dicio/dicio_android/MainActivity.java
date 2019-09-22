@@ -20,6 +20,7 @@ import com.dicio.component.input.InputRecognizer;
 import com.dicio.component.output.OutputGenerator;
 import com.dicio.component.output.views.BaseView;
 import com.dicio.component.output.views.Header;
+import com.dicio.dicio_android.components.TestComponent;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.renderer.OutputContainerView;
@@ -189,6 +190,7 @@ public class MainActivity extends ThemedActivity
                 return null;
             }
         });
+        componentRanker.add(new TestComponent());
         componentEvaluator = new ComponentEvaluator(componentRanker, this, this);
     }
 
