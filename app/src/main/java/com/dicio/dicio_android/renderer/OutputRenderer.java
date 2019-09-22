@@ -3,6 +3,7 @@ package com.dicio.dicio_android.renderer;
 import android.content.Context;
 
 import com.dicio.component.AssistanceComponent;
+import com.dicio.component.output.OutputGenerator;
 import com.dicio.component.output.views.BaseView;
 import com.dicio.component.output.views.DescribedImage;
 import com.dicio.component.output.views.Description;
@@ -40,7 +41,7 @@ public class OutputRenderer {
     }
 
     
-    public static OutputContainerView renderComponentOutput(AssistanceComponent component, Context context) throws NoSuchFieldException, IllegalAccessException {
+    public static OutputContainerView renderComponentOutput(OutputGenerator component, Context context) throws NoSuchFieldException, IllegalAccessException {
         OutputContainerView outputContainerView = new OutputContainerView(context);
 
         List<BaseView> allViews = component.getGraphicalOutput();

@@ -3,6 +3,7 @@ package com.dicio.dicio_android.eval;
 import android.content.Context;
 
 import com.dicio.component.AssistanceComponent;
+import com.dicio.component.output.OutputGenerator;
 import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.renderer.OutputDisplayer;
 import com.dicio.dicio_android.renderer.OutputRenderer;
@@ -10,7 +11,6 @@ import com.dicio.dicio_android.renderer.OutputRenderer;
 import java.util.List;
 
 public class ComponentEvaluator {
-
     private final ComponentRanker componentRanker;
     private final OutputDisplayer outputDisplayer;
     private final Context context;
@@ -25,13 +25,20 @@ public class ComponentEvaluator {
         try {
             List<String> words = WordExtractor.extractWords(input);
             AssistanceComponent component = componentRanker.getBest(words);
-
-            component.calculateOutput();
-            outputDisplayer.addSpeechOutput(component.getSpeechOutput());
-            outputDisplayer.addGraphicalOutput(OutputRenderer.renderComponentOutput(component, context));
+            evaluateOutputGenerator(component);
         } catch (Throwable e) {
             outputDisplayer.addSpeechOutput(context.getString(R.string.error_while_evaluating));
             outputDisplayer.addGraphicalOutput(OutputRenderer.renderError(e, context));
+        }
+    }
+
+    private void evaluateOutputGenerator(OutputGenerator component) throws Throwable {
+        component.calculateOutput();
+        outputDisplayer.addSpeechOutput(component.getSpeechOutput());
+        outputDisplayer.addGraphicalOutput(OutputRenderer.renderComponentOutput(component, context));
+
+        if (component.nextOutputGenerator().isPresent()) {
+            evaluateOutputGenerator(component.nextOutputGenerator().get());
         }
     }
 }
