@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_text_input"
         android:title="@string/action_text_input"
-        android:icon="?attr/iconQuestionAnswer"
+        android:icon="@drawable/ic_question_answer_white"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 </menu>
