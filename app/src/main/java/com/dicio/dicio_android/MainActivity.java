@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ import java.util.Optional;
 public class MainActivity extends ThemedActivity
         implements NavigationView.OnNavigationItemSelectedListener, OutputDisplayer {
     DrawerLayout drawer;
+    ScrollView outputScrollView;
     LinearLayout outputViews;
     ComponentRanker componentRanker;
     ComponentEvaluator componentEvaluator;
@@ -51,6 +53,7 @@ public class MainActivity extends ThemedActivity
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        outputScrollView = findViewById(R.id.outputScrollView);
         outputViews = findViewById(R.id.outputViews);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -197,6 +200,7 @@ public class MainActivity extends ThemedActivity
     @Override
     public void addGraphicalOutput(@NonNull OutputContainerView graphicalOutput) {
         outputViews.addView(graphicalOutput);
+        outputScrollView.post(() -> outputScrollView.fullScroll(ScrollView.FOCUS_DOWN));
     }
 
     @Override
