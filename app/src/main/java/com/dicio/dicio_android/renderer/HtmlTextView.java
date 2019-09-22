@@ -47,7 +47,8 @@ public class HtmlTextView extends AppCompatTextView {
         }
 
         if (clicked) {
-            return false;
+            event.setAction(MotionEvent.ACTION_CANCEL);
+            return super.onTouchEvent(event);
         } else {
             return super.onTouchEvent(event);
         }
