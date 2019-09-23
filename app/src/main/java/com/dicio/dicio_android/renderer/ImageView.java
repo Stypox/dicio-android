@@ -20,11 +20,6 @@ public class ImageView extends FrameLayout {
 
     void customize(final Image data) throws NoSuchFieldException, IllegalAccessException {
         ImageLoader.loadIntoImage(data.getSource(), data.getSourceType(), image);
-        image.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data.onClick();
-            }
-        });
+        image.setOnClickListener(v -> data.onClick());
     }
 }

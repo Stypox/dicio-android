@@ -167,11 +167,6 @@ public class MainActivity extends ThemedActivity
             }
 
             @Override
-            public void calculateOutput() {
-
-            }
-
-            @Override
             public List<BaseView> getGraphicalOutput() {
                 return new ArrayList<BaseView>() {{
                     add(new Header("I could not process what you told me, sorry :-("));
@@ -181,16 +176,6 @@ public class MainActivity extends ThemedActivity
             @Override
             public String getSpeechOutput() {
                 return "I don't understand, sorry";
-            }
-
-            @Override
-            public Optional<OutputGenerator> nextOutputGenerator() {
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<List<AssistanceComponent>> nextAssistanceComponents() {
-                return Optional.empty();
             }
         });
         componentRanker.add(new TestComponent());

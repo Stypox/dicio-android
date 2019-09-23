@@ -2,7 +2,6 @@ package com.dicio.dicio_android.renderer;
 
 import android.content.Context;
 
-import com.dicio.component.AssistanceComponent;
 import com.dicio.component.output.OutputGenerator;
 import com.dicio.component.output.views.BaseView;
 import com.dicio.component.output.views.DescribedImage;

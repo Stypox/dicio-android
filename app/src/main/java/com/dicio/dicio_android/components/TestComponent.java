@@ -43,10 +43,7 @@ public class TestComponent extends StandardRecognizer implements AssistanceCompo
 
     @Override
     public Optional<OutputGenerator> nextOutputGenerator() {
-        return Optional.of((OutputGenerator) new OutputGenerator() {
-            @Override
-            public void calculateOutput() throws Throwable {}
-
+        return Optional.of(new OutputGenerator() {
             @Override
             public List<BaseView> getGraphicalOutput() {
                 final DescribedImage clickableDescribedImage = new DescribedImage(

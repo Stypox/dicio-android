@@ -30,23 +30,17 @@ public class SettingsActivity extends ThemedActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbarTitle = getString(R.string.settings_header);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                    finish();
-                } else {
-                    getSupportFragmentManager().popBackStack();
-                }
+        toolbar.setNavigationOnClickListener(v -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                finish();
+            } else {
+                getSupportFragmentManager().popBackStack();
             }
         });
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                    toolbar.setTitle(R.string.settings_header);
-                }
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                toolbar.setTitle(R.string.settings_header);
             }
         });
 

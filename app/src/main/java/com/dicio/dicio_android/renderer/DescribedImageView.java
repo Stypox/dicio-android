@@ -29,12 +29,7 @@ public class DescribedImageView extends FrameLayout {
         header.setText(data.getHeaderText());
         description.setHtmlText(data.getDescriptionText());
 
-        OnClickListener listener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                data.onClick();
-            }
-        };
+        OnClickListener listener = v -> data.onClick();
         setOnClickListener(listener);
         description.setOnClickListener(listener);
     }

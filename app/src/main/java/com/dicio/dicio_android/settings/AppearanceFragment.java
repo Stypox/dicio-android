@@ -14,12 +14,9 @@ public class AppearanceFragment extends PreferenceFragmentCompat {
 
         Preference preference = findPreference("theme");
         assert preference != null;
-        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                requireActivity().recreate();
-                return true;
-            }
+        preference.setOnPreferenceChangeListener((preference1, newValue) -> {
+            requireActivity().recreate();
+            return true;
         });
     }
 }
