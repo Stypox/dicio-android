@@ -1,7 +1,6 @@
-package com.dicio.dicio_android.renderer;
+package com.dicio.dicio_android.io.graphical.render;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.dicio.component.output.views.Image;

@@ -1,6 +1,8 @@
-package com.dicio.dicio_android.renderer;
+package com.dicio.dicio_android.io.graphical;
 
 import androidx.annotation.NonNull;
+
+import com.dicio.dicio_android.io.graphical.render.OutputContainerView;
 
 /**
  * An interface that has to be implemented by classes that wish to
@@ -8,7 +10,6 @@ import androidx.annotation.NonNull;
  * Some more methods could be added in the future, for example
  * `clearScreen()`, `addDivider()` or something along those lines.
  */
-public interface OutputDisplayer {
-    void addGraphicalOutput(@NonNull OutputContainerView graphicalOutput);
-    void addSpeechOutput(@NonNull String speechOutput);
+public interface GraphicalOutputDevice {
+    void display(@NonNull OutputContainerView graphicalOutput);
 }

@@ -2,14 +2,11 @@ package com.dicio.dicio_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -18,29 +15,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.dicio.component.AssistanceComponent;
 import com.dicio.component.input.InputRecognizer;
-import com.dicio.component.output.OutputGenerator;
 import com.dicio.component.output.views.BaseView;
 import com.dicio.component.output.views.Header;
 import com.dicio.dicio_android.components.TestComponent;
+import com.dicio.dicio_android.components.WeatherComponent;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
-import com.dicio.dicio_android.renderer.OutputContainerView;
-import com.dicio.dicio_android.renderer.OutputDisplayer;
+import com.dicio.dicio_android.io.graphical.MainScreenGraphicalDevice;
+import com.dicio.dicio_android.io.input.ToolbarInputDevice;
+import com.dicio.dicio_android.io.speech.ToastSpeechDevice;
 import com.dicio.dicio_android.settings.SettingsActivity;
 import com.dicio.dicio_android.util.ThemedActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MainActivity extends ThemedActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OutputDisplayer {
+        implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
-    ScrollView outputScrollView;
-    LinearLayout outputViews;
-    ComponentRanker componentRanker;
+    ToolbarInputDevice toolbarInputDevice;
     ComponentEvaluator componentEvaluator;
+    MenuItem textInputItem;
 
 
     ////////////////////////
@@ -52,9 +48,10 @@ public class MainActivity extends ThemedActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
-        outputScrollView = findViewById(R.id.outputScrollView);
-        outputViews = findViewById(R.id.outputViews);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -65,7 +62,7 @@ public class MainActivity extends ThemedActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        initAssistanceComponents();
+        initializeComponentEvaluator();
     }
 
     @Override
@@ -81,7 +78,9 @@ public class MainActivity extends ThemedActivity
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        final MenuItem textInputItem = menu.findItem(R.id.action_text_input);
+        textInputItem = menu.findItem(R.id.action_text_input);
+        toolbarInputDevice.setTextInputItem(textInputItem); // the textInput item might have changed
+
         textInputItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -100,20 +99,6 @@ public class MainActivity extends ThemedActivity
         SearchView textInputView = (SearchView) textInputItem.getActionView();
         textInputView.setQueryHint(getResources().getString(R.string.text_input_hint));
         textInputView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-        textInputView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                componentEvaluator.evaluateMatchingComponent(query);
-                textInputItem.collapseActionView();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
-
         return true;
     }
 
@@ -144,8 +129,13 @@ public class MainActivity extends ThemedActivity
     // Assistance components functions //
     /////////////////////////////////////
 
-    public void initAssistanceComponents() {
-        componentRanker = new ComponentRanker(new AssistanceComponent() {
+    public void initializeComponentEvaluator() {
+        List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
+            add(new TestComponent());
+            add(new WeatherComponent());
+        }};
+
+        AssistanceComponent fallbackComponent = new AssistanceComponent() {
             @Override
             public InputRecognizer.Specificity specificity() {
                 return null;
@@ -177,19 +167,14 @@ public class MainActivity extends ThemedActivity
             public String getSpeechOutput() {
                 return "I don't understand, sorry";
             }
-        });
-        componentRanker.add(new TestComponent());
-        componentEvaluator = new ComponentEvaluator(componentRanker, this, this);
-    }
+        };
 
-    @Override
-    public void addGraphicalOutput(@NonNull OutputContainerView graphicalOutput) {
-        outputViews.addView(graphicalOutput);
-        outputScrollView.post(() -> outputScrollView.fullScroll(ScrollView.FOCUS_DOWN));
-    }
-
-    @Override
-    public void addSpeechOutput(@NonNull String speechOutput) {
-        Toast.makeText(this, speechOutput, Toast.LENGTH_LONG).show();
+        toolbarInputDevice = new ToolbarInputDevice();
+        componentEvaluator = new ComponentEvaluator(
+                new ComponentRanker(standardComponentBatch, fallbackComponent),
+                toolbarInputDevice,
+                new ToastSpeechDevice(this),
+                new MainScreenGraphicalDevice(findViewById(R.id.outputViews), findViewById(R.id.outputScrollView)),
+                this);
     }
 }

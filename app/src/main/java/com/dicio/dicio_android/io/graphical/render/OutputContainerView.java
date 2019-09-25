@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.renderer;
+package com.dicio.dicio_android.io.graphical.render;
 
 import android.content.Context;
 import android.view.View;
