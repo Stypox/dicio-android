@@ -55,7 +55,7 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
         String ipCity = ipInfo.getString("city");
 
         JSONObject weatherData = getPageJson(weatherApiUrl, new HashMap<String, String>() {{
-            put("APPID", "061f24cf3cde2f60644a8240302983f2"); // testing api from https://codepen.io/awalthefirst/pen/LVLBWy/
+            put("APPID", "061f24cf3cde2f60644a8240302983f2"); // testing api key from https://codepen.io/awalthefirst/pen/LVLBWy/
             put("units", "metric");
             put("lang", "en");
             put("q", ipCity);
