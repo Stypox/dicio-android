@@ -14,6 +14,7 @@ public class ToolbarInputDevice extends InputDevice {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 notifyInputReceived(query);
+                textInputItem.collapseActionView();
                 return true;
             }
 
