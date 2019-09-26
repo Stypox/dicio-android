@@ -19,6 +19,7 @@ import com.dicio.component.output.views.BaseView;
 import com.dicio.component.output.views.Header;
 import com.dicio.dicio_android.components.TestComponent;
 import com.dicio.dicio_android.components.WeatherComponent;
+import com.dicio.dicio_android.components.fallback.TextFallbackComponent;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.io.graphical.MainScreenGraphicalDevice;
@@ -135,43 +136,9 @@ public class MainActivity extends ThemedActivity
             add(new WeatherComponent());
         }};
 
-        AssistanceComponent fallbackComponent = new AssistanceComponent() {
-            @Override
-            public InputRecognizer.Specificity specificity() {
-                return null;
-            }
-
-            @Override
-            public void setInput(List<String> words) {
-
-            }
-
-            @Override
-            public List<String> getInput() {
-                return null;
-            }
-
-            @Override
-            public float score() {
-                return 0;
-            }
-
-            @Override
-            public List<BaseView> getGraphicalOutput() {
-                return new ArrayList<BaseView>() {{
-                    add(new Header("I could not process what you told me, sorry :-("));
-                }};
-            }
-
-            @Override
-            public String getSpeechOutput() {
-                return "I don't understand, sorry";
-            }
-        };
-
         toolbarInputDevice = new ToolbarInputDevice();
         componentEvaluator = new ComponentEvaluator(
-                new ComponentRanker(standardComponentBatch, fallbackComponent),
+                new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),
                 toolbarInputDevice,
                 new ToastSpeechDevice(this),
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews), findViewById(R.id.outputScrollView)),
