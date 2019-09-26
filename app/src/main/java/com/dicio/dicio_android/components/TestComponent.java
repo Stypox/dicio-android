@@ -22,9 +22,7 @@ public class TestComponent extends StandardRecognizer implements AssistanceCompo
     }
 
     @Override
-    public void calculateOutput() throws Throwable {
-
-    }
+    public void calculateOutput() {}
 
     @Override
     public List<BaseView> getGraphicalOutput() {

@@ -46,15 +46,7 @@ public class ComponentEvaluator {
                 .fromCallable(() -> {
                     List<String> words = WordExtractor.extractWords(input);
                     AssistanceComponent component = componentRanker.getBest(words);
-
-                    try {
-                        component.calculateOutput();
-                    } catch (Exception e) {
-                        throw e;
-                    } catch (Throwable e) {
-                        throw new Exception(e);
-                    }
-
+                    component.calculateOutput();
                     return component;
                 })
                 .subscribeOn(Schedulers.io())

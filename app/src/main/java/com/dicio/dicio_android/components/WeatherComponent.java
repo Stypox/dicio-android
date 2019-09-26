@@ -50,7 +50,7 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
     }
 
     @Override
-    public void calculateOutput() throws Throwable {
+    public void calculateOutput() throws Exception {
         JSONObject ipInfo = getPageJson(ipInfoUrl, new HashMap<>());
         String ipCity = ipInfo.getString("city");
 
