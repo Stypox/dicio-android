@@ -2,7 +2,6 @@ package com.dicio.dicio_android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +13,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.dicio.component.AssistanceComponent;
-import com.dicio.component.input.InputRecognizer;
-import com.dicio.component.output.views.BaseView;
-import com.dicio.component.output.views.Header;
 import com.dicio.dicio_android.components.TestComponent;
 import com.dicio.dicio_android.components.WeatherComponent;
 import com.dicio.dicio_android.components.fallback.TextFallbackComponent;
@@ -48,9 +44,6 @@ public class MainActivity extends ThemedActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);

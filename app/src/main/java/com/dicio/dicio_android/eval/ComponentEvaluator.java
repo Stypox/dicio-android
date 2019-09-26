@@ -11,6 +11,12 @@ import com.dicio.dicio_android.io.input.InputDevice;
 import com.dicio.dicio_android.io.speech.SpeechOutputDevice;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ComponentEvaluator {
     private final ComponentRanker componentRanker;
@@ -18,6 +24,8 @@ public class ComponentEvaluator {
     private final SpeechOutputDevice speechOutputDevice;
     private final GraphicalOutputDevice graphicalOutputDevice;
     private final Context context;
+
+    private Disposable evaluationDisposable;
 
     public ComponentEvaluator(ComponentRanker componentRanker, InputDevice inputDevice, SpeechOutputDevice speaker, GraphicalOutputDevice displayer, Context context) {
         this.componentRanker = componentRanker;
@@ -30,24 +38,36 @@ public class ComponentEvaluator {
     }
 
     public void evaluateMatchingComponent(String input) {
-        try {
-            List<String> words = WordExtractor.extractWords(input);
-            AssistanceComponent component = componentRanker.getBest(words);
-            evaluateOutputGenerator(component);
-        } catch (Throwable e) {
-            speechOutputDevice.speak(context.getString(R.string.error_while_evaluating));
-            graphicalOutputDevice.display(OutputRenderer.renderError(e, context));
-            e.printStackTrace();
+        if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
+            evaluationDisposable.dispose();
         }
+
+        evaluationDisposable = Single
+                .fromCallable(() -> {
+                    List<String> words = WordExtractor.extractWords(input);
+                    AssistanceComponent component = componentRanker.getBest(words);
+
+                    try {
+                        component.calculateOutput();
+                    } catch (Exception e) {
+                        throw e;
+                    } catch (Throwable e) {
+                        throw new Exception(e);
+                    }
+
+                    return component;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::generateOutput, this::onError);
     }
 
-    private void evaluateOutputGenerator(OutputGenerator component) throws Throwable {
-        component.calculateOutput();
+    private void generateOutput(OutputGenerator component) throws NoSuchFieldException, IllegalAccessException {
         speechOutputDevice.speak(component.getSpeechOutput());
         graphicalOutputDevice.display(OutputRenderer.renderComponentOutput(component, context));
 
         if (component.nextOutputGenerator().isPresent()) {
-            evaluateOutputGenerator(component.nextOutputGenerator().get());
+            generateOutput(component.nextOutputGenerator().get());
         } else if (component.nextAssistanceComponents().isPresent()) {
             componentRanker.addBatchToTop(component.nextAssistanceComponents().get());
             inputDevice.startListening();
@@ -55,5 +75,13 @@ public class ComponentEvaluator {
             // current conversation has ended, reset to the default batch of components
             componentRanker.removeAllBatches();
         }
+    }
+
+    private void onError(Throwable throwable) {
+        throwable.printStackTrace();
+
+        componentRanker.removeAllBatches();
+        speechOutputDevice.speak(context.getString(R.string.error_while_evaluating));
+        graphicalOutputDevice.display(OutputRenderer.renderError(throwable, context));
     }
 }
