@@ -1,5 +1,7 @@
 weather: high
 (what is|s)|whats the weather like?;
 how is it outside;
-is it cold|cool|warm|hot|sunny|rainy outside?;
-it it raining;
+is it cold|cool|warm|hot|sunny|rainy|raining outside?;
+[loc] (what is|s)|whats the weather like? in ..;
+[loc] is it cold|cool|warm|hot|sunny|rainy|raining in ..;
+[loc] is it raining in ..;

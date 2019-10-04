@@ -5,6 +5,7 @@ import com.dicio.component.input.standard.StandardRecognizer;
 import com.dicio.component.output.views.BaseView;
 import com.dicio.component.output.views.DescribedImage;
 import com.dicio.component.output.views.Description;
+import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
 import com.dicio.dicio_android.Sentences;
 
@@ -27,6 +28,7 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
     private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
     private static final String iconUrl = "http://openweathermap.org/img/wn/";
 
+    private boolean failed;
     private String city, description, icon;
     private double temp, tempMin, tempMax, windSpeed;
 
@@ -51,15 +53,34 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
 
     @Override
     public void calculateOutput() throws Exception {
-        JSONObject ipInfo = getPageJson(ipInfoUrl, new HashMap<>());
-        String ipCity = ipInfo.getString("city");
+        failed = false;
+        JSONObject weatherData;
+        try {
+            if (getNrCapturingGroups() == 1) {
+                List<String> capturingGroup = getCapturingGroup(0);
+                StringBuilder capturingGroupJoined = new StringBuilder(capturingGroup.get(0));
 
-        JSONObject weatherData = getPageJson(weatherApiUrl, new HashMap<String, String>() {{
-            put("APPID", "061f24cf3cde2f60644a8240302983f2"); // testing api key from https://codepen.io/awalthefirst/pen/LVLBWy/
-            put("units", "metric");
-            put("lang", "en");
-            put("q", ipCity);
-        }});
+                for (int i = 1; i < capturingGroup.size(); ++i) {
+                    capturingGroupJoined.append(" ");
+                    capturingGroupJoined.append(capturingGroup.get(1));
+                }
+
+                city = capturingGroupJoined.toString();
+            } else {
+                JSONObject ipInfo = getPageJson(ipInfoUrl, new HashMap<>());
+                city = ipInfo.getString("city");
+            }
+
+            weatherData = getPageJson(weatherApiUrl, new HashMap<String, String>() {{
+                put("APPID", "061f24cf3cde2f60644a8240302983f2"); // testing api key from https://codepen.io/awalthefirst/pen/LVLBWy/
+                put("units", "metric");
+                put("lang", "en");
+                put("q", city);
+            }});
+        } catch (IOException e) {
+            failed = true;
+            return;
+        }
 
         JSONObject weatherObject = weatherData.getJSONArray("weather").getJSONObject(0);
         JSONObject mainObject = weatherData.getJSONObject("main");
@@ -78,6 +99,12 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
 
     @Override
     public List<BaseView> getGraphicalOutput() {
+        if (failed) {
+            return new ArrayList<BaseView>() {{
+                add(new Header("Could not find city " + city));
+            }};
+        }
+
         return new ArrayList<BaseView>() {{
             add(new DescribedImage(iconUrl + icon + "@2x.png",
                     Image.SourceType.url,
@@ -95,6 +122,10 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
 
     @Override
     public String getSpeechOutput() {
+        if (failed) {
+            return "I could not find city " + city;
+        }
+
         return "Currently in " + city + " there is " + description;
     }
 }
