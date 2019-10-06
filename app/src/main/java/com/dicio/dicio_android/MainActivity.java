@@ -78,7 +78,7 @@ public class MainActivity extends ThemedActivity
         textInputItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                item.setVisible(false);
+                hideAllItems(menu);
                 return true;
             }
 
@@ -118,6 +118,12 @@ public class MainActivity extends ThemedActivity
         return true;
     }
 
+    private void hideAllItems(Menu menu) {
+        for (int i = 0; i < menu.size(); ++i) {
+            MenuItem item = menu.getItem(i);
+            item.setVisible(false);
+        }
+    }
 
     /////////////////////////////////////
     // Assistance components functions //
