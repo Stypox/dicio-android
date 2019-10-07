@@ -18,17 +18,16 @@ abstract public class ThemedActivity extends AppCompatActivity {
             return R.style.LightAppTheme;
         }
 
-        switch (preference) {
-            case "dark":
-                return R.style.DarkAppTheme;
-            case "light": default:
-                return R.style.LightAppTheme;
+        if (preference.equals(getString(R.string.settings_value_theme_dark))) {
+            return R.style.DarkAppTheme;
+        } else /*if (preference.equals(getString(R.string.settings_value_theme_light)))*/ {
+            return R.style.LightAppTheme;
         }
     }
 
     private int getThemeFromPreferences() {
         String preference = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString("theme", "light");
+                .getString(getString(R.string.settings_key_theme), null);
         return preferenceToTheme(preference);
     }
 

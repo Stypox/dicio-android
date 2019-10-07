@@ -8,6 +8,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_voice_input"
+        android:title="@string/action_voice_input"
+        android:icon="@drawable/ic_mic_none_white"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_text_input"
         android:title="@string/action_text_input"
         android:icon="@drawable/ic_question_answer_white"

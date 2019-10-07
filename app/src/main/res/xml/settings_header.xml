@@ -7,4 +7,9 @@
         android:icon="?attr/iconBrush"
         android:title="@string/settings_appearance"
         android:fragment="com.dicio.dicio_android.settings.AppearanceFragment" />
+
+    <Preference
+        android:icon="?attr/iconQuestionAnswer"
+        android:title="@string/settings_io"
+        android:fragment="com.dicio.dicio_android.settings.IOFragment" />
 </PreferenceScreen>

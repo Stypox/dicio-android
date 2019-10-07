@@ -12,7 +12,7 @@ public class AppearanceFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.settings_appearance);
 
-        Preference preference = findPreference("theme");
+        Preference preference = findPreference(getString(R.string.settings_key_theme));
         assert preference != null;
         preference.setOnPreferenceChangeListener((preference1, newValue) -> {
             requireActivity().recreate();

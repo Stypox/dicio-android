@@ -16,6 +16,8 @@
         <item name="iconBrush">@drawable/ic_brush_white</item>
         <item name="iconPalette">@drawable/ic_palette_white</item>
         <item name="iconQuestionAnswer">@drawable/ic_question_answer_white</item>
+        <item name="iconMic">@drawable/ic_mic_white</item>
+        <item name="iconMicNone">@drawable/ic_mic_none_white</item>
     </style>
 
 
@@ -37,6 +39,8 @@
         <item name="iconBrush">@drawable/ic_brush_black</item>
         <item name="iconPalette">@drawable/ic_palette_black</item>
         <item name="iconQuestionAnswer">@drawable/ic_question_answer_black</item>
+        <item name="iconMic">@drawable/ic_mic_black</item>
+        <item name="iconMicNone">@drawable/ic_mic_none_black</item>
     </style>
 
 </resources>

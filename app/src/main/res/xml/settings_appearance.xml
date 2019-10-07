@@ -4,9 +4,9 @@
     android:title="@string/settings_appearance">
 
     <ListPreference
-        android:key="theme"
-        android:title="Theme"
-        android:summary="Choose the app color set"
+        android:key="@string/settings_key_theme"
+        android:title="@string/settings_theme"
+        android:summary="@string/settings_theme_summary"
         android:icon="?attr/iconPalette"
         android:entries="@array/settings_theme_entries"
         android:entryValues="@array/settings_theme_entry_values"/>

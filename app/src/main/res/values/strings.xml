@@ -5,18 +5,26 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_input_hint">Ask me anything…</string>
+    <string name="action_text_input">Text input</string>
+    <string name="action_voice_input">Voice input</string>
 
     <string name="settings_appearance">Appearance</string>
     <string name="settings_header">Settings</string>
-    <string name="action_text_input">Text input</string>
-    <string name="text_input_hint">Ask me anything…</string>
+    <string name="settings_io">Input and output methods</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_summary">Choose the app color set</string>
+
+    <string name="settings_key_theme">theme</string>
+    <string name="settings_value_theme_light">light</string>
+    <string name="settings_value_theme_dark">dark</string>
+    <string name="settings_key_input_method">input_method</string>
+    <string name="settings_value_input_method_text">text</string>
+    <string name="settings_value_input_method_azure">azure</string>
+
     <string name="error_while_evaluating">Dicio encountered an error while evaluating your request, sorry</string>
+    <string name="settings_input_method">Input method</string>
+    <string name="settings_input_method_description">Choose the service to use to talk to Dicio</string>
 </resources>

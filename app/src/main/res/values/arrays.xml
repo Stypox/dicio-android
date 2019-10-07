@@ -4,9 +4,17 @@
         <item>Light</item>
         <item>Dark</item>
     </string-array>
-
     <string-array name="settings_theme_entry_values">
-        <item>light</item>
-        <item>dark</item>
+        <item>@string/settings_value_theme_light</item>
+        <item>@string/settings_value_theme_dark</item>
+    </string-array>
+
+    <string-array name="settings_input_method_entries">
+        <item>Text box</item>
+        <item>Azure speech recognition</item>
+    </string-array>
+    <string-array name="settings_input_method_entry_values">
+        <item>@string/settings_value_input_method_text</item>
+        <item>@string/settings_value_input_method_azure</item>
     </string-array>
 </resources>
