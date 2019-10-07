@@ -45,7 +45,7 @@ public class AzureSpeechInputDevice extends InputDevice {
         ActivityCompat.requestPermissions(context, new String[]{RECORD_AUDIO, INTERNET}, 5);
     }
 
-    public void setTextInputItem(MenuItem voiceInputItem) {
+    public void setVoiceInputItem(MenuItem voiceInputItem) {
         this.voiceInputItem = voiceInputItem;
 
         voiceInputItem.setIcon(microphoneOff);
