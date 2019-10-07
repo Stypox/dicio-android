@@ -7,6 +7,7 @@ import com.dicio.component.output.views.DescribedImage;
 import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
+import com.dicio.dicio_android.ApiKeys;
 import com.dicio.dicio_android.Sentences;
 
 import org.json.JSONException;
@@ -72,7 +73,7 @@ public class WeatherComponent extends StandardRecognizer implements AssistanceCo
             }
 
             weatherData = getPageJson(weatherApiUrl, new HashMap<String, String>() {{
-                put("APPID", "061f24cf3cde2f60644a8240302983f2"); // testing api key from https://codepen.io/awalthefirst/pen/LVLBWy/
+                put("APPID", ApiKeys.openweathermap);
                 put("units", "metric");
                 put("lang", "en");
                 put("q", city);
