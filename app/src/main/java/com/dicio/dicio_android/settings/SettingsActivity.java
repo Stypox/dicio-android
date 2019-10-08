@@ -77,7 +77,6 @@ public class SettingsActivity extends ThemedActivity
         fragment.setTargetFragment(caller, 0);
 
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.fragment_holder, fragment)
                 .addToBackStack(null)
                 .commit();
