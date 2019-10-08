@@ -4,7 +4,7 @@
     <ListPreference
         android:key="@string/settings_key_input_method"
         android:title="@string/settings_input_method"
-        android:summary="@string/settings_input_method_description"
+        android:summary="@string/settings_input_method_summary"
         android:icon="?attr/iconMic"
         android:entries="@array/settings_input_method_entries"
         android:entryValues="@array/settings_input_method_entry_values"/>
