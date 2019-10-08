@@ -55,6 +55,6 @@ public class HtmlTextView extends AppCompatTextView {
     }
 
     public void setHtmlText(String htmlText) {
-        super.setText(Html.fromHtml(htmlText), BufferType.SPANNABLE);
+        super.setText(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_COMPACT), BufferType.SPANNABLE);
     }
 }
