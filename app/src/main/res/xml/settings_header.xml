@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/settings_header">
+    android:title="@string/settings">
 
     <Preference
         android:icon="?attr/iconBrush"

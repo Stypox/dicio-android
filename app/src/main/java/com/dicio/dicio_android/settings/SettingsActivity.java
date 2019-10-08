@@ -2,13 +2,11 @@ package com.dicio.dicio_android.settings;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -29,7 +27,7 @@ public class SettingsActivity extends ThemedActivity
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbarTitle = getString(R.string.settings_header);
+        toolbarTitle = getString(R.string.settings);
         toolbar.setNavigationOnClickListener(v -> {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 finish();
@@ -40,7 +38,7 @@ public class SettingsActivity extends ThemedActivity
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                toolbar.setTitle(R.string.settings_header);
+                toolbar.setTitle(R.string.settings);
             }
         });
 

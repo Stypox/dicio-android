@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">Dicio</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Dicio</string>
-    <string name="nav_header_subtitle">May I help you?</string>
-    <string name="nav_header_desc">Navigation header</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_header_title">Dicio</string>
+    <string name="drawer_header_subtitle">May I help you?</string>
+    <string name="drawer_header_desc">Navigation header</string>
+
     <string name="text_input_hint">Ask me anything…</string>
     <string name="action_text_input">Text input</string>
     <string name="action_voice_input">Voice input</string>
 
     <string name="settings_appearance">Appearance</string>
-    <string name="settings_header">Settings</string>
+    <string name="settings">Settings</string> <!-- settings_header -->
     <string name="settings_io">Input and output methods</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_theme_summary">Choose the app color set</string>
