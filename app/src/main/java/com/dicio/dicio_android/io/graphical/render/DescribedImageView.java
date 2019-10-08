@@ -26,7 +26,12 @@ public class DescribedImageView extends FrameLayout {
     void customize(final DescribedImage data) throws NoSuchFieldException, IllegalAccessException {
         ImageLoader.loadIntoImage(data.getImageSource(), data.getImageSourceType(), image);
         header.setText(data.getHeaderText());
-        description.setHtmlText(data.getDescriptionText());
+
+        if (data.getDescriptionIsHtmlEnabled()) {
+            description.setHtmlText(data.getDescriptionText());
+        } else {
+            description.setText(data.getDescriptionText());
+        }
 
         OnClickListener listener = v -> data.onClick();
         setOnClickListener(listener);
