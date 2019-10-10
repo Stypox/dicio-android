@@ -23,6 +23,7 @@ import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.io.graphical.MainScreenGraphicalDevice;
 import com.dicio.dicio_android.io.input.AzureSpeechInputDevice;
 import com.dicio.dicio_android.io.input.InputDevice;
+import com.dicio.dicio_android.io.input.SpeechInputDevice;
 import com.dicio.dicio_android.io.input.ToolbarInputDevice;
 import com.dicio.dicio_android.io.speech.ToastSpeechDevice;
 import com.dicio.dicio_android.settings.SettingsActivity;
@@ -104,9 +105,10 @@ public class MainActivity extends ThemedActivity
         }
 
         MenuItem voiceInputItem = menu.findItem(R.id.action_voice_input);
-        if (inputDevice instanceof AzureSpeechInputDevice) {
+        if (inputDevice instanceof SpeechInputDevice) {
             voiceInputItem.setVisible(true);
-            ((AzureSpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem);
+            ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
+                    getDrawable(R.drawable.ic_mic_white), getDrawable(R.drawable.ic_mic_none_white)); // TODO set theme-compliant drawables
         } else {
             voiceInputItem.setVisible(false);
         }

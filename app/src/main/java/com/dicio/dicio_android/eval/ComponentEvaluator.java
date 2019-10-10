@@ -72,7 +72,7 @@ public class ComponentEvaluator {
             generateOutput(component.nextOutputGenerator().get());
         } else if (component.nextAssistanceComponents().isPresent()) {
             componentRanker.addBatchToTop(component.nextAssistanceComponents().get());
-            inputDevice.startListening();
+            inputDevice.tryToGetInput();
         } else {
             // current conversation has ended, reset to the default batch of components
             componentRanker.removeAllBatches();
