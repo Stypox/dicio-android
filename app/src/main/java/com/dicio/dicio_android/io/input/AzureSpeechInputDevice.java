@@ -17,6 +17,8 @@ import com.microsoft.cognitiveservices.speech.SpeechRecognizer;
 
 import com.dicio.dicio_android.R;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.util.concurrent.Future;
 
 import io.reactivex.Completable;
@@ -33,14 +35,12 @@ public class AzureSpeechInputDevice extends InputDevice {
 
     private MenuItem voiceInputItem;
     private Drawable microphoneOn, microphoneOff;
-    private Context context;
 
     private Disposable speechRecognitionDisposable;
 
     public AzureSpeechInputDevice(Activity context) {
         this.microphoneOn = context.getDrawable(R.drawable.ic_mic_white);
         this.microphoneOff = context.getDrawable(R.drawable.ic_mic_none_white);
-        this.context = context;
 
         ActivityCompat.requestPermissions(context, new String[]{RECORD_AUDIO, INTERNET}, 5);
     }
@@ -67,12 +67,14 @@ public class AzureSpeechInputDevice extends InputDevice {
             Future<SpeechRecognitionResult> task = speechRecognizer.recognizeOnceAsync();
 
             SpeechRecognitionResult speechRecognitionResult = task.get();
-            if (speechRecognitionResult.getReason() == ResultReason.RecognizedSpeech) {
-                notifyInputReceived(speechRecognitionResult.getText());
-                Log.e("AZURE", speechRecognitionResult.getText());
-            } else {
-                notifyInputReceived("");
-                throw new Exception("I could not recognize what you said.");
+            switch (speechRecognitionResult.getReason()) {
+                case RecognizedSpeech: case NoMatch:
+                    notifyInputReceived(speechRecognitionResult.getText());
+                    break;
+                case Canceled:
+                    throw new SocketException();
+                default:
+                    throw new IOException("Unable to recognize speech.");
             }
 
             return null;
@@ -82,9 +84,8 @@ public class AzureSpeechInputDevice extends InputDevice {
             .subscribe(() -> {
                     voiceInputItem.setIcon(microphoneOff);
                 }, throwable -> {
-                    throwable.printStackTrace();
                     voiceInputItem.setIcon(microphoneOff);
-                    Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    notifyError(throwable);
                 });
     }
 }

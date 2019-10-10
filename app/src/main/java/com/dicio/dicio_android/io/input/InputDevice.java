@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 public abstract class InputDevice {
     public interface OnInputReceivedListener {
         void onInputReceived(String input);
+        void onError(Throwable e);
     }
 
     @Nullable
@@ -19,6 +20,12 @@ public abstract class InputDevice {
     protected void notifyInputReceived(String input) {
         if (onInputReceivedListener != null) {
             onInputReceivedListener.onInputReceived(input);
+        }
+    }
+
+    protected void notifyError(Throwable e) {
+        if (onInputReceivedListener != null) {
+            onInputReceivedListener.onError(e);
         }
     }
 }

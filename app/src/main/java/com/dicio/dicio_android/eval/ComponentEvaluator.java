@@ -10,8 +10,8 @@ import com.dicio.dicio_android.io.graphical.render.OutputRenderer;
 import com.dicio.dicio_android.io.input.InputDevice;
 import com.dicio.dicio_android.io.speech.SpeechOutputDevice;
 
+import java.net.SocketException;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,7 +34,17 @@ public class ComponentEvaluator {
         this.graphicalOutputDevice = displayer;
         this.context = context;
 
-        inputDevice.setOnInputReceivedListener(this::evaluateMatchingComponent);
+        inputDevice.setOnInputReceivedListener(new InputDevice.OnInputReceivedListener() {
+            @Override
+            public void onInputReceived(String input) {
+                evaluateMatchingComponent(input);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ComponentEvaluator.this.onError(e);
+            }
+        });
     }
 
     public void evaluateMatchingComponent(String input) {
@@ -70,10 +80,15 @@ public class ComponentEvaluator {
     }
 
     private void onError(Throwable throwable) {
-        throwable.printStackTrace();
+        if (throwable instanceof SocketException) {
+            speechOutputDevice.speak(context.getString(R.string.eval_speech_network_error));
+            graphicalOutputDevice.display(OutputRenderer.renderNetworkError(context));
 
-        componentRanker.removeAllBatches();
-        speechOutputDevice.speak(context.getString(R.string.error_while_evaluating));
-        graphicalOutputDevice.display(OutputRenderer.renderError(throwable, context));
+        } else {
+            throwable.printStackTrace();
+            componentRanker.removeAllBatches();
+            speechOutputDevice.speak(context.getString(R.string.eval_speech_fatal_error));
+            graphicalOutputDevice.display(OutputRenderer.renderError(throwable, context));
+        }
     }
 }

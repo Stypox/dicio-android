@@ -8,6 +8,7 @@ import com.dicio.component.output.views.DescribedImage;
 import com.dicio.component.output.views.Description;
 import com.dicio.component.output.views.Header;
 import com.dicio.component.output.views.Image;
+import com.dicio.dicio_android.R;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -76,10 +77,17 @@ public class OutputRenderer {
         }
     }
 
+    public static OutputContainerView renderNetworkError(Context context) {
+        OutputContainerView output = new OutputContainerView(context);
+        output.addView(renderHeader(new Header(context.getString(R.string.eval_header_network_error)), context));
+        output.addView(renderDescription(new Description(context.getString(R.string.eval_description_network_error), false), context));
+        return output;
+    }
+
     public static OutputContainerView renderError(Throwable e, Context context) {
-        OutputContainerView outputContainerView = new OutputContainerView(context);
-        outputContainerView.addView(renderHeader(new Header(getMessage(e)), context));
-        outputContainerView.addView(renderDescription(new Description(getStackTrace(e), false), context));
-        return outputContainerView;
+        OutputContainerView output = new OutputContainerView(context);
+        output.addView(renderHeader(new Header(getMessage(e)), context));
+        output.addView(renderDescription(new Description(getStackTrace(e), false), context));
+        return output;
     }
 }
