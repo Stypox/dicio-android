@@ -176,7 +176,7 @@ public class MainActivity extends ThemedActivity
         }
 
         componentEvaluator = new ComponentEvaluator(
-                new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),
+                new ComponentRanker(standardComponentBatch, new TextFallbackComponent(this)),
                 inputDevice,
                 new ToastSpeechDevice(this),
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews), findViewById(R.id.outputScrollView)),

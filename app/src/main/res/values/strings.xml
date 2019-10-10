@@ -30,5 +30,7 @@
     <string name="eval_speech_network_error">I cannot reach the internet. Are you sure you are connected?</string>
     <string name="eval_header_network_error">Network error</string>
     <string name="eval_description_network_error">Dicio could not reach the internet. Please check your connection and retry.</string>
+    <string name="eval_speech_no_match">I did not understand, could you repeat?</string>
+    <string name="eval_header_no_match">I didn\'t understand, sorry</string>
 
 </resources>
