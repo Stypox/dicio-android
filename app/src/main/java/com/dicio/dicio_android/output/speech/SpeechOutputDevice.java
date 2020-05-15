@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.io.speech;
+package com.dicio.dicio_android.output.speech;
 
 import androidx.annotation.NonNull;
 

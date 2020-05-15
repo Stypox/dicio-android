@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.io.input;
+package com.dicio.dicio_android.input;
 
 import android.app.Activity;
 
@@ -8,8 +8,6 @@ import com.dicio.dicio_android.ApiKeys;
 import com.microsoft.cognitiveservices.speech.SpeechConfig;
 import com.microsoft.cognitiveservices.speech.SpeechRecognitionResult;
 import com.microsoft.cognitiveservices.speech.SpeechRecognizer;
-
-import com.dicio.dicio_android.R;
 
 import java.io.IOException;
 import java.net.SocketException;

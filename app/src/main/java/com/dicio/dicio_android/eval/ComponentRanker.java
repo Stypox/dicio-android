@@ -3,7 +3,8 @@ package com.dicio.dicio_android.eval;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dicio.component.AssistanceComponent;
+import com.dicio.dicio_android.components.AssistanceComponent;
+import com.dicio.dicio_android.components.fallback.FallbackComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +117,8 @@ public class ComponentRanker {
     @NonNull
     private Stack<ComponentBatch> batches;
 
-    public ComponentRanker(List<AssistanceComponent> defaultComponentBatch, @NonNull AssistanceComponent fallbackComponent) {
+    public ComponentRanker(List<AssistanceComponent> defaultComponentBatch,
+                           @NonNull AssistanceComponent fallbackComponent) {
         this.defaultBatch = new ComponentBatch(defaultComponentBatch);
         this.fallbackComponent = fallbackComponent;
         this.batches = new Stack<>();

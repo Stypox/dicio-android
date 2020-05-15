@@ -1,20 +1,6 @@
 package com.dicio.dicio_android.components;
 
-import com.dicio.component.AssistanceComponent;
-import com.dicio.component.input.standard.StandardRecognizer;
-import com.dicio.component.output.OutputGenerator;
-import com.dicio.component.output.views.BaseView;
-import com.dicio.component.output.views.DescribedImage;
-import com.dicio.component.output.views.Description;
-import com.dicio.component.output.views.Header;
-import com.dicio.component.output.views.Image;
-import com.dicio.dicio_android.Sentences;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-public class TestComponent extends StandardRecognizer implements AssistanceComponent {
+public class TestComponent{/*
     private List<String> words = new ArrayList<>();
 
     public TestComponent() {
@@ -73,4 +59,4 @@ public class TestComponent extends StandardRecognizer implements AssistanceCompo
     public Optional<List<AssistanceComponent>> nextAssistanceComponents() {
         return Optional.empty();
     }
-}
+*/}

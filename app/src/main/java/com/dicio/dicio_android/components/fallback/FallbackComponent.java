@@ -1,11 +1,12 @@
 package com.dicio.dicio_android.components.fallback;
 
-import com.dicio.component.AssistanceComponent;
+import com.dicio.component.InputRecognizer;
+import com.dicio.dicio_android.components.AssistanceComponent;
 
 public interface FallbackComponent extends AssistanceComponent {
     @Override
-    default Specificity specificity() {
-        return Specificity.low; // useless
+    default InputRecognizer.Specificity specificity() {
+        return InputRecognizer.Specificity.low; // useless
     }
 
     @Override

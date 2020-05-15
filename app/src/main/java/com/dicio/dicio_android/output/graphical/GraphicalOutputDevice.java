@@ -1,8 +1,6 @@
-package com.dicio.dicio_android.io.graphical;
+package com.dicio.dicio_android.output.graphical;
 
 import androidx.annotation.NonNull;
-
-import com.dicio.dicio_android.io.graphical.render.OutputContainerView;
 
 /**
  * An interface that has to be implemented by classes that wish to

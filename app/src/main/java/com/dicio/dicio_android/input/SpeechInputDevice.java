@@ -1,4 +1,4 @@
-package com.dicio.dicio_android.io.input;
+package com.dicio.dicio_android.input;
 
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;

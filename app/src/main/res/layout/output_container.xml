@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/outputContainerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="@dimen/outputCardElevation"
     app:cardCornerRadius="@dimen/outputContainerPadding"
     app:contentPadding="@dimen/outputContainerPadding"
@@ -10,11 +12,4 @@
     app:cardBackgroundColor="?attr/cardForeground"
     app:cardPreventCornerOverlap="true">
 
-    <LinearLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:showDividers="middle"
-        android:divider="@drawable/output_container_inner_divider"/>
 </androidx.cardview.widget.CardView>

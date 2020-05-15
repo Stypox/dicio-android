@@ -50,7 +50,7 @@
                 android:textSize="@dimen/outputHeaderTextSize"
                 tools:text="Title" />
 
-            <com.dicio.dicio_android.io.graphical.render.HtmlTextView
+            <com.dicio.dicio_android.output.graphical.render.HtmlTextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,11 +1,9 @@
-package com.dicio.dicio_android.io.graphical;
+package com.dicio.dicio_android.output.graphical;
 
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
-
-import com.dicio.dicio_android.io.graphical.render.OutputContainerView;
 
 public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     private LinearLayout outputLayout;

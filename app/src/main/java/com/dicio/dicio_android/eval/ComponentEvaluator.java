@@ -2,13 +2,12 @@ package com.dicio.dicio_android.eval;
 
 import android.content.Context;
 
-import com.dicio.component.AssistanceComponent;
-import com.dicio.component.output.OutputGenerator;
 import com.dicio.dicio_android.R;
-import com.dicio.dicio_android.io.graphical.GraphicalOutputDevice;
-import com.dicio.dicio_android.io.graphical.render.OutputRenderer;
-import com.dicio.dicio_android.io.input.InputDevice;
-import com.dicio.dicio_android.io.speech.SpeechOutputDevice;
+import com.dicio.dicio_android.components.AssistanceComponent;
+import com.dicio.dicio_android.components.ChainAssistanceComponent;
+import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
+import com.dicio.dicio_android.input.InputDevice;
+import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
 import java.net.SocketException;
 import java.util.List;
@@ -56,7 +55,7 @@ public class ComponentEvaluator {
                 .fromCallable(() -> {
                     List<String> words = WordExtractor.extractWords(input);
                     AssistanceComponent component = componentRanker.getBest(words);
-                    component.calculateOutput();
+                    component.processInput();
                     return component;
                 })
                 .subscribeOn(Schedulers.io())
@@ -64,31 +63,29 @@ public class ComponentEvaluator {
                 .subscribe(this::generateOutput, this::onError);
     }
 
-    private void generateOutput(OutputGenerator component) throws NoSuchFieldException, IllegalAccessException {
-        speechOutputDevice.speak(component.getSpeechOutput());
-        graphicalOutputDevice.display(OutputRenderer.renderComponentOutput(component, context));
+    private void generateOutput(AssistanceComponent component) {
+        component.generateOutput(context, speechOutputDevice, graphicalOutputDevice);
 
-        if (component.nextOutputGenerator().isPresent()) {
-            generateOutput(component.nextOutputGenerator().get());
-        } else if (component.nextAssistanceComponents().isPresent()) {
-            componentRanker.addBatchToTop(component.nextAssistanceComponents().get());
-            inputDevice.tryToGetInput();
-        } else {
+        List<AssistanceComponent> nextAssistanceComponents = component.nextAssistanceComponents();
+        if (nextAssistanceComponents.isEmpty()) {
             // current conversation has ended, reset to the default batch of components
             componentRanker.removeAllBatches();
+        } else {
+            componentRanker.addBatchToTop(nextAssistanceComponents);
+            inputDevice.tryToGetInput();
         }
     }
 
     private void onError(Throwable throwable) {
         if (throwable instanceof SocketException) {
             speechOutputDevice.speak(context.getString(R.string.eval_speech_network_error));
-            graphicalOutputDevice.display(OutputRenderer.renderNetworkError(context));
+            //graphicalOutputDevice.display(OutputRenderer.renderNetworkError(context));
 
         } else {
             throwable.printStackTrace();
             componentRanker.removeAllBatches();
             speechOutputDevice.speak(context.getString(R.string.eval_speech_fatal_error));
-            graphicalOutputDevice.display(OutputRenderer.renderError(throwable, context));
+            //graphicalOutputDevice.display(OutputRenderer.renderError(throwable, context));
         }
     }
 }

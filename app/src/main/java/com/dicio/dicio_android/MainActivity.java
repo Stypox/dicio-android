@@ -14,18 +14,20 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
-import com.dicio.component.AssistanceComponent;
-import com.dicio.dicio_android.components.TestComponent;
-import com.dicio.dicio_android.components.WeatherComponent;
+import com.dicio.component.standard.StandardRecognizer;
+import com.dicio.dicio_android.components.AssistanceComponent;
+import com.dicio.dicio_android.components.ChainAssistanceComponent;
 import com.dicio.dicio_android.components.fallback.TextFallbackComponent;
+import com.dicio.dicio_android.components.output.WeatherOutput;
+import com.dicio.dicio_android.components.processing.WeatherProcessor;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
-import com.dicio.dicio_android.io.graphical.MainScreenGraphicalDevice;
-import com.dicio.dicio_android.io.input.AzureSpeechInputDevice;
-import com.dicio.dicio_android.io.input.InputDevice;
-import com.dicio.dicio_android.io.input.SpeechInputDevice;
-import com.dicio.dicio_android.io.input.ToolbarInputDevice;
-import com.dicio.dicio_android.io.speech.ToastSpeechDevice;
+import com.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
+import com.dicio.dicio_android.input.AzureSpeechInputDevice;
+import com.dicio.dicio_android.input.InputDevice;
+import com.dicio.dicio_android.input.SpeechInputDevice;
+import com.dicio.dicio_android.input.ToolbarInputDevice;
+import com.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import com.dicio.dicio_android.settings.SettingsActivity;
 import com.dicio.dicio_android.util.ThemedActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -108,7 +110,8 @@ public class MainActivity extends ThemedActivity
         if (inputDevice instanceof SpeechInputDevice) {
             voiceInputItem.setVisible(true);
             ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
-                    getDrawable(R.drawable.ic_mic_white), getDrawable(R.drawable.ic_mic_none_white)); // TODO set theme-compliant drawables
+                    getResources().getDrawable(R.drawable.ic_mic_white),
+                    getResources().getDrawable(R.drawable.ic_mic_none_white)); // TODO set theme-compliant drawables
         } else {
             voiceInputItem.setVisible(false);
         }
@@ -125,7 +128,7 @@ public class MainActivity extends ThemedActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
@@ -167,8 +170,11 @@ public class MainActivity extends ThemedActivity
 
     public void initializeComponentEvaluator() {
         List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
-            add(new TestComponent());
-            add(new WeatherComponent());
+            //add(new TestComponent());
+            add(new ChainAssistanceComponent.Builder()
+                    .recognize(new StandardRecognizer(Sentences.weather))
+                    .process(new WeatherProcessor())
+                    .output(new WeatherOutput()));
         }};
 
         if (currentInputDevicePreference.equals(getString(R.string.settings_value_input_method_azure))) {
@@ -178,7 +184,7 @@ public class MainActivity extends ThemedActivity
         }
 
         componentEvaluator = new ComponentEvaluator(
-                new ComponentRanker(standardComponentBatch, new TextFallbackComponent(this)),
+                new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),
                 inputDevice,
                 new ToastSpeechDevice(this),
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews), findViewById(R.id.outputScrollView)),
