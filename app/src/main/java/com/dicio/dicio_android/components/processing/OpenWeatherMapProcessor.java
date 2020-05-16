@@ -7,6 +7,7 @@ import com.dicio.dicio_android.ApiKeys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -45,30 +46,30 @@ public class WeatherProcessor implements IntermediateProcessor<StandardResult, W
     @Override
     public Result process(StandardResult data) throws Exception {
         Result result = new Result();
-        JSONObject weatherData;
-        try {
-            if (data.getCapturingGroups().size() == 1) {
-                List<String> capturingGroup = data.getCapturingGroups().get(0);
-                StringBuilder capturingGroupJoined = new StringBuilder(capturingGroup.get(0));
+        if (data.getCapturingGroups().size() == 1) {
+            List<String> capturingGroup = data.getCapturingGroups().get(0);
+            StringBuilder capturingGroupJoined = new StringBuilder(capturingGroup.get(0));
 
-                for (int i = 1; i < capturingGroup.size(); ++i) {
-                    capturingGroupJoined.append(" ");
-                    capturingGroupJoined.append(capturingGroup.get(1));
-                }
-
-                result.city = capturingGroupJoined.toString();
-            } else {
-                JSONObject ipInfo = getPageJson(ipInfoUrl, new HashMap<>());
-                result.city = ipInfo.getString("city");
+            for (int i = 1; i < capturingGroup.size(); ++i) {
+                capturingGroupJoined.append(" ");
+                capturingGroupJoined.append(capturingGroup.get(1));
             }
 
+            result.city = capturingGroupJoined.toString();
+        } else {
+            JSONObject ipInfo = getPageJson(ipInfoUrl, new HashMap<>());
+            result.city = ipInfo.getString("city");
+        }
+
+        JSONObject weatherData;
+        try {
             weatherData = getPageJson(weatherApiUrl, new HashMap<String, String>() {{
                 put("APPID", ApiKeys.openweathermap);
                 put("units", "metric");
                 put("lang", "en");
                 put("q", result.city);
             }});
-        } catch (IOException | JSONException e) {
+        } catch (FileNotFoundException ignored) {
             result.failed = true;
             return result;
         }

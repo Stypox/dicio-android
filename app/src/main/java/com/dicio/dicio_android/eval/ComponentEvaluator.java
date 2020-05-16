@@ -7,7 +7,10 @@ import com.dicio.dicio_android.components.AssistanceComponent;
 import com.dicio.dicio_android.components.ChainAssistanceComponent;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.input.InputDevice;
+import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
+import com.dicio.dicio_android.output.graphical.OutputContainerView;
 import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import com.dicio.dicio_android.util.ExceptionUtils;
 
 import java.net.SocketException;
 import java.util.List;
@@ -77,15 +80,18 @@ public class ComponentEvaluator {
     }
 
     private void onError(Throwable throwable) {
-        if (throwable instanceof SocketException) {
-            speechOutputDevice.speak(context.getString(R.string.eval_speech_network_error));
-            //graphicalOutputDevice.display(OutputRenderer.renderNetworkError(context));
+        throwable.printStackTrace();
+        OutputContainerView outputContainerView = new OutputContainerView(context);
 
+        if (ExceptionUtils.isNetworkError(throwable)) {
+            speechOutputDevice.speak(context.getString(R.string.eval_speech_network_error));
+            outputContainerView.setContent(GraphicalOutputUtils.buildNetworkErrorMessage(context));
         } else {
-            throwable.printStackTrace();
             componentRanker.removeAllBatches();
             speechOutputDevice.speak(context.getString(R.string.eval_speech_fatal_error));
-            //graphicalOutputDevice.display(OutputRenderer.renderError(throwable, context));
+            outputContainerView.setContent(GraphicalOutputUtils.buildErrorMessage(context, throwable));
         }
+
+        graphicalOutputDevice.display(outputContainerView);
     }
 }
