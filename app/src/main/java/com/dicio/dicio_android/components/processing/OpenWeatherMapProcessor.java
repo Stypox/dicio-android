@@ -47,7 +47,7 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
 
             for (int i = 1; i < capturingGroup.size(); ++i) {
                 capturingGroupJoined.append(" ");
-                capturingGroupJoined.append(capturingGroup.get(1));
+                capturingGroupJoined.append(capturingGroup.get(i));
             }
 
             result.city = capturingGroupJoined.toString();
