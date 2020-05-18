@@ -4,15 +4,13 @@ import android.content.Context;
 
 import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.components.AssistanceComponent;
-import com.dicio.dicio_android.components.ChainAssistanceComponent;
-import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.input.InputDevice;
+import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import com.dicio.dicio_android.output.graphical.OutputContainerView;
 import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import com.dicio.dicio_android.util.ExceptionUtils;
 
-import java.net.SocketException;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -29,7 +27,12 @@ public class ComponentEvaluator {
 
     private Disposable evaluationDisposable;
 
-    public ComponentEvaluator(ComponentRanker componentRanker, InputDevice inputDevice, SpeechOutputDevice speaker, GraphicalOutputDevice displayer, Context context) {
+    public ComponentEvaluator(ComponentRanker componentRanker,
+                              InputDevice inputDevice,
+                              SpeechOutputDevice speaker,
+                              GraphicalOutputDevice displayer,
+                              Context context) {
+
         this.componentRanker = componentRanker;
         this.inputDevice = inputDevice;
         this.speechOutputDevice = speaker;
