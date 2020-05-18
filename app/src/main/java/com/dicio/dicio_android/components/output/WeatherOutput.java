@@ -32,13 +32,11 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
                          Context context,
                          SpeechOutputDevice speechOutputDevice,
                          GraphicalOutputDevice graphicalOutputDevice) {
-        OutputContainerView graphicalOutput = new OutputContainerView(context);
-
         if (data.failed) {
-            speechOutputDevice.speak("I could not find city " + data.city);
+            final String message = "I could not find city " + data.city;
+            speechOutputDevice.speak(message);
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
 
-            graphicalOutput.setContent(GraphicalOutputUtils.buildHeader(context,
-                    "I could not find city " + data.city));
         } else {
             speechOutputDevice.speak("Currently in " + data.city
                     + " there is " + data.description);
@@ -55,9 +53,7 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
                     String.format(Locale.getDefault(),
                             "Minimum temperature: %.1f°C\nMaximum temperature: %.1f°C\nWind speed: %.1fm/s",
                             data.tempMin, data.tempMax, data.windSpeed));
-            graphicalOutput.setContent(weatherView);
+            graphicalOutputDevice.display(weatherView);
         }
-
-        graphicalOutputDevice.display(graphicalOutput);
     }
 }

@@ -1,5 +1,6 @@
 package com.dicio.dicio_android.output.graphical;
 
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -15,8 +16,10 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     }
 
     @Override
-    public void display(@NonNull OutputContainerView graphicalOutput) {
-        outputLayout.addView(graphicalOutput);
+    public void display(@NonNull View graphicalOutput) {
+        OutputContainerView outputContainer = new OutputContainerView(outputLayout.getContext());
+        outputContainer.setContent(graphicalOutput);
+        outputLayout.addView(outputContainer);
         outputScrollView.post(() -> outputScrollView.fullScroll(ScrollView.FOCUS_DOWN));
     }
 }

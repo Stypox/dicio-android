@@ -82,19 +82,16 @@ public class ComponentEvaluator {
         }
     }
 
-    private void onError(Throwable throwable) {
-        throwable.printStackTrace();
-        OutputContainerView outputContainerView = new OutputContainerView(context);
+    private void onError(Throwable t) {
+        t.printStackTrace();
 
-        if (ExceptionUtils.isNetworkError(throwable)) {
+        if (ExceptionUtils.isNetworkError(t)) {
             speechOutputDevice.speak(context.getString(R.string.eval_speech_network_error));
-            outputContainerView.setContent(GraphicalOutputUtils.buildNetworkErrorMessage(context));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(context));
         } else {
             componentRanker.removeAllBatches();
             speechOutputDevice.speak(context.getString(R.string.eval_speech_fatal_error));
-            outputContainerView.setContent(GraphicalOutputUtils.buildErrorMessage(context, throwable));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(context, t));
         }
-
-        graphicalOutputDevice.display(outputContainerView);
     }
 }

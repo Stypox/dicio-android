@@ -1,5 +1,7 @@
 package com.dicio.dicio_android.output.graphical;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 /**
@@ -9,5 +11,5 @@ import androidx.annotation.NonNull;
  * `clearScreen()`, `addDivider()` or something along those lines.
  */
 public interface GraphicalOutputDevice {
-    void display(@NonNull OutputContainerView graphicalOutput);
+    void display(@NonNull View graphicalOutput);
 }
