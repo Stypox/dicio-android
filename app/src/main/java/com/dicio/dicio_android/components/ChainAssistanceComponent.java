@@ -75,6 +75,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public void processInput() throws Exception {
         lastResult = inputRecognizer.getResult();
@@ -84,6 +85,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void generateOutput(Context context,
                                SpeechOutputDevice speechOutputDevice,
@@ -94,6 +96,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     /**
      * @see OutputGenerator#nextAssistanceComponents()
      */
+    @SuppressWarnings("unchecked")
     @Override
     public List<AssistanceComponent> nextAssistanceComponents() {
         return outputGenerator.nextAssistanceComponents();
