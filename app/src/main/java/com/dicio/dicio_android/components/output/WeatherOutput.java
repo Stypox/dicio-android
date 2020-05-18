@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dicio.dicio_android.R;
-import com.dicio.dicio_android.components.processing.WeatherProcessor;
+import com.dicio.dicio_android.components.processing.OpenWeatherMapProcessor;
 import com.dicio.dicio_android.output.OutputGenerator;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
@@ -16,12 +16,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
-public class WeatherOutput implements OutputGenerator<WeatherProcessor.Result> {
+public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
 
     private static final String iconUrl = "http://openweathermap.org/img/wn/";
 
+    public static class Data {
+        public boolean failed = false;
+        public String city, description, icon;
+        public double temp, tempMin, tempMax, windSpeed;
+    }
+
+
     @Override
-    public void generate(WeatherProcessor.Result data,
+    public void generate(Data data,
                          Context context,
                          SpeechOutputDevice speechOutputDevice,
                          GraphicalOutputDevice graphicalOutputDevice) {

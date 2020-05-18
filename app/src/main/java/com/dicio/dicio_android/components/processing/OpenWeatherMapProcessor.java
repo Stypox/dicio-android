@@ -3,6 +3,7 @@ package com.dicio.dicio_android.components.processing;
 import com.dicio.component.IntermediateProcessor;
 import com.dicio.component.standard.StandardResult;
 import com.dicio.dicio_android.ApiKeys;
+import com.dicio.dicio_android.components.output.WeatherOutput;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,16 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class WeatherProcessor implements IntermediateProcessor<StandardResult, WeatherProcessor.Result> {
+public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
 
     private static final String ipInfoUrl = "https://ipinfo.io/json";
     private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
-
-    public static class Result {
-        public boolean failed = false;
-        public String city, description, icon;
-        public double temp, tempMin, tempMax, windSpeed;
-    }
 
 
     private JSONObject getPageJson(String url, HashMap<String, String> urlParams) throws IOException, JSONException {
@@ -44,8 +39,8 @@ public class WeatherProcessor implements IntermediateProcessor<StandardResult, W
     }
 
     @Override
-    public Result process(StandardResult data) throws Exception {
-        Result result = new Result();
+    public WeatherOutput.Data process(StandardResult data) throws Exception {
+        WeatherOutput.Data result = new WeatherOutput.Data();
         if (data.getCapturingGroups().size() == 1) {
             List<String> capturingGroup = data.getCapturingGroups().get(0);
             StringBuilder capturingGroupJoined = new StringBuilder(capturingGroup.get(0));

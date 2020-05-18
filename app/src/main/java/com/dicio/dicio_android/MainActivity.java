@@ -19,7 +19,7 @@ import com.dicio.dicio_android.components.AssistanceComponent;
 import com.dicio.dicio_android.components.ChainAssistanceComponent;
 import com.dicio.dicio_android.components.fallback.TextFallbackComponent;
 import com.dicio.dicio_android.components.output.WeatherOutput;
-import com.dicio.dicio_android.components.processing.WeatherProcessor;
+import com.dicio.dicio_android.components.processing.OpenWeatherMapProcessor;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
@@ -173,7 +173,7 @@ public class MainActivity extends ThemedActivity
             //add(new TestComponent());
             add(new ChainAssistanceComponent.Builder()
                     .recognize(new StandardRecognizer(Sentences.weather))
-                    .process(new WeatherProcessor())
+                    .process(new OpenWeatherMapProcessor())
                     .output(new WeatherOutput()));
         }};
 
