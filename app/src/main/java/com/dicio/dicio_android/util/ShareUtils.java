@@ -9,50 +9,29 @@ import android.net.Uri;
 import com.dicio.dicio_android.R;
 
 public final class ShareUtils {
-    private ShareUtils() {
-    }
 
     /**
      * Open the url with the system default browser.
      * <p>
      * If no browser is set as default, fallbacks to
-     * {@link ShareUtils#openUrlBrowserChooser(Context, String)}
+     * {@link ShareUtils#view(Context, String)}
      * <p>
      * Taken from NewPipe, file util/ShareUtils.java, created by @stypox and @B0pol
      *
      * @param context the context to use
      * @param url     the url to browse
      */
-    public static void openUrlInBrowser(final Context context, final String url) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-
+    public static void openInBrowser(final Context context, final String url) {
         final String defaultBrowserPackageName = getDefaultBrowserPackageName(context);
 
         if (defaultBrowserPackageName.equals("android")) {
             // no browser set as default
-            openUrlBrowserChooser(context, url);
+            view(context, url);
         } else {
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.setPackage(defaultBrowserPackageName);
             context.startActivity(intent);
         }
-    }
-
-    /**
-     * Open the url with application chooser, including browser and apps able to open url.
-     * <p>
-     * If any app (except browser, typically NewPipe) is set as default,
-     * it will nor open in browser, neither open the chooser, but just the default app.
-     * <p>
-     * Taken from NewPipe, file util/ShareUtils.java, created by @stypox and @B0pol
-     *
-     * @param context the context to use
-     * @param url     the url to browse
-     */
-    private static void openUrlBrowserChooser(final Context context, final String url) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        context.startActivity(Intent.createChooser(
-                intent, context.getString(R.string.open_in_browser)));
     }
 
     /**
@@ -73,6 +52,23 @@ public final class ShareUtils {
     }
 
     /**
+     * Open the url with application chooser, including browser and apps able to open url.
+     * <p>
+     * If any app (except browser, typically NewPipe) is set as default,
+     * it will nor open in browser, neither open the chooser, but just the default app.
+     * <p>
+     * Taken from NewPipe, file util/ShareUtils.java, created by @stypox and @B0pol
+     *
+     * @param context the context to use
+     * @param url     the url to browse
+     */
+    public static void view(final Context context, final String url) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        context.startActivity(Intent.createChooser(
+                intent, context.getString(R.string.share_view)));
+    }
+
+    /**
      * Open the android share menu to share the current url.
      * <p>
      * Taken from NewPipe, file util/ShareUtils.java, created by @stypox and @B0pol
@@ -81,7 +77,7 @@ public final class ShareUtils {
      * @param subject the url subject, typically the title
      * @param url     the url to share
      */
-    public static void shareUrl(final Context context, final String subject, final String url) {
+    public static void share(final Context context, final String subject, final String url) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);

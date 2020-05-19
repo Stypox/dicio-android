@@ -42,7 +42,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             ((TextView) view.findViewById(R.id.description))
                     .setText(Html.fromHtml(item.description));
 
-            view.setOnClickListener(v -> ShareUtils.openUrlInBrowser(context, item.url));
+            view.setOnClickListener(v -> ShareUtils.view(context, item.url));
             output.addView(view);
         }
 

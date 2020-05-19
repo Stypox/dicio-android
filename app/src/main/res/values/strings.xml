@@ -8,7 +8,7 @@
     <string name="drawer_header_desc">Navigation header</string>
 
     <string name="share">Share</string>
-    <string name="open_in_browser">Open in browser</string>
+    <string name="share_view">View in</string>
 
     <string name="text_input_hint">Ask me anything…</string>
     <string name="action_text_input">Text input</string>
