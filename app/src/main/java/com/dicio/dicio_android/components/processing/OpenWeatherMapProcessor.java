@@ -29,8 +29,9 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
 
         JSONObject weatherData;
         try {
-            weatherData = ConnectionUtils.getPageJson(weatherApiUrl + "?APPID="
-                    + ApiKeys.openweathermap + "&units=metric&lang=en&q=" + result.city);
+            weatherData = ConnectionUtils.getPageJson(weatherApiUrl
+                    + "?APPID=" + ApiKeys.openweathermap
+                    + "&units=metric&lang=en&q=" + ConnectionUtils.urlencode(result.city));
         } catch (FileNotFoundException ignored) {
             result.failed = true;
             return result;
