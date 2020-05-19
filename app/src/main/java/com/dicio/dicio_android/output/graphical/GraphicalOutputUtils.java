@@ -46,6 +46,10 @@ public class GraphicalOutputUtils {
         return buildText(context, text, R.dimen.outputHeaderTextSize);
     }
 
+    public static TextView buildSubHeader(Context context, CharSequence text) {
+        return buildText(context, text, R.dimen.outputSubHeaderTextSize);
+    }
+
     public static TextView buildDescription(Context context, CharSequence text) {
         return buildText(context, text, R.dimen.outputDescriptionTextSize);
     }
