@@ -29,14 +29,14 @@ public class GraphicalOutputUtils {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
-        layoutParams.gravity = Gravity.CENTER;
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
         return layoutParams;
     }
 
     public static TextView buildText(Context context, CharSequence text, @DimenRes int size) {
         TextView header = new TextView(context);
         header.setLayoutParams(getCenteredLayoutParams());
-        header.setGravity(Gravity.CENTER);
+        header.setGravity(Gravity.CENTER_HORIZONTAL);
         header.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(size));
         header.setText(text);
         return header;
@@ -57,6 +57,7 @@ public class GraphicalOutputUtils {
     public static LinearLayout buildContainer(Context context, Drawable divider) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(getCenteredLayoutParams());
+        linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setDividerDrawable(divider);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
