@@ -54,12 +54,6 @@
         app:layout_constraintStart_toStartOf="@id/guideline"
         tools:text="Light rain · -12.1°" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="city,basicInfo" />
-
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
