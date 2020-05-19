@@ -1,0 +1,50 @@
+package com.dicio.dicio_android.components.output;
+
+import android.content.Context;
+import android.text.Html;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.dicio.dicio_android.R;
+import com.dicio.dicio_android.output.OutputGenerator;
+import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
+import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
+import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
+
+    public static class Data {
+        public String title, thumbnailUrl, url, description;
+    }
+
+
+    @Override
+    public void generate(List<Data> data,
+                         Context context,
+                         SpeechOutputDevice speechOutputDevice,
+                         GraphicalOutputDevice graphicalOutputDevice) {
+
+        LinearLayout output = GraphicalOutputUtils.buildContainer(context,
+                context.getResources().getDrawable(R.drawable.output_container_inner_divider));
+        for (Data item : data) {
+            View view = GraphicalOutputUtils.inflate(context, R.layout.component_search_result);
+
+            ((TextView) view.findViewById(R.id.title))
+                    .setText(Html.fromHtml(item.title));
+            Picasso.get()
+                    .load(item.thumbnailUrl).into((ImageView) view.findViewById(R.id.thumbnail));
+            ((TextView) view.findViewById(R.id.description))
+                    .setText(Html.fromHtml(item.description));
+
+            output.addView(view);
+        }
+
+        speechOutputDevice.speak("Here is what I have found");
+        graphicalOutputDevice.display(output);
+    }
+}

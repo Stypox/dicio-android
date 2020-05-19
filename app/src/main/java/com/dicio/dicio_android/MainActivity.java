@@ -18,8 +18,10 @@ import com.dicio.component.standard.StandardRecognizer;
 import com.dicio.dicio_android.components.AssistanceComponent;
 import com.dicio.dicio_android.components.ChainAssistanceComponent;
 import com.dicio.dicio_android.components.fallback.TextFallbackComponent;
+import com.dicio.dicio_android.components.output.SearchOutput;
 import com.dicio.dicio_android.components.output.WeatherOutput;
 import com.dicio.dicio_android.components.processing.OpenWeatherMapProcessor;
+import com.dicio.dicio_android.components.processing.QwantProcessor;
 import com.dicio.dicio_android.eval.ComponentEvaluator;
 import com.dicio.dicio_android.eval.ComponentRanker;
 import com.dicio.dicio_android.input.AzureSpeechInputDevice;
@@ -170,11 +172,14 @@ public class MainActivity extends ThemedActivity
 
     public void initializeComponentEvaluator() {
         List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
-            //add(new TestComponent());
             add(new ChainAssistanceComponent.Builder()
                     .recognize(new StandardRecognizer(Sentences.weather))
                     .process(new OpenWeatherMapProcessor())
                     .output(new WeatherOutput()));
+            add(new ChainAssistanceComponent.Builder()
+                    .recognize(new StandardRecognizer(Sentences.search))
+                    .process(new QwantProcessor())
+                    .output(new SearchOutput()));
         }};
 
         if (currentInputDevicePreference.equals(getString(R.string.settings_value_input_method_azure))) {

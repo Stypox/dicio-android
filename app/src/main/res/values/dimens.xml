@@ -7,6 +7,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="outputHeaderTextSize">27sp</dimen>
+    <dimen name="outputSubHeaderTextSize">20sp</dimen>
     <dimen name="outputDescriptionTextSize">15sp</dimen>
     <integer name="outputDescribedImageImageWeight">1</integer>
     <integer name="outputDescribedImageDescriptionWeight">3</integer>
