@@ -25,7 +25,7 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
     public List<SearchOutput.Data> process(StandardResult data) throws Exception {
         JSONObject json = getPageJson(qwantSearchUrl
                 + "?count=10&offset=20&t=dicio&uiv=1&locale=en_gb&q="
-                + ConnectionUtils.urlencode(StringUtils.join(data.getCapturingGroups().get(0))));
+                + ConnectionUtils.urlEncode(StringUtils.join(data.getCapturingGroups().get(0))));
         Log.d("json", json.toString());
         JSONArray items = json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
 

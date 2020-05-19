@@ -12,14 +12,17 @@ import java.util.Scanner;
 
 public class ConnectionUtils {
 
-    public static JSONObject getPageJson(String url) throws IOException, JSONException {
+    public static String getPage(String url) throws IOException {
         URLConnection connection = new URL(url).openConnection();
         Scanner scanner = new Scanner(connection.getInputStream());
-        String responseBody = scanner.useDelimiter("\\A").next();
-        return new JSONObject(responseBody);
+        return scanner.useDelimiter("\\A").next();
     }
 
-    public static String urlencode(String s) throws UnsupportedEncodingException {
+    public static JSONObject getPageJson(String url) throws IOException, JSONException {
+        return new JSONObject(getPage(url));
+    }
+
+    public static String urlEncode(String s) throws UnsupportedEncodingException {
         return URLEncoder.encode(s, "utf8");
     }
 }
