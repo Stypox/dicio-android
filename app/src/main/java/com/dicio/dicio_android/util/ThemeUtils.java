@@ -11,6 +11,7 @@ public class ThemeUtils {
 
     /**
      * Get a resource id from a resource styled according to the context's theme.
+     * <p>
      * Taken from NewPipe, file util/ThemeHelper.java, created by @mauriciocolli
      *
      * @param context Android app context
@@ -26,6 +27,7 @@ public class ThemeUtils {
 
     /**
      * Get a color from an attr styled according to the context's theme.
+     * <p>
      * Taken from NewPipe, file util/ThemeHelper.java, created by @mauriciocolli
      *
      * @param context   Android app context
