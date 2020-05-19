@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.widget.LinearLayoutCompat;

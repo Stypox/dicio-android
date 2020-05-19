@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.dicio.dicio_android.components.AssistanceComponent;
-import com.dicio.dicio_android.components.fallback.FallbackComponent;
 
 import java.util.ArrayList;
 import java.util.List;

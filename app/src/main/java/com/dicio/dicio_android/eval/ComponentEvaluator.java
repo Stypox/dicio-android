@@ -7,7 +7,6 @@ import com.dicio.dicio_android.components.AssistanceComponent;
 import com.dicio.dicio_android.input.InputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import com.dicio.dicio_android.output.graphical.OutputContainerView;
 import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import com.dicio.dicio_android.util.ExceptionUtils;
 

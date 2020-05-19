@@ -6,11 +6,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dicio.dicio_android.R;
-import com.dicio.dicio_android.components.processing.OpenWeatherMapProcessor;
 import com.dicio.dicio_android.output.OutputGenerator;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import com.dicio.dicio_android.output.graphical.OutputContainerView;
 import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import com.squareup.picasso.Picasso;
 
