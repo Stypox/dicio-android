@@ -1,6 +1,7 @@
 package com.dicio.dicio_android.output.graphical;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,15 +50,17 @@ public class GraphicalOutputUtils {
         return buildText(context, text, R.dimen.outputDescriptionTextSize);
     }
 
-    public static LinearLayout buildContainer(Context context) {
+    public static LinearLayout buildContainer(Context context, Drawable divider) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(getCenteredLayoutParams());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setDividerDrawable(divider);
+        linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         return linearLayout;
     }
 
-    public static LinearLayout buildContainer(Context context, View... views) {
-        LinearLayout linearLayout = buildContainer(context);
+    public static LinearLayout buildContainer(Context context, Drawable divider, View... views) {
+        LinearLayout linearLayout = buildContainer(context, divider);
         for (View view : views) {
             linearLayout.addView(view);
         }
@@ -67,12 +70,14 @@ public class GraphicalOutputUtils {
 
     public static View buildNetworkErrorMessage(Context context) {
         return buildContainer(context,
+                context.getResources().getDrawable(R.drawable.output_container_inner_divider),
                 buildHeader(context, context.getString(R.string.eval_header_network_error)),
                 buildDescription(context, context.getString(R.string.eval_description_network_error)));
     }
 
     public static View buildErrorMessage(Context context, Throwable throwable) {
         return buildContainer(context,
+                context.getResources().getDrawable(R.drawable.output_container_inner_divider),
                 buildHeader(context, throwable.getMessage()),
                 buildDescription(context, ExceptionUtils.getStackTraceString(throwable)));
     }
