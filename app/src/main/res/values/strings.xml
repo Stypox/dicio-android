@@ -7,6 +7,9 @@
     <string name="drawer_header_subtitle">May I help you?</string>
     <string name="drawer_header_desc">Navigation header</string>
 
+    <string name="share">Share</string>
+    <string name="open_in_browser">Open in browser</string>
+
     <string name="text_input_hint">Ask me anything…</string>
     <string name="action_text_input">Text input</string>
     <string name="action_voice_input">Voice input</string>

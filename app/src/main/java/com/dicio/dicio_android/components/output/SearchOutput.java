@@ -12,6 +12,7 @@ import com.dicio.dicio_android.output.OutputGenerator;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import com.dicio.dicio_android.util.ShareUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             ((TextView) view.findViewById(R.id.description))
                     .setText(Html.fromHtml(item.description));
 
+            view.setOnClickListener(v -> ShareUtils.openUrlInBrowser(context, item.url));
             output.addView(view);
         }
 
