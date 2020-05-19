@@ -49,11 +49,15 @@ public class GraphicalOutputUtils {
         return buildText(context, text, R.dimen.outputDescriptionTextSize);
     }
 
-    public static View buildContainer(Context context, View... views) {
+    public static LinearLayout buildContainer(Context context) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(getCenteredLayoutParams());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
+        return linearLayout;
+    }
 
+    public static LinearLayout buildContainer(Context context, View... views) {
+        LinearLayout linearLayout = buildContainer(context);
         for (View view : views) {
             linearLayout.addView(view);
         }
