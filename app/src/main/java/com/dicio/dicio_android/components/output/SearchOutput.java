@@ -30,7 +30,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
                          GraphicalOutputDevice graphicalOutputDevice) {
 
         LinearLayout output = GraphicalOutputUtils.buildContainer(context,
-                context.getResources().getDrawable(R.drawable.output_container_inner_divider));
+                context.getResources().getDrawable(R.drawable.divider_items));
         for (Data item : data) {
             View view = GraphicalOutputUtils.inflate(context, R.layout.component_search_result);
 

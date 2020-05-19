@@ -70,14 +70,14 @@ public class GraphicalOutputUtils {
 
     public static View buildNetworkErrorMessage(Context context) {
         return buildContainer(context,
-                context.getResources().getDrawable(R.drawable.output_container_inner_divider),
+                context.getResources().getDrawable(R.drawable.divider_items),
                 buildHeader(context, context.getString(R.string.eval_header_network_error)),
                 buildDescription(context, context.getString(R.string.eval_description_network_error)));
     }
 
     public static View buildErrorMessage(Context context, Throwable throwable) {
         return buildContainer(context,
-                context.getResources().getDrawable(R.drawable.output_container_inner_divider),
+                context.getResources().getDrawable(R.drawable.divider_items),
                 buildHeader(context, throwable.getMessage()),
                 buildDescription(context, ExceptionUtils.getStackTraceString(throwable)));
     }

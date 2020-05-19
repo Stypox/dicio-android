@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:showDividers="middle"
-            android:divider="@drawable/output_container_outer_divider">
+            android:divider="@drawable/divider_output_containers">
 
         </LinearLayout>
     </ScrollView>

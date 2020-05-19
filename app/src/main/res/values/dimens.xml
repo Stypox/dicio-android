@@ -12,8 +12,9 @@
     <integer name="outputDescribedImageImageWeight">1</integer>
     <integer name="outputDescribedImageDescriptionWeight">3</integer>
 
+    <dimen name="dividerHeightOutputContainers">40dp</dimen>
+    <dimen name="dividerHeightItems">10dp</dimen>
+
     <dimen name="outputContainerPadding">10dp</dimen>
-    <dimen name="outputContainerOuterDividerInset">20dp</dimen>
-    <dimen name="outputContainerInnerDividerInset">5dp</dimen>
     <dimen name="outputCardElevation">3dp</dimen>
 </resources>
