@@ -198,7 +198,7 @@ public class MainActivity extends ThemedActivity
                 new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),
                 inputDevice,
                 new ToastSpeechDevice(this),
-                new MainScreenGraphicalDevice(findViewById(R.id.outputViews), findViewById(R.id.outputScrollView)),
+                new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),
                 this);
     }
 }

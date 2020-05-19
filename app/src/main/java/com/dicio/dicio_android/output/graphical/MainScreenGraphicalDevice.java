@@ -8,11 +8,9 @@ import androidx.annotation.NonNull;
 
 public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     private LinearLayout outputLayout;
-    private ScrollView outputScrollView;
 
-    public MainScreenGraphicalDevice(LinearLayout outputLayout, ScrollView outputScrollView) {
+    public MainScreenGraphicalDevice(LinearLayout outputLayout) {
         this.outputLayout = outputLayout;
-        this.outputScrollView = outputScrollView;
     }
 
     @Override
@@ -20,6 +18,8 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
         OutputContainerView outputContainer = new OutputContainerView(outputLayout.getContext());
         outputContainer.setContent(graphicalOutput);
         outputLayout.addView(outputContainer);
-        outputScrollView.post(() -> outputScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+
+        graphicalOutput.post(() ->
+                outputLayout.requestChildFocus(outputContainer, outputContainer));
     }
 }
