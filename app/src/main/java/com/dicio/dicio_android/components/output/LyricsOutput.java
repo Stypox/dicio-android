@@ -1,7 +1,10 @@
 package com.dicio.dicio_android.components.output;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.widget.TextView;
 
+import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.output.OutputGenerator;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import com.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
@@ -28,8 +31,17 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
 
         } else {
             speechOutputDevice.speak(data.title + " by " + data.artist);
+
+            TextView lyricsView = GraphicalOutputUtils.buildDescription(context, data.lyrics);
+            lyricsView.setGravity(Gravity.START);
+            lyricsView.setPadding(8, 0, 0, 0);
+
             graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildDescription(context, data.lyrics));
+                    GraphicalOutputUtils.buildContainer(context,
+                            context.getResources().getDrawable(R.drawable.divider_items),
+                            GraphicalOutputUtils.buildHeader(context, data.title),
+                            GraphicalOutputUtils.buildSubHeader(context, data.artist),
+                            lyricsView));
         }
     }
 }
