@@ -33,7 +33,7 @@ public class GraphicalOutputUtils {
         return layoutParams;
     }
 
-    public static TextView buildText(Context context, String text, @DimenRes int size) {
+    public static TextView buildText(Context context, CharSequence text, @DimenRes int size) {
         TextView header = new TextView(context);
         header.setLayoutParams(getCenteredLayoutParams());
         header.setGravity(Gravity.CENTER);
@@ -42,11 +42,11 @@ public class GraphicalOutputUtils {
         return header;
     }
 
-    public static TextView buildHeader(Context context, String text) {
+    public static TextView buildHeader(Context context, CharSequence text) {
         return buildText(context, text, R.dimen.outputHeaderTextSize);
     }
 
-    public static TextView buildDescription(Context context, String text) {
+    public static TextView buildDescription(Context context, CharSequence text) {
         return buildText(context, text, R.dimen.outputDescriptionTextSize);
     }
 
