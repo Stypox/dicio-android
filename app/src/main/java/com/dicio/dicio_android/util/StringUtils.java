@@ -19,4 +19,8 @@ public class StringUtils {
 
         return builder.toString();
     }
+
+    public static String join(List<String> strings) {
+        return join(" ", strings);
+    }
 }

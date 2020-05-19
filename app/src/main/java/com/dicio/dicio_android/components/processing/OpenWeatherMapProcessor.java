@@ -21,7 +21,7 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
     public WeatherOutput.Data process(StandardResult data) throws Exception {
         WeatherOutput.Data result = new WeatherOutput.Data();
         if (data.getCapturingGroups().size() == 1) {
-            result.city = StringUtils.join(" ", data.getCapturingGroups().get(0));
+            result.city = StringUtils.join(data.getCapturingGroups().get(0));
         } else {
             JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
             result.city = ipInfo.getString("city");
