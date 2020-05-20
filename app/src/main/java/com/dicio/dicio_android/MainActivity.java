@@ -45,6 +45,7 @@ public class MainActivity extends ThemedActivity
     private InputDevice inputDevice;
     private ComponentEvaluator componentEvaluator;
     @NonNull private String currentInputDevicePreference;
+    private boolean appJustOpened;
 
     ////////////////////////
     // Activity lifecycle //
@@ -68,6 +69,7 @@ public class MainActivity extends ThemedActivity
 
         currentInputDevicePreference = getInputDevicePreference();
         initializeComponentEvaluator();
+        appJustOpened = true;
     }
 
     @Override
@@ -120,6 +122,10 @@ public class MainActivity extends ThemedActivity
             voiceInputItem.setVisible(false);
         }
 
+        if (appJustOpened) {
+            inputDevice.tryToGetInput();
+            appJustOpened = false;
+        }
         return true;
     }
 
