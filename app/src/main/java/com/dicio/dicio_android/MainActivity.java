@@ -117,7 +117,7 @@ public class MainActivity extends ThemedActivity
             voiceInputItem.setVisible(true);
             ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
                     getResources().getDrawable(R.drawable.ic_mic_white),
-                    getResources().getDrawable(R.drawable.ic_mic_none_white)); // TODO set theme-compliant drawables
+                    getResources().getDrawable(R.drawable.ic_mic_none_white));
         } else {
             voiceInputItem.setVisible(false);
         }
