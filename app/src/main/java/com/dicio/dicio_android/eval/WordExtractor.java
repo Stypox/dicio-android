@@ -12,8 +12,7 @@ public class WordExtractor {
                 return null;
             }
 
-            // TODO is it ok to use ROOT?
-            return word.toLowerCase(Locale.ROOT);
+            return word.toLowerCase(Locale.ENGLISH);
         } catch (Throwable ignored) {
             return null;
         }
