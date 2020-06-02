@@ -22,15 +22,16 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
 
     @Override
     public LyricsOutput.Data process(StandardResult data) throws Exception {
+        final String songName = data.getCapturingGroup("song");
         JSONObject search = ConnectionUtils.getPageJson(geniusSearchUrl + "?q="
-                + ConnectionUtils.urlEncode(StringUtils.join(data.getCapturingGroups().get(0))));
+                + ConnectionUtils.urlEncode(songName));
         JSONArray searchHits = search.getJSONObject("response").getJSONArray("sections")
                 .getJSONObject(0).getJSONArray("hits");
 
         LyricsOutput.Data result = new LyricsOutput.Data();
         if (searchHits.length() == 0) {
             result.failed = true;
-            result.title = StringUtils.join(data.getCapturingGroups().get(0));
+            result.title = songName;
             return result;
         }
 

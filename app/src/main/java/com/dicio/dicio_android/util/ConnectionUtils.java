@@ -1,5 +1,7 @@
 package com.dicio.dicio_android.util;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +21,7 @@ public class ConnectionUtils {
     }
 
     public static JSONObject getPageJson(String url) throws IOException, JSONException {
+        Log.e("getpagejson", url);
         return new JSONObject(getPage(url));
     }
 

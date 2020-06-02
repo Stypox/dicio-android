@@ -13,7 +13,7 @@ public interface AssistanceComponent {
 
     InputRecognizer.Specificity specificity();
 
-    void setInput(List<String> words);
+    void setInput(String input, List<String> inputWords);
 
     float score();
 
@@ -22,6 +22,8 @@ public interface AssistanceComponent {
     void generateOutput(Context context,
                         SpeechOutputDevice speechOutputDevice,
                         GraphicalOutputDevice graphicalOutputDevice);
+
+    void cleanup();
 
     default List<AssistanceComponent> nextAssistanceComponents() {
         return Collections.emptyList();

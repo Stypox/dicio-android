@@ -2,6 +2,7 @@ package com.dicio.dicio_android.eval;
 
 import android.content.Context;
 
+import com.dicio.component.util.WordExtractor;
 import com.dicio.dicio_android.R;
 import com.dicio.dicio_android.components.AssistanceComponent;
 import com.dicio.dicio_android.input.InputDevice;
@@ -58,8 +59,8 @@ public class ComponentEvaluator {
 
         evaluationDisposable = Single
                 .fromCallable(() -> {
-                    List<String> words = WordExtractor.extractWords(input);
-                    AssistanceComponent component = componentRanker.getBest(words);
+                    AssistanceComponent component = componentRanker.getBest(
+                            input, WordExtractor.extractWords(input));
                     component.processInput();
                     return component;
                 })

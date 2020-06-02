@@ -56,14 +56,18 @@ public class ComponentRanker {
             }
         }
 
-        private static ComponentScoreResult getFirstAboveThresholdOrBest(List<AssistanceComponent> components, List<String> words, float threshold) {
+        private static ComponentScoreResult getFirstAboveThresholdOrBest(
+                final List<AssistanceComponent> components,
+                final String input,
+                final List<String> inputWords,
+                final float threshold) {
             /* this ensures that if `components` is empty and null component is returned,
             nothing bad happens since its score cannot be higher than any other float value. */
             float bestScoreSoFar = Float.MIN_VALUE;
             AssistanceComponent bestComponentSoFar = null;
 
             for (AssistanceComponent component : components) {
-                component.setInput(words);
+                component.setInput(input, inputWords);
                 float score = component.score();
 
                 if (score > bestScoreSoFar) {
@@ -79,15 +83,17 @@ public class ComponentRanker {
         }
 
         @Nullable
-        AssistanceComponent getBest(List<String> words) {
+        AssistanceComponent getBest(final String input, final List<String> inputWords) {
             // first round: considering only high-priority components
-            ComponentScoreResult bestHigh = getFirstAboveThresholdOrBest(highPrComponents, words, highPrThreshold1);
+            final ComponentScoreResult bestHigh = getFirstAboveThresholdOrBest(
+                    highPrComponents, input, inputWords, highPrThreshold1);
             if (bestHigh.score > highPrThreshold1) {
                 return bestHigh.component;
             }
 
             // second round: considering both medium- and high-priority components
-            ComponentScoreResult bestMedium = getFirstAboveThresholdOrBest(mediumPrComponents, words, mediumPrThreshold2);
+            final ComponentScoreResult bestMedium = getFirstAboveThresholdOrBest(
+                    mediumPrComponents, input, inputWords, mediumPrThreshold2);
             if (bestMedium.score > mediumPrThreshold2) {
                 return bestMedium.component;
             } else if (bestHigh.score > highPrThreshold2) {
@@ -95,7 +101,8 @@ public class ComponentRanker {
             }
 
             // third round: all components are considered
-            ComponentScoreResult bestLow = getFirstAboveThresholdOrBest(lowPrComponents, words, lowPrThreshold3);
+            final ComponentScoreResult bestLow = getFirstAboveThresholdOrBest(
+                    lowPrComponents, input, inputWords, lowPrThreshold3);
             if (bestLow.score > lowPrThreshold3) {
                 return bestLow.component;
             } else if (bestMedium.score > mediumPrThreshold3) {
@@ -135,18 +142,18 @@ public class ComponentRanker {
         batches.removeAllElements();
     }
 
-    public AssistanceComponent getBest(List<String> words) {
+    public AssistanceComponent getBest(final String input, final List<String> inputWords) {
         for(int i = batches.size() - 1; i >= 0; --i) {
-            AssistanceComponent componentFromBatch = batches.get(i).getBest(words);
+            AssistanceComponent componentFromBatch = batches.get(i).getBest(input, inputWords);
             if (componentFromBatch != null) {
                 return componentFromBatch;
             }
         }
 
-        AssistanceComponent componentFromDefault = defaultBatch.getBest(words);
+        final AssistanceComponent componentFromDefault = defaultBatch.getBest(input, inputWords);
         if (componentFromDefault == null) {
             // nothing was matched
-            fallbackComponent.setInput(words);
+            fallbackComponent.setInput(input, inputWords);
             return fallbackComponent;
         } else {
             return componentFromDefault;

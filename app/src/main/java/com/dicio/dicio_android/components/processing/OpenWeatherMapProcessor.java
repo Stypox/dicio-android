@@ -5,7 +5,6 @@ import com.dicio.component.standard.StandardResult;
 import com.dicio.dicio_android.ApiKeys;
 import com.dicio.dicio_android.components.output.WeatherOutput;
 import com.dicio.dicio_android.util.ConnectionUtils;
-import com.dicio.dicio_android.util.StringUtils;
 
 import org.json.JSONObject;
 
@@ -20,11 +19,12 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
     @Override
     public WeatherOutput.Data process(StandardResult data) throws Exception {
         WeatherOutput.Data result = new WeatherOutput.Data();
-        if (data.getCapturingGroups().size() == 1) {
-            result.city = StringUtils.join(data.getCapturingGroups().get(0));
-        } else {
+        result.city = data.getCapturingGroup("where");
+        if (result.city == null) {
             JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
             result.city = ipInfo.getString("city");
+        } else {
+            result.city = result.city.trim();
         }
 
         JSONObject weatherData;

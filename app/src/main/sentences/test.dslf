@@ -1,3 +1,0 @@
-debug: high
-debug test;
-test debug;

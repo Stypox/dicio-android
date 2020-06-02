@@ -100,7 +100,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.github.Stypox:dicio-assistance-component:3ace6bb058ea99e32611e8ef73c0e45fa0607314'
+    implementation 'com.github.Stypox:dicio-assistance-component:2abd81a544300542cdc96053d31da2dbde7cfbec'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'

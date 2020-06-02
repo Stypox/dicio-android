@@ -12,7 +12,10 @@ import java.util.List;
 public class TextFallbackComponent implements FallbackComponent {
 
     @Override
-    public void setInput(List<String> words) {}
+    public void setInput(final String input, final List<String> inputWords) {}
+
+    @Override
+    public void cleanup() {}
 
     @Override
     public void processInput() {}

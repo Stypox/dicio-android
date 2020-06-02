@@ -7,8 +7,8 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'com.github.Stypox:dicio-sentences-compiler:b7bb9a319f1e6562cd405b6c63b05dd891b96541'
+        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.github.Stypox:dicio-sentences-compiler:58676f4c2aa9538ee483e1f96e9eeeda567b766f'
     }
 }
 

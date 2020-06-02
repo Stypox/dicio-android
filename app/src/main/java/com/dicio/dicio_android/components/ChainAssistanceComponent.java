@@ -65,13 +65,18 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     }
 
     @Override
-    public void setInput(List<String> words) {
-        inputRecognizer.setInput(words);
+    public void setInput(final String input, final List<String> inputWords) {
+        inputRecognizer.setInput(input, inputWords);
     }
 
     @Override
     public float score() {
         return inputRecognizer.score();
+    }
+
+    @Override
+    public void cleanup() {
+        inputRecognizer.cleanup();
     }
 
 
