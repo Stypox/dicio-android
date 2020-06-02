@@ -2,7 +2,6 @@ package com.dicio.dicio_android.output.graphical;
 
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 
