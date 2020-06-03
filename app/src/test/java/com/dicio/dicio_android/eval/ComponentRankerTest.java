@@ -1,65 +1,97 @@
 package com.dicio.dicio_android.eval;
 
-import com.dicio.component.AssistanceComponent;
-import com.dicio.component.input.InputRecognizer.Specificity;
-import com.dicio.component.output.OutputGenerator;
-import com.dicio.component.output.views.BaseView;
+import android.content.Context;
+
+import com.dicio.component.InputRecognizer;
+import com.dicio.component.util.WordExtractor;
+import com.dicio.dicio_android.components.AssistanceComponent;
+import com.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
+import com.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static com.dicio.component.input.InputRecognizer.Specificity.high;
-import static com.dicio.component.input.InputRecognizer.Specificity.low;
-import static com.dicio.component.input.InputRecognizer.Specificity.medium;
-import static org.junit.Assert.assertArrayEquals;
+import static com.dicio.component.InputRecognizer.Specificity.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 public class ComponentRankerTest {
-    private AssistanceComponent comp(final Specificity specificity, final float score) {
-        return new AssistanceComponent() {
-            List<String> input = null;
 
-            // useless in this tests
-            public void calculateOutput() {}
-            public List<BaseView> getGraphicalOutput() { return null; }
-            public String getSpeechOutput() { return null; }
-            public Optional<OutputGenerator> nextOutputGenerator() { return Optional.empty(); }
-            public Optional<List<AssistanceComponent>> nextAssistanceComponents() { return Optional.empty(); }
+    final static String input = "hi";
+    final static List<String> inputWords = WordExtractor.extractWords(input);
 
-            @Override public void setInput(List<String> words) { input = words; }
-            @Override public List<String> getInput()           { return input; }
-            @Override public Specificity specificity()         { return specificity; }
-            @Override public float score()                     { return score; }
-        };
+    private static final class TestAC implements AssistanceComponent {
+        final InputRecognizer.Specificity specificity;
+        final float score;
+        String input;
+        
+        public TestAC(final InputRecognizer.Specificity specificity, final float score) {
+            this.specificity = specificity;
+            this.score = score;
+            this.input = null;
+        }
+        @Override
+        public InputRecognizer.Specificity specificity() {
+            return specificity;
+        }
+        @Override
+        public float score() {
+            return score;
+        }
+        @Override
+        public void setInput(final String input, final List<String> inputWords) {
+            this.input = input;
+        }
+        public String getInput() {
+            return input;
+        }
+
+        // useless for this test
+        @Override public void processInput() {}
+        @Override public void generateOutput(
+                final Context context, final SpeechOutputDevice speechOutputDevice,
+                final GraphicalOutputDevice graphicalOutputDevice) {}
+        @Override public void cleanup() {}
     }
-    private ComponentRanker getSorter(AssistanceComponent fallback, final AssistanceComponent... others) {
-        return new ComponentRanker(fallback) {{
-            addAll(others);
-        }};
+
+
+    private static ComponentRanker getRanker(final AssistanceComponent fallback, final AssistanceComponent... others) {
+        return new ComponentRanker(Arrays.asList(others), fallback);
+    }
+
+    private static void assertRanked(final ComponentRanker cr,
+                                     final TestAC fallback,
+                                     final TestAC best) {
+        final AssistanceComponent result = cr.getBest("", new ArrayList<>());
+        String message;
+        if (result == fallback) {
+            message = "Fallback component returned by getBest";
+        } else {
+            message = "Component with specificity " + result.specificity()
+                    + " and score " + result.score() + " returned by getBest";
+        }
+
+        assertSame(message, best, result);
     }
 
 
     @Test
     public void testOrderPreservedAndCorrectInput() {
-        AssistanceComponent
-                ac1 = comp(high, 0.80f),
-                ac2 = comp(high, 0.93f),
-                ac3 = comp(high, 1.00f),
-                acMed = comp(medium, 1.00f),
-                acLow = comp(low, 1.00f);
-        List<String> words = new ArrayList<String>() {{ add("hi"); }};
+        TestAC  ac1 =   new TestAC(high,   0.80f),
+                ac2 =   new TestAC(high,   0.93f),
+                ac3 =   new TestAC(high,   1.00f),
+                acMed = new TestAC(medium, 1.00f),
+                acLow = new TestAC(low,    1.00f);
 
-        ComponentRanker cs = getSorter(comp(low, 0.0f), ac1, acMed);
-        cs.addAll(ac2, acLow);
-        cs.add(ac3);
-        cs.getBest(words);
+        ComponentRanker cr = getRanker(new TestAC(low, 0.0f), ac1, acMed, ac2, acLow, ac3);
+        cr.getBest(input, inputWords);
 
-        assertArrayEquals(words.toArray(), ac1.getInput().toArray());
-        assertArrayEquals(words.toArray(), ac2.getInput().toArray());
+        assertEquals(input, ac1.getInput());
+        assertEquals(input, ac2.getInput());
         assertNull(ac3.getInput());
         assertNull(acMed.getInput());
         assertNull(acLow.getInput());
@@ -67,50 +99,33 @@ public class ComponentRankerTest {
 
     @Test
     public void testHighPrHighScore() {
-        AssistanceComponent fallback = comp(low, 0.0f);
-        AssistanceComponent best = comp(high, 0.92f);
-        ComponentRanker cs = getSorter(fallback,
-                comp(medium, 0.95f), comp(high, 0.71f), best, comp(high, 1.00f), comp(low, 1.0f));
-
-        AssistanceComponent result = cs.getBest(new ArrayList<String>());
-        String message;
-        if (result == fallback) {
-            message = "Fallback component returned by getBest";
-        } else {
-            message = "Component with specificity " + result.specificity() + " and score " + result.score() + " returned by getBest";
-        }
-
-        assertSame(message, best, result);
+        final TestAC fallback = new TestAC(low, 0.0f);
+        final TestAC best = new TestAC(high, 0.92f);
+        final ComponentRanker cr = getRanker(fallback,
+                new TestAC(medium, 0.95f), new TestAC(high, 0.71f),
+                best, new TestAC(high, 1.00f), new TestAC(low, 1.0f));
+        assertRanked(cr, fallback, best);
     }
 
 
     @Test
     public void testHighPrLowScore() {
-        AssistanceComponent fallback = comp(low, 0.0f);
-        AssistanceComponent best = comp(low, 1.0f);
-        ComponentRanker cs = getSorter(fallback,
-                comp(medium, 0.81f), comp(high, 0.71f), comp(low, 0.85f), best, comp(high, 0.32f));
-
-        AssistanceComponent result = cs.getBest(new ArrayList<String>());
-        String message;
-        if (result == fallback) {
-            message = "Fallback component returned by getBest";
-        } else {
-            message = "Component with specificity " + result.specificity() + " and score " + result.score() + " returned by getBest";
-        }
-
-        assertSame(message, best, result);
+        final TestAC fallback = new TestAC(low, 0.0f);
+        final TestAC best = new TestAC(low, 1.0f);
+        final ComponentRanker cr = getRanker(fallback,
+                new TestAC(medium, 0.81f), new TestAC(high, 0.71f),
+                new TestAC(low, 0.85f), best, new TestAC(high, 0.32f));
+        assertRanked(cr, fallback, best);
     }
 
     @Test
     public void testFallback() {
-        AssistanceComponent fallback = comp(low, 0.0f);
-        List<String> words = new ArrayList<String>() {{ add("hi"); }};
+        TestAC fallback = new TestAC(low, 0.0f);
 
-        ComponentRanker cs = getSorter(fallback, comp(low, 0.8f));
-        AssistanceComponent result = cs.getBest(words);
+        ComponentRanker cr = getRanker(fallback, new TestAC(low, 0.8f));
+        TestAC result = (TestAC) cr.getBest(input, inputWords);
 
         assertSame("Fallback component not returned by getBest", result, fallback);
-        assertArrayEquals(words.toArray(), result.getInput().toArray());
+        assertEquals(input, result.getInput());
     }
 }
