@@ -1,2 +1,2 @@
 open: medium
-open|run|execute|view|see (the app|application)? .what.;
+open|run|execute|view|see the? (app|application? .what.)|(.what. app|application?);
