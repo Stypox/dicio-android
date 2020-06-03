@@ -32,7 +32,7 @@ public class StringUtils {
      * Finds the
      * <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a>
      * between two strings, that is the number of characters that need to be changed to turn one
-     * string into the other.
+     * string into the other. Letter case is ignored.
      * @param a the first string
      * @param b the second string
      * @return the Levenshtein distance between the two strings
@@ -50,8 +50,10 @@ public class StringUtils {
 
         for (int i = 0; i < a.length(); ++i) {
             for (int j = 0; j < b.length(); ++j) {
+                int substitutionCost = Character.toLowerCase(a.codePointAt(i))
+                        == Character.toLowerCase(b.codePointAt(j)) ? 0 : 1;
                 memory[i+1][j+1] = Math.min(Math.min(memory[i][j+1] + 1, memory[i+1][j] + 1),
-                        memory[i][j] + (a.codePointAt(i) == b.codePointAt(j) ? 0 : 1));
+                        memory[i][j] + substitutionCost);
             }
         }
 
