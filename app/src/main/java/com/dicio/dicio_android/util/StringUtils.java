@@ -5,9 +5,12 @@ import java.util.List;
 
 public class StringUtils {
 
-    public static String join(String delimiter, List<String> strings) {
-        StringBuilder builder = new StringBuilder();
-        Iterator<String> iterator = strings.iterator();
+    private StringUtils() {
+    }
+
+    public static String join(final String delimiter, final List<String> strings) {
+        final StringBuilder builder = new StringBuilder();
+        final Iterator<String> iterator = strings.iterator();
 
         if (iterator.hasNext()) {
             builder.append(iterator.next());
@@ -20,7 +23,38 @@ public class StringUtils {
         return builder.toString();
     }
 
-    public static String join(List<String> strings) {
+    public static String join(final List<String> strings) {
         return join(" ", strings);
+    }
+
+
+    /**
+     * Finds the
+     * <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a>
+     * between two strings, that is the number of characters that need to be changed to turn one
+     * string into the other.
+     * @param a the first string
+     * @param b the second string
+     * @return the Levenshtein distance between the two strings
+     */
+    public static int levenshteinDistance(final String a, final String b) {
+        // memory already filled with zeros, as it's the default value for int
+        int[][] memory = new int[a.length() + 1][b.length() + 1];
+
+        for (int i = 0; i <= a.length(); ++i) {
+            memory[i][0] = i;
+        }
+        for (int j = 0; j <= b.length(); ++j) {
+            memory[0][j] = j;
+        }
+
+        for (int i = 0; i < a.length(); ++i) {
+            for (int j = 0; j < b.length(); ++j) {
+                memory[i+1][j+1] = Math.min(Math.min(memory[i][j+1] + 1, memory[i+1][j] + 1),
+                        memory[i][j] + (a.codePointAt(i) == b.codePointAt(j) ? 0 : 1));
+            }
+        }
+
+        return memory[a.length()][b.length()];
     }
 }
