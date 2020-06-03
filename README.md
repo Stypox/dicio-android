@@ -5,6 +5,7 @@ Dicio is an **open source** (voice) **assistant** running on Android. It support
 ## Skills
 
 Currently Dicio answers questions about:
-- **search**: look up information on **Qwant** (_"Search for Dicio"_)
+- **search**: looks up information on **Qwant** (_"Search for Dicio"_)
 - **weather**: collects weather information from **OpenWeatherMap** (_"What's the weather like?"_)
 - **lyrics**: shows **Genius** lyrics for songs (_"What's the song that goes we will we will rock you?"_)
+- **open**: opens an app on your device (_"Open NewPipe"_)
