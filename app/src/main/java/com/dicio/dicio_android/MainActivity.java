@@ -19,6 +19,7 @@ import com.dicio.dicio_android.components.AssistanceComponent;
 import com.dicio.dicio_android.components.ChainAssistanceComponent;
 import com.dicio.dicio_android.components.fallback.TextFallbackComponent;
 import com.dicio.dicio_android.components.output.LyricsOutput;
+import com.dicio.dicio_android.components.output.OpenOutput;
 import com.dicio.dicio_android.components.output.SearchOutput;
 import com.dicio.dicio_android.components.output.WeatherOutput;
 import com.dicio.dicio_android.components.processing.GeniusProcessor;
@@ -192,6 +193,9 @@ public class MainActivity extends ThemedActivity
                     .recognize(new StandardRecognizer(Sentences.lyrics))
                     .process(new GeniusProcessor())
                     .output(new LyricsOutput()));
+            add(new ChainAssistanceComponent.Builder()
+                    .recognize(new StandardRecognizer(Sentences.open))
+                    .output(new OpenOutput()));
         }};
 
         if (currentInputDevicePreference.equals(getString(R.string.settings_value_input_method_azure))) {
