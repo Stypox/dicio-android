@@ -43,6 +43,8 @@ import java.util.List;
 public class MainActivity extends ThemedActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
+    private MenuItem textInputItem = null;
+
     private InputDevice inputDevice;
     private ComponentEvaluator componentEvaluator;
     @NonNull private String currentInputDevicePreference;
@@ -77,6 +79,8 @@ public class MainActivity extends ThemedActivity
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (textInputItem != null && textInputItem.isActionViewExpanded()) {
+            invalidateOptionsMenu();
         } else {
             super.onBackPressed();
         }
@@ -86,7 +90,7 @@ public class MainActivity extends ThemedActivity
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        MenuItem textInputItem = menu.findItem(R.id.action_text_input);
+        textInputItem = menu.findItem(R.id.action_text_input);
         if (inputDevice instanceof ToolbarInputDevice) {
             textInputItem.setVisible(true);
             ((ToolbarInputDevice) inputDevice).setTextInputItem(textInputItem);
