@@ -8,4 +8,5 @@
     <attr name="iconQuestionAnswer" format="reference" />
     <attr name="iconMic" format="reference" />
     <attr name="iconMicNone" format="reference" />
+    <attr name="iconSettings" format="reference" />
 </resources>

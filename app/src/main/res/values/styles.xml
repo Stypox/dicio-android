@@ -18,6 +18,7 @@
         <item name="iconQuestionAnswer">@drawable/ic_question_answer_white</item>
         <item name="iconMic">@drawable/ic_mic_white</item>
         <item name="iconMicNone">@drawable/ic_mic_none_white</item>
+        <item name="iconSettings">@drawable/ic_settings_white</item>
     </style>
 
 
@@ -41,6 +42,7 @@
         <item name="iconQuestionAnswer">@drawable/ic_question_answer_black</item>
         <item name="iconMic">@drawable/ic_mic_black</item>
         <item name="iconMicNone">@drawable/ic_mic_none_black</item>
+        <item name="iconSettings">@drawable/ic_settings_black</item>
     </style>
 
 </resources>
