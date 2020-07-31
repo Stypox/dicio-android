@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 
+import static com.dicio.dicio_android.Sentences.weather;
+
 public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
 
     private static final String ipInfoUrl = "https://ipinfo.io/json";
@@ -19,7 +21,7 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
     @Override
     public WeatherOutput.Data process(StandardResult data) throws Exception {
         WeatherOutput.Data result = new WeatherOutput.Data();
-        result.city = data.getCapturingGroup("where");
+        result.city = data.getCapturingGroup(weather.where);
         if (result.city == null) {
             JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
             result.city = ipInfo.getString("city");

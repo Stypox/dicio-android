@@ -13,6 +13,8 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dicio.dicio_android.Sentences.search;
+
 public class DuckDuckGoProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
 
     private static final String duckDuckGoSearchUrl = "https://duckduckgo.com/html/?q=";
@@ -21,7 +23,7 @@ public class DuckDuckGoProcessor implements IntermediateProcessor<StandardResult
     @Override
     public List<SearchOutput.Data> process(StandardResult data) throws Exception {
         final String html = ConnectionUtils.getPage(duckDuckGoSearchUrl
-                + ConnectionUtils.urlEncode(data.getCapturingGroup("what").trim()));
+                + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
         final Document document = Jsoup.parse(html);
         final Elements elements = document.select("div[class=links_main links_deep result__body]");
 

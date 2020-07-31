@@ -14,6 +14,8 @@ import org.jsoup.select.Elements;
 import org.unbescape.javascript.JavaScriptEscape;
 import org.unbescape.json.JsonEscape;
 
+import static com.dicio.dicio_android.Sentences.lyrics;
+
 public class GeniusProcessor implements IntermediateProcessor<StandardResult, LyricsOutput.Data> {
 
     private static final String geniusSearchUrl = "https://genius.com/api/search/multi";
@@ -21,7 +23,7 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
 
     @Override
     public LyricsOutput.Data process(StandardResult data) throws Exception {
-        final String songName = data.getCapturingGroup("song");
+        final String songName = data.getCapturingGroup(lyrics.song);
         JSONObject search = ConnectionUtils.getPageJson(geniusSearchUrl + "?q="
                 + ConnectionUtils.urlEncode(songName));
         JSONArray searchHits = search.getJSONObject("response").getJSONArray("sections")

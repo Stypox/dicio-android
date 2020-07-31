@@ -16,6 +16,8 @@ import com.dicio.dicio_android.util.StringUtils;
 
 import java.util.List;
 
+import static com.dicio.dicio_android.Sentences.open;
+
 public class OpenOutput implements OutputGenerator<StandardResult> {
 
     @Override
@@ -24,7 +26,7 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
                          SpeechOutputDevice speechOutputDevice,
                          GraphicalOutputDevice graphicalOutputDevice) {
 
-        final String userAppName = data.getCapturingGroup("what").trim();
+        final String userAppName = data.getCapturingGroup(open.what).trim();
         final PackageManager packageManager = context.getPackageManager();
         final ApplicationInfo applicationInfo =
                 getMostSimilarApp(packageManager, userAppName);

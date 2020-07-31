@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dicio.dicio_android.Sentences.search;
 import static com.dicio.dicio_android.util.ConnectionUtils.getPageJson;
 
 public class QwantProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
@@ -24,7 +25,7 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
     public List<SearchOutput.Data> process(StandardResult data) throws Exception {
         JSONObject json = getPageJson(qwantSearchUrl
                 + "?count=10&offset=20&t=dicio&uiv=1&locale=en_gb&q="
-                + ConnectionUtils.urlEncode(data.getCapturingGroup("what").trim()));
+                + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
         Log.d("json", json.toString());
         JSONArray items = json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
 
