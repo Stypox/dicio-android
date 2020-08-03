@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_open">Apri il drawer di navigazione</string>
+    <string name="drawer_close">Chiudi il drawer di navigazione</string>
+    <string name="drawer_header_subtitle">Posso aiutarti?</string>
+    <string name="share">Condividi</string>
+    <string name="share_view">Apri in…</string>
+    <string name="text_input_hint">Chiedimi qualsiasi cosa…</string>
+    <string name="action_text_input">Input testuale</string>
+    <string name="action_voice_input">Input vocale</string>
+    <string name="settings_appearance">Aspetto</string>
+    <string name="settings">Impostazioni</string>
+    <string name="settings_io">Modalità di input/output</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_summary">Cambia i colori dell\'app</string>
+    <string name="settings_input_method">Modalità di input</string>
+    <string name="settings_input_method_summary">Scegli il servizio da usare per parlare a Dicio</string>
+    <string name="eval_fatal_error">Ho riscontrato un problema mentre esaminavo la tua richiesta, scusa</string>
+    <string name="eval_network_error">Errore di connessione</string>
+    <string name="eval_network_error_description">Dicio non è riuscito a raggiungere internet. Per favore controlla la connessione e riprova.</string>
+    <string name="eval_no_match">Non ho capito, potresti ripetere?</string>
+</resources>
