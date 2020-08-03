@@ -21,12 +21,12 @@ public class TextFallbackComponent implements FallbackComponent {
     public void processInput() {}
 
     @Override
-    public void generateOutput(Context context,
-                               SpeechOutputDevice speechOutputDevice,
-                               GraphicalOutputDevice graphicalOutputDevice) {
+    public void generateOutput(final Context context,
+                               final SpeechOutputDevice speechOutputDevice,
+                               final GraphicalOutputDevice graphicalOutputDevice) {
 
-        speechOutputDevice.speak(context.getString(R.string.eval_speech_no_match));
-        graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context,
-                context.getString(R.string.eval_header_no_match)));
+        final String noMatchString = context.getString(R.string.eval_no_match);
+        speechOutputDevice.speak(noMatchString);
+        graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, noMatchString));
     }
 }

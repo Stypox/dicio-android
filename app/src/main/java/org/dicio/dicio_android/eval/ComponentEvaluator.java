@@ -86,11 +86,11 @@ public class ComponentEvaluator {
         t.printStackTrace();
 
         if (ExceptionUtils.isNetworkError(t)) {
-            speechOutputDevice.speak(context.getString(R.string.eval_speech_network_error));
+            speechOutputDevice.speak(context.getString(R.string.eval_network_error_description));
             graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(context));
         } else {
             componentRanker.removeAllBatches();
-            speechOutputDevice.speak(context.getString(R.string.eval_speech_fatal_error));
+            speechOutputDevice.speak(context.getString(R.string.eval_fatal_error));
             graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(context, t));
         }
     }

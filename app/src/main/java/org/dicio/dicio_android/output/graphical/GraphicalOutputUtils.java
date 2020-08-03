@@ -76,8 +76,8 @@ public class GraphicalOutputUtils {
     public static View buildNetworkErrorMessage(Context context) {
         return buildContainer(context,
                 context.getResources().getDrawable(R.drawable.divider_items),
-                buildHeader(context, context.getString(R.string.eval_header_network_error)),
-                buildDescription(context, context.getString(R.string.eval_description_network_error)));
+                buildHeader(context, context.getString(R.string.eval_network_error)),
+                buildDescription(context, context.getString(R.string.eval_network_error_description)));
     }
 
     public static View buildErrorMessage(Context context, Throwable throwable) {
