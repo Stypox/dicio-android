@@ -1,4 +1,4 @@
 /build
-/src/main/java/com/dicio/dicio_android/Sentences.java
+/src/main/java/org/dicio/dicio_android/Sentences.java
 /src/main/api_keys.json
-/src/main/java/com/dicio/dicio_android/ApiKeys.java
+/src/main/java/org/dicio/dicio_android/ApiKeys.java
