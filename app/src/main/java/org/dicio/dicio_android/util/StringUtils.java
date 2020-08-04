@@ -70,5 +70,12 @@ public class StringUtils {
         return memory[a.length()][b.length()];
     }
 
-
+    /**
+     * Removes the punctuation in a string
+     * @param s a string to remove punctuation from
+     * @return e.g. for "hello, how are you? " returns "hello how are you "
+     */
+    public static String removePunctuation(final String s) {
+        return s.replaceAll("\\p{Punct}", "");
+    }
 }
