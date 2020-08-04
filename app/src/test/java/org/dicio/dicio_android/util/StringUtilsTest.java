@@ -52,4 +52,10 @@ public class StringUtilsTest {
         assertEquals(0, StringUtils.levenshteinDistance("abc123ABC&%$", "ABC123abc&%$"));
         assertEquals(5, StringUtils.levenshteinDistance("email@email.email", "EMAILatEMAILdotEMAIL"));
     }
+
+    @Test
+    public void removePunctuationTest() {
+        assertEquals("hello how are you ", StringUtils.removePunctuation("hello, how are you? "));
+        assertEquals("12345", StringUtils.removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~"));
+    }
 }

@@ -1,6 +1,5 @@
 package org.dicio.dicio_android.sentences;
 
-import android.os.LocaleList;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -8,7 +7,6 @@ import androidx.core.os.LocaleListCompat;
 
 import org.dicio.component.standard.StandardRecognizerData;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
