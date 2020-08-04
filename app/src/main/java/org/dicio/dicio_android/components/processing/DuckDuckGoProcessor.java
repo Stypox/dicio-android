@@ -25,7 +25,9 @@ public class DuckDuckGoProcessor implements IntermediateProcessor<StandardResult
     public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
             throws Exception {
         final String html = ConnectionUtils.getPage(duckDuckGoSearchUrl
-                + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
+                + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim())
+                + "&kl=" + locale.getCountry().toLowerCase()
+                +  "-" + locale.getLanguage().toLowerCase());
         final Document document = Jsoup.parse(html);
         final Elements elements = document.select("div[class=links_main links_deep result__body]");
 
