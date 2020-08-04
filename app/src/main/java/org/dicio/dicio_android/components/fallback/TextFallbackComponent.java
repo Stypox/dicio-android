@@ -2,12 +2,14 @@ package org.dicio.dicio_android.components.fallback;
 
 import android.content.Context;
 
+import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
 import java.util.List;
+import java.util.Locale;
 
 public class TextFallbackComponent implements FallbackComponent {
 
@@ -18,7 +20,7 @@ public class TextFallbackComponent implements FallbackComponent {
     public void cleanup() {}
 
     @Override
-    public void processInput() {}
+    public void processInput(final Locale locale) {}
 
     @Override
     public void generateOutput(final Context context,

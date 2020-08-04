@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.dicio.dicio_android.sentences.Sentences_en.search;
 
@@ -21,7 +22,8 @@ public class DuckDuckGoProcessor implements IntermediateProcessor<StandardResult
 
 
     @Override
-    public List<SearchOutput.Data> process(StandardResult data) throws Exception {
+    public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
+            throws Exception {
         final String html = ConnectionUtils.getPage(duckDuckGoSearchUrl
                 + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
         final Document document = Jsoup.parse(html);

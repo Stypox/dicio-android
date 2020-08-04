@@ -8,6 +8,7 @@ import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public interface AssistanceComponent {
 
@@ -17,7 +18,7 @@ public interface AssistanceComponent {
 
     float score();
 
-    void processInput() throws Exception;
+    void processInput(Locale locale) throws Exception;
 
     void generateOutput(Context context,
                         SpeechOutputDevice speechOutputDevice,

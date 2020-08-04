@@ -10,6 +10,7 @@ import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ChainAssistanceComponent implements AssistanceComponent {
 
@@ -82,11 +83,11 @@ public class ChainAssistanceComponent implements AssistanceComponent {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void processInput() throws Exception {
+    public void processInput(final Locale locale) throws Exception {
         lastResult = inputRecognizer.getResult();
 
         for (int i = 0; i < intermediateProcessors.size(); ++i) {
-            lastResult = intermediateProcessors.get(i).process(lastResult);
+            lastResult = intermediateProcessors.get(i).process(lastResult, locale);
         }
     }
 

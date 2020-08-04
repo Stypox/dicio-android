@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.dicio.dicio_android.sentences.Sentences_en.search;
 import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
@@ -22,7 +23,8 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
 
 
     @Override
-    public List<SearchOutput.Data> process(StandardResult data) throws Exception {
+    public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
+            throws Exception {
         JSONObject json = getPageJson(qwantSearchUrl
                 + "?count=10&offset=20&t=dicio&uiv=1&locale=en_gb&q="
                 + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));

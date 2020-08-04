@@ -10,6 +10,7 @@ import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
+import java.util.Locale;
 
 import static org.dicio.dicio_android.sentences.Sentences_en.weather;
 
@@ -22,7 +23,8 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
 
 
     @Override
-    public WeatherOutput.Data process(StandardResult data) throws Exception {
+    public WeatherOutput.Data process(final StandardResult data, final Locale locale)
+            throws Exception {
         WeatherOutput.Data result = new WeatherOutput.Data();
         result.city = data.getCapturingGroup(weather.where);
         if (result.city != null) {

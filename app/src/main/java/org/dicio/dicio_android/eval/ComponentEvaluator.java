@@ -61,7 +61,8 @@ public class ComponentEvaluator {
                 .fromCallable(() -> {
                     AssistanceComponent component = componentRanker.getBest(
                             input, WordExtractor.extractWords(input));
-                    component.processInput();
+                    // TODO let user choose locale to use for component processing and output
+                    component.processInput(context.getResources().getConfiguration().locale);
                     return component;
                 })
                 .subscribeOn(Schedulers.io())

@@ -3,6 +3,7 @@ package org.dicio.dicio_android.eval;
 import android.content.Context;
 
 import org.dicio.component.InputRecognizer;
+import org.dicio.component.standard.StandardResult;
 import org.dicio.component.util.WordExtractor;
 import org.dicio.dicio_android.components.AssistanceComponent;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.dicio.component.InputRecognizer.Specificity.*;
 import static org.junit.Assert.assertEquals;
@@ -51,7 +53,7 @@ public class ComponentRankerTest {
         }
 
         // useless for this test
-        @Override public void processInput() {}
+        @Override public void processInput(final Locale locale) {}
         @Override public void generateOutput(
                 final Context context, final SpeechOutputDevice speechOutputDevice,
                 final GraphicalOutputDevice graphicalOutputDevice) {}
