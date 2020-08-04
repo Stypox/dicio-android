@@ -10,9 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.os.ConfigurationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.dicio.component.standard.StandardRecognizer;
 import org.dicio.dicio_android.components.AssistanceComponent;
@@ -33,12 +36,15 @@ import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
 import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
+import org.dicio.dicio_android.sentences.Sections;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.util.ThemedActivity;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.dicio.dicio_android.sentences.Sections.getSection;
+import static org.dicio.dicio_android.sentences.SectionsGenerated.*;
 
 public class MainActivity extends ThemedActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -184,21 +190,27 @@ public class MainActivity extends ThemedActivity
     /////////////////////////////////////
 
     public void initializeComponentEvaluator() {
+        try {
+            Sections.setLocale(ConfigurationCompat.getLocales(getResources().getConfiguration()));
+        } catch (Sections.UnsupportedLocaleException e) {
+            e.printStackTrace(); //TODO ask the user to manually choose a locale
+        }
+
         List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
             add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(Sentences.weather))
+                    .recognize(new StandardRecognizer(getSection(weather)))
                     .process(new OpenWeatherMapProcessor())
                     .output(new WeatherOutput()));
             add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(Sentences.search))
+                    .recognize(new StandardRecognizer(getSection(search)))
                     .process(new QwantProcessor())
                     .output(new SearchOutput()));
             add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(Sentences.lyrics))
+                    .recognize(new StandardRecognizer(getSection(lyrics)))
                     .process(new GeniusProcessor())
                     .output(new LyricsOutput()));
             add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(Sentences.open))
+                    .recognize(new StandardRecognizer(getSection(open)))
                     .output(new OpenOutput()));
         }};
 

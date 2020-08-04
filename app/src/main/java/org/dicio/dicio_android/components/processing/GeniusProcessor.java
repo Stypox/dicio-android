@@ -14,7 +14,7 @@ import org.jsoup.select.Elements;
 import org.unbescape.javascript.JavaScriptEscape;
 import org.unbescape.json.JsonEscape;
 
-import static org.dicio.dicio_android.Sentences.lyrics;
+import static org.dicio.dicio_android.sentences.Sentences_en.lyrics;
 
 public class GeniusProcessor implements IntermediateProcessor<StandardResult, LyricsOutput.Data> {
 

@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.dicio.dicio_android.Sentences.search;
+import static org.dicio.dicio_android.sentences.Sentences_en.search;
 import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
 
 public class QwantProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
