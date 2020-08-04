@@ -43,24 +43,32 @@ public class SectionsTest {
 
 
     @Test
-    public void localeFoundTest() throws Sections.UnsupportedLocaleException {
-        assertLocale("en",       "en",    "en", "en-UK", "en-GB", "it", "it-IT");
-        assertLocale("en-UK",    "en-UK", "en", "en-UK", "en-GB", "it", "it-IT");
-        assertLocale("en",       "en-US", "en", "en-UK", "en-GB", "it", "it-IT");
-        assertLocale("en-UK",    "en-US", "en-UK", "en-GB", "it", "it-IT"); // the lexicographically bigger locale is chosen
-        assertLocale("en-UK",    "en-US", "en-GB", "en-UK", "it", "it-IT");
-        assertLocale("it-IT",    "it",    "en", "en-UK", "en-GB", "en-US", "it-IT");
-        assertLocale("es-rUS",   "es",    "es-rUS", "ru", "fr-FR");
-        assertLocale("b+es+419", "es-ES", "b+es+419", "de", "fr-FR");
-        assertLocale("en-rGB",   "en-US", "en-rGB", "ru", "de-DE");
-        assertLocale("b+en+001", "en-UK", "b+en+001", "fr", "de-DE");
+    public void localeTest() throws Sections.UnsupportedLocaleException {
+        assertLocale("en",       "en",    "en", "en-uk", "en-gb", "it", "it-it");
+        assertLocale("en-uk",    "en-UK", "en", "en-uk", "en-gb", "it", "it-it");
+        assertLocale("en",       "en-US", "en", "en-uk", "en-gb", "it", "it-it");
+        assertLocale("en-uk",    "en-US", "en-uk", "en-gb", "it", "it-it"); // the lexicographically bigger locale is chosen
+        assertLocale("en-uk",    "en-US", "en-gb", "en-uk", "it", "it-it");
+        assertLocale("it-it",    "it",    "en", "en-uk", "en-gb", "en-us", "it-it");
+        assertLocale("es-rus",   "es",    "es-rus", "ru", "fr-fr");
+        assertLocale("b+es+419", "es-ES", "b+es+419", "de", "fr-fr");
+        assertLocale("en-rgb",   "en-US", "en-rgb", "ru", "de-de");
+        assertLocale("b+en+001", "en-UK", "b+en+001", "fr", "de-de");
+    }
+
+    @Test
+    public void localeCaseTest() throws Sections.UnsupportedLocaleException {
+        assertLocale("it-it", "it-IT", "it", "it-it");
+        assertLocale("it",    "it-IT", "it", "fr", "FR-fr");
+        assertLocale("it",    "it-IT", "it", "it-IT", "fr", "FR-fr");
+        assertLocaleNotFound("it", "IT", "IT-it");
     }
 
     @Test
     public void localeNotFoundTest() {
-        assertLocaleNotFound("en", "it", "it-IT", "ru", "fr-FR");
-        assertLocaleNotFound("fr-CH", "it", "it-IT", "it-CH", "de-CH");
-        assertLocaleNotFound("de-CH", "it", "it-IT", "it-CH", "fr-CH");
+        assertLocaleNotFound("en", "it", "it-it", "ru", "fr-fr");
+        assertLocaleNotFound("fr-CH", "it", "it-it", "it-ch", "de-ch");
+        assertLocaleNotFound("de-CH", "it", "it-it", "it-ch", "fr-ch");
         assertLocaleNotFound("it-IT");
         assertLocaleNotFound("it");
     }

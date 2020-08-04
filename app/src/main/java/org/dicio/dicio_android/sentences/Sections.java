@@ -86,13 +86,13 @@ public class Sections {
     static String getLocaleString(final Locale locale, final Set<String> supportedLocales)
             throws UnsupportedLocaleException {
         // first try with full locale name (e.g. en-US)
-        String localeString = locale.getLanguage() + "-" + locale.getCountry();
+        String localeString = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
         if (supportedLocales.contains(localeString)) {
             return localeString;
         }
 
         // then try with only base language (e.g. en)
-        localeString = locale.getLanguage();
+        localeString = locale.getLanguage().toLowerCase();
         if (supportedLocales.contains(localeString)) {
             return localeString;
         }

@@ -100,7 +100,7 @@ task sentencesCompiler {
         outputStream.write("public class SectionsGenerated {\n" +
                 "public static final Map<String,Map<String,StandardRecognizerData>> localeSectionsMap=new HashMap<String,Map<String,StandardRecognizerData>>(){{")
         for (String localeName : locales) {
-            outputStream.write("put(\"${localeName}\",Sentences_${localeName}.sections);")
+            outputStream.write("put(\"${localeName.toLowerCase()}\",Sentences_${localeName}.sections);")
         }
         outputStream.write("}};\n")
 
