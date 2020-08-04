@@ -31,4 +31,14 @@
     <string name="eval_network_error">Network error</string>
     <string name="eval_network_error_description">Dicio could not reach the internet. Please check your connection and retry.</string>
     <string name="eval_no_match">I did not understand, could you repeat?</string>
+
+    <string name="component_lyrics_song_not_found">Unable to find song %1$s</string>
+    <string name="component_lyrics_found_song_by_artist">Found %1$s by %2$s</string>
+    <string name="component_open_unknown_app">Unknown app %1$s</string>
+    <string name="component_open_opening">Opening %1$s</string>
+    <string name="component_search_here_is_what_i_found">Here is what I found</string>
+    <string name="component_weather_could_not_find_city">I could not find city %1$s</string>
+    <string name="component_weather_in_city_there_is_description">Currently in %1$s there is %2$s</string>
+    <string name="component_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="component_weather_min_max_wind">Minimum temperature: %1$.1f°C\nMaximum temperature: %2$.1f°C\nWind speed: %3$.1fm/s</string>
 </resources>

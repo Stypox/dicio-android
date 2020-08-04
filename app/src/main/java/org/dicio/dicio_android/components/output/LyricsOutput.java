@@ -25,12 +25,15 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
                          GraphicalOutputDevice graphicalOutputDevice) {
 
         if (data.failed) {
-            final String message = "Unable to find song " + data.title;
+            final String message =
+                    context.getString(R.string.component_lyrics_song_not_found, data.title);
             speechOutputDevice.speak(message);
             graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
 
         } else {
-            speechOutputDevice.speak(data.title + " by " + data.artist);
+            speechOutputDevice.speak(
+                    context.getString(R.string.component_lyrics_found_song_by_artist,
+                            data.title, data.artist));
 
             TextView lyricsView = GraphicalOutputUtils.buildDescription(context, data.lyrics);
             lyricsView.setGravity(Gravity.START);

@@ -46,7 +46,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             output.addView(view);
         }
 
-        speechOutputDevice.speak("Here is what I have found");
+        speechOutputDevice.speak(context.getString(R.string.component_search_here_is_what_i_found));
         graphicalOutputDevice.display(output);
     }
 }

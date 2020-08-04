@@ -31,25 +31,25 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
                          SpeechOutputDevice speechOutputDevice,
                          GraphicalOutputDevice graphicalOutputDevice) {
         if (data.failed) {
-            final String message = "I could not find city " + data.city;
+            final String message =
+                    context.getString(R.string.component_weather_could_not_find_city, data.city);
             speechOutputDevice.speak(message);
             graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
 
         } else {
-            speechOutputDevice.speak("Currently in " + data.city
-                    + " there is " + data.description);
+            speechOutputDevice.speak(
+                    context.getString(R.string.component_weather_in_city_there_is_description,
+                            data.city, data.description));
 
             View weatherView = GraphicalOutputUtils.inflate(context, R.layout.component_weather);
             Picasso.get().load(iconUrl + data.icon + "@2x.png").into(
                     (ImageView) weatherView.findViewById(R.id.image));
             ((TextView) weatherView.findViewById(R.id.city)).setText(data.city);
             ((TextView) weatherView.findViewById(R.id.basicInfo)).setText(
-                    String.format(Locale.getDefault(),
-                            "%s · %.1f°C",
+                    context.getString(R.string.component_weather_description_temperature,
                             data.description, data.temp));
             ((TextView) weatherView.findViewById(R.id.advancedInfo)).setText(
-                    String.format(Locale.getDefault(),
-                            "Minimum temperature: %.1f°C\nMaximum temperature: %.1f°C\nWind speed: %.1fm/s",
+                    context.getString(R.string.component_weather_min_max_wind,
                             data.tempMin, data.tempMax, data.windSpeed));
             graphicalOutputDevice.display(weatherView);
         }

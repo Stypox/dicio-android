@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import androidx.annotation.Nullable;
 
 import org.dicio.component.standard.StandardResult;
+import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.OutputGenerator;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
@@ -28,16 +29,15 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
 
         final String userAppName = data.getCapturingGroup(open.what).trim();
         final PackageManager packageManager = context.getPackageManager();
-        final ApplicationInfo applicationInfo =
-                getMostSimilarApp(packageManager, userAppName);
+        final ApplicationInfo applicationInfo = getMostSimilarApp(packageManager, userAppName);
 
         if (applicationInfo == null) {
             speechOutputDevice.speak(
-                    "Unknown app " + userAppName);
+                    context.getString(R.string.component_open_unknown_app, userAppName));
 
         } else {
-            speechOutputDevice.speak(
-                    "Opening " + packageManager.getApplicationLabel(applicationInfo).toString());
+            speechOutputDevice.speak(context.getString(R.string.component_open_opening,
+                    packageManager.getApplicationLabel(applicationInfo)));
 
             final Intent launchIntent =
                     packageManager.getLaunchIntentForPackage(applicationInfo.packageName);
