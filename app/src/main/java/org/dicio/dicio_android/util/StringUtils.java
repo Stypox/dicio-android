@@ -8,6 +8,13 @@ public class StringUtils {
     private StringUtils() {
     }
 
+    /**
+     * Joins strings using delimiter
+     * @param delimiter what to put in between strings
+     * @param strings a list of strings to join
+     * @return {@code string1 + delimiter + string2 + delimiter + ...
+     *                + delimiter + stringN-1 + delimiter + stringN}
+     */
     public static String join(final String delimiter, final List<String> strings) {
         final StringBuilder builder = new StringBuilder();
         final Iterator<String> iterator = strings.iterator();
@@ -23,10 +30,13 @@ public class StringUtils {
         return builder.toString();
     }
 
+    /**
+     * Joins the strings by putting a space in between them.
+     * @see #join(String, List)
+     */
     public static String join(final List<String> strings) {
         return join(" ", strings);
     }
-
 
     /**
      * Finds the
@@ -59,4 +69,6 @@ public class StringUtils {
 
         return memory[a.length()][b.length()];
     }
+
+
 }
