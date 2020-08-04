@@ -25,18 +25,18 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
     @Override
     public WeatherOutput.Data process(final StandardResult data, final Locale locale)
             throws Exception {
-        WeatherOutput.Data result = new WeatherOutput.Data();
+        final WeatherOutput.Data result = new WeatherOutput.Data();
         result.city = data.getCapturingGroup(weather.where);
         if (result.city != null) {
             result.city = StringUtils.removePunctuation(result.city.trim());
         }
 
         if (result.city == null || result.city.isEmpty()) {
-            JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
+            final JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
             result.city = ipInfo.getString("city");
         }
 
-        JSONObject weatherData;
+        final JSONObject weatherData;
         try {
             weatherData = ConnectionUtils.getPageJson(weatherApiUrl
                     + "?APPID=" + ApiKeys.openweathermap
@@ -47,9 +47,9 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
             return result;
         }
 
-        JSONObject weatherObject = weatherData.getJSONArray("weather").getJSONObject(0);
-        JSONObject mainObject = weatherData.getJSONObject("main");
-        JSONObject windObject = weatherData.getJSONObject("wind");
+        final JSONObject weatherObject = weatherData.getJSONArray("weather").getJSONObject(0);
+        final JSONObject mainObject = weatherData.getJSONObject("main");
+        final JSONObject windObject = weatherData.getJSONObject("wind");
 
         result.city = weatherData.getString("name");
         result.description = weatherObject.getString("description");

@@ -19,10 +19,10 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
 
 
     @Override
-    public void generate(Data data,
-                         Context context,
-                         SpeechOutputDevice speechOutputDevice,
-                         GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final Data data,
+                         final Context context,
+                         final SpeechOutputDevice speechOutputDevice,
+                         final GraphicalOutputDevice graphicalOutputDevice) {
 
         if (data.failed) {
             final String message =
@@ -35,7 +35,7 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
                     context.getString(R.string.component_lyrics_found_song_by_artist,
                             data.title, data.artist));
 
-            TextView lyricsView = GraphicalOutputUtils.buildDescription(context, data.lyrics);
+            final TextView lyricsView = GraphicalOutputUtils.buildDescription(context, data.lyrics);
             lyricsView.setGravity(Gravity.START);
             lyricsView.setPadding(8, 0, 0, 0);
 

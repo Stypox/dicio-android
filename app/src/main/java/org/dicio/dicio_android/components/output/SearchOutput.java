@@ -25,15 +25,16 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
 
 
     @Override
-    public void generate(List<Data> data,
-                         Context context,
-                         SpeechOutputDevice speechOutputDevice,
-                         GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final List<Data> data,
+                         final Context context,
+                         final SpeechOutputDevice speechOutputDevice,
+                         final GraphicalOutputDevice graphicalOutputDevice) {
 
-        LinearLayout output = GraphicalOutputUtils.buildContainer(context,
+        final LinearLayout output = GraphicalOutputUtils.buildContainer(context,
                 context.getResources().getDrawable(R.drawable.divider_items));
         for (Data item : data) {
-            View view = GraphicalOutputUtils.inflate(context, R.layout.component_search_result);
+            final View view =
+                    GraphicalOutputUtils.inflate(context, R.layout.component_search_result);
 
             ((TextView) view.findViewById(R.id.title))
                     .setText(Html.fromHtml(item.title));

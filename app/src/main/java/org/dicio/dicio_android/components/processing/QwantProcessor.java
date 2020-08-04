@@ -25,16 +25,16 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
     @Override
     public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
             throws Exception {
-        JSONObject json = getPageJson(qwantSearchUrl
+        final JSONObject json = getPageJson(qwantSearchUrl
                 + "?count=10&offset=20&t=dicio&uiv=1&locale=" + locale.toString().toLowerCase()
                 + "&q=" + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
         Log.d("json", json.toString());
-        JSONArray items = json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
+        final JSONArray items = json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
 
-        List<SearchOutput.Data> result = new ArrayList<>();
+        final List<SearchOutput.Data> result = new ArrayList<>();
         for (int i = 0; i < items.length(); ++i) {
             SearchOutput.Data searchResult = new SearchOutput.Data();
-            JSONObject item = items.getJSONObject(i);
+            final JSONObject item = items.getJSONObject(i);
 
             searchResult.title = item.getString("title");
             searchResult.thumbnailUrl = "https:" + item.getString("favicon");

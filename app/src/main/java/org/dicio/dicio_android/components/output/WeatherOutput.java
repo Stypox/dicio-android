@@ -24,10 +24,10 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
 
 
     @Override
-    public void generate(Data data,
-                         Context context,
-                         SpeechOutputDevice speechOutputDevice,
-                         GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final Data data,
+                         final Context context,
+                         final SpeechOutputDevice speechOutputDevice,
+                         final GraphicalOutputDevice graphicalOutputDevice) {
         if (data.failed) {
             final String message =
                     context.getString(R.string.component_weather_could_not_find_city, data.city);
@@ -39,7 +39,8 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
                     context.getString(R.string.component_weather_in_city_there_is_description,
                             data.city, data.description));
 
-            View weatherView = GraphicalOutputUtils.inflate(context, R.layout.component_weather);
+            final View weatherView =
+                    GraphicalOutputUtils.inflate(context, R.layout.component_weather);
             Picasso.get().load(data.iconUrl).into(
                     (ImageView) weatherView.findViewById(R.id.image));
             ((TextView) weatherView.findViewById(R.id.city)).setText(data.city);

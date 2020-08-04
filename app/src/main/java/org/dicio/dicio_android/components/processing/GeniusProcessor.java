@@ -27,29 +27,33 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
     public LyricsOutput.Data process(final StandardResult data, final Locale locale)
             throws Exception {
         final String songName = data.getCapturingGroup(lyrics.song);
-        JSONObject search = ConnectionUtils.getPageJson(geniusSearchUrl + "?q="
+        final JSONObject search = ConnectionUtils.getPageJson(geniusSearchUrl + "?q="
                 + ConnectionUtils.urlEncode(songName));
-        JSONArray searchHits = search.getJSONObject("response").getJSONArray("sections")
-                .getJSONObject(0).getJSONArray("hits");
+        final JSONArray searchHits =
+                search.getJSONObject("response").getJSONArray("sections")
+                        .getJSONObject(0).getJSONArray("hits");
 
-        LyricsOutput.Data result = new LyricsOutput.Data();
+        final LyricsOutput.Data result = new LyricsOutput.Data();
         if (searchHits.length() == 0) {
             result.failed = true;
             result.title = songName;
             return result;
         }
 
-        JSONObject song = searchHits.getJSONObject(0).getJSONObject("result");
+        final JSONObject song = searchHits.getJSONObject(0).getJSONObject("result");
         result.title = song.getString("title");
         result.artist = song.getJSONObject("primary_artist").getString("name");
 
 
-        String lyricsHtml = ConnectionUtils.getPage(geniusLyricsUrl + song.getInt("id") + "/embed.js");
-        lyricsHtml = RegexUtils.matchGroup1("document\\.write\\(JSON\\.parse\\('(.+)'\\)\\)", lyricsHtml);
+        String lyricsHtml =
+                ConnectionUtils.getPage(
+                        geniusLyricsUrl + song.getInt("id") + "/embed.js");
+        lyricsHtml = RegexUtils.matchGroup1(
+                "document\\.write\\(JSON\\.parse\\('(.+)'\\)\\)", lyricsHtml);
         lyricsHtml = JsonEscape.unescapeJson(JavaScriptEscape.unescapeJavaScript(lyricsHtml));
 
-        Document lyricsDocument = Jsoup.parse(lyricsHtml);
-        Elements elements = lyricsDocument.select("div[class=rg_embed_body]");
+        final Document lyricsDocument = Jsoup.parse(lyricsHtml);
+        final Elements elements = lyricsDocument.select("div[class=rg_embed_body]");
         elements.select("br").append("{#%)");
         result.lyrics = elements.text().replaceAll("\\s*(\\\\n)?\\s*\\{#%\\)\\s*", "\n");
 

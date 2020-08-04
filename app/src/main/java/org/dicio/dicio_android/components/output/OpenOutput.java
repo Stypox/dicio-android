@@ -22,10 +22,10 @@ import static org.dicio.dicio_android.sentences.Sentences_en.open;
 public class OpenOutput implements OutputGenerator<StandardResult> {
 
     @Override
-    public void generate(StandardResult data,
-                         Context context,
-                         SpeechOutputDevice speechOutputDevice,
-                         GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final StandardResult data,
+                         final Context context,
+                         final SpeechOutputDevice speechOutputDevice,
+                         final GraphicalOutputDevice graphicalOutputDevice) {
 
         final String userAppName = data.getCapturingGroup(open.what).trim();
         final PackageManager packageManager = context.getPackageManager();
