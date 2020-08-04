@@ -2,7 +2,7 @@ package org.dicio.dicio_android.output;
 
 import android.content.Context;
 
-import org.dicio.dicio_android.components.ChainAssistanceComponent;
+import org.dicio.dicio_android.components.AssistanceComponent;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
@@ -30,7 +30,7 @@ public interface OutputGenerator<FromType> {
      * that the calculated data can be used to choose what to do.
      * @return a list of assistance components
      */
-    default List<ChainAssistanceComponent> nextAssistanceComponents() {
+    default List<AssistanceComponent> nextAssistanceComponents() {
         // no next components by default
         return Collections.emptyList();
     }

@@ -21,7 +21,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
             chainAssistanceComponent = new ChainAssistanceComponent();
         }
 
-        public Builder recognize(InputRecognizer<?> inputRecognizer) {
+        public Builder recognize(final InputRecognizer<?> inputRecognizer) {
             if (chainAssistanceComponent.inputRecognizer != null) {
                 throw new IllegalArgumentException("recognize() can only be called once");
             }
@@ -30,7 +30,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
             return this;
         }
 
-        public Builder process(IntermediateProcessor<?, ?> intermediateProcessor) {
+        public Builder process(final IntermediateProcessor<?, ?> intermediateProcessor) {
             if (chainAssistanceComponent.inputRecognizer == null) {
                 throw new IllegalArgumentException("process() can't be called before recognize()");
             }
@@ -39,7 +39,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
             return this;
         }
 
-        public ChainAssistanceComponent output(OutputGenerator<?> outputGenerator) {
+        public ChainAssistanceComponent output(final OutputGenerator<?> outputGenerator) {
             if (chainAssistanceComponent.inputRecognizer == null) {
                 throw new IllegalArgumentException("output() can't be called before recognize()");
             }
@@ -51,7 +51,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
 
 
     private InputRecognizer inputRecognizer;
-    private List<IntermediateProcessor> intermediateProcessors;
+    private final List<IntermediateProcessor> intermediateProcessors;
     private OutputGenerator outputGenerator;
     private Object lastResult;
 
@@ -93,9 +93,9 @@ public class ChainAssistanceComponent implements AssistanceComponent {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void generateOutput(Context context,
-                               SpeechOutputDevice speechOutputDevice,
-                               GraphicalOutputDevice graphicalOutputDevice) {
+    public void generateOutput(final Context context,
+                               final SpeechOutputDevice speechOutputDevice,
+                               final GraphicalOutputDevice graphicalOutputDevice) {
         outputGenerator.generate(lastResult, context, speechOutputDevice, graphicalOutputDevice);
     }
 
