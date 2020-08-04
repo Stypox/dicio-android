@@ -101,7 +101,7 @@ public class Sections {
         for (final String supportedLocalePlus : supportedLocales) {
             for (final String supportedLocale : supportedLocalePlus.split("\\+")) {
                 if (supportedLocale.split("-", 2)[0].equals(localeString)) {
-                    return supportedLocale;
+                    return supportedLocalePlus;
                 }
             }
         }
