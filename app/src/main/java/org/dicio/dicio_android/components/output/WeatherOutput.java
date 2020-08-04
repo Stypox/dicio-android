@@ -16,11 +16,9 @@ import java.util.Locale;
 
 public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
 
-    private static final String iconUrl = "http://openweathermap.org/img/wn/";
-
     public static class Data {
         public boolean failed = false;
-        public String city, description, icon;
+        public String city, description, iconUrl;
         public double temp, tempMin, tempMax, windSpeed;
     }
 
@@ -42,7 +40,7 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
                             data.city, data.description));
 
             View weatherView = GraphicalOutputUtils.inflate(context, R.layout.component_weather);
-            Picasso.get().load(iconUrl + data.icon + "@2x.png").into(
+            Picasso.get().load(data.iconUrl).into(
                     (ImageView) weatherView.findViewById(R.id.image));
             ((TextView) weatherView.findViewById(R.id.city)).setText(data.city);
             ((TextView) weatherView.findViewById(R.id.basicInfo)).setText(
