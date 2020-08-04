@@ -1,0 +1,5 @@
+weather: high
+che? tempo|temperatura fa|(c è)? fuori|(all aperto)? (a|in .where.)?;
+(com|come è|(si sta))|(si sta bene) fuori|(all aperto);
+è freddo|fresco|caldo|soleggiato|piovoso|nevoso fuori|(all aperto)? (a|in .where.)?;
+piove|nevica|grandina|(sta piovendo|nevicando|grandinando) (a|in .where.)?;
