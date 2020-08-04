@@ -6,6 +6,7 @@ import org.dicio.dicio_android.ApiKeys;
 import org.dicio.dicio_android.components.output.WeatherOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
 
+import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
@@ -24,11 +25,13 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
     public WeatherOutput.Data process(StandardResult data) throws Exception {
         WeatherOutput.Data result = new WeatherOutput.Data();
         result.city = data.getCapturingGroup(weather.where);
-        if (result.city == null) {
+        if (result.city != null) {
+            result.city = StringUtils.removePunctuation(result.city.trim());
+        }
+
+        if (result.city == null || result.city.isEmpty()) {
             JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
             result.city = ipInfo.getString("city");
-        } else {
-            result.city = result.city.trim();
         }
 
         JSONObject weatherData;
