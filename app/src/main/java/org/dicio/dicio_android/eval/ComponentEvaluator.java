@@ -27,11 +27,11 @@ public class ComponentEvaluator {
 
     private Disposable evaluationDisposable;
 
-    public ComponentEvaluator(ComponentRanker componentRanker,
-                              InputDevice inputDevice,
-                              SpeechOutputDevice speaker,
-                              GraphicalOutputDevice displayer,
-                              Context context) {
+    public ComponentEvaluator(final ComponentRanker componentRanker,
+                              final InputDevice inputDevice,
+                              final SpeechOutputDevice speaker,
+                              final GraphicalOutputDevice displayer,
+                              final Context context) {
 
         this.componentRanker = componentRanker;
         this.inputDevice = inputDevice;
@@ -41,26 +41,30 @@ public class ComponentEvaluator {
 
         inputDevice.setOnInputReceivedListener(new InputDevice.OnInputReceivedListener() {
             @Override
-            public void onInputReceived(String input) {
+            public void onInputReceived(final String input) {
                 evaluateMatchingComponent(input);
             }
 
             @Override
-            public void onError(Throwable e) {
+            public void onError(final Throwable e) {
                 ComponentEvaluator.this.onError(e);
             }
         });
     }
 
-    public void evaluateMatchingComponent(String input) {
+    public void evaluateMatchingComponent(final String input) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
             evaluationDisposable.dispose();
         }
 
         evaluationDisposable = Single
                 .fromCallable(() -> {
-                    AssistanceComponent component = componentRanker.getBest(
-                            input, WordExtractor.extractWords(input));
+                    final List<String> inputWords = WordExtractor.extractWords(input);
+                    final List<String> normalizedWordKeys =
+                            WordExtractor.normalizeWords(inputWords);
+                    final AssistanceComponent component = componentRanker.getBest(
+                            input, inputWords, normalizedWordKeys);
+
                     // TODO let user choose locale to use for component processing and output
                     component.processInput(context.getResources().getConfiguration().locale);
                     return component;
@@ -73,7 +77,8 @@ public class ComponentEvaluator {
     private void generateOutput(AssistanceComponent component) {
         component.generateOutput(context, speechOutputDevice, graphicalOutputDevice);
 
-        List<AssistanceComponent> nextAssistanceComponents = component.nextAssistanceComponents();
+        final List<AssistanceComponent> nextAssistanceComponents =
+                component.nextAssistanceComponents();
         if (nextAssistanceComponents.isEmpty()) {
             // current conversation has ended, reset to the default batch of components
             componentRanker.removeAllBatches();
@@ -83,7 +88,7 @@ public class ComponentEvaluator {
         }
     }
 
-    private void onError(Throwable t) {
+    private void onError(final Throwable t) {
         t.printStackTrace();
 
         if (ExceptionUtils.isNetworkError(t)) {

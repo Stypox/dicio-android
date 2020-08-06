@@ -2,7 +2,6 @@ package org.dicio.dicio_android.components.fallback;
 
 import android.content.Context;
 
-import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
@@ -14,7 +13,9 @@ import java.util.Locale;
 public class TextFallbackComponent implements FallbackComponent {
 
     @Override
-    public void setInput(final String input, final List<String> inputWords) {}
+    public void setInput(final String input,
+                         final List<String> inputWords,
+                         final List<String> normalizedWordKeys) {}
 
     @Override
     public void cleanup() {}

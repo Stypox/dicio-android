@@ -3,7 +3,6 @@ package org.dicio.dicio_android.eval;
 import android.content.Context;
 
 import org.dicio.component.InputRecognizer;
-import org.dicio.component.standard.StandardResult;
 import org.dicio.component.util.WordExtractor;
 import org.dicio.dicio_android.components.AssistanceComponent;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
@@ -13,6 +12,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,8 +23,9 @@ import static org.junit.Assert.assertSame;
 
 public class ComponentRankerTest {
 
-    final static String input = "hi";
-    final static List<String> inputWords = WordExtractor.extractWords(input);
+    static final String input = "hi";
+    static final List<String> inputWords = WordExtractor.extractWords(input);
+    static final List<String> normalizedWordKeys = WordExtractor.getCollationKeys(inputWords);
 
     private static final class TestAC implements AssistanceComponent {
         final InputRecognizer.Specificity specificity;
@@ -45,7 +46,9 @@ public class ComponentRankerTest {
             return score;
         }
         @Override
-        public void setInput(final String input, final List<String> inputWords) {
+        public void setInput(final String input,
+                             final List<String> inputWords,
+                             final List<String> normalizedWordKeys) {
             this.input = input;
         }
         public String getInput() {
@@ -61,15 +64,17 @@ public class ComponentRankerTest {
     }
 
 
-    private static ComponentRanker getRanker(final AssistanceComponent fallback, final AssistanceComponent... others) {
+    private static ComponentRanker getRanker(final AssistanceComponent fallback,
+                                             final AssistanceComponent... others) {
         return new ComponentRanker(Arrays.asList(others), fallback);
     }
 
     private static void assertRanked(final ComponentRanker cr,
                                      final TestAC fallback,
                                      final TestAC best) {
-        final AssistanceComponent result = cr.getBest("", new ArrayList<>());
-        String message;
+        final AssistanceComponent result =
+                cr.getBest("", Collections.emptyList(), Collections.emptyList());
+        final String message;
         if (result == fallback) {
             message = "Fallback component returned by getBest";
         } else {
@@ -89,8 +94,8 @@ public class ComponentRankerTest {
                 acMed = new TestAC(medium, 1.00f),
                 acLow = new TestAC(low,    1.00f);
 
-        ComponentRanker cr = getRanker(new TestAC(low, 0.0f), ac1, acMed, ac2, acLow, ac3);
-        cr.getBest(input, inputWords);
+        final ComponentRanker cr = getRanker(new TestAC(low, 0.0f), ac1, acMed, ac2, acLow, ac3);
+        cr.getBest(input, inputWords, normalizedWordKeys);
 
         assertEquals(input, ac1.getInput());
         assertEquals(input, ac2.getInput());
@@ -122,10 +127,10 @@ public class ComponentRankerTest {
 
     @Test
     public void testFallback() {
-        TestAC fallback = new TestAC(low, 0.0f);
+        final TestAC fallback = new TestAC(low, 0.0f);
 
         ComponentRanker cr = getRanker(fallback, new TestAC(low, 0.8f));
-        TestAC result = (TestAC) cr.getBest(input, inputWords);
+        final TestAC result = (TestAC) cr.getBest(input, inputWords, normalizedWordKeys);
 
         assertSame("Fallback component not returned by getBest", result, fallback);
         assertEquals(input, result.getInput());

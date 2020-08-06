@@ -14,7 +14,7 @@ public interface AssistanceComponent {
 
     InputRecognizer.Specificity specificity();
 
-    void setInput(String input, List<String> inputWords);
+    void setInput(String input, List<String> inputWords, List<String> normalizedWordKeys);
 
     float score();
 

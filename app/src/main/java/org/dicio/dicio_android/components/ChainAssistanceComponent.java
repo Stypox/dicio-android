@@ -66,8 +66,10 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     }
 
     @Override
-    public void setInput(final String input, final List<String> inputWords) {
-        inputRecognizer.setInput(input, inputWords);
+    public void setInput(final String input,
+                         final List<String> inputWords,
+                         final List<String> normalizedWordKeys) {
+        inputRecognizer.setInput(input, inputWords, normalizedWordKeys);
     }
 
     @Override
