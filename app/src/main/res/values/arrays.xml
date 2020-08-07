@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="settings_theme_entries">
-        <item>Light</item>
-        <item>Dark</item>
+        <item>@string/settings_theme_light</item>
+        <item>@string/settings_theme_dark</item>
     </string-array>
     <string-array name="settings_theme_entry_values">
         <item>@string/settings_value_theme_light</item>
@@ -10,8 +10,8 @@
     </string-array>
 
     <string-array name="settings_input_method_entries">
-        <item>Text box</item>
-        <item>Azure speech recognition</item>
+        <item>@string/settings_input_method_text</item>
+        <item>@string/settings_input_method_azure</item>
     </string-array>
     <string-array name="settings_input_method_entry_values">
         <item>@string/settings_value_input_method_text</item>

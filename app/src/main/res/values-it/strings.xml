@@ -28,4 +28,8 @@
     <string name="component_weather_in_city_there_is_description">Al momento a %1$s c\'è %2$s</string>
     <string name="component_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="component_weather_min_max_wind">Temperatura minima: %1$.1f°C\nTemperatura massima: %2$.1f°C\nVelocità del vento: %3$.1fm/s</string>
+    <string name="settings_theme_light">Chiaro</string>
+    <string name="settings_theme_dark">Scuro</string>
+    <string name="settings_input_method_text">Casella di testo</string>
+    <string name="settings_input_method_azure">Riconoscimento vocale online con Azure</string>
 </resources>
