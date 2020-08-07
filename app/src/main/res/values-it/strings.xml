@@ -34,6 +34,7 @@
     <string name="settings_theme_light">Chiaro</string>
     <string name="settings_theme_dark">Scuro</string>
     <string name="settings_input_method_text">Casella di testo</string>
+    <string name="settings_input_method_vosk">Riconoscimento vocale offline con Vosk</string>
     <string name="settings_speech_output_method_toast">Toast (messaggio pop-up)</string>
     <string name="settings_speech_output_method_snackbar">Snackbar (messaggio in basso)</string>
     <string name="settings_speech_output_method_nothing">Niente</string>

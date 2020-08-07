@@ -26,6 +26,7 @@
     <string name="settings_input_method">Input method</string>
     <string name="settings_input_method_summary">Choose the service to use to talk to Dicio</string>
     <string name="settings_input_method_text">Text box</string>
+    <string name="settings_input_method_vosk">Vosk offline speech recognition</string>
     <string name="settings_speech_output_method">Speech output method</string>
     <string name="settings_speech_output_method_summary">Choose the service Dicio should use to talk to you</string>
     <string name="settings_speech_output_method_toast">Toast (popup message)</string>
@@ -37,6 +38,7 @@
     <string name="settings_value_theme_dark" translatable="false">dark</string>
     <string name="settings_key_input_method" translatable="false">input_method</string>
     <string name="settings_value_input_method_text" translatable="false">text</string>
+    <string name="settings_value_input_method_vosk" translatable="false">vosk</string>
     <string name="settings_key_speech_output_method" translatable="false">speech_output_method</string>
     <string name="settings_value_speech_output_method_toast" translatable="false">toast</string>
     <string name="settings_value_speech_output_method_snackbar" translatable="false">snackbar</string>

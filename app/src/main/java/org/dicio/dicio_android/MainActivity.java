@@ -35,6 +35,7 @@ import org.dicio.dicio_android.eval.ComponentRanker;
 import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
+import org.dicio.dicio_android.input.VoskInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
 import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
 import org.dicio.dicio_android.output.speech.SnackbarSpeechDevice;
@@ -262,7 +263,13 @@ public class MainActivity extends BaseActivity
     }
 
     private InputDevice buildInputDevice() {
-        return new ToolbarInputDevice();
+        if (currentInputDevicePreference.equals(
+                getString(R.string.settings_value_input_method_vosk))) {
+            return new VoskInputDevice(this);
+        } else /*if (currentInputDevicePreference.equals(
+                getString(R.string.settings_value_input_method_text)))*/ {
+            return new ToolbarInputDevice();
+        }
     }
 
     private SpeechOutputDevice buildSpeechOutputDevice() {
