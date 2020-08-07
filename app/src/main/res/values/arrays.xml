@@ -22,6 +22,7 @@
 
     <string-array name="settings_input_method_entries">
         <item>@string/settings_input_method_text</item>
+        <item>@string/settings_input_method_vosk</item>
     </string-array>
     <string-array name="settings_input_method_entry_values">
         <item>@string/settings_value_input_method_text</item>
