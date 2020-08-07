@@ -1,8 +1,15 @@
 package org.dicio.dicio_android.input;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
+import org.dicio.dicio_android.BuildConfig;
+
 public abstract class InputDevice {
+
+    private static final String TAG = InputDevice.class.getSimpleName();
+
     public interface OnInputReceivedListener {
         void onInputReceived(String input);
         void onError(Throwable e);
@@ -29,10 +36,16 @@ public abstract class InputDevice {
      * @param input the (raw) received input
      */
     protected void notifyInputReceived(String input) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "Input from user: " + input);
+        }
+
         if (onInputReceivedListener != null) {
             onInputReceivedListener.onInputReceived(input);
         }
     }
+
+    // TODO add partialInputReceived()
 
     /**
      * This has to be called by functions overriding {@code tryToGetInput()}
@@ -41,6 +54,10 @@ public abstract class InputDevice {
      * @param e an exception to handle
      */
     protected void notifyError(Throwable e) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "Input error: " + e.getMessage(), e);
+        }
+
         if (onInputReceivedListener != null) {
             onInputReceivedListener.onError(e);
         }
