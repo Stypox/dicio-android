@@ -12,7 +12,7 @@ Currently Dicio answers questions about:
 
 ## Contributing
 
-Dicio's code is not only here! The repository with the compiler for sentences language files is at [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler) and the repository which takes care of input matching and provides component (i.e. skill) interfaces is at [`dicio-assistance-component`](https://github.com/Stypox/assistance-component)
+Dicio's code is not only here! The repository with the compiler for sentences language files is at [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler) and the repository which takes care of input matching and provides component (i.e. skill) interfaces is at [`dicio-assistance-component`](https://github.com/Stypox/dicio-assistance-component)
 
 ### Translating
 
