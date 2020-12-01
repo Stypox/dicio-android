@@ -5,6 +5,7 @@
     <string name="drawer_header_subtitle">Posso aiutarti?</string>
     <string name="share">Condividi</string>
     <string name="share_view">Apri in…</string>
+    <string name="copied_to_clipboard">Copiato negli appunti</string>
     <string name="text_input_hint">Chiedimi qualsiasi cosa…</string>
     <string name="action_text_input">Input testuale</string>
     <string name="action_voice_input">Input vocale</string>

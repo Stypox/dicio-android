@@ -1,5 +1,7 @@
 package org.dicio.dicio_android.eval;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.util.ExceptionUtils;
+import org.dicio.dicio_android.util.ShareUtils;
 
 import java.util.List;
 
@@ -58,7 +61,14 @@ public class ComponentEvaluator {
     public void displayUserInput(final String input) {
         final View userInputView =
                 GraphicalOutputUtils.inflate(context, R.layout.component_user_input);
+
         ((TextView) userInputView.findViewById(R.id.userInput)).setText(input);
+        // userInputView.setOnClickListener(); TODO implement editing last input
+        userInputView.setOnLongClickListener(v -> {
+            ShareUtils.copyToClipboard(context, input);
+            return true;
+        });
+
         graphicalOutputDevice.display(userInputView, false);
     }
 
