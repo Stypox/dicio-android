@@ -31,7 +31,7 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
             final String message =
                     context.getString(R.string.component_weather_could_not_find_city, data.city);
             speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message), true);
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
 
         } else {
             speechOutputDevice.speak(
@@ -49,7 +49,7 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
             ((TextView) weatherView.findViewById(R.id.advancedInfo)).setText(
                     context.getString(R.string.component_weather_min_max_wind,
                             data.tempMin, data.tempMax, data.windSpeed));
-            graphicalOutputDevice.display(weatherView, true);
+            graphicalOutputDevice.display(weatherView);
         }
     }
 }

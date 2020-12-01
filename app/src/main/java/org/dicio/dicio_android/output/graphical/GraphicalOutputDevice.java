@@ -14,8 +14,13 @@ public interface GraphicalOutputDevice {
     /**
      * Displays graphical output to the user
      * @param graphicalOutput a view to show (usually encapsulates inside an output container)
-     * @param addDivider whether to add a divider right after the added view or not. Useful when
-     *                   displaying multiple separated yet related things at once.
      */
-    void display(@NonNull View graphicalOutput, boolean addDivider);
+    void display(@NonNull View graphicalOutput);
+
+    /**
+     * Adds a divider the output to separate between different things. Does not do anything if
+     * called before any {@link #display(View)}, since it makes no sense to add a divider as the
+     * first view.
+     */
+    void addDivider();
 }

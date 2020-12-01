@@ -69,7 +69,7 @@ public class ComponentEvaluator {
             return true;
         });
 
-        graphicalOutputDevice.display(userInputView, false);
+        graphicalOutputDevice.display(userInputView);
     }
 
     public void evaluateMatchingComponent(final String input) {
@@ -96,6 +96,7 @@ public class ComponentEvaluator {
 
     private void generateOutput(AssistanceComponent component) {
         component.generateOutput(context, speechOutputDevice, graphicalOutputDevice);
+        graphicalOutputDevice.addDivider();
 
         final List<AssistanceComponent> nextAssistanceComponents =
                 component.nextAssistanceComponents();
@@ -113,13 +114,12 @@ public class ComponentEvaluator {
 
         if (ExceptionUtils.isNetworkError(t)) {
             speechOutputDevice.speak(context.getString(R.string.eval_network_error_description));
-            graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildNetworkErrorMessage(context), true);
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(context));
         } else {
             componentRanker.removeAllBatches();
             speechOutputDevice.speak(context.getString(R.string.eval_fatal_error));
-            graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildErrorMessage(context, t), true);
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(context, t));
         }
+        graphicalOutputDevice.addDivider();
     }
 }

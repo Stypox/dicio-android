@@ -24,21 +24,27 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     }
 
     @Override
-    public void display(@NonNull final View graphicalOutput, final boolean addDivider) {
+    public void display(@NonNull final View graphicalOutput) {
         final OutputContainerView outputContainer = new OutputContainerView(context);
         outputContainer.setContent(graphicalOutput);
         outputLayout.addView(outputContainer);
 
-        if (addDivider) {
-            final View dividerView = new View(context);
-            dividerView.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    (int) context.getResources()
-                            .getDimension(R.dimen.dividerHeightOutputContainers)));
-            outputLayout.addView(dividerView);
-        }
-
         graphicalOutput.post(() ->
                 outputLayout.requestChildFocus(outputContainer, outputContainer));
+    }
+
+    @Override
+    public void addDivider() {
+        if (outputLayout.getChildCount() == 0) {
+            // do not add a divider as the first item
+            return;
+        }
+
+        final View dividerView = new View(context);
+        dividerView.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                (int) context.getResources()
+                        .getDimension(R.dimen.dividerHeightOutputContainers)));
+        outputLayout.addView(dividerView);
     }
 }

@@ -30,7 +30,6 @@ public class TextFallbackComponent implements FallbackComponent {
 
         final String noMatchString = context.getString(R.string.eval_no_match);
         speechOutputDevice.speak(noMatchString);
-        graphicalOutputDevice.display(
-                GraphicalOutputUtils.buildSubHeader(context, noMatchString), true);
+        graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(context, noMatchString));
     }
 }
