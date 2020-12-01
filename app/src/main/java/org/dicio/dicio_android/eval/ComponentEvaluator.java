@@ -1,6 +1,8 @@
 package org.dicio.dicio_android.eval;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.TextView;
 
 import org.dicio.component.util.WordExtractor;
 import org.dicio.dicio_android.R;
@@ -42,6 +44,7 @@ public class ComponentEvaluator {
         inputDevice.setOnInputReceivedListener(new InputDevice.OnInputReceivedListener() {
             @Override
             public void onInputReceived(final String input) {
+                displayUserInput(input);
                 evaluateMatchingComponent(input);
             }
 
@@ -50,6 +53,13 @@ public class ComponentEvaluator {
                 ComponentEvaluator.this.onError(e);
             }
         });
+    }
+
+    public void displayUserInput(final String input) {
+        final View userInputView =
+                GraphicalOutputUtils.inflate(context, R.layout.component_user_input);
+        ((TextView) userInputView.findViewById(R.id.userInput)).setText(input);
+        graphicalOutputDevice.display(userInputView, false);
     }
 
     public void evaluateMatchingComponent(final String input) {
