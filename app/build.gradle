@@ -7,11 +7,11 @@ import groovy.json.JsonSlurper
 import java.nio.charset.StandardCharsets
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "org.dicio.dicio_android"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -30,14 +30,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.preference:preference:1.1.1'
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'junit:junit:4.13.1'
 
     implementation 'com.github.Stypox:dicio-assistance-component:0f117f4c09fe9ccfb0a44cfd4dd8447ce5935b98'
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -55,23 +53,23 @@ task sentencesCompiler {
         File outputDirectory = file("src/main/java/org/dicio/dicio_android/sentences")
         outputDirectory.mkdirs()
 
-        List<String> locales = new ArrayList<>();
-        Set<String> allSectionIds = new HashSet<>();
+        List<String> locales = new ArrayList<>()
+        Set<String> allSectionIds = new HashSet<>()
         for (String localeName :
                 baseInputDirectory.list({ dir, name -> new File(dir, name).isDirectory() })) {
-            locales.add(localeName);
+            locales.add(localeName)
             File[] filesInDirectory = new File(baseInputDirectory, localeName).listFiles()
             if (filesInDirectory.length == 0) {
                 continue
             }
 
-            List<String> inputFiles = new ArrayList<>();
+            List<String> inputFiles = new ArrayList<>()
             for (File file : filesInDirectory) {
                 inputFiles.add("UTF-8:" + file.absolutePath)
             }
 
             OutputStream outputStream = new FileOutputStream(file("${outputDirectory}/Sentences_${localeName}.java"))
-            ByteArrayOutputStream sectionIdsStream = new ByteArrayOutputStream();
+            ByteArrayOutputStream sectionIdsStream = new ByteArrayOutputStream()
             SentencesCompiler.compile(
                     inputFiles,
                     new OutputStreamWriter(outputStream, StandardCharsets.UTF_8),
@@ -95,7 +93,7 @@ task sentencesCompiler {
                 + "package org.dicio.dicio_android.sentences;\n"
                 + "import org.dicio.component.standard.StandardRecognizerData;\n"
                 + "import java.util.HashMap;\n"
-                + "import java.util.Map;\n");
+                + "import java.util.Map;\n")
 
         outputStream.write("public class SectionsGenerated {\n" +
                 "public static final Map<String,Map<String,StandardRecognizerData>> localeSectionsMap=new HashMap<String,Map<String,StandardRecognizerData>>(){{")
@@ -105,7 +103,7 @@ task sentencesCompiler {
         outputStream.write("}};\n")
 
         if (!allSectionIds.isEmpty()) {
-            outputStream.write("public static final String ");
+            outputStream.write("public static final String ")
 
             boolean first = true
             for(String sectionId : allSectionIds) {
@@ -140,7 +138,7 @@ task apiKeysGenerator {
                 + " * DO NOT MODIFY THIS FILE BUT EDIT src/main/api_keys.json INSTEAD.\n"
                 + " */\n"
                 + "\n"
-                + "package org.dicio.dicio_android;\npublic class ApiKeys {\n");
+                + "package org.dicio.dicio_android;\npublic class ApiKeys {\n")
 
         json.each { k, v ->
             outputFile.write("public static final String ")
