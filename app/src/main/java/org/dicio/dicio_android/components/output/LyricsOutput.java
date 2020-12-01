@@ -30,7 +30,7 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
             final String message =
                     context.getString(R.string.component_lyrics_song_not_found, data.title);
             speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message), true);
 
         } else {
             speechOutputDevice.speak(
@@ -46,7 +46,7 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
                             ResourcesCompat.getDrawable(context.getResources(), R.drawable.divider_items, null),
                             GraphicalOutputUtils.buildHeader(context, data.title),
                             GraphicalOutputUtils.buildSubHeader(context, data.artist),
-                            lyricsView));
+                            lyricsView), true);
         }
     }
 }

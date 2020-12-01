@@ -93,11 +93,13 @@ public class ComponentEvaluator {
 
         if (ExceptionUtils.isNetworkError(t)) {
             speechOutputDevice.speak(context.getString(R.string.eval_network_error_description));
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(context));
+            graphicalOutputDevice.display(
+                    GraphicalOutputUtils.buildNetworkErrorMessage(context), true);
         } else {
             componentRanker.removeAllBatches();
             speechOutputDevice.speak(context.getString(R.string.eval_fatal_error));
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(context, t));
+            graphicalOutputDevice.display(
+                    GraphicalOutputUtils.buildErrorMessage(context, t), true);
         }
     }
 }
