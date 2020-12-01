@@ -7,13 +7,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
+import com.squareup.picasso.Picasso;
+
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.OutputGenerator;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.util.ShareUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
                          final GraphicalOutputDevice graphicalOutputDevice) {
 
         final LinearLayout output = GraphicalOutputUtils.buildContainer(context,
-                context.getResources().getDrawable(R.drawable.divider_items));
+                ResourcesCompat.getDrawable(context.getResources(), R.drawable.divider_items, null));
         for (Data item : data) {
             final View view =
                     GraphicalOutputUtils.inflate(context, R.layout.component_search_result);

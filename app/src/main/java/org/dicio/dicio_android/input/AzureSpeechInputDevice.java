@@ -4,10 +4,11 @@ import android.app.Activity;
 
 import androidx.core.app.ActivityCompat;
 
-import org.dicio.dicio_android.ApiKeys;
 import com.microsoft.cognitiveservices.speech.SpeechConfig;
 import com.microsoft.cognitiveservices.speech.SpeechRecognitionResult;
 import com.microsoft.cognitiveservices.speech.SpeechRecognizer;
+
+import org.dicio.dicio_android.ApiKeys;
 
 import java.io.IOException;
 import java.net.SocketException;

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.os.ConfigurationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -44,7 +45,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.dicio.dicio_android.sentences.Sections.getSection;
-import static org.dicio.dicio_android.sentences.SectionsGenerated.*;
+import static org.dicio.dicio_android.sentences.SectionsGenerated.lyrics;
+import static org.dicio.dicio_android.sentences.SectionsGenerated.open;
+import static org.dicio.dicio_android.sentences.SectionsGenerated.search;
+import static org.dicio.dicio_android.sentences.SectionsGenerated.weather;
 
 public class MainActivity extends ThemedActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,7 +57,7 @@ public class MainActivity extends ThemedActivity
 
     private InputDevice inputDevice;
     private ComponentEvaluator componentEvaluator;
-    @NonNull private String currentInputDevicePreference;
+    private String currentInputDevicePreference;
     private boolean appJustOpened;
 
     ////////////////////////
@@ -127,8 +131,8 @@ public class MainActivity extends ThemedActivity
         if (inputDevice instanceof SpeechInputDevice) {
             voiceInputItem.setVisible(true);
             ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
-                    getResources().getDrawable(R.drawable.ic_mic_white),
-                    getResources().getDrawable(R.drawable.ic_mic_none_white));
+                    ResourcesCompat.getDrawable(getResources(), R.drawable.ic_mic_white, null),
+                    ResourcesCompat.getDrawable(getResources(), R.drawable.ic_mic_none_white, null));
         } else {
             voiceInputItem.setVisible(false);
         }
@@ -149,15 +153,13 @@ public class MainActivity extends ThemedActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                return true;
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        } else {
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

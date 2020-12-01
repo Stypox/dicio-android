@@ -1,5 +1,6 @@
 package org.dicio.dicio_android.components.output;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -53,10 +54,11 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
                                                      final String appName) {
         final Intent resolveInfosIntent = new Intent(Intent.ACTION_MAIN, null);
         resolveInfosIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        @SuppressLint("QueryPermissionsNeeded") // we need to query all apps
         final List<ResolveInfo> resolveInfos =
                 packageManager.queryIntentActivities(resolveInfosIntent, 0);
 
-        int bestDistance = 1 << 30; // big number
+        int bestDistance = Integer.MAX_VALUE;
         ApplicationInfo bestApplicationInfo = null;
         for (final ResolveInfo resolveInfo : resolveInfos) {
             try {

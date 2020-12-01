@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
-    private LinearLayout outputLayout;
+    private final LinearLayout outputLayout;
 
     public MainScreenGraphicalDevice(LinearLayout outputLayout) {
         this.outputLayout = outputLayout;

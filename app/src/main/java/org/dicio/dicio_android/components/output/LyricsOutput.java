@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.OutputGenerator;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
@@ -41,7 +43,7 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
 
             graphicalOutputDevice.display(
                     GraphicalOutputUtils.buildContainer(context,
-                            context.getResources().getDrawable(R.drawable.divider_items),
+                            ResourcesCompat.getDrawable(context.getResources(), R.drawable.divider_items, null),
                             GraphicalOutputUtils.buildHeader(context, data.title),
                             GraphicalOutputUtils.buildSubHeader(context, data.artist),
                             lyricsView));

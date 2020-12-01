@@ -5,7 +5,6 @@ import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.ApiKeys;
 import org.dicio.dicio_android.components.output.WeatherOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
-
 import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONObject;
 

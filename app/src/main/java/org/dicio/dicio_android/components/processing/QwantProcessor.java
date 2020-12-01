@@ -6,7 +6,6 @@ import org.dicio.component.IntermediateProcessor;
 import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.components.output.SearchOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 

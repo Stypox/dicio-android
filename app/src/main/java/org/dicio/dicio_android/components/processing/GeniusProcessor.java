@@ -5,7 +5,6 @@ import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.components.output.LyricsOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.RegexUtils;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;

@@ -4,7 +4,6 @@ import org.dicio.component.IntermediateProcessor;
 import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.components.output.SearchOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

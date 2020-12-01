@@ -123,11 +123,11 @@ public class ComponentRanker {
     }
 
     @NonNull
-    private ComponentBatch defaultBatch;
+    private final ComponentBatch defaultBatch;
     @NonNull
-    private AssistanceComponent fallbackComponent;
+    private final AssistanceComponent fallbackComponent;
     @NonNull
-    private Stack<ComponentBatch> batches;
+    private final Stack<ComponentBatch> batches;
 
     public ComponentRanker(List<AssistanceComponent> defaultComponentBatch,
                            @NonNull AssistanceComponent fallbackComponent) {

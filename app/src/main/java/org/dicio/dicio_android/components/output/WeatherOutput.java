@@ -5,14 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.OutputGenerator;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
-import com.squareup.picasso.Picasso;
-
-import java.util.Locale;
 
 public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
 
