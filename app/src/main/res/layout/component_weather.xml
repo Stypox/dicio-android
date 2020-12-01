@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Rome" />
+        tools:text="Rome Lorem Ipsum Dolor" />
 
     <TextView
         android:id="@+id/basicInfo"
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/city"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Light rain · -12.1°" />
+        tools:text="Light rain · -12.1° Lorem ipsum dolor sit amet" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
