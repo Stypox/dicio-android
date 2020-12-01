@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ThemeUtils;
@@ -39,5 +40,10 @@ public class OutputContainerView extends CardView {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(view);
+
+        if (view.isClickable() || view.isLongClickable()) {
+            setFocusable(true);
+            setOnTouchListener((v, event) -> view.onTouchEvent(event));
+        }
     }
 }

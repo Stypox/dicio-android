@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.util.ThemeUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
