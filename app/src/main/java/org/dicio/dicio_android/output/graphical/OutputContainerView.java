@@ -24,10 +24,12 @@ public class OutputContainerView extends CardView {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         setCardElevation(dp(3));
+        float dp10 = dp(10);
+        int dp10int = (int)dp10;
 
-        setShowDividerBottom(false);
+        setContentPadding(dp10int, dp10int, dp10int, dp10int);
         setUseCompatPadding(true);
-        setRadius(dp(10));
+        setRadius(dp10);
         setCardBackgroundColor(ThemeUtils.resolveColorFromAttr(context, R.attr.cardForeground));
         setPreventCornerOverlap(true);
     }
@@ -37,14 +39,5 @@ public class OutputContainerView extends CardView {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(view);
-    }
-
-    public void setShowDividerBottom(final boolean showDividerBottom) {
-        int dp10int = (int) dp(10);
-        if (showDividerBottom) {
-            setContentPadding(dp10int, dp10int, dp10int, dp10int + (int) dp(40));
-        } else {
-            setContentPadding(dp10int, dp10int, dp10int, dp10int);
-        }
     }
 }

@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
 
@@ -25,8 +26,16 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     public void display(@NonNull final View graphicalOutput, final boolean addDivider) {
         final OutputContainerView outputContainer = new OutputContainerView(context);
         outputContainer.setContent(graphicalOutput);
-        outputContainer.setShowDividerBottom(addDivider);
         outputLayout.addView(outputContainer);
+
+        if (addDivider) {
+            final View dividerView = new View(context);
+            dividerView.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    (int) context.getResources()
+                            .getDimension(R.dimen.dividerHeightOutputContainers)));
+            outputLayout.addView(dividerView);
+        }
 
         graphicalOutput.post(() ->
                 outputLayout.requestChildFocus(outputContainer, outputContainer));
