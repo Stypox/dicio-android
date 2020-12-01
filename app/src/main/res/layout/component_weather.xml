@@ -34,11 +34,11 @@
         android:gravity="center"
         android:singleLine="true"
         android:textSize="@dimen/outputHeaderTextSize"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/basicInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Rome" />
 
     <TextView
@@ -47,11 +47,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="@dimen/outputDescriptionTextSize"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintTop_toBottomOf="@+id/city"
-        app:layout_constraintBottom_toTopOf="@+id/advancedInfo"
+        app:layout_constraintBottom_toTopOf="@+id/barrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/city"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Light rain · -12.1°" />
 
     <androidx.constraintlayout.widget.Barrier
