@@ -3,8 +3,10 @@ package org.dicio.dicio_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -58,7 +60,8 @@ public class MainActivity extends ThemedActivity
     private InputDevice inputDevice;
     private ComponentEvaluator componentEvaluator;
     private String currentInputDevicePreference;
-    private boolean appJustOpened;
+    private boolean appJustOpened = false;
+    private boolean textInputItemFocusJustChanged = false;
 
     ////////////////////////
     // Activity lifecycle //
@@ -69,16 +72,25 @@ public class MainActivity extends ThemedActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
 
         setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        final ScrollView scrollView = findViewById(R.id.outputScrollView);
+        scrollView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            Log.e("MAINACTIVITY", top + " " + bottom + "   " + oldTop + " " + oldBottom + " " + textInputItemFocusJustChanged);
+            if (textInputItemFocusJustChanged && (oldBottom != bottom || oldTop != top)) {
+                textInputItemFocusJustChanged = false; // the keyboard was opened because of menu
+                scrollView.postDelayed(() -> scrollView.scrollBy(0, oldBottom - bottom + top - oldTop), 10);
+            }
+        });
 
         currentInputDevicePreference = getInputDevicePreference();
         initializeComponentEvaluator();
@@ -107,27 +119,30 @@ public class MainActivity extends ThemedActivity
 
             textInputItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
-                public boolean onMenuItemActionExpand(MenuItem item) {
+                public boolean onMenuItemActionExpand(final MenuItem item) {
                     hideAllItems(menu);
                     return true;
                 }
 
                 @Override
-                public boolean onMenuItemActionCollapse(MenuItem item) {
+                public boolean onMenuItemActionCollapse(final MenuItem item) {
                     // resets the whole menu, setting `item`'s visibility to true
                     invalidateOptionsMenu();
                     return true;
                 }
             });
 
-            SearchView textInputView = (SearchView) textInputItem.getActionView();
+            final SearchView textInputView = (SearchView) textInputItem.getActionView();
             textInputView.setQueryHint(getResources().getString(R.string.text_input_hint));
-            textInputView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+            textInputView.setInputType(
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+            textInputView.setOnQueryTextFocusChangeListener(
+                    (v, hasFocus) -> textInputItemFocusJustChanged = true);
         } else {
             textInputItem.setVisible(false);
         }
 
-        MenuItem voiceInputItem = menu.findItem(R.id.action_voice_input);
+        final MenuItem voiceInputItem = menu.findItem(R.id.action_voice_input);
         if (inputDevice instanceof SpeechInputDevice) {
             voiceInputItem.setVisible(true);
             ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
@@ -146,7 +161,7 @@ public class MainActivity extends ThemedActivity
 
     private void hideAllItems(Menu menu) {
         for (int i = 0; i < menu.size(); ++i) {
-            MenuItem item = menu.getItem(i);
+            final MenuItem item = menu.getItem(i);
             item.setVisible(false);
         }
     }
@@ -154,10 +169,10 @@ public class MainActivity extends ThemedActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else {
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            final DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
@@ -167,7 +182,7 @@ public class MainActivity extends ThemedActivity
     protected void onResume() {
         super.onResume();
 
-        String inputDevicePreference = getInputDevicePreference();
+        final String inputDevicePreference = getInputDevicePreference();
         if (!inputDevicePreference.equals(currentInputDevicePreference)) {
             currentInputDevicePreference = inputDevicePreference;
             initializeComponentEvaluator();
@@ -177,7 +192,7 @@ public class MainActivity extends ThemedActivity
 
     @NonNull
     String getInputDevicePreference() {
-        String inputDevicePreference = PreferenceManager.getDefaultSharedPreferences(this)
+        final String inputDevicePreference = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.settings_key_input_method), null);
 
         if (inputDevicePreference == null) {
@@ -198,7 +213,7 @@ public class MainActivity extends ThemedActivity
             e.printStackTrace(); //TODO ask the user to manually choose a locale
         }
 
-        List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
+        final List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
             add(new ChainAssistanceComponent.Builder()
                     .recognize(new StandardRecognizer(getSection(weather)))
                     .process(new OpenWeatherMapProcessor())
@@ -218,7 +233,7 @@ public class MainActivity extends ThemedActivity
 
         if (currentInputDevicePreference.equals(getString(R.string.settings_value_input_method_azure))) {
             inputDevice = new AzureSpeechInputDevice(this);
-        } else /*if (currentInputDevicePreference.equals(getString(R.string.settings_value_input_method_text)))*/ {
+        } else {
             inputDevice = new ToolbarInputDevice();
         }
 

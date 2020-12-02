@@ -1,16 +1,11 @@
 package org.dicio.dicio_android.eval;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.dicio.component.util.WordExtractor;
 import org.dicio.dicio_android.R;
@@ -20,7 +15,6 @@ import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.util.ExceptionUtils;
-import org.dicio.dicio_android.util.ShareUtils;
 
 import java.util.List;
 
