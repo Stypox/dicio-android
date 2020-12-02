@@ -1,8 +1,16 @@
 package org.dicio.dicio_android.eval;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.dicio.component.util.WordExtractor;
 import org.dicio.dicio_android.R;
@@ -45,8 +53,7 @@ public class ComponentEvaluator {
         inputDevice.setOnInputReceivedListener(new InputDevice.OnInputReceivedListener() {
             @Override
             public void onInputReceived(final String input) {
-                displayUserInput(input);
-                evaluateMatchingComponent(input);
+                processInput(input);
             }
 
             @Override
@@ -56,15 +63,37 @@ public class ComponentEvaluator {
         });
     }
 
+    public void processInput(final String input) {
+        displayUserInput(input);
+        evaluateMatchingComponent(input);
+    }
+
     public void displayUserInput(final String input) {
         final View userInputView =
                 GraphicalOutputUtils.inflate(context, R.layout.component_user_input);
+        final EditText inputEditText = userInputView.findViewById(R.id.userInput);
 
-        ((TextView) userInputView.findViewById(R.id.userInput)).setText(input);
-        // userInputView.setOnClickListener(); TODO implement editing last input
-        userInputView.setOnLongClickListener(v -> {
-            ShareUtils.copyToClipboard(context, input);
-            return true;
+        inputEditText.setText(input);
+        inputEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                    || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                if (!v.getText().toString().trim().equals(input.trim())) {
+                    processInput(v.getText().toString());
+                    inputEditText.setText(input); // restore original input
+                }
+                return true;
+            }
+            return false;
+        });
+
+        userInputView.setOnClickListener(v -> {
+            inputEditText.requestFocus();
+            inputEditText.setSelection(inputEditText.getText().length());
+            final InputMethodManager inputMethodManager =
+                    (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(inputEditText, InputMethodManager.SHOW_FORCED);
         });
 
         graphicalOutputDevice.display(userInputView);
