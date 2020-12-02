@@ -1,7 +1,5 @@
 package org.dicio.dicio_android.eval;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;

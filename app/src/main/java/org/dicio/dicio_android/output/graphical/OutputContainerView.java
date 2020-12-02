@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ThemeUtils;
