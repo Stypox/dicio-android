@@ -34,14 +34,14 @@ public class ComponentEvaluator {
 
     public ComponentEvaluator(final ComponentRanker componentRanker,
                               final InputDevice inputDevice,
-                              final SpeechOutputDevice speaker,
-                              final GraphicalOutputDevice displayer,
+                              final SpeechOutputDevice speechOutputDevice,
+                              final GraphicalOutputDevice graphicalOutputDevice,
                               final Context context) {
 
         this.componentRanker = componentRanker;
         this.inputDevice = inputDevice;
-        this.speechOutputDevice = speaker;
-        this.graphicalOutputDevice = displayer;
+        this.speechOutputDevice = speechOutputDevice;
+        this.graphicalOutputDevice = graphicalOutputDevice;
         this.context = context;
 
         inputDevice.setOnInputReceivedListener(new InputDevice.OnInputReceivedListener() {
@@ -115,7 +115,7 @@ public class ComponentEvaluator {
                 .subscribe(this::generateOutput, this::onError);
     }
 
-    private void generateOutput(AssistanceComponent component) {
+    private void generateOutput(final AssistanceComponent component) {
         component.generateOutput(context, speechOutputDevice, graphicalOutputDevice);
         graphicalOutputDevice.addDivider();
 
