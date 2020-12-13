@@ -20,14 +20,26 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
 
     private static final String qwantSearchUrl = "https://api.qwant.com/api/search/web";
 
+    private String getLocaleString(final Locale locale) {
+        if (locale.getCountry().isEmpty()) {
+            for (final Locale other : Locale.getAvailableLocales()) {
+                if (other.getLanguage().equalsIgnoreCase(locale.getLanguage())
+                        && !other.getCountry().isEmpty()) {
+                    return (locale.getLanguage() + "_" + other.getCountry()).toLowerCase();
+                }
+            }
+            return "en_gb"; // default to UK if unable to determine country
+        } else {
+            return (locale.getLanguage() + "_" + locale.getCountry()).toLowerCase();
+        }
+    }
 
     @Override
     public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
             throws Exception {
         final JSONObject json = getPageJson(qwantSearchUrl
-                + "?count=10&offset=20&t=dicio&uiv=1&locale=" + locale.toString().toLowerCase()
+                + "?count=10&offset=20&t=dicio&uiv=1&locale=" + getLocaleString(locale)
                 + "&q=" + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
-        Log.d("json", json.toString());
         final JSONArray items = json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
 
         final List<SearchOutput.Data> result = new ArrayList<>();
