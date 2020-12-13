@@ -24,6 +24,8 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
     private static final String geniusLyricsUrl = "https://genius.com/songs/";
     private static final Pattern lyricsPattern =
             Pattern.compile("document\\.write\\(JSON\\.parse\\('(.+)'\\)\\)");
+    private static final Pattern newlinePattern =
+            Pattern.compile("\\s*(\\\\n)?\\s*\\{#%\\)\\s*");
 
     @Override
     public LyricsOutput.Data process(final StandardResult data, final Locale locale)
@@ -56,7 +58,7 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
         final Document lyricsDocument = Jsoup.parse(lyricsHtml);
         final Elements elements = lyricsDocument.select("div[class=rg_embed_body]");
         elements.select("br").append("{#%)");
-        result.lyrics = elements.text().replaceAll("\\s*(\\\\n)?\\s*\\{#%\\)\\s*", "\n");
+        result.lyrics = RegexUtils.replaceAll(newlinePattern, elements.text(), "\n");
 
         return result;
     }

@@ -2,11 +2,10 @@ package org.dicio.dicio_android.util;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-    private static final Pattern punctationPattern = Pattern.compile("\\p{Punct}");
+    private static final Pattern punctuationPattern = Pattern.compile("\\p{Punct}");
 
     private StringUtils() {
     }
@@ -75,11 +74,10 @@ public class StringUtils {
 
     /**
      * Removes the punctuation in a string
-     * @param s a string to remove punctuation from
+     * @param string a string to remove punctuation from
      * @return e.g. for "hello, how are you? " returns "hello how are you "
      */
-    public static String removePunctuation(final String s) {
-        final Matcher matcher = punctationPattern.matcher(s);
-        return matcher.replaceAll("");
+    public static String removePunctuation(final String string) {
+        return RegexUtils.replaceAll(punctuationPattern, string, "");
     }
 }
