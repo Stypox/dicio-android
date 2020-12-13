@@ -14,6 +14,7 @@ import org.unbescape.javascript.JavaScriptEscape;
 import org.unbescape.json.JsonEscape;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import static org.dicio.dicio_android.sentences.Sentences_en.lyrics;
 
@@ -21,6 +22,8 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
 
     private static final String geniusSearchUrl = "https://genius.com/api/search/multi";
     private static final String geniusLyricsUrl = "https://genius.com/songs/";
+    private static final Pattern lyricsPattern =
+            Pattern.compile("document\\.write\\(JSON\\.parse\\('(.+)'\\)\\)");
 
     @Override
     public LyricsOutput.Data process(final StandardResult data, final Locale locale)
@@ -47,8 +50,7 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
         String lyricsHtml =
                 ConnectionUtils.getPage(
                         geniusLyricsUrl + song.getInt("id") + "/embed.js");
-        lyricsHtml = RegexUtils.matchGroup1(
-                "document\\.write\\(JSON\\.parse\\('(.+)'\\)\\)", lyricsHtml);
+        lyricsHtml = RegexUtils.matchGroup1(lyricsPattern, lyricsHtml);
         lyricsHtml = JsonEscape.unescapeJson(JavaScriptEscape.unescapeJavaScript(lyricsHtml));
 
         final Document lyricsDocument = Jsoup.parse(lyricsHtml);
