@@ -9,13 +9,10 @@ import android.view.MenuItem;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.os.ConfigurationCompat;
-import androidx.core.os.LocaleListCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
@@ -41,14 +38,11 @@ import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
 import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
-import org.dicio.dicio_android.sentences.Sections;
 import org.dicio.dicio_android.settings.SettingsActivity;
-import org.dicio.dicio_android.util.ThemedActivity;
+import org.dicio.dicio_android.util.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import static org.dicio.dicio_android.sentences.Sections.getSection;
 import static org.dicio.dicio_android.sentences.SectionsGenerated.lyrics;
@@ -56,14 +50,13 @@ import static org.dicio.dicio_android.sentences.SectionsGenerated.open;
 import static org.dicio.dicio_android.sentences.SectionsGenerated.search;
 import static org.dicio.dicio_android.sentences.SectionsGenerated.weather;
 
-public class MainActivity extends ThemedActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     private MenuItem textInputItem = null;
 
     private InputDevice inputDevice;
     private ComponentEvaluator componentEvaluator;
-    private String currentLanguagePreference;
     private String currentInputDevicePreference;
     private boolean appJustOpened = false;
     private boolean textInputItemFocusJustChanged = false;
@@ -98,7 +91,6 @@ public class MainActivity extends ThemedActivity
         });
 
         currentInputDevicePreference = getInputDevicePreference();
-        currentLanguagePreference = getLanguagePreference();
         initializeComponentEvaluator();
         appJustOpened = true;
     }
@@ -189,12 +181,6 @@ public class MainActivity extends ThemedActivity
         super.onResume();
         boolean reinitializeComponentEvaluator = false;
 
-        final String languagePreference = getLanguagePreference();
-        if (!Objects.equals(languagePreference, currentLanguagePreference)) {
-            currentLanguagePreference = languagePreference;
-            reinitializeComponentEvaluator = true;
-        }
-
         final String inputDevicePreference = getInputDevicePreference();
         if (!inputDevicePreference.equals(currentInputDevicePreference)) {
             currentInputDevicePreference = inputDevicePreference;
@@ -219,28 +205,12 @@ public class MainActivity extends ThemedActivity
         }
     }
 
-    @Nullable
-    private String getLanguagePreference() {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.settings_key_language), null);
-    }
-
     /////////////////////////////////////
     // Assistance components functions //
     /////////////////////////////////////
 
     public void initializeComponentEvaluator() {
-        try {
-            if (currentLanguagePreference == null || currentLanguagePreference.trim().isEmpty()) {
-                Sections.setLocale(
-                        ConfigurationCompat.getLocales(getResources().getConfiguration()));
-            } else {
-                Sections.setLocale(LocaleListCompat.create(new Locale(currentLanguagePreference)));
-            }
-
-        } catch (Sections.UnsupportedLocaleException e) {
-            e.printStackTrace(); //TODO ask the user to manually choose a locale
-        }
+        // Sections language is initialized in BaseActivity.setLocale
 
         final List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
             add(new ChainAssistanceComponent.Builder()

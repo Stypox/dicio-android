@@ -2,6 +2,7 @@ package org.dicio.dicio_android.sentences;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.os.LocaleListCompat;
 
@@ -43,11 +44,14 @@ public class Sections {
      * @param locales a list of locales to try to resolve, ordered from most preferred one to least
      *                preferred one. The first locale in the list which can be resolved is going to
      *                be used.
+     * @return the locale chosen from {@code locales} and set as the sections locale. Never null.
      * @see <a href="https://developer.android.com/guide/topics/resources/multilingual-support">
      *     Android locale resolution</a>
      * @throws UnsupportedLocaleException if the locale resolution failed
      */
-    public static void setLocale(final LocaleListCompat locales) throws UnsupportedLocaleException {
+    @NonNull
+    public static Locale setLocale(final LocaleListCompat locales)
+            throws UnsupportedLocaleException {
         UnsupportedLocaleException unsupportedLocaleException = null;
         for (int i = 0; i < locales.size(); i++) {
             try {
@@ -56,7 +60,7 @@ public class Sections {
                 sectionsMap = localeSectionsMap.get(localeString);
                 currentLocale = locales.get(i);
                 Log.i(Sections.class.getSimpleName(), "Using locale: " + localeString);
-                return;
+                return currentLocale;
 
             } catch (final UnsupportedLocaleException e) {
                 if (unsupportedLocaleException == null) {

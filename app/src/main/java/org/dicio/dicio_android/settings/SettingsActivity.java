@@ -11,9 +11,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.util.ThemedActivity;
+import org.dicio.dicio_android.util.BaseActivity;
 
-public class SettingsActivity extends ThemedActivity
+public class SettingsActivity extends BaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     private final String toolbarTitleKey = "toolbarTitle";
 
