@@ -20,7 +20,8 @@ import static org.dicio.dicio_android.sentences.Sentences_en.lyrics;
 
 public class GeniusProcessor implements IntermediateProcessor<StandardResult, LyricsOutput.Data> {
 
-    private static final String geniusSearchUrl = "https://genius.com/api/search/multi";
+    // replace "songs" with "multi" to get all kinds of results and not just songs
+    private static final String geniusSearchUrl = "https://genius.com/api/search/songs?q=";
     private static final String geniusLyricsUrl = "https://genius.com/songs/";
     private static final Pattern lyricsPattern =
             Pattern.compile("document\\.write\\(JSON\\.parse\\('(.+)'\\)\\)");
@@ -31,8 +32,8 @@ public class GeniusProcessor implements IntermediateProcessor<StandardResult, Ly
     public LyricsOutput.Data process(final StandardResult data, final Locale locale)
             throws Exception {
         final String songName = data.getCapturingGroup(lyrics.song);
-        final JSONObject search = ConnectionUtils.getPageJson(geniusSearchUrl + "?q="
-                + ConnectionUtils.urlEncode(songName));
+        final JSONObject search = ConnectionUtils.getPageJson(
+                geniusSearchUrl + ConnectionUtils.urlEncode(songName));
         final JSONArray searchHits =
                 search.getJSONObject("response").getJSONArray("sections")
                         .getJSONObject(0).getJSONArray("hits");
