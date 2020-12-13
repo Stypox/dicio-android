@@ -51,7 +51,7 @@ public class StringUtils {
      */
     public static int levenshteinDistance(final String a, final String b) {
         // memory already filled with zeros, as it's the default value for int
-        int[][] memory = new int[a.length() + 1][b.length() + 1];
+        final int[][] memory = new int[a.length() + 1][b.length() + 1];
 
         for (int i = 0; i <= a.length(); ++i) {
             memory[i][0] = i;
@@ -62,7 +62,7 @@ public class StringUtils {
 
         for (int i = 0; i < a.length(); ++i) {
             for (int j = 0; j < b.length(); ++j) {
-                int substitutionCost = Character.toLowerCase(a.codePointAt(i))
+                final int substitutionCost = Character.toLowerCase(a.codePointAt(i))
                         == Character.toLowerCase(b.codePointAt(j)) ? 0 : 1;
                 memory[i+1][j+1] = Math.min(Math.min(memory[i][j+1] + 1, memory[i+1][j] + 1),
                         memory[i][j] + substitutionCost);
