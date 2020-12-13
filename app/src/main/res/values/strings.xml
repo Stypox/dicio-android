@@ -20,6 +20,9 @@
     <string name="settings_theme_summary">Choose the app color set</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_summary">What language should Dicio use to listen to you and provide answers?</string>
+    <string name="settings_language_system">Use system language</string>
     <string name="settings_input_method">Input method</string>
     <string name="settings_input_method_summary">Choose the service to use to talk to Dicio</string>
     <string name="settings_input_method_text">Text box</string>
@@ -47,4 +50,5 @@
     <string name="component_weather_in_city_there_is_description">Currently in %1$s there is %2$s</string>
     <string name="component_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="component_weather_min_max_wind">Minimum temperature: %1$.1f°C\nMaximum temperature: %2$.1f°C\nWind speed: %3$.1fm/s</string>
+    <string name="settings_key_language" translatable="false">language</string>
 </resources>

@@ -28,6 +28,7 @@ public class Sections {
     private Sections() {
     }
 
+    private static Locale currentLocale = null;
     private static Map<String, StandardRecognizerData> sectionsMap = null;
 
     /**
@@ -53,6 +54,7 @@ public class Sections {
                 final String localeString =
                         getLocaleString(locales.get(i), localeSectionsMap.keySet());
                 sectionsMap = localeSectionsMap.get(localeString);
+                currentLocale = locales.get(i);
                 Log.i(Sections.class.getSimpleName(), "Using locale: " + localeString);
                 return;
 
@@ -68,6 +70,16 @@ public class Sections {
         } else {
             throw unsupportedLocaleException;
         }
+    }
+
+    /**
+     * @return the locale corresponding to the current section map being used. Identical (i.e. the
+     *         same exact object) to one of the locales inside the {@code locales} list argument of
+     *         {@link #setLocale(LocaleListCompat)}.
+     */
+    @Nullable
+    public static Locale getCurrentLocale() {
+        return currentLocale;
     }
 
     /**

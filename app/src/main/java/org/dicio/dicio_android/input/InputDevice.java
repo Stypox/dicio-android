@@ -26,7 +26,7 @@ public abstract class InputDevice {
      */
     public abstract void tryToGetInput();
 
-    public final void setOnInputReceivedListener(@Nullable OnInputReceivedListener listener) {
+    public final void setOnInputReceivedListener(@Nullable final OnInputReceivedListener listener) {
         this.onInputReceivedListener = listener;
     }
 
@@ -35,7 +35,7 @@ public abstract class InputDevice {
      * when some input from the user is received.
      * @param input the (raw) received input
      */
-    protected void notifyInputReceived(String input) {
+    protected void notifyInputReceived(final String input) {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "Input from user: " + input);
         }
@@ -53,7 +53,7 @@ public abstract class InputDevice {
      * an error.
      * @param e an exception to handle
      */
-    protected void notifyError(Throwable e) {
+    protected void notifyError(final Throwable e) {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "Input error: " + e.getMessage(), e);
         }

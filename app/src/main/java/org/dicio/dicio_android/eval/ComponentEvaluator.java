@@ -7,6 +7,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
+
 import org.dicio.component.util.WordExtractor;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.components.AssistanceComponent;
@@ -14,6 +16,7 @@ import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import org.dicio.dicio_android.sentences.Sections;
 import org.dicio.dicio_android.util.ExceptionUtils;
 
 import java.util.List;
@@ -30,7 +33,7 @@ public class ComponentEvaluator {
     private final GraphicalOutputDevice graphicalOutputDevice;
     private final Context context;
 
-    private Disposable evaluationDisposable;
+    @Nullable private Disposable evaluationDisposable = null;
 
     public ComponentEvaluator(final ComponentRanker componentRanker,
                               final InputDevice inputDevice,
@@ -106,8 +109,7 @@ public class ComponentEvaluator {
                     final AssistanceComponent component = componentRanker.getBest(
                             input, inputWords, normalizedWordKeys);
 
-                    // TODO let user choose locale to use for component processing and output
-                    component.processInput(context.getResources().getConfiguration().locale);
+                    component.processInput(Sections.getCurrentLocale());
                     return component;
                 })
                 .subscribeOn(Schedulers.io())

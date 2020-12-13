@@ -10,4 +10,5 @@
     <attr name="iconMicNone" format="reference" />
     <attr name="iconSettings" format="reference" />
     <attr name="iconPerson" format="reference" />
+    <attr name="iconLanguage" format="reference" />
 </resources>

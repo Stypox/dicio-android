@@ -20,9 +20,8 @@
         <item name="iconMicNone">@drawable/ic_mic_none_white</item>
         <item name="iconSettings">@drawable/ic_settings_white</item>
         <item name="iconPerson">@drawable/ic_person_white</item>
+        <item name="iconLanguage">@drawable/ic_language_white</item>
     </style>
-
-
 
 
     <style name="LightAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -45,6 +44,7 @@
         <item name="iconMicNone">@drawable/ic_mic_none_black</item>
         <item name="iconSettings">@drawable/ic_settings_black</item>
         <item name="iconPerson">@drawable/ic_person_black</item>
+        <item name="iconLanguage">@drawable/ic_language_black</item>
     </style>
 
 </resources>

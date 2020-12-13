@@ -19,7 +19,6 @@ import org.dicio.dicio_android.util.ExceptionUtils;
 
 public class GraphicalOutputUtils {
 
-
     public static View inflate(Context context, @LayoutRes int layout) {
         return LayoutInflater.from(context).inflate(layout, null);
     }

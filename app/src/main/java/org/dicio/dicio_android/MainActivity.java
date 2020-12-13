@@ -9,11 +9,13 @@ import android.view.MenuItem;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.os.ConfigurationCompat;
+import androidx.core.os.LocaleListCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
@@ -45,6 +47,8 @@ import org.dicio.dicio_android.util.ThemedActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import static org.dicio.dicio_android.sentences.Sections.getSection;
 import static org.dicio.dicio_android.sentences.SectionsGenerated.lyrics;
@@ -59,6 +63,7 @@ public class MainActivity extends ThemedActivity
 
     private InputDevice inputDevice;
     private ComponentEvaluator componentEvaluator;
+    private String currentLanguagePreference;
     private String currentInputDevicePreference;
     private boolean appJustOpened = false;
     private boolean textInputItemFocusJustChanged = false;
@@ -93,6 +98,7 @@ public class MainActivity extends ThemedActivity
         });
 
         currentInputDevicePreference = getInputDevicePreference();
+        currentLanguagePreference = getLanguagePreference();
         initializeComponentEvaluator();
         appJustOpened = true;
     }
@@ -181,17 +187,28 @@ public class MainActivity extends ThemedActivity
     @Override
     protected void onResume() {
         super.onResume();
+        boolean reinitializeComponentEvaluator = false;
+
+        final String languagePreference = getLanguagePreference();
+        if (!Objects.equals(languagePreference, currentLanguagePreference)) {
+            currentLanguagePreference = languagePreference;
+            reinitializeComponentEvaluator = true;
+        }
 
         final String inputDevicePreference = getInputDevicePreference();
         if (!inputDevicePreference.equals(currentInputDevicePreference)) {
             currentInputDevicePreference = inputDevicePreference;
+            reinitializeComponentEvaluator = true;
+        }
+
+        if (reinitializeComponentEvaluator) {
             initializeComponentEvaluator();
             invalidateOptionsMenu();
         }
     }
 
     @NonNull
-    String getInputDevicePreference() {
+    private String getInputDevicePreference() {
         final String inputDevicePreference = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.settings_key_input_method), null);
 
@@ -202,13 +219,25 @@ public class MainActivity extends ThemedActivity
         }
     }
 
+    @Nullable
+    private String getLanguagePreference() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.settings_key_language), null);
+    }
+
     /////////////////////////////////////
     // Assistance components functions //
     /////////////////////////////////////
 
     public void initializeComponentEvaluator() {
         try {
-            Sections.setLocale(ConfigurationCompat.getLocales(getResources().getConfiguration()));
+            if (currentLanguagePreference == null || currentLanguagePreference.trim().isEmpty()) {
+                Sections.setLocale(
+                        ConfigurationCompat.getLocales(getResources().getConfiguration()));
+            } else {
+                Sections.setLocale(LocaleListCompat.create(new Locale(currentLanguagePreference)));
+            }
+
         } catch (Sections.UnsupportedLocaleException e) {
             e.printStackTrace(); //TODO ask the user to manually choose a locale
         }

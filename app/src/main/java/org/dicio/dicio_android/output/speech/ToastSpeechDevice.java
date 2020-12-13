@@ -6,14 +6,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 public class ToastSpeechDevice implements SpeechOutputDevice {
-    Context context;
+    private final Context context;
 
-    public ToastSpeechDevice(Context context) {
+    public ToastSpeechDevice(final Context context) {
         this.context = context;
     }
 
     @Override
-    public void speak(@NonNull String speechOutput) {
+    public void speak(@NonNull final String speechOutput) {
         Toast.makeText(context, speechOutput, Toast.LENGTH_LONG).show();
     }
 }

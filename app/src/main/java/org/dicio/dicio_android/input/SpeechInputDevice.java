@@ -8,7 +8,9 @@ public abstract class SpeechInputDevice extends InputDevice {
     private Drawable microphoneOnIcon;
     private Drawable microphoneOffIcon;
 
-    public final void setVoiceInputItem(MenuItem voiceInputItem, Drawable microphoneOnIcon, Drawable microphoneOffIcon) {
+    public final void setVoiceInputItem(final MenuItem voiceInputItem,
+                                        final Drawable microphoneOnIcon,
+                                        final Drawable microphoneOffIcon) {
         this.voiceInputItem = voiceInputItem;
         this.microphoneOnIcon = microphoneOnIcon;
         this.microphoneOffIcon = microphoneOffIcon;

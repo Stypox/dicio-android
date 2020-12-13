@@ -2,10 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="@string/settings_key_input_method"
-        android:title="@string/settings_input_method"
-        android:summary="@string/settings_input_method_summary"
-        android:icon="?attr/iconMic"
+        android:defaultValue=""
+        android:entries="@array/settings_language_entries"
+        android:entryValues="@array/settings_language_values"
+        android:icon="?attr/iconLanguage"
+        android:key="@string/settings_key_language"
+        android:summary="@string/settings_language_summary"
+        android:title="@string/settings_language" />
+
+    <ListPreference
+        android:defaultValue="@string/settings_value_input_method_text"
         android:entries="@array/settings_input_method_entries"
-        android:entryValues="@array/settings_input_method_entry_values"/>
+        android:entryValues="@array/settings_input_method_entry_values"
+        android:icon="?attr/iconMic"
+        android:key="@string/settings_key_input_method"
+        android:summary="@string/settings_input_method_summary"
+        android:title="@string/settings_input_method" />
 </PreferenceScreen>
