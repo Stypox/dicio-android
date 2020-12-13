@@ -10,8 +10,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static org.dicio.dicio_android.sentences.Sentences_en.search;
 import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
@@ -20,17 +22,29 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
 
     private static final String qwantSearchUrl = "https://api.qwant.com/api/search/web";
 
+    // Qwant uses only some specific locale names, taken from the page JS
+    private static final Map<String, String> languageCountryMap = new HashMap<String, String>() {{
+        put("fr", "fr");
+        put("en", "gb");
+        put("de", "de");
+        put("it", "it");
+        put("br", "fr");
+        put("ca", "es");
+        put("co", "fr");
+        put("es", "es");
+        put("eu", "es");
+        put("nl", "nl");
+        put("pl", "pl");
+        put("pt", "pt");
+        put("ru", "ru");
+    }};
+
     private String getLocaleString(final Locale locale) {
-        if (locale.getCountry().isEmpty()) {
-            for (final Locale other : Locale.getAvailableLocales()) {
-                if (other.getLanguage().equalsIgnoreCase(locale.getLanguage())
-                        && !other.getCountry().isEmpty()) {
-                    return (locale.getLanguage() + "_" + other.getCountry()).toLowerCase();
-                }
-            }
-            return "en_gb"; // default to UK if unable to determine country
+        final String language = locale.getLanguage().toLowerCase();
+        if (languageCountryMap.containsKey(language)) {
+            return language + "_" + languageCountryMap.get(language);
         } else {
-            return (locale.getLanguage() + "_" + locale.getCountry()).toLowerCase();
+            return "en_gb"; // default to UK if unable to determine country
         }
     }
 
@@ -40,7 +54,8 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
         final JSONObject json = getPageJson(qwantSearchUrl
                 + "?count=10&offset=20&t=dicio&uiv=1&locale=" + getLocaleString(locale)
                 + "&q=" + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
-        final JSONArray items = json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
+        final JSONArray items =
+                json.getJSONObject("data").getJSONObject("result").getJSONArray("items");
 
         final List<SearchOutput.Data> result = new ArrayList<>();
         for (int i = 0; i < items.length(); ++i) {
