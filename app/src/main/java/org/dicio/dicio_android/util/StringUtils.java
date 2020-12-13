@@ -2,8 +2,11 @@ package org.dicio.dicio_android.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
+    private static final Pattern punctationPattern = Pattern.compile("\\p{Punct}");
 
     private StringUtils() {
     }
@@ -76,6 +79,7 @@ public class StringUtils {
      * @return e.g. for "hello, how are you? " returns "hello how are you "
      */
     public static String removePunctuation(final String s) {
-        return s.replaceAll("\\p{Punct}", "");
+        final Matcher matcher = punctationPattern.matcher(s);
+        return matcher.replaceAll("");
     }
 }
