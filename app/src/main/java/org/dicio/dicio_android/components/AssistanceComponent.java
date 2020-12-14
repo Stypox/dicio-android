@@ -24,6 +24,11 @@ public interface AssistanceComponent {
                         SpeechOutputDevice speechOutputDevice,
                         GraphicalOutputDevice graphicalOutputDevice);
 
+    /**
+     * To prevent excessive memory usage, release all temporary resources and set to {@code null}
+     * all temporary variables used while calculating the score, getting the result or generating
+     * output.
+     */
     void cleanup();
 
     default List<AssistanceComponent> nextAssistanceComponents() {

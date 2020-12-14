@@ -75,11 +75,17 @@ public class ComponentRanker {
                 float score = component.score();
 
                 if (score > bestScoreSoFar) {
+                    if (bestComponentSoFar != null) {
+                        bestComponentSoFar.cleanup();
+                    }
+
                     bestScoreSoFar = score;
                     bestComponentSoFar = component;
                     if (score > threshold) {
                         break;
                     }
+                } else {
+                    component.cleanup();
                 }
             }
 
@@ -101,8 +107,10 @@ public class ComponentRanker {
             final ComponentScoreResult bestMedium = getFirstAboveThresholdOrBest(
                     mediumComponents, input, inputWords, normalizedWordKeys, mediumThreshold2);
             if (bestMedium.score > mediumThreshold2) {
+                bestHigh.component.cleanup();
                 return bestMedium.component;
             } else if (bestHigh.score > highThreshold2) {
+                bestMedium.component.cleanup();
                 return bestHigh.component;
             }
 
@@ -110,14 +118,23 @@ public class ComponentRanker {
             final ComponentScoreResult bestLow = getFirstAboveThresholdOrBest(
                     lowComponents, input, inputWords, normalizedWordKeys, lowThreshold3);
             if (bestLow.score > lowThreshold3) {
+                bestHigh.component.cleanup();
+                bestMedium.component.cleanup();
                 return bestLow.component;
             } else if (bestMedium.score > mediumThreshold3) {
+                bestHigh.component.cleanup();
+                bestLow.component.cleanup();
                 return bestMedium.component;
             } else if (bestHigh.score > highThreshold3) {
+                bestMedium.component.cleanup();
+                bestLow.component.cleanup();
                 return bestHigh.component;
             }
 
             // nothing was matched
+            bestHigh.component.cleanup();
+            bestMedium.component.cleanup();
+            bestLow.component.cleanup();
             return null;
         }
     }

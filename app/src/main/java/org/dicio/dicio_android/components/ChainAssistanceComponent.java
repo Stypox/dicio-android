@@ -80,6 +80,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     @Override
     public void cleanup() {
         inputRecognizer.cleanup();
+        lastResult = null;
     }
 
 

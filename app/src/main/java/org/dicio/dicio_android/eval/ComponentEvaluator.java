@@ -120,6 +120,7 @@ public class ComponentEvaluator {
     private void generateOutput(final AssistanceComponent component) {
         component.generateOutput(context, speechOutputDevice, graphicalOutputDevice);
         graphicalOutputDevice.addDivider();
+        component.cleanup(); // cleanup the input that was set
 
         final List<AssistanceComponent> nextAssistanceComponents =
                 component.nextAssistanceComponents();
