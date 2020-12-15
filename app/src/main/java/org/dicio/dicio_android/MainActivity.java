@@ -32,7 +32,6 @@ import org.dicio.dicio_android.components.processing.OpenWeatherMapProcessor;
 import org.dicio.dicio_android.components.processing.QwantProcessor;
 import org.dicio.dicio_android.eval.ComponentEvaluator;
 import org.dicio.dicio_android.eval.ComponentRanker;
-import org.dicio.dicio_android.input.AzureSpeechInputDevice;
 import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
@@ -230,11 +229,7 @@ public class MainActivity extends BaseActivity
                     .output(new OpenOutput()));
         }};
 
-        if (currentInputDevicePreference.equals(getString(R.string.settings_value_input_method_azure))) {
-            inputDevice = new AzureSpeechInputDevice(this);
-        } else {
-            inputDevice = new ToolbarInputDevice();
-        }
+        inputDevice = new ToolbarInputDevice();
 
         componentEvaluator = new ComponentEvaluator(
                 new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),

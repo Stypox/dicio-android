@@ -32,7 +32,6 @@
     <string name="settings_theme_light">Chiaro</string>
     <string name="settings_theme_dark">Scuro</string>
     <string name="settings_input_method_text">Casella di testo</string>
-    <string name="settings_input_method_azure">Riconoscimento vocale online con Azure</string>
     <string name="settings_language">Lingua</string>
     <string name="settings_language_summary">Che lingua vuoi che Dicio usi per ascoltarti e rispondere?</string>
     <string name="settings_language_system">Usa la lingua di sistema</string>
