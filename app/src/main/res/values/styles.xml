@@ -2,7 +2,7 @@
 
     <style name="DarkAppTheme" parent="@style/Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
         <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
 
         <item name="cardBackground">@color/cardBackgroundDark</item>
@@ -26,7 +26,7 @@
 
     <style name="LightAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
         <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
 
         <item name="cardBackground">@color/cardBackgroundLight</item>
