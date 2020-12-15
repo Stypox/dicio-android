@@ -18,4 +18,13 @@
         android:key="@string/settings_key_input_method"
         android:summary="@string/settings_input_method_summary"
         android:title="@string/settings_input_method" />
+
+    <ListPreference
+        android:defaultValue="@string/settings_value_speech_output_method_toast"
+        android:entries="@array/settings_speech_output_method_entries"
+        android:entryValues="@array/settings_speech_output_method_entry_values"
+        android:icon="?attr/iconSpeakerPhone"
+        android:key="@string/settings_key_speech_output_method"
+        android:summary="@string/settings_speech_output_method_summary"
+        android:title="@string/settings_speech_output_method" />
 </PreferenceScreen>

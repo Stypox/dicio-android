@@ -1,6 +1,7 @@
 package org.dicio.dicio_android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -10,9 +11,9 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
@@ -36,6 +37,8 @@ import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
+import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
+import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.util.BaseActivity;
@@ -51,6 +54,9 @@ import static org.dicio.dicio_android.sentences.SectionsGenerated.weather;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SharedPreferences preferences;
+
     private DrawerLayout drawer;
     private MenuItem textInputItem = null;
 
@@ -68,6 +74,8 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -143,8 +151,8 @@ public class MainActivity extends BaseActivity
         if (inputDevice instanceof SpeechInputDevice) {
             voiceInputItem.setVisible(true);
             ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
-                    ResourcesCompat.getDrawable(getResources(), R.drawable.ic_mic_white, null),
-                    ResourcesCompat.getDrawable(getResources(), R.drawable.ic_mic_none_white, null));
+                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_white),
+                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_none_white));
         } else {
             voiceInputItem.setVisible(false);
         }
@@ -192,23 +200,11 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @NonNull
-    private String getInputDevicePreference() {
-        final String inputDevicePreference = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.settings_key_input_method), null);
-
-        if (inputDevicePreference == null) {
-            return getString(R.string.settings_value_input_method_text);
-        } else {
-            return inputDevicePreference;
-        }
-    }
-
     /////////////////////////////////////
     // Assistance components functions //
     /////////////////////////////////////
 
-    public void initializeComponentEvaluator() {
+    private void initializeComponentEvaluator() {
         // Sections language is initialized in BaseActivity.setLocale
 
         final List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
@@ -229,13 +225,51 @@ public class MainActivity extends BaseActivity
                     .output(new OpenOutput()));
         }};
 
-        inputDevice = new ToolbarInputDevice();
+        inputDevice = buildInputDevice();
+        final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
         componentEvaluator = new ComponentEvaluator(
                 new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),
                 inputDevice,
-                new ToastSpeechDevice(this),
+                speechOutputDevice,
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),
                 this);
+    }
+
+    @NonNull
+    private String getInputDevicePreference() {
+        final String inputDevicePreference = preferences
+                .getString(getString(R.string.settings_key_input_method), null);
+
+        if (inputDevicePreference == null) {
+            return getString(R.string.settings_value_input_method_text);
+        } else {
+            return inputDevicePreference;
+        }
+    }
+
+    @NonNull
+    private String getSpeechOutputDevicePreference() {
+        final String speechOutputDevicePreference = preferences
+                .getString(getString(R.string.settings_key_speech_output_method), null);
+
+        if (speechOutputDevicePreference == null) {
+            return getString(R.string.settings_value_speech_output_method_toast);
+        } else {
+            return speechOutputDevicePreference;
+        }
+    }
+
+    private InputDevice buildInputDevice() {
+        return new ToolbarInputDevice();
+    }
+
+    private SpeechOutputDevice buildSpeechOutputDevice() {
+        if (getSpeechOutputDevicePreference().equals(
+                getString(R.string.settings_value_speech_output_method_nothing))) {
+            return new NothingSpeechDevice();
+        } else {
+            return new ToastSpeechDevice(this);
+        }
     }
 }

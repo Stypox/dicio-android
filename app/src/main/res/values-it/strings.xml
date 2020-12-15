@@ -16,6 +16,8 @@
     <string name="settings_theme_summary">Cambia i colori dell\'app</string>
     <string name="settings_input_method">Modalità di input</string>
     <string name="settings_input_method_summary">Scegli il servizio da usare per parlare a Dicio</string>
+    <string name="settings_speech_output_method">Modalità di output vocale</string>
+    <string name="settings_speech_output_method_summary">Scegli il servizio che Dicio userà per parlarti</string>
     <string name="eval_fatal_error">Ho riscontrato un problema mentre esaminavo la tua richiesta, scusa</string>
     <string name="eval_network_error">Errore di connessione</string>
     <string name="eval_network_error_description">Dicio non è riuscito a raggiungere internet. Per favore controlla la connessione e riprova.</string>
@@ -32,6 +34,8 @@
     <string name="settings_theme_light">Chiaro</string>
     <string name="settings_theme_dark">Scuro</string>
     <string name="settings_input_method_text">Casella di testo</string>
+    <string name="settings_speech_output_method_toast">Toast (messaggio pop-up)</string>
+    <string name="settings_speech_output_method_nothing">Niente</string>
     <string name="settings_language">Lingua</string>
     <string name="settings_language_summary">Che lingua vuoi che Dicio usi per ascoltarti e rispondere?</string>
     <string name="settings_language_system">Usa la lingua di sistema</string>

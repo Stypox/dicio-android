@@ -11,4 +11,5 @@
     <attr name="iconSettings" format="reference" />
     <attr name="iconPerson" format="reference" />
     <attr name="iconLanguage" format="reference" />
+    <attr name="iconSpeakerPhone" format="reference" />
 </resources>

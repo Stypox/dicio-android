@@ -21,6 +21,7 @@
         <item name="iconSettings">@drawable/ic_settings_white</item>
         <item name="iconPerson">@drawable/ic_person_white</item>
         <item name="iconLanguage">@drawable/ic_language_white</item>
+        <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_white</item>
     </style>
 
 
@@ -45,6 +46,7 @@
         <item name="iconSettings">@drawable/ic_settings_black</item>
         <item name="iconPerson">@drawable/ic_person_black</item>
         <item name="iconLanguage">@drawable/ic_language_black</item>
+        <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_black</item>
     </style>
 
 </resources>
