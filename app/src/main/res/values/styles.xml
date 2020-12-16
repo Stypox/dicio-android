@@ -49,4 +49,11 @@
         <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_black</item>
     </style>
 
+    <style name="SplashScreenTheme" parent="LightAppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
+        <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
 </resources>
