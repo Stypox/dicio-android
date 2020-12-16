@@ -24,12 +24,18 @@ public class ComponentRanker {
 
 
     private static class ComponentScoreResult {
-        final AssistanceComponent component;
+        @Nullable final AssistanceComponent component;
         final float score;
 
-        ComponentScoreResult(final AssistanceComponent component, final float score) {
+        ComponentScoreResult(@Nullable final AssistanceComponent component, final float score) {
             this.component = component;
             this.score = score;
+        }
+
+        void cleanup() {
+            if (component != null) {
+                component.cleanup();
+            }
         }
     }
 
@@ -107,10 +113,10 @@ public class ComponentRanker {
             final ComponentScoreResult bestMedium = getFirstAboveThresholdOrBest(
                     mediumComponents, input, inputWords, normalizedWordKeys, mediumThreshold2);
             if (bestMedium.score > mediumThreshold2) {
-                bestHigh.component.cleanup();
+                bestHigh.cleanup();
                 return bestMedium.component;
             } else if (bestHigh.score > highThreshold2) {
-                bestMedium.component.cleanup();
+                bestMedium.cleanup();
                 return bestHigh.component;
             }
 
@@ -118,23 +124,23 @@ public class ComponentRanker {
             final ComponentScoreResult bestLow = getFirstAboveThresholdOrBest(
                     lowComponents, input, inputWords, normalizedWordKeys, lowThreshold3);
             if (bestLow.score > lowThreshold3) {
-                bestHigh.component.cleanup();
-                bestMedium.component.cleanup();
+                bestHigh.cleanup();
+                bestMedium.cleanup();
                 return bestLow.component;
             } else if (bestMedium.score > mediumThreshold3) {
-                bestHigh.component.cleanup();
-                bestLow.component.cleanup();
+                bestHigh.cleanup();
+                bestLow.cleanup();
                 return bestMedium.component;
             } else if (bestHigh.score > highThreshold3) {
-                bestMedium.component.cleanup();
-                bestLow.component.cleanup();
+                bestMedium.cleanup();
+                bestLow.cleanup();
                 return bestHigh.component;
             }
 
             // nothing was matched
-            bestHigh.component.cleanup();
-            bestMedium.component.cleanup();
-            bestLow.component.cleanup();
+            bestHigh.cleanup();
+            bestMedium.cleanup();
+            bestLow.cleanup();
             return null;
         }
     }
