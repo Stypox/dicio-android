@@ -47,13 +47,11 @@ public class VoskInputDevice extends SpeechInputDevice {
             buildDisposable = Completable.fromAction(() -> {
                 final Assets assets = new Assets(activity);
                 final File assetDir = assets.syncAssets();
-                Log.d("KaldiDemo", "Sync files in the folder " + assetDir.toString());
 
                 Vosk.SetLogLevel(0);
                 final Model model = new Model(assetDir.toString() + "/model-android");
                 recognizer = new SpeechRecognizer(model);
-                startListening();
-            }).subscribe();
+            }).subscribe(this::startListening, Throwable::printStackTrace);
             return;
         }
 
