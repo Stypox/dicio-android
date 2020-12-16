@@ -38,6 +38,7 @@ import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
 import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
+import org.dicio.dicio_android.output.speech.SnackbarSpeechDevice;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
@@ -268,6 +269,9 @@ public class MainActivity extends BaseActivity
         if (getSpeechOutputDevicePreference().equals(
                 getString(R.string.settings_value_speech_output_method_nothing))) {
             return new NothingSpeechDevice();
+        } else if (getSpeechOutputDevicePreference().equals(
+                getString(R.string.settings_value_speech_output_method_snackbar))) {
+            return new SnackbarSpeechDevice(findViewById(android.R.id.content));
         } else {
             return new ToastSpeechDevice(this);
         }

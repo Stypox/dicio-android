@@ -35,6 +35,7 @@
     <string name="settings_theme_dark">Scuro</string>
     <string name="settings_input_method_text">Casella di testo</string>
     <string name="settings_speech_output_method_toast">Toast (messaggio pop-up)</string>
+    <string name="settings_speech_output_method_snackbar">Snackbar (messaggio in basso)</string>
     <string name="settings_speech_output_method_nothing">Niente</string>
     <string name="settings_language">Lingua</string>
     <string name="settings_language_summary">Che lingua vuoi che Dicio usi per ascoltarti e rispondere?</string>

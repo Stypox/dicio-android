@@ -29,10 +29,12 @@
 
     <string-array name="settings_speech_output_method_entries">
         <item>@string/settings_speech_output_method_toast</item>
+        <item>@string/settings_speech_output_method_snackbar</item>
         <item>@string/settings_speech_output_method_nothing</item>
     </string-array>
     <string-array name="settings_speech_output_method_entry_values">
         <item>@string/settings_value_speech_output_method_toast</item>
+        <item>@string/settings_value_speech_output_method_snackbar</item>
         <item>@string/settings_value_speech_output_method_nothing</item>
     </string-array>
 </resources>
