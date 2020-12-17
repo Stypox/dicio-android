@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
@@ -90,11 +89,12 @@ public class MainActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         final ScrollView scrollView = findViewById(R.id.outputScrollView);
-        scrollView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            Log.e("MAINACTIVITY", top + " " + bottom + "   " + oldTop + " " + oldBottom + " " + textInputItemFocusJustChanged);
+        scrollView.addOnLayoutChangeListener((v, left, top, right, bottom,
+                                              oldLeft, oldTop, oldRight, oldBottom) -> {
             if (textInputItemFocusJustChanged && (oldBottom != bottom || oldTop != top)) {
                 textInputItemFocusJustChanged = false; // the keyboard was opened because of menu
-                scrollView.postDelayed(() -> scrollView.scrollBy(0, oldBottom - bottom + top - oldTop), 10);
+                scrollView.postDelayed(() ->
+                        scrollView.scrollBy(0, oldBottom - bottom + top - oldTop), 10);
             }
         });
 
