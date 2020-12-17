@@ -38,6 +38,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private final Activity activity;
     private Disposable buildDisposable = null;
     private SpeechRecognizer recognizer = null;
+    private boolean currentlyListening = false;
 
     public VoskInputDevice(final Activity activity) {
         this.activity = activity;
@@ -98,6 +99,48 @@ public class VoskInputDevice extends SpeechInputDevice {
         Vosk.SetLogLevel(0);
         final Model model = new Model(modelPath.getAbsolutePath());
         recognizer = new SpeechRecognizer(model);
+
+        recognizer.addListener(new RecognitionListener() {
+
+            @Override
+            public void onPartialResult(final String s) {}
+
+            @Override
+            public void onResult(final String s) {
+                if (!currentlyListening) {
+                    return;
+                }
+                stopListening();
+
+                String input = null;
+                try {
+                    input = new JSONObject(s).getString("text");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (input != null && !input.isEmpty()) {
+                    notifyInputReceived(input);
+                }
+            }
+
+            @Override
+            public void onError(final Exception e) {
+                stopListening();
+                notifyError(e);
+            }
+
+            @Override
+            public void onTimeout() {
+                stopListening();
+            }
+
+            private void stopListening() {
+                recognizer.stop();
+                currentlyListening = false;
+                onFinishedListening();
+            }
+        });
     }
 
     @Override
@@ -111,46 +154,10 @@ public class VoskInputDevice extends SpeechInputDevice {
             return;
         }
 
-        recognizer.addListener(new RecognitionListener() {
-
-            private boolean receivedSomething = false;
-
-            @Override
-            public void onPartialResult(final String s) {}
-
-            @Override
-            public void onResult(final String s) {
-                if (receivedSomething) {
-                    return;
-                }
-                receivedSomething = true;
-                recognizer.stop();
-                onFinishedListening();
-
-                try {
-                    final String input = new JSONObject(s).getString("text");
-
-                    if (!input.isEmpty()) {
-                        notifyInputReceived(input);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onError(final Exception e) {
-                recognizer.stop();
-                onFinishedListening();
-                notifyError(e);
-            }
-
-            @Override
-            public void onTimeout() {
-                recognizer.stop();
-                onFinishedListening();
-            }
-        });
+        if (currentlyListening) {
+            return;
+        }
+        currentlyListening = true;
         recognizer.startListening();
     }
 }
