@@ -1,1 +1,1 @@
-include ':models', ':aars', ':app'
+include ':models', ':app'

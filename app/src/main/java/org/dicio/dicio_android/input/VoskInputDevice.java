@@ -7,9 +7,10 @@ import androidx.core.app.ActivityCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kaldi.KaldiRecognizer;
 import org.kaldi.Model;
 import org.kaldi.RecognitionListener;
-import org.kaldi.SpeechRecognizer;
+import org.kaldi.SpeechService;
 import org.kaldi.Vosk;
 
 import java.io.File;
@@ -21,8 +22,8 @@ import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Queue;
 
-import io.reactivex.Completable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 
@@ -30,14 +31,11 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     public static final String MODEL_PATH = "/vosk-model";
     public static final String ASSETS_SUBPATH = "sync/model-android";
-
-    static {
-        System.loadLibrary("kaldi_jni");
-    }
+    public static final float SAMPLE_RATE = 16000.0f;
 
     private final Activity activity;
     private Disposable buildDisposable = null;
-    private SpeechRecognizer recognizer = null;
+    private SpeechService recognizer = null;
     private boolean currentlyListening = false;
 
     public VoskInputDevice(final Activity activity) {
@@ -98,7 +96,7 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         Vosk.SetLogLevel(0);
         final Model model = new Model(modelPath.getAbsolutePath());
-        recognizer = new SpeechRecognizer(model);
+        recognizer = new SpeechService(new KaldiRecognizer(model, SAMPLE_RATE), SAMPLE_RATE);
 
         recognizer.addListener(new RecognitionListener() {
 

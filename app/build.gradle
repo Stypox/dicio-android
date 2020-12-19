@@ -35,7 +35,6 @@ android {
 }
 
 dependencies {
-    implementation project(':aars')
     implementation project(':models')
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -51,6 +50,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
     implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
     implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.alphacep:vosk-android:0.3.15'
 }
 
 
