@@ -1,4 +1,4 @@
-package org.dicio.dicio_android;
+package org.dicio.dicio_android.util;
 
 import org.junit.Test;
 
@@ -9,10 +9,10 @@ import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class SectionsTest {
+public class LocaleUtilsTest {
 
     String getLocaleString(final String locale, final String... supportedLocales)
-            throws Sections.UnsupportedLocaleException {
+            throws LocaleUtils.UnsupportedLocaleException {
         final Locale convertedLocale;
         final String[] parts = locale.split("-");
         if (parts.length == 1) {
@@ -21,13 +21,13 @@ public class SectionsTest {
             convertedLocale = new Locale(parts[0], parts[1]);
         }
 
-        return Sections.getLocaleString(convertedLocale,
+        return LocaleUtils.resolveLocaleString(convertedLocale,
                 new HashSet<>(Arrays.asList(supportedLocales)));
     }
 
     void assertLocale(final String expectedLocaleString,
                       final String locale,
-                      final String... supportedLocales) throws Sections.UnsupportedLocaleException {
+                      final String... supportedLocales) throws LocaleUtils.UnsupportedLocaleException {
         assertEquals(expectedLocaleString, getLocaleString(locale, supportedLocales));
     }
 
@@ -35,7 +35,7 @@ public class SectionsTest {
         final String localeString;
         try {
             localeString = getLocaleString(locale, supportedLocales);
-        } catch (final Sections.UnsupportedLocaleException e) {
+        } catch (final LocaleUtils.UnsupportedLocaleException e) {
             return;
         }
         fail("The locale \"" + locale + "\" should not have been found: " + localeString);
@@ -43,7 +43,7 @@ public class SectionsTest {
 
 
     @Test
-    public void localeTest() throws Sections.UnsupportedLocaleException {
+    public void localeTest() throws LocaleUtils.UnsupportedLocaleException {
         assertLocale("en",       "en",    "en", "en-uk", "en-gb", "it", "it-it");
         assertLocale("en-uk",    "en-UK", "en", "en-uk", "en-gb", "it", "it-it");
         assertLocale("en",       "en-US", "en", "en-uk", "en-gb", "it", "it-it");
@@ -57,7 +57,7 @@ public class SectionsTest {
     }
 
     @Test
-    public void localeCaseTest() throws Sections.UnsupportedLocaleException {
+    public void localeCaseTest() throws LocaleUtils.UnsupportedLocaleException {
         assertLocale("it-it", "it-IT", "it", "it-it");
         assertLocale("it",    "it-IT", "it", "fr", "FR-fr");
         assertLocale("it",    "it-IT", "it", "it-IT", "fr", "FR-fr");

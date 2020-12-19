@@ -59,7 +59,7 @@ abstract public class BaseActivity extends AppCompatActivity {
             configuration.setLocale(sectionsLocale);
             resources.updateConfiguration(configuration, resources.getDisplayMetrics());
 
-        } catch (Sections.UnsupportedLocaleException e) {
+        } catch (LocaleUtils.UnsupportedLocaleException e) {
             e.printStackTrace(); //TODO ask the user to manually choose a locale
         }
     }

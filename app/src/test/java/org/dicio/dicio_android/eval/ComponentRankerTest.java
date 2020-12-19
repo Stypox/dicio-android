@@ -25,7 +25,7 @@ public class ComponentRankerTest {
 
     static final String input = "hi";
     static final List<String> inputWords = WordExtractor.extractWords(input);
-    static final List<String> normalizedWordKeys = WordExtractor.getCollationKeys(inputWords);
+    static final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
 
     private static final class TestAC implements AssistanceComponent {
         final InputRecognizer.Specificity specificity;
