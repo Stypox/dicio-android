@@ -1,5 +1,2 @@
 /build
-/src/main/java/org/dicio/dicio_android/sentences/Sentences_*.java
-/src/main/java/org/dicio/dicio_android/sentences/SectionsGenerated.java
 /src/main/api_keys.json
-/src/main/java/org/dicio/dicio_android/ApiKeys.java

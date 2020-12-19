@@ -16,7 +16,7 @@ import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
-import org.dicio.dicio_android.sentences.Sections;
+import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.util.ExceptionUtils;
 
 import java.util.List;

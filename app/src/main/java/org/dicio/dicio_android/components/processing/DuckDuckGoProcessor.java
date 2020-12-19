@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.dicio.dicio_android.sentences.Sentences_en.search;
+import static org.dicio.dicio_android.Sentences_en.search;
 
 public class DuckDuckGoProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
 

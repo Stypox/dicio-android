@@ -46,11 +46,11 @@ import org.dicio.dicio_android.util.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.dicio.dicio_android.sentences.Sections.getSection;
-import static org.dicio.dicio_android.sentences.SectionsGenerated.lyrics;
-import static org.dicio.dicio_android.sentences.SectionsGenerated.open;
-import static org.dicio.dicio_android.sentences.SectionsGenerated.search;
-import static org.dicio.dicio_android.sentences.SectionsGenerated.weather;
+import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.SectionsGenerated.lyrics;
+import static org.dicio.dicio_android.SectionsGenerated.open;
+import static org.dicio.dicio_android.SectionsGenerated.search;
+import static org.dicio.dicio_android.SectionsGenerated.weather;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {

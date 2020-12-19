@@ -16,7 +16,7 @@ import org.unbescape.json.JsonEscape;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import static org.dicio.dicio_android.sentences.Sentences_en.lyrics;
+import static org.dicio.dicio_android.Sentences_en.lyrics;
 
 public class GeniusProcessor implements IntermediateProcessor<StandardResult, LyricsOutput.Data> {
 

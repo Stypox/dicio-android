@@ -12,7 +12,7 @@ import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.sentences.Sections;
+import org.dicio.dicio_android.Sections;
 
 import java.util.Locale;
 import java.util.Objects;

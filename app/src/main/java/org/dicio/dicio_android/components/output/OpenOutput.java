@@ -18,7 +18,7 @@ import org.dicio.dicio_android.util.StringUtils;
 
 import java.util.List;
 
-import static org.dicio.dicio_android.sentences.Sentences_en.open;
+import static org.dicio.dicio_android.Sentences_en.open;
 
 public class OpenOutput implements OutputGenerator<StandardResult> {
 

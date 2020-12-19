@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static org.dicio.dicio_android.sentences.Sentences_en.search;
+import static org.dicio.dicio_android.Sentences_en.search;
 import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
 
 public class QwantProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {

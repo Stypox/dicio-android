@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 
-import static org.dicio.dicio_android.sentences.Sentences_en.weather;
+import static org.dicio.dicio_android.Sentences_en.weather;
 
 public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
 

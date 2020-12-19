@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.sentences;
+package org.dicio.dicio_android;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import static org.dicio.dicio_android.sentences.SectionsGenerated.localeSectionsMap;
+import static org.dicio.dicio_android.SectionsGenerated.localeSectionsMap;
 
 public class Sections {
 

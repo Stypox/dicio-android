@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.sentences;
+package org.dicio.dicio_android;
 
 import org.junit.Test;
 
