@@ -119,7 +119,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
         currentlyListening = true;
 
-        Log.i(TAG, "starting recognizer");
+        Log.d(TAG, "starting recognizer");
         recognizer.startListening();
         onStartedListening();
     }
@@ -133,7 +133,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         if (!prepareModel()) {
             return false;
         }
-        Log.i(TAG, "initializing recognizer");
+        Log.d(TAG, "initializing recognizer");
 
         Vosk.SetLogLevel(0);
         final Model model = new Model(getModelDirectory().getAbsolutePath());
@@ -143,11 +143,12 @@ public class VoskInputDevice extends SpeechInputDevice {
 
             @Override
             public void onPartialResult(final String s) {
-                Log.i(TAG, "onPartialResult called");
+                Log.d(TAG, "onPartialResult called");
             }
 
             @Override
             public void onResult(final String s) {
+                Log.d(TAG, "onResult called");
                 if (!currentlyListening) {
                     return;
                 }
@@ -167,12 +168,14 @@ public class VoskInputDevice extends SpeechInputDevice {
 
             @Override
             public void onError(final Exception e) {
+                Log.d(TAG, "onError called");
                 stopListening();
                 notifyError(e);
             }
 
             @Override
             public void onTimeout() {
+                Log.d(TAG, "onTimeout called");
                 stopListening();
             }
 
