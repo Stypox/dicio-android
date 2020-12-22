@@ -1,7 +1,13 @@
 package org.dicio.dicio_android.util;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.core.os.ConfigurationCompat;
 import androidx.core.os.LocaleListCompat;
+import androidx.preference.PreferenceManager;
+
+import org.dicio.dicio_android.R;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -101,5 +107,15 @@ public class LocaleUtils {
 
         // fail
         throw new UnsupportedLocaleException(locale);
+    }
+
+    public static LocaleListCompat getAvailableLocalesFromPreferences(final Context context) {
+        final String language = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.settings_key_language), null);
+        if (language == null || language.trim().isEmpty()) {
+            return ConfigurationCompat.getLocales(context.getResources().getConfiguration());
+        } else {
+            return LocaleListCompat.create(new Locale(language));
+        }
     }
 }

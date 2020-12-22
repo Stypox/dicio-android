@@ -7,8 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.ConfigurationCompat;
-import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
@@ -16,6 +14,8 @@ import org.dicio.dicio_android.Sections;
 
 import java.util.Locale;
 import java.util.Objects;
+
+import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPreferences;
 
 abstract public class BaseActivity extends AppCompatActivity {
 
@@ -42,16 +42,10 @@ abstract public class BaseActivity extends AppCompatActivity {
                 .getString(getString(R.string.settings_key_language), null);
     }
 
-    private void setLocale(@Nullable final String language) {
+    private void setLocale() {
         try {
-            @NonNull final Locale sectionsLocale;
-            if (language == null || language.trim().isEmpty()) {
-                sectionsLocale = Sections.setLocale(
-                        ConfigurationCompat.getLocales(getResources().getConfiguration()));
-            } else {
-                sectionsLocale = Sections.setLocale(
-                        LocaleListCompat.create(new Locale(language)));
-            }
+            @NonNull final Locale sectionsLocale = Sections.setLocale(
+                    getAvailableLocalesFromPreferences(this));
 
             Locale.setDefault(sectionsLocale);
             final Resources resources = getResources();
@@ -70,7 +64,7 @@ abstract public class BaseActivity extends AppCompatActivity {
         currentTheme = getThemeFromPreferences();
         currentLanguage = getLocaleFromPreferences();
         setTheme(currentTheme);
-        setLocale(currentLanguage);
+        setLocale();
         super.onCreate(savedInstanceState);
     }
 

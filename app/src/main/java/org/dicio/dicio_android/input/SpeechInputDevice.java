@@ -22,21 +22,25 @@ public abstract class SpeechInputDevice extends InputDevice {
         });
     }
 
-    @Override
-    public final void tryToGetInput() {
-        voiceInputItem.setIcon(microphoneOnIcon);
-        startListening();
-    }
-
     /**
      * Listens for some spoken input from the microphone.
      * <br><br>
      * Overriding functions should report results to the
-     * {@code notifyInputReceived()} and {@code notifyError()} functions,
-     * and they must call {@code onFinishedListening} when they have
-     * finished listening.
+     * {@link InputDevice#notifyInputReceived(String)} and
+     * {@link InputDevice#notifyError(Throwable)} functions, and they must call
+     * {@link #onStartedListening()} when they turn on the microphone and
+     * {@link #onFinishedListening()} when instead they turn it off.
      */
-    public abstract void startListening();
+    @Override
+    public abstract void tryToGetInput();
+
+    /**
+     * This must be called by functions overriding {@code startListening()} when
+     * they have finished listening, so that the microphone icon can be turned off.
+     */
+    protected final void onStartedListening() {
+        voiceInputItem.setIcon(microphoneOnIcon);
+    }
 
     /**
      * This must be called by functions overriding {@code startListening()} when

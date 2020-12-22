@@ -13,6 +13,14 @@
     <string name="action_text_input">Text input</string>
     <string name="action_voice_input">Voice input</string>
 
+    <string name="vosk_model_notification_title">Vosk model</string>
+    <string name="vosk_model_notification_description">Language: %1$s</string>
+    <string name="vosk_model_unsupported_language">No Vosk model available for the current language</string>
+    <string name="vosk_model_downloading">Downloading Vosk model…</string>
+    <string name="vosk_model_extracting">Extracting Vosk model…</string>
+    <string name="vosk_model_extraction_error">Vosk model ready</string>
+    <string name="vosk_model_ready">Vosk model ready</string>
+
     <string name="settings_appearance">Appearance</string>
     <string name="settings">Settings</string> <!-- settings_header -->
     <string name="settings_io">Input and output methods</string>
@@ -43,6 +51,7 @@
     <string name="settings_value_speech_output_method_toast" translatable="false">toast</string>
     <string name="settings_value_speech_output_method_snackbar" translatable="false">snackbar</string>
     <string name="settings_value_speech_output_method_nothing" translatable="false">nothing</string>
+    <string name="settings_key_vosk_download_id" translatable="false">vosk_download_id</string>
 
     <string name="eval_fatal_error">I encountered an error while evaluating your request, sorry</string>
     <string name="eval_network_error">Network error</string>
