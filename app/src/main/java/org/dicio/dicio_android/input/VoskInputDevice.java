@@ -82,9 +82,9 @@ public class VoskInputDevice extends SpeechInputDevice {
     private boolean currentlyListening = false;
 
 
-    ////////////////////////
-    // Overriding methods //
-    ////////////////////////
+    /////////////////////
+    // Exposed methods //
+    /////////////////////
 
     public VoskInputDevice(final Activity activity) {
         this.activity = activity;
@@ -125,12 +125,23 @@ public class VoskInputDevice extends SpeechInputDevice {
         onStartedListening();
     }
 
+    public static void deleteCurrentModel(final Context context) {
+        final DownloadManager downloadManager =
+                (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        final Long modelDownloadId = getDownloadIdFromPreferences(context, downloadManager);
+        if (modelDownloadId != null) {
+            downloadManager.remove(modelDownloadId);
+        }
+
+        deleteFolder(new File(context.getFilesDir(), MODEL_PATH));
+    }
+
 
     ////////////////////
     // Initialization //
     ////////////////////
 
-    synchronized boolean initializeRecognizer() throws IOException {
+    private synchronized boolean initializeRecognizer() throws IOException {
         if (!prepareModel()) {
             return false;
         }
@@ -328,6 +339,21 @@ public class VoskInputDevice extends SpeechInputDevice {
         return new File(activity.getExternalFilesDir(null), MODEL_ZIP_FILENAME);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private static void deleteFolder(final File file) {
+        final File[] subFiles = file.listFiles();
+        if (subFiles != null) {
+            for (final File subFile : subFiles) {
+                if(subFile.isDirectory()) {
+                    deleteFolder(subFile);
+                } else {
+                    subFile.delete();
+                }
+            }
+        }
+        file.delete();
+    }
+
 
     //////////////////////////
     // Preference utilities //
@@ -370,36 +396,5 @@ public class VoskInputDevice extends SpeechInputDevice {
     private void asyncMakeToast(@StringRes final int message) {
         activity.runOnUiThread(() ->
                 Toast.makeText(activity, activity.getString(message), Toast.LENGTH_SHORT).show());
-    }
-
-
-    ///////////////////////////////
-    // Cleanup of models on disk //
-    ///////////////////////////////
-
-    public static void deleteCurrentModel(final Context context) {
-        final DownloadManager downloadManager =
-                (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        final Long modelDownloadId = getDownloadIdFromPreferences(context, downloadManager);
-        if (modelDownloadId != null) {
-            downloadManager.remove(modelDownloadId);
-        }
-
-        deleteFolder(new File(context.getFilesDir(), MODEL_PATH));
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void deleteFolder(final File file) {
-        final File[] subFiles = file.listFiles();
-        if (subFiles != null) {
-            for (final File subFile : subFiles) {
-                if(subFile.isDirectory()) {
-                    deleteFolder(subFile);
-                } else {
-                    subFile.delete();
-                }
-            }
-        }
-        file.delete();
     }
 }
