@@ -49,6 +49,7 @@ import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
 public class VoskInputDevice extends SpeechInputDevice {
 
     public static final String TAG = VoskInputDevice.class.getSimpleName();
+    public static final int MICROPHONE_PERMISSION_REQUEST_CODE = 13893;
     public static final String MODEL_PATH = "/vosk-model";
     public static final String MODEL_ZIP_FILENAME = "model.zip";
     public static final float SAMPLE_RATE = 16000.0f;
@@ -88,9 +89,8 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     public VoskInputDevice(final Activity activity) {
         this.activity = activity;
-
-        // TODO fix request code
-        ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO}, 5);
+        ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO},
+                MICROPHONE_PERMISSION_REQUEST_CODE);
     }
 
     @Override
