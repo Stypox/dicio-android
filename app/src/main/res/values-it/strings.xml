@@ -41,4 +41,11 @@
     <string name="settings_language">Lingua</string>
     <string name="settings_language_summary">Che lingua vuoi che Dicio usi per ascoltarti e rispondere?</string>
     <string name="settings_language_system">Usa la lingua di sistema</string>
+    <string name="vosk_model_notification_title">Modello di Vosk</string>
+    <string name="vosk_model_notification_description">Lingua: %1$s</string>
+    <string name="vosk_model_unsupported_language">Nessun modello di Vosk disponibile per il linguaggio corrente</string>
+    <string name="vosk_model_downloading">Scarico il modello di Vosk…</string>
+    <string name="vosk_model_extracting">Estraggo il modello di Vosk…</string>
+    <string name="vosk_model_extraction_error">Non è stato possibile estrarre il modello di Vosk</string>
+    <string name="vosk_model_ready">Il modello di Vosk è pronto</string>
 </resources>
