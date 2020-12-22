@@ -80,6 +80,11 @@ public class VoskInputDevice extends SpeechInputDevice {
     private boolean currentlyInitializingRecognizer = false;
     private boolean currentlyListening = false;
 
+
+    ////////////////////////
+    // Overriding methods //
+    ////////////////////////
+
     public VoskInputDevice(final Activity activity) {
         this.activity = activity;
 
@@ -119,6 +124,10 @@ public class VoskInputDevice extends SpeechInputDevice {
         onStartedListening();
     }
 
+
+    ////////////////////
+    // Initialization //
+    ////////////////////
 
     synchronized boolean initializeRecognizer() throws IOException {
         if (!prepareModel()) {
@@ -176,8 +185,14 @@ public class VoskInputDevice extends SpeechInputDevice {
         return true;
     }
 
+
+    ////////////////////
+    // File utilities //
+    ////////////////////
+
     private boolean prepareModel() {
-        if (new File(getModelDirectory(), "README").exists()) { // check if one file in correct place
+        if (new File(getModelDirectory(), "README").exists()) {
+            // one file is in the correct place, so everything should be ok
             return true;
         } else {
             final DownloadManager downloadManager =
@@ -204,8 +219,9 @@ public class VoskInputDevice extends SpeechInputDevice {
         Toast.makeText(activity, R.string.vosk_model_downloading, Toast.LENGTH_SHORT).show();
         final File modelZipFile = getModelZipFile();
         //noinspection ResultOfMethodCallIgnored
-        modelZipFile.delete();
+        modelZipFile.delete(); // if existing, delete the model zip file
 
+        // build download manager request
         final String modelUrl = MODEL_URLS.get(language);
         final DownloadManager.Request request = new DownloadManager.Request(Uri.parse(modelUrl))
                 .setTitle(activity.getString(R.string.vosk_model_notification_title))
@@ -213,9 +229,11 @@ public class VoskInputDevice extends SpeechInputDevice {
                         R.string.vosk_model_notification_description, language))
                 .setDestinationUri(Uri.fromFile(modelZipFile));
 
+        // launch download
         final long modelDownloadId = downloadManager.enqueue(request);
         putDownloadIdInPreferences(activity, modelDownloadId);
 
+        // setup download completion listener
         final IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -231,6 +249,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                                             Toast.makeText(activity, R.string.vosk_model_ready,
                                                     Toast.LENGTH_SHORT).show();
                                             downloadManager.remove(modelDownloadId);
+                                            putDownloadIdInPreferences(activity, null);
                                         },
                                         throwable -> {
                                             Toast.makeText(activity,
@@ -238,6 +257,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                                                     Toast.LENGTH_SHORT).show();
                                             throwable.printStackTrace();
                                             downloadManager.remove(modelDownloadId);
+                                            putDownloadIdInPreferences(activity, null);
                                         }));
                     }
                 }
@@ -251,7 +271,7 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         try (final ZipInputStream zipInputStream =
                      new ZipInputStream(new FileInputStream(getModelZipFile()))) {
-            ZipEntry entry;
+            ZipEntry entry; // cycles through all entries
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 final File destinationFile = getDestinationFile(entry.getName());
 
@@ -279,12 +299,17 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
     }
 
+
+    ////////////////////
+    // File utilities //
+    ////////////////////
+
     private File getDestinationFile(final String entryName) throws IOException {
         // model files are under a subdirectory, so get the path after the first /
         final String filePath = entryName.substring(entryName.indexOf('/') + 1);
         final File destinationDirectory = getModelDirectory();
 
-        // protect from zip slip vulnerability
+        // protect from Zip Slip vulnerability (!)
         final File destinationFile = new File(destinationDirectory, filePath);
         if (!destinationDirectory.getCanonicalPath().equals(destinationFile.getCanonicalPath()) &&
                 !destinationFile.getCanonicalPath().startsWith(
@@ -295,7 +320,6 @@ public class VoskInputDevice extends SpeechInputDevice {
         return destinationFile;
     }
 
-
     private File getModelDirectory() {
         return new File(activity.getFilesDir(), MODEL_PATH);
     }
@@ -303,6 +327,11 @@ public class VoskInputDevice extends SpeechInputDevice {
     private File getModelZipFile() {
         return new File(activity.getExternalFilesDir(null), MODEL_ZIP_FILENAME);
     }
+
+
+    //////////////////////////
+    // Preference utilities //
+    //////////////////////////
 
     private static Long getDownloadIdFromPreferences(final Context context,
                                                      final DownloadManager manager) {
@@ -326,12 +355,17 @@ public class VoskInputDevice extends SpeechInputDevice {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String downloadIdKey = context.getString(R.string.settings_key_vosk_download_id);
         if (id == null) {
+            // remove completely, used to notify of null values, check getDownloadIdFromPreferences
             prefs.edit().remove(downloadIdKey).apply();
         } else {
             prefs.edit().putLong(downloadIdKey, id).apply();
         }
     }
 
+
+    ///////////////////////////////
+    // Cleanup of models on disk //
+    ///////////////////////////////
 
     public static void deleteCurrentModel(final Context context) {
         final DownloadManager downloadManager =
