@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
@@ -208,8 +209,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                             getAvailableLocalesFromPreferences(activity), MODEL_URLS.keySet());
                     startDownloadingModel(downloadManager, result.supportedLocaleString);
                 } catch (UnsupportedLocaleException e) {
-                    Toast.makeText(activity,
-                            R.string.vosk_model_unsupported_language, Toast.LENGTH_SHORT).show();
+                    asyncMakeToast(R.string.vosk_model_unsupported_language);
                     e.printStackTrace();
                 }
             }
@@ -219,7 +219,7 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     private void startDownloadingModel(final DownloadManager downloadManager,
                                        final String language) {
-        Toast.makeText(activity, R.string.vosk_model_downloading, Toast.LENGTH_SHORT).show();
+        asyncMakeToast(R.string.vosk_model_downloading);
         final File modelZipFile = getModelZipFile();
         //noinspection ResultOfMethodCallIgnored
         modelZipFile.delete(); // if existing, delete the model zip file
@@ -249,15 +249,12 @@ public class VoskInputDevice extends SpeechInputDevice {
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(() -> {
-                                            Toast.makeText(activity, R.string.vosk_model_ready,
-                                                    Toast.LENGTH_SHORT).show();
+                                            asyncMakeToast(R.string.vosk_model_ready);
                                             downloadManager.remove(modelDownloadId);
                                             putDownloadIdInPreferences(activity, null);
                                         },
                                         throwable -> {
-                                            Toast.makeText(activity,
-                                                    R.string.vosk_model_extraction_error,
-                                                    Toast.LENGTH_SHORT).show();
+                                            asyncMakeToast(R.string.vosk_model_extraction_error);
                                             throwable.printStackTrace();
                                             downloadManager.remove(modelDownloadId);
                                             putDownloadIdInPreferences(activity, null);
@@ -270,7 +267,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     }
 
     private void extractModelZip() throws IOException {
-        Toast.makeText(activity, R.string.vosk_model_extracting, Toast.LENGTH_SHORT).show();
+        asyncMakeToast(R.string.vosk_model_extracting);
 
         try (final ZipInputStream zipInputStream =
                      new ZipInputStream(new FileInputStream(getModelZipFile()))) {
@@ -363,6 +360,16 @@ public class VoskInputDevice extends SpeechInputDevice {
         } else {
             prefs.edit().putLong(downloadIdKey, id).apply();
         }
+    }
+
+
+    /////////////////////
+    // Other utilities //
+    /////////////////////
+
+    private void asyncMakeToast(@StringRes final int message) {
+        activity.runOnUiThread(() ->
+                Toast.makeText(activity, activity.getString(message), Toast.LENGTH_SHORT).show());
     }
 
 

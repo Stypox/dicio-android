@@ -18,7 +18,7 @@
     <string name="vosk_model_unsupported_language">No Vosk model available for the current language</string>
     <string name="vosk_model_downloading">Downloading Vosk model…</string>
     <string name="vosk_model_extracting">Extracting Vosk model…</string>
-    <string name="vosk_model_extraction_error">Vosk model ready</string>
+    <string name="vosk_model_extraction_error">Extracting Vosk model from Zip failed</string>
     <string name="vosk_model_ready">Vosk model ready</string>
 
     <string name="settings_appearance">Appearance</string>
