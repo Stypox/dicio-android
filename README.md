@@ -1,6 +1,6 @@
 # Dicio assistant
 
-Dicio is a **free and open source** (voice) **assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It has multilanguage support, and is currently available in these languages: English (`en`) and Italian (`it`). Open to contributions :-D
+Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English (`en`) and Italian (`it`). Open to contributions :-D
 
 [<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/0.png" width=200>](./fastlane/metadata/android/en-US/images/phoneScreenshots/0.png)
 [<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width=200>](./fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
@@ -12,6 +12,10 @@ Currently Dicio answers questions about:
 - **weather**: collects weather information from **OpenWeatherMap** - _What's the weather like?_
 - **lyrics**: shows **Genius** lyrics for songs - _What's the song that goes we will we will rock you?_
 - **open**: opens an app on your device - _Open NewPipe_
+
+## Speech to text
+
+Dicio uses [Vosk](https://github.com/alphacep/vosk-api/) as its speech to text (`STT`) engine. In order to be able to run on every phone small models are employed, weighing `~50MB`. The download from [here](https://alphacephei.com/vosk/models) starts automatically whenever needed, so the app language can be changed seamlessly.
 
 ## Contributing
 
