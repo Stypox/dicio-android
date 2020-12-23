@@ -4,22 +4,34 @@ import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public abstract class SpeechInputDevice extends InputDevice {
-    private ImageButton voiceButton;
+    private ExtendedFloatingActionButton voiceButton;
     private Drawable microphoneOnIcon;
     private Drawable microphoneOffIcon;
 
-    public final void setVoiceInputItem(final ImageButton voiceButton,
+    public final void setVoiceInputItem(final ExtendedFloatingActionButton voiceFab,
                                         final Drawable microphoneOnIcon,
                                         final Drawable microphoneOffIcon) {
-        this.voiceButton = voiceButton;
+        this.voiceButton = voiceFab;
         this.microphoneOnIcon = microphoneOnIcon;
         this.microphoneOffIcon = microphoneOffIcon;
 
-        voiceButton.setImageDrawable(microphoneOffIcon);
-        voiceButton.setOnClickListener(view -> tryToGetInput());
+        voiceButton.setText("Listening...");
+        showNotListening();
+        voiceFab.setOnClickListener(view -> tryToGetInput());
+    }
+
+    private void showListening() {
+        voiceButton.setIcon(microphoneOnIcon);
+        voiceButton.extend();
+    }
+
+    private void showNotListening() {
+        voiceButton.setIcon(microphoneOffIcon);
+        voiceButton.shrink();
     }
 
     /**
@@ -39,7 +51,7 @@ public abstract class SpeechInputDevice extends InputDevice {
      * they have finished listening, so that the microphone icon can be turned off.
      */
     protected final void onStartedListening() {
-        voiceButton.setImageDrawable(microphoneOnIcon);
+        showListening();
     }
 
     /**
@@ -47,6 +59,6 @@ public abstract class SpeechInputDevice extends InputDevice {
      * they have finished listening, so that the microphone icon can be turned off.
      */
     protected final void onFinishedListening() {
-        voiceButton.setImageDrawable(microphoneOffIcon);
+        showNotListening();
     }
 }

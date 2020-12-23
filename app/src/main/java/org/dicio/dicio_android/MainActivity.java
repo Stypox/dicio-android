@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.dicio.component.standard.StandardRecognizer;
@@ -108,14 +109,14 @@ public class MainActivity extends BaseActivity
     }
 
     private void setupVoiceButton() {
-        final ImageButton voiceButton = findViewById(R.id.voiceButton);
+        final ExtendedFloatingActionButton voiceFab = findViewById(R.id.voiceFab);
         if (inputDevice instanceof SpeechInputDevice) {
-            voiceButton.setVisibility(View.VISIBLE);
-            ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceButton,
+            voiceFab.setVisibility(View.VISIBLE);
+            ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceFab,
                     AppCompatResources.getDrawable(this, R.drawable.ic_mic_white),
                     AppCompatResources.getDrawable(this, R.drawable.ic_mic_none_white));
         } else {
-            voiceButton.setVisibility(View.GONE);
+            voiceFab.setVisibility(View.GONE);
         }
     }
 

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="DarkAppTheme" parent="@style/Theme.AppCompat">
+    <style name="DarkAppTheme" parent="@style/Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
         <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
@@ -25,7 +25,7 @@
     </style>
 
 
-    <style name="LightAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="LightAppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
         <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->

@@ -51,17 +51,21 @@
                     android:showDividers="middle" />
             </ScrollView>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/voiceButton"
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/voiceFab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/action_voice_input"
+                android:text=""
+                android:textColor="@color/white"
                 app:backgroundTint="@color/colorPrimary"
+                app:icon="@drawable/ic_mic_none_white"
+                app:iconTint="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/outputScrollView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_mic_none_white" />
+                app:rippleColor="@color/white" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
