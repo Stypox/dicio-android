@@ -112,6 +112,7 @@ public class MainActivity extends BaseActivity
         final ExtendedFloatingActionButton voiceFab = findViewById(R.id.voiceFab);
         if (inputDevice instanceof SpeechInputDevice) {
             voiceFab.setVisibility(View.VISIBLE);
+            voiceFab.setText(getString(R.string.listening));
             ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceFab,
                     AppCompatResources.getDrawable(this, R.drawable.ic_mic_white),
                     AppCompatResources.getDrawable(this, R.drawable.ic_mic_none_white));

@@ -1,37 +1,33 @@
 package org.dicio.dicio_android.input;
 
 import android.graphics.drawable.Drawable;
-import android.view.MenuItem;
-import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public abstract class SpeechInputDevice extends InputDevice {
-    private ExtendedFloatingActionButton voiceButton;
+    private ExtendedFloatingActionButton voiceFab;
     private Drawable microphoneOnIcon;
     private Drawable microphoneOffIcon;
 
     public final void setVoiceInputItem(final ExtendedFloatingActionButton voiceFab,
                                         final Drawable microphoneOnIcon,
                                         final Drawable microphoneOffIcon) {
-        this.voiceButton = voiceFab;
+        this.voiceFab = voiceFab;
         this.microphoneOnIcon = microphoneOnIcon;
         this.microphoneOffIcon = microphoneOffIcon;
 
-        voiceButton.setText("Listening...");
         showNotListening();
         voiceFab.setOnClickListener(view -> tryToGetInput());
     }
 
     private void showListening() {
-        voiceButton.setIcon(microphoneOnIcon);
-        voiceButton.extend();
+        voiceFab.setIcon(microphoneOnIcon);
+        voiceFab.extend();
     }
 
     private void showNotListening() {
-        voiceButton.setIcon(microphoneOffIcon);
-        voiceButton.shrink();
+        voiceFab.setIcon(microphoneOffIcon);
+        voiceFab.shrink();
     }
 
     /**
