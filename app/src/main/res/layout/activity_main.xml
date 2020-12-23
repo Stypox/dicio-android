@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/action_voice_input"
+                android:minHeight="56dp"
                 android:text=""
                 android:textColor="@color/white"
                 app:backgroundTint="@color/colorPrimary"
