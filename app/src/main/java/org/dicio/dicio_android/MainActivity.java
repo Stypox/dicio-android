@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -101,17 +103,19 @@ public class MainActivity extends BaseActivity
 
         currentInputDevicePreference = getInputDevicePreference();
         initializeComponentEvaluator();
+        setupVoiceButton();
         appJustOpened = true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (textInputItem != null && textInputItem.isActionViewExpanded()) {
-            invalidateOptionsMenu();
+    private void setupVoiceButton() {
+        final ImageButton voiceButton = findViewById(R.id.voiceButton);
+        if (inputDevice instanceof SpeechInputDevice) {
+            voiceButton.setVisibility(View.VISIBLE);
+            ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceButton,
+                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_white),
+                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_none_white));
         } else {
-            super.onBackPressed();
+            voiceButton.setVisibility(View.GONE);
         }
     }
 
@@ -149,16 +153,6 @@ public class MainActivity extends BaseActivity
             textInputItem.setVisible(false);
         }
 
-        final MenuItem voiceInputItem = menu.findItem(R.id.action_voice_input);
-        if (inputDevice instanceof SpeechInputDevice) {
-            voiceInputItem.setVisible(true);
-            ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceInputItem,
-                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_white),
-                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_none_white));
-        } else {
-            voiceInputItem.setVisible(false);
-        }
-
         if (appJustOpened) {
             inputDevice.tryToGetInput();
             appJustOpened = false;
@@ -171,18 +165,6 @@ public class MainActivity extends BaseActivity
             final MenuItem item = menu.getItem(i);
             item.setVisible(false);
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            final Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        } else {
-            final DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        return true;
     }
 
     @Override
@@ -199,8 +181,33 @@ public class MainActivity extends BaseActivity
         if (reinitializeComponentEvaluator) {
             initializeComponentEvaluator();
             invalidateOptionsMenu();
+            setupVoiceButton();
         }
     }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            final Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        } else {
+            final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (textInputItem != null && textInputItem.isActionViewExpanded()) {
+            invalidateOptionsMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     /////////////////////////////////////
     // Assistance components functions //

@@ -2,24 +2,24 @@ package org.dicio.dicio_android.input;
 
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public abstract class SpeechInputDevice extends InputDevice {
-    private MenuItem voiceInputItem;
+    private ImageButton voiceButton;
     private Drawable microphoneOnIcon;
     private Drawable microphoneOffIcon;
 
-    public final void setVoiceInputItem(final MenuItem voiceInputItem,
+    public final void setVoiceInputItem(final ImageButton voiceButton,
                                         final Drawable microphoneOnIcon,
                                         final Drawable microphoneOffIcon) {
-        this.voiceInputItem = voiceInputItem;
+        this.voiceButton = voiceButton;
         this.microphoneOnIcon = microphoneOnIcon;
         this.microphoneOffIcon = microphoneOffIcon;
 
-        voiceInputItem.setIcon(microphoneOffIcon);
-        voiceInputItem.setOnMenuItemClickListener(item -> {
-            tryToGetInput();
-            return false;
-        });
+        voiceButton.setImageDrawable(microphoneOffIcon);
+        voiceButton.setOnClickListener(view -> tryToGetInput());
     }
 
     /**
@@ -39,7 +39,7 @@ public abstract class SpeechInputDevice extends InputDevice {
      * they have finished listening, so that the microphone icon can be turned off.
      */
     protected final void onStartedListening() {
-        voiceInputItem.setIcon(microphoneOnIcon);
+        voiceButton.setImageDrawable(microphoneOnIcon);
     }
 
     /**
@@ -47,6 +47,6 @@ public abstract class SpeechInputDevice extends InputDevice {
      * they have finished listening, so that the microphone icon can be turned off.
      */
     protected final void onFinishedListening() {
-        voiceInputItem.setIcon(microphoneOffIcon);
+        voiceButton.setImageDrawable(microphoneOffIcon);
     }
 }
