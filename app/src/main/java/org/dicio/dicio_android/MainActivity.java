@@ -24,7 +24,8 @@ import com.google.android.material.navigation.NavigationView;
 import org.dicio.component.standard.StandardRecognizer;
 import org.dicio.dicio_android.components.AssistanceComponent;
 import org.dicio.dicio_android.components.ChainAssistanceComponent;
-import org.dicio.dicio_android.components.fallback.TextFallbackComponent;
+import org.dicio.dicio_android.components.ComponentsHandler;
+import org.dicio.dicio_android.components.fallback.text.TextFallback;
 import org.dicio.dicio_android.components.lyrics.LyricsOutput;
 import org.dicio.dicio_android.components.open.OpenOutput;
 import org.dicio.dicio_android.components.search.SearchOutput;
@@ -217,29 +218,12 @@ public class MainActivity extends BaseActivity
     private void initializeComponentEvaluator() {
         // Sections language is initialized in BaseActivity.setLocale
 
-        final List<AssistanceComponent> standardComponentBatch = new ArrayList<AssistanceComponent>() {{
-            add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(getSection(weather)))
-                    .process(new OpenWeatherMapProcessor())
-                    .output(new WeatherOutput()));
-            add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(getSection(search)))
-                    .process(new QwantProcessor())
-                    .output(new SearchOutput()));
-            add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(getSection(lyrics)))
-                    .process(new GeniusProcessor())
-                    .output(new LyricsOutput()));
-            add(new ChainAssistanceComponent.Builder()
-                    .recognize(new StandardRecognizer(getSection(open)))
-                    .output(new OpenOutput()));
-        }};
-
         inputDevice = buildInputDevice();
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
         componentEvaluator = new ComponentEvaluator(
-                new ComponentRanker(standardComponentBatch, new TextFallbackComponent()),
+                new ComponentRanker(ComponentsHandler.getStandardAssistanceComponentBatch(this),
+                        ComponentsHandler.getFallbackAssistanceComponent(this)),
                 inputDevice,
                 speechOutputDevice,
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),

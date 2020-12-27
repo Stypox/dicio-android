@@ -49,4 +49,5 @@
     <string name="vosk_model_extraction_error">Non è stato possibile estrarre il modello di Vosk</string>
     <string name="vosk_model_ready">Il modello di Vosk è pronto</string>
     <string name="listening">Sto ascoltando…</string>
+    <string name="pref_search_engine">Motore di ricerca</string>
 </resources>

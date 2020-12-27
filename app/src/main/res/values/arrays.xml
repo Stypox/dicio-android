@@ -39,4 +39,13 @@
         <item>@string/pref_val_speech_output_method_snackbar</item>
         <item>@string/pref_val_speech_output_method_nothing</item>
     </string-array>
+
+    <string-array name="pref_search_provider_entries">
+        <item>@string/pref_search_engine_qwant</item>
+        <item>@string/pref_search_engine_duckduckgo</item>
+    </string-array>
+    <string-array name="pref_search_provider_entry_values">
+        <item>@string/pref_val_search_engine_qwant</item>
+        <item>@string/pref_val_search_engine_duckduckgo</item>
+    </string-array>
 </resources>

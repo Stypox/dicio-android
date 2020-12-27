@@ -41,6 +41,9 @@
     <string name="pref_speech_output_method_toast">Toast (popup message)</string>
     <string name="pref_speech_output_method_snackbar">Snackbar (message at the bottom)</string>
     <string name="pref_speech_output_method_nothing">Nothing</string>
+    <string name="pref_search_engine">Search engine</string>
+    <string name="pref_search_engine_qwant" translatable="false">Qwant</string>
+    <string name="pref_search_engine_duckduckgo" translatable="false">DuckDuckGo</string>
 
     <string name="eval_fatal_error">I encountered an error while evaluating your request, sorry</string>
     <string name="eval_network_error">Network error</string>
