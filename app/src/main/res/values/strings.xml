@@ -42,18 +42,6 @@
     <string name="settings_speech_output_method_snackbar">Snackbar (message at the bottom)</string>
     <string name="settings_speech_output_method_nothing">Nothing</string>
 
-    <string name="settings_key_theme" translatable="false">theme</string>
-    <string name="settings_value_theme_light" translatable="false">light</string>
-    <string name="settings_value_theme_dark" translatable="false">dark</string>
-    <string name="settings_key_input_method" translatable="false">input_method</string>
-    <string name="settings_value_input_method_text" translatable="false">text</string>
-    <string name="settings_value_input_method_vosk" translatable="false">vosk</string>
-    <string name="settings_key_speech_output_method" translatable="false">speech_output_method</string>
-    <string name="settings_value_speech_output_method_toast" translatable="false">toast</string>
-    <string name="settings_value_speech_output_method_snackbar" translatable="false">snackbar</string>
-    <string name="settings_value_speech_output_method_nothing" translatable="false">nothing</string>
-    <string name="settings_key_vosk_download_id" translatable="false">vosk_download_id</string>
-
     <string name="eval_fatal_error">I encountered an error while evaluating your request, sorry</string>
     <string name="eval_network_error">Network error</string>
     <string name="eval_network_error_description">Dicio could not reach the internet. Please check your connection and retry.</string>
@@ -68,5 +56,4 @@
     <string name="component_weather_in_city_there_is_description">Currently in %1$s there is %2$s</string>
     <string name="component_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="component_weather_min_max_wind">Minimum temperature: %1$.1f°C\nMaximum temperature: %2$.1f°C\nWind speed: %3$.1fm/s</string>
-    <string name="settings_key_language" translatable="false">language</string>
 </resources>
