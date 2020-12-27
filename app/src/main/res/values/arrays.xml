@@ -14,7 +14,7 @@
         <item>English</item>
         <item>Italiano</item>
     </string-array>
-    <string-array name="pref_language_values">
+    <string-array name="pref_language_entry_values">
         <item />
         <item>en</item>
         <item>it</item>

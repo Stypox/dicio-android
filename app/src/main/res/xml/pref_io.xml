@@ -4,7 +4,7 @@
     <ListPreference
         android:defaultValue=""
         android:entries="@array/pref_language_entries"
-        android:entryValues="@array/pref_language_values"
+        android:entryValues="@array/pref_language_entry_values"
         android:icon="?attr/iconLanguage"
         android:key="@string/pref_key_language"
         android:summary="@string/pref_language_summary"
