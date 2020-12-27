@@ -29,4 +29,4 @@ If you want to translate Dicio to a new language you have to take these **manual
 
 ### Adding skills
 
-###### TODO: add description, and possibly rename all references to "components" to "skills"
+###### TODO: add description
