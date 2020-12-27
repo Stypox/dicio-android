@@ -2,8 +2,8 @@ package org.dicio.dicio_android.eval;
 
 import android.content.Context;
 
-import org.dicio.component.InputRecognizer;
-import org.dicio.component.util.WordExtractor;
+import org.dicio.skill.InputRecognizer;
+import org.dicio.skill.util.WordExtractor;
 import org.dicio.dicio_android.skills.Skill;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import static org.dicio.component.InputRecognizer.Specificity.*;
+import static org.dicio.skill.InputRecognizer.Specificity.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;

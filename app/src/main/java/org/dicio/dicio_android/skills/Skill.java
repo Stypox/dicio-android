@@ -2,7 +2,7 @@ package org.dicio.dicio_android.skills;
 
 import android.content.Context;
 
-import org.dicio.component.InputRecognizer;
+import org.dicio.skill.InputRecognizer;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 

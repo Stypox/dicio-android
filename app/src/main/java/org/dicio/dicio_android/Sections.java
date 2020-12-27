@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.os.LocaleListCompat;
 
-import org.dicio.component.standard.StandardRecognizerData;
+import org.dicio.skill.standard.StandardRecognizerData;
 import org.dicio.dicio_android.util.LocaleUtils;
 
 import java.util.Collection;

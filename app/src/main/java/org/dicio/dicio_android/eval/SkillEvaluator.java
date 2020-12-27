@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 
-import org.dicio.component.util.WordExtractor;
+import org.dicio.skill.util.WordExtractor;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.skills.Skill;
 import org.dicio.dicio_android.input.InputDevice;

@@ -9,7 +9,7 @@ import android.content.pm.ResolveInfo;
 
 import androidx.annotation.Nullable;
 
-import org.dicio.component.standard.StandardResult;
+import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.OutputGenerator;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;

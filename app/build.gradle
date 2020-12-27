@@ -42,7 +42,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.1'
 
-    implementation 'com.github.Stypox:dicio-assistance-component:0f117f4c09fe9ccfb0a44cfd4dd8447ce5935b98'
+    implementation 'com.github.Stypox:dicio-skill:24b51605041bbd281df27e4b1f019b3cf279d623'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "io.reactivex.rxjava3:rxjava:3.0.8"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
@@ -96,7 +96,7 @@ task sentencesCompiler {
                 + " */\n"
                 + "\n"
                 + "package org.dicio.dicio_android;\n"
-                + "import org.dicio.component.standard.StandardRecognizerData;\n"
+                + "import org.dicio.skill.standard.StandardRecognizerData;\n"
                 + "import java.util.HashMap;\n"
                 + "import java.util.Map;\n")
 

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.dicio.component.standard.StandardRecognizer;
+import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.dicio_android.skills.Skill;
 import org.dicio.dicio_android.skills.SkillInfo;
 import org.dicio.dicio_android.skills.ChainSkill;

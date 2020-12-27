@@ -1,7 +1,7 @@
 package org.dicio.dicio_android.skills.lyrics;
 
-import org.dicio.component.IntermediateProcessor;
-import org.dicio.component.standard.StandardResult;
+import org.dicio.skill.IntermediateProcessor;
+import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.RegexUtils;
 import org.json.JSONArray;
