@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.open;
+package org.dicio.dicio_android.skills.open;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,10 +34,10 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
 
         if (applicationInfo == null) {
             speechOutputDevice.speak(
-                    context.getString(R.string.component_open_unknown_app, userAppName));
+                    context.getString(R.string.skill_open_unknown_app, userAppName));
 
         } else {
-            speechOutputDevice.speak(context.getString(R.string.component_open_opening,
+            speechOutputDevice.speak(context.getString(R.string.skill_open_opening,
                     packageManager.getApplicationLabel(applicationInfo)));
 
             final Intent launchIntent =

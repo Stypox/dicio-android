@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components;
+package org.dicio.dicio_android.skills;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,8 +6,8 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
-public interface AssistanceComponentInfo {
-    AssistanceComponent build(Context context, SharedPreferences preferences);
+public interface SkillInfo {
+    Skill build(Context context, SharedPreferences preferences);
 
     boolean hasPreferences();
 

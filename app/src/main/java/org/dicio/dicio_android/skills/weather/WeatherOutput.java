@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.weather;
+package org.dicio.dicio_android.skills.weather;
 
 import android.content.Context;
 import android.view.View;
@@ -29,25 +29,25 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
                          final GraphicalOutputDevice graphicalOutputDevice) {
         if (data.failed) {
             final String message =
-                    context.getString(R.string.component_weather_could_not_find_city, data.city);
+                    context.getString(R.string.skill_weather_could_not_find_city, data.city);
             speechOutputDevice.speak(message);
             graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
 
         } else {
             speechOutputDevice.speak(
-                    context.getString(R.string.component_weather_in_city_there_is_description,
+                    context.getString(R.string.skill_weather_in_city_there_is_description,
                             data.city, data.description));
 
             final View weatherView =
-                    GraphicalOutputUtils.inflate(context, R.layout.component_weather);
+                    GraphicalOutputUtils.inflate(context, R.layout.skill_weather);
             Picasso.get().load(data.iconUrl).into(
                     (ImageView) weatherView.findViewById(R.id.image));
             ((TextView) weatherView.findViewById(R.id.city)).setText(data.city);
             ((TextView) weatherView.findViewById(R.id.basicInfo)).setText(
-                    context.getString(R.string.component_weather_description_temperature,
+                    context.getString(R.string.skill_weather_description_temperature,
                             data.description, data.temp));
             ((TextView) weatherView.findViewById(R.id.advancedInfo)).setText(
-                    context.getString(R.string.component_weather_min_max_wind,
+                    context.getString(R.string.skill_weather_min_max_wind,
                             data.tempMin, data.tempMax, data.windSpeed));
             graphicalOutputDevice.display(weatherView);
         }

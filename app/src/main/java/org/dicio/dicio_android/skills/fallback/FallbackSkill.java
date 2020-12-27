@@ -1,9 +1,9 @@
-package org.dicio.dicio_android.components.fallback;
+package org.dicio.dicio_android.skills.fallback;
 
 import org.dicio.component.InputRecognizer;
-import org.dicio.dicio_android.components.AssistanceComponent;
+import org.dicio.dicio_android.skills.Skill;
 
-public interface FallbackComponent extends AssistanceComponent {
+public interface FallbackSkill extends Skill {
     @Override
     default InputRecognizer.Specificity specificity() {
         return InputRecognizer.Specificity.low; // useless

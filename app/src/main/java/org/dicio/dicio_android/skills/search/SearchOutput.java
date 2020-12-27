@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.search;
+package org.dicio.dicio_android.skills.search;
 
 import android.content.Context;
 import android.text.Html;
@@ -37,7 +37,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
                 ResourcesCompat.getDrawable(context.getResources(), R.drawable.divider_items, null));
         for (Data item : data) {
             final View view =
-                    GraphicalOutputUtils.inflate(context, R.layout.component_search_result);
+                    GraphicalOutputUtils.inflate(context, R.layout.skill_search_result);
 
             ((TextView) view.findViewById(R.id.title))
                     .setText(Html.fromHtml(item.title));
@@ -50,7 +50,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             output.addView(view);
         }
 
-        speechOutputDevice.speak(context.getString(R.string.component_search_here_is_what_i_found));
+        speechOutputDevice.speak(context.getString(R.string.skill_search_here_is_what_i_found));
         graphicalOutputDevice.display(output);
     }
 }

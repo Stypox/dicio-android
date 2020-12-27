@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.search;
+package org.dicio.dicio_android.skills.search;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,21 +9,18 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.dicio.component.standard.StandardRecognizer;
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.components.AssistanceComponent;
-import org.dicio.dicio_android.components.AssistanceComponentInfo;
-import org.dicio.dicio_android.components.ChainAssistanceComponent;
-import org.dicio.dicio_android.components.weather.OpenWeatherMapProcessor;
-import org.dicio.dicio_android.components.weather.WeatherOutput;
+import org.dicio.dicio_android.skills.Skill;
+import org.dicio.dicio_android.skills.SkillInfo;
+import org.dicio.dicio_android.skills.ChainSkill;
 
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.SectionsGenerated.search;
-import static org.dicio.dicio_android.SectionsGenerated.weather;
 
-public class SearchInfo implements AssistanceComponentInfo {
+public class SearchInfo implements SkillInfo {
 
     @Override
-    public AssistanceComponent build(final Context context, final SharedPreferences preferences) {
-        final ChainAssistanceComponent.Builder builder = new ChainAssistanceComponent.Builder()
+    public Skill build(final Context context, final SharedPreferences preferences) {
+        final ChainSkill.Builder builder = new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(search)));
 
         final String searchEngine = preferences.getString(

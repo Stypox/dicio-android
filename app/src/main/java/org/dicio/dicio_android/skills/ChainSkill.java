@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components;
+package org.dicio.dicio_android.skills;
 
 import android.content.Context;
 
@@ -12,40 +12,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ChainAssistanceComponent implements AssistanceComponent {
+public class ChainSkill implements Skill {
 
     public static class Builder {
-        ChainAssistanceComponent chainAssistanceComponent;
+        ChainSkill chainSkill;
 
         public Builder() {
-            chainAssistanceComponent = new ChainAssistanceComponent();
+            chainSkill = new ChainSkill();
         }
 
         public Builder recognize(final InputRecognizer<?> inputRecognizer) {
-            if (chainAssistanceComponent.inputRecognizer != null) {
+            if (chainSkill.inputRecognizer != null) {
                 throw new IllegalArgumentException("recognize() can only be called once");
             }
 
-            chainAssistanceComponent.inputRecognizer = inputRecognizer;
+            chainSkill.inputRecognizer = inputRecognizer;
             return this;
         }
 
         public Builder process(final IntermediateProcessor<?, ?> intermediateProcessor) {
-            if (chainAssistanceComponent.inputRecognizer == null) {
+            if (chainSkill.inputRecognizer == null) {
                 throw new IllegalArgumentException("process() can't be called before recognize()");
             }
 
-            chainAssistanceComponent.intermediateProcessors.add(intermediateProcessor);
+            chainSkill.intermediateProcessors.add(intermediateProcessor);
             return this;
         }
 
-        public ChainAssistanceComponent output(final OutputGenerator<?> outputGenerator) {
-            if (chainAssistanceComponent.inputRecognizer == null) {
+        public ChainSkill output(final OutputGenerator<?> outputGenerator) {
+            if (chainSkill.inputRecognizer == null) {
                 throw new IllegalArgumentException("output() can't be called before recognize()");
             }
 
-            chainAssistanceComponent.outputGenerator = outputGenerator;
-            return chainAssistanceComponent;
+            chainSkill.outputGenerator = outputGenerator;
+            return chainSkill;
         }
     }
 
@@ -55,7 +55,7 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     private OutputGenerator outputGenerator;
     private Object lastResult;
 
-    private ChainAssistanceComponent() {
+    private ChainSkill() {
         intermediateProcessors = new ArrayList<>();
     }
 
@@ -103,11 +103,11 @@ public class ChainAssistanceComponent implements AssistanceComponent {
     }
 
     /**
-     * @see OutputGenerator#nextAssistanceComponents()
+     * @see OutputGenerator#nextSkills()
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<AssistanceComponent> nextAssistanceComponents() {
-        return outputGenerator.nextAssistanceComponents();
+    public List<Skill> nextSkills() {
+        return outputGenerator.nextSkills();
     }
 }

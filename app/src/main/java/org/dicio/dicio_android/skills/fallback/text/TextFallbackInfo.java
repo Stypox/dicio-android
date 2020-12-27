@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.fallback.text;
+package org.dicio.dicio_android.skills.fallback.text;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.dicio.dicio_android.components.AssistanceComponent;
-import org.dicio.dicio_android.components.AssistanceComponentInfo;
+import org.dicio.dicio_android.skills.Skill;
+import org.dicio.dicio_android.skills.SkillInfo;
 
-public class TextFallbackInfo implements AssistanceComponentInfo {
+public class TextFallbackInfo implements SkillInfo {
 
     @Override
-    public AssistanceComponent build(final Context context, final SharedPreferences preferences) {
+    public Skill build(final Context context, final SharedPreferences preferences) {
         return new TextFallback();
     }
 

@@ -2,7 +2,7 @@ package org.dicio.dicio_android.output;
 
 import android.content.Context;
 
-import org.dicio.dicio_android.components.AssistanceComponent;
+import org.dicio.dicio_android.skills.Skill;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 
@@ -23,15 +23,15 @@ public interface OutputGenerator<FromType> {
                   GraphicalOutputDevice graphicalOutputDevice);
 
     /**
-     * Returns a list of assistance components to use for the next user input. This is needed to
-     * allow providing a stateful interaction with a set of assistance components. If the list is
+     * Returns a list of skills to use for the next user input. This is needed to
+     * allow providing a stateful interaction with a set of skills. If the list is
      * empty the current stateful conversation is interrupted. The function will be called after
      * {@link #generate(Object, Context, SpeechOutputDevice, GraphicalOutputDevice) generate()), so
      * that the calculated data can be used to choose what to do.
-     * @return a list of assistance components
+     * @return a list of skills
      */
-    default List<AssistanceComponent> nextAssistanceComponents() {
-        // no next components by default
+    default List<Skill> nextSkills() {
+        // no next skills by default
         return Collections.emptyList();
     }
 }

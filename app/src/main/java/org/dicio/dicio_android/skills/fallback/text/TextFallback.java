@@ -1,9 +1,9 @@
-package org.dicio.dicio_android.components.fallback.text;
+package org.dicio.dicio_android.skills.fallback.text;
 
 import android.content.Context;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.components.fallback.FallbackComponent;
+import org.dicio.dicio_android.skills.fallback.FallbackSkill;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
@@ -11,7 +11,7 @@ import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import java.util.List;
 import java.util.Locale;
 
-public class TextFallback implements FallbackComponent {
+public class TextFallback implements FallbackSkill {
 
     @Override
     public void setInput(final String input,

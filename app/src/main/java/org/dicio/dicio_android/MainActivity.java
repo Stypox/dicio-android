@@ -21,20 +21,9 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import org.dicio.component.standard.StandardRecognizer;
-import org.dicio.dicio_android.components.AssistanceComponent;
-import org.dicio.dicio_android.components.ChainAssistanceComponent;
-import org.dicio.dicio_android.components.ComponentsHandler;
-import org.dicio.dicio_android.components.fallback.text.TextFallback;
-import org.dicio.dicio_android.components.lyrics.LyricsOutput;
-import org.dicio.dicio_android.components.open.OpenOutput;
-import org.dicio.dicio_android.components.search.SearchOutput;
-import org.dicio.dicio_android.components.weather.WeatherOutput;
-import org.dicio.dicio_android.components.lyrics.GeniusProcessor;
-import org.dicio.dicio_android.components.weather.OpenWeatherMapProcessor;
-import org.dicio.dicio_android.components.search.QwantProcessor;
-import org.dicio.dicio_android.eval.ComponentEvaluator;
-import org.dicio.dicio_android.eval.ComponentRanker;
+import org.dicio.dicio_android.skills.SkillHandler;
+import org.dicio.dicio_android.eval.SkillEvaluator;
+import org.dicio.dicio_android.eval.SkillRanker;
 import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
@@ -47,15 +36,6 @@ import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.util.BaseActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.dicio.dicio_android.Sections.getSection;
-import static org.dicio.dicio_android.SectionsGenerated.lyrics;
-import static org.dicio.dicio_android.SectionsGenerated.open;
-import static org.dicio.dicio_android.SectionsGenerated.search;
-import static org.dicio.dicio_android.SectionsGenerated.weather;
-
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -65,7 +45,7 @@ public class MainActivity extends BaseActivity
     private MenuItem textInputItem = null;
 
     private InputDevice inputDevice;
-    private ComponentEvaluator componentEvaluator;
+    private SkillEvaluator skillEvaluator;
     private String currentInputDevicePreference;
     private boolean appJustOpened = false;
     private boolean textInputItemFocusJustChanged = false;
@@ -103,7 +83,7 @@ public class MainActivity extends BaseActivity
         });
 
         currentInputDevicePreference = getInputDevicePreference();
-        initializeComponentEvaluator();
+        initializeSkillEvaluator();
         setupVoiceButton();
         appJustOpened = true;
     }
@@ -172,16 +152,16 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        boolean reinitializeComponentEvaluator = false;
+        boolean reinitializeSkillEvaluator = false;
 
         final String inputDevicePreference = getInputDevicePreference();
         if (!inputDevicePreference.equals(currentInputDevicePreference)) {
             currentInputDevicePreference = inputDevicePreference;
-            reinitializeComponentEvaluator = true;
+            reinitializeSkillEvaluator = true;
         }
 
-        if (reinitializeComponentEvaluator) {
-            initializeComponentEvaluator();
+        if (reinitializeSkillEvaluator) {
+            initializeSkillEvaluator();
             invalidateOptionsMenu();
             setupVoiceButton();
         }
@@ -211,19 +191,19 @@ public class MainActivity extends BaseActivity
     }
 
 
-    /////////////////////////////////////
-    // Assistance components functions //
-    /////////////////////////////////////
+    /////////////////////
+    // Skill functions //
+    /////////////////////
 
-    private void initializeComponentEvaluator() {
+    private void initializeSkillEvaluator() {
         // Sections language is initialized in BaseActivity.setLocale
 
         inputDevice = buildInputDevice();
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
-        componentEvaluator = new ComponentEvaluator(
-                new ComponentRanker(ComponentsHandler.getStandardAssistanceComponentBatch(this),
-                        ComponentsHandler.getFallbackAssistanceComponent(this)),
+        skillEvaluator = new SkillEvaluator(
+                new SkillRanker(SkillHandler.getStandardSkillBatch(this),
+                        SkillHandler.getFallbackSkill(this)),
                 inputDevice,
                 speechOutputDevice,
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),

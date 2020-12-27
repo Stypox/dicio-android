@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.lyrics;
+package org.dicio.dicio_android.skills.lyrics;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -28,13 +28,13 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
 
         if (data.failed) {
             final String message =
-                    context.getString(R.string.component_lyrics_song_not_found, data.title);
+                    context.getString(R.string.skill_lyrics_song_not_found, data.title);
             speechOutputDevice.speak(message);
             graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
 
         } else {
             speechOutputDevice.speak(
-                    context.getString(R.string.component_lyrics_found_song_by_artist,
+                    context.getString(R.string.skill_lyrics_found_song_by_artist,
                             data.title, data.artist));
 
             final TextView lyricsView = GraphicalOutputUtils.buildDescription(context, data.lyrics);

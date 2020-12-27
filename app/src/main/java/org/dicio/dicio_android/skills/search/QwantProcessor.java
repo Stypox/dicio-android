@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.search;
+package org.dicio.dicio_android.skills.search;
 
 import org.dicio.component.IntermediateProcessor;
 import org.dicio.component.standard.StandardResult;

@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components;
+package org.dicio.dicio_android.skills;
 
 import android.content.Context;
 
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public interface AssistanceComponent {
+public interface Skill {
 
     InputRecognizer.Specificity specificity();
 
@@ -31,7 +31,7 @@ public interface AssistanceComponent {
      */
     void cleanup();
 
-    default List<AssistanceComponent> nextAssistanceComponents() {
+    default List<Skill> nextSkills() {
         return Collections.emptyList();
     }
 }
