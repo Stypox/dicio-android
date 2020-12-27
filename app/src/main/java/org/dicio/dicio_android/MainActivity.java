@@ -249,10 +249,10 @@ public class MainActivity extends BaseActivity
     @NonNull
     private String getInputDevicePreference() {
         final String inputDevicePreference = preferences
-                .getString(getString(R.string.settings_key_input_method), null);
+                .getString(getString(R.string.pref_key_input_method), null);
 
         if (inputDevicePreference == null) {
-            return getString(R.string.settings_value_input_method_text);
+            return getString(R.string.pref_val_input_method_text);
         } else {
             return inputDevicePreference;
         }
@@ -261,10 +261,10 @@ public class MainActivity extends BaseActivity
     @NonNull
     private String getSpeechOutputDevicePreference() {
         final String speechOutputDevicePreference = preferences
-                .getString(getString(R.string.settings_key_speech_output_method), null);
+                .getString(getString(R.string.pref_key_speech_output_method), null);
 
         if (speechOutputDevicePreference == null) {
-            return getString(R.string.settings_value_speech_output_method_toast);
+            return getString(R.string.pref_val_speech_output_method_toast);
         } else {
             return speechOutputDevicePreference;
         }
@@ -272,7 +272,7 @@ public class MainActivity extends BaseActivity
 
     private InputDevice buildInputDevice() {
         if (currentInputDevicePreference.equals(
-                getString(R.string.settings_value_input_method_vosk))) {
+                getString(R.string.pref_val_input_method_vosk))) {
             return new VoskInputDevice(this);
         } else /*if (currentInputDevicePreference.equals(
                 getString(R.string.settings_value_input_method_text)))*/ {
@@ -282,10 +282,10 @@ public class MainActivity extends BaseActivity
 
     private SpeechOutputDevice buildSpeechOutputDevice() {
         if (getSpeechOutputDevicePreference().equals(
-                getString(R.string.settings_value_speech_output_method_nothing))) {
+                getString(R.string.pref_val_speech_output_method_nothing))) {
             return new NothingSpeechDevice();
         } else if (getSpeechOutputDevicePreference().equals(
-                getString(R.string.settings_value_speech_output_method_snackbar))) {
+                getString(R.string.pref_val_speech_output_method_snackbar))) {
             return new SnackbarSpeechDevice(findViewById(android.R.id.content));
         } else {
             return new ToastSpeechDevice(this);

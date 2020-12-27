@@ -111,7 +111,7 @@ public class LocaleUtils {
 
     public static LocaleListCompat getAvailableLocalesFromPreferences(final Context context) {
         final String language = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(context.getString(R.string.settings_key_language), null);
+                .getString(context.getString(R.string.pref_key_language), null);
         if (language == null || language.trim().isEmpty()) {
             return ConfigurationCompat.getLocales(context.getResources().getConfiguration());
         } else {

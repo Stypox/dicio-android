@@ -24,13 +24,13 @@ abstract public class BaseActivity extends AppCompatActivity {
 
     private int getThemeFromPreferences() {
         final String preference = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.settings_key_theme), null);
+                .getString(getString(R.string.pref_key_theme), null);
 
         if (preference == null) {
             return R.style.LightAppTheme;
         }
 
-        if (preference.equals(getString(R.string.settings_value_theme_dark))) {
+        if (preference.equals(getString(R.string.pref_val_theme_dark))) {
             return R.style.DarkAppTheme;
         } else /*if (preference.equals(getString(R.string.settings_value_theme_light)))*/ {
             return R.style.LightAppTheme;
@@ -39,7 +39,7 @@ abstract public class BaseActivity extends AppCompatActivity {
 
     private String getLocaleFromPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.settings_key_language), null);
+                .getString(getString(R.string.pref_key_language), null);
     }
 
     private void setLocale() {

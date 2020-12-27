@@ -11,16 +11,16 @@ import org.dicio.dicio_android.input.VoskInputDevice;
 public class IOFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings_io);
+        addPreferencesFromResource(R.xml.pref_io);
 
         final Preference.OnPreferenceChangeListener deleteVoskModel = (preference, newValue) -> {
             VoskInputDevice.deleteCurrentModel(requireContext());
             return true;
         };
 
-        findPreference(getString(R.string.settings_key_language))
+        findPreference(getString(R.string.pref_key_language))
                 .setOnPreferenceChangeListener(deleteVoskModel);
-        findPreference(getString(R.string.settings_key_input_method))
+        findPreference(getString(R.string.pref_key_input_method))
                 .setOnPreferenceChangeListener(deleteVoskModel);
     }
 }

@@ -10,9 +10,9 @@ import org.dicio.dicio_android.R;
 public class AppearanceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings_appearance);
+        addPreferencesFromResource(R.xml.pref_appearance);
 
-        Preference preference = findPreference(getString(R.string.settings_key_theme));
+        Preference preference = findPreference(getString(R.string.pref_key_theme));
         assert preference != null;
         preference.setOnPreferenceChangeListener((preference1, newValue) -> {
             requireActivity().recreate();

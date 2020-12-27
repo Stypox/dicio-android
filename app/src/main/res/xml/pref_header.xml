@@ -5,11 +5,11 @@
 
     <Preference
         android:icon="?attr/iconBrush"
-        android:title="@string/settings_appearance"
+        android:title="@string/pref_appearance"
         android:fragment="org.dicio.dicio_android.settings.AppearanceFragment" />
 
     <Preference
         android:icon="?attr/iconQuestionAnswer"
-        android:title="@string/settings_io"
+        android:title="@string/pref_io"
         android:fragment="org.dicio.dicio_android.settings.IOFragment" />
 </PreferenceScreen>

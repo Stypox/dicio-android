@@ -362,7 +362,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private static Long getDownloadIdFromPreferences(final Context context,
                                                      final DownloadManager manager) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        final String downloadIdKey = context.getString(R.string.settings_key_vosk_download_id);
+        final String downloadIdKey = context.getString(R.string.pref_key_vosk_download_id);
         if (prefs.contains(downloadIdKey)) {
             final long id = prefs.getLong(downloadIdKey, 0);
             if (manager.query(new DownloadManager.Query().setFilterById(id)).getCount() == 0) {
@@ -379,7 +379,7 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     private void putDownloadIdInPreferences(final Context context, final Long id) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        final String downloadIdKey = context.getString(R.string.settings_key_vosk_download_id);
+        final String downloadIdKey = context.getString(R.string.pref_key_vosk_download_id);
         if (id == null) {
             // remove completely, used to notify of null values, check getDownloadIdFromPreferences
             prefs.edit().remove(downloadIdKey).apply();

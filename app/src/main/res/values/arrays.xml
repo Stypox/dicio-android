@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="settings_theme_entries">
-        <item>@string/settings_theme_light</item>
-        <item>@string/settings_theme_dark</item>
+    <string-array name="pref_theme_entries">
+        <item>@string/pref_theme_light</item>
+        <item>@string/pref_theme_dark</item>
     </string-array>
-    <string-array name="settings_theme_entry_values">
-        <item>@string/settings_value_theme_light</item>
-        <item>@string/settings_value_theme_dark</item>
+    <string-array name="pref_theme_entry_values">
+        <item>@string/pref_val_theme_light</item>
+        <item>@string/pref_val_theme_dark</item>
     </string-array>
 
-    <string-array name="settings_language_entries">
-        <item>@string/settings_language_system</item>
+    <string-array name="pref_language_entries">
+        <item>@string/pref_language_system</item>
         <item>English</item>
         <item>Italiano</item>
     </string-array>
-    <string-array name="settings_language_values">
+    <string-array name="pref_language_values">
         <item />
         <item>en</item>
         <item>it</item>
     </string-array>
 
-    <string-array name="settings_input_method_entries">
-        <item>@string/settings_input_method_text</item>
-        <item>@string/settings_input_method_vosk</item>
+    <string-array name="pref_input_method_entries">
+        <item>@string/pref_input_method_text</item>
+        <item>@string/pref_input_method_vosk</item>
     </string-array>
-    <string-array name="settings_input_method_entry_values">
-        <item>@string/settings_value_input_method_text</item>
-        <item>@string/settings_value_input_method_vosk</item>
+    <string-array name="pref_input_method_entry_values">
+        <item>@string/pref_val_input_method_text</item>
+        <item>@string/pref_val_input_method_vosk</item>
     </string-array>
 
-    <string-array name="settings_speech_output_method_entries">
-        <item>@string/settings_speech_output_method_toast</item>
-        <item>@string/settings_speech_output_method_snackbar</item>
-        <item>@string/settings_speech_output_method_nothing</item>
+    <string-array name="pref_speech_output_method_entries">
+        <item>@string/pref_speech_output_method_toast</item>
+        <item>@string/pref_speech_output_method_snackbar</item>
+        <item>@string/pref_speech_output_method_nothing</item>
     </string-array>
-    <string-array name="settings_speech_output_method_entry_values">
-        <item>@string/settings_value_speech_output_method_toast</item>
-        <item>@string/settings_value_speech_output_method_snackbar</item>
-        <item>@string/settings_value_speech_output_method_nothing</item>
+    <string-array name="pref_speech_output_method_entry_values">
+        <item>@string/pref_val_speech_output_method_toast</item>
+        <item>@string/pref_val_speech_output_method_snackbar</item>
+        <item>@string/pref_val_speech_output_method_nothing</item>
     </string-array>
 </resources>

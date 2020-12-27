@@ -9,6 +9,6 @@ import org.dicio.dicio_android.R;
 public class HeaderFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings_header);
+        addPreferencesFromResource(R.xml.pref_header);
     }
 }
