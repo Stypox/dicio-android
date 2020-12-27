@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.output;
+package org.dicio.dicio_android.components.weather;
 
 import android.content.Context;
 import android.view.View;

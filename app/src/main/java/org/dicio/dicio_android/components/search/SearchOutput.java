@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.output;
+package org.dicio.dicio_android.components.search;
 
 import android.content.Context;
 import android.text.Html;

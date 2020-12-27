@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.components.output;
+package org.dicio.dicio_android.components.open;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

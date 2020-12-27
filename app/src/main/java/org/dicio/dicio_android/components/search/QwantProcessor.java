@@ -1,10 +1,7 @@
-package org.dicio.dicio_android.components.processing;
-
-import android.util.Log;
+package org.dicio.dicio_android.components.search;
 
 import org.dicio.component.IntermediateProcessor;
 import org.dicio.component.standard.StandardResult;
-import org.dicio.dicio_android.components.output.SearchOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;

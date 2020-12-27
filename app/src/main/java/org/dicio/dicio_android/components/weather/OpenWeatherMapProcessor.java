@@ -1,9 +1,9 @@
-package org.dicio.dicio_android.components.processing;
+package org.dicio.dicio_android.components.weather;
 
 import org.dicio.component.IntermediateProcessor;
 import org.dicio.component.standard.StandardResult;
 import org.dicio.dicio_android.ApiKeys;
-import org.dicio.dicio_android.components.output.WeatherOutput;
+import org.dicio.dicio_android.components.weather.WeatherOutput;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONObject;
