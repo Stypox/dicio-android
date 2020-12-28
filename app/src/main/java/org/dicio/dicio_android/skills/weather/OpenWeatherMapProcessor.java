@@ -16,7 +16,7 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
 
     private static final String ipInfoUrl = "https://ipinfo.io/json";
     private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
-    private static final String iconBaseUrl = "http://openweathermap.org/img/wn/";
+    private static final String iconBaseUrl = "https://openweathermap.org/img/wn/";
     private static final String iconFormat = "@2x.png";
 
 
