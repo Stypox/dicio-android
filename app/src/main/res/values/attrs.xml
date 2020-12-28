@@ -12,4 +12,6 @@
     <attr name="iconPerson" format="reference" />
     <attr name="iconLanguage" format="reference" />
     <attr name="iconSpeakerPhone" format="reference" />
+    <attr name="iconExpandMore" format="reference" />
+    <attr name="iconExtension" format="reference" />
 </resources>

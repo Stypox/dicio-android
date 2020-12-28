@@ -22,6 +22,8 @@
         <item name="iconPerson">@drawable/ic_person_white</item>
         <item name="iconLanguage">@drawable/ic_language_white</item>
         <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_white</item>
+        <item name="iconExpandMore">@drawable/ic_expand_more_white</item>
+        <item name="iconExtension">@drawable/ic_extension_white</item>
     </style>
 
 
@@ -47,6 +49,8 @@
         <item name="iconPerson">@drawable/ic_person_black</item>
         <item name="iconLanguage">@drawable/ic_language_black</item>
         <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_black</item>
+        <item name="iconExpandMore">@drawable/ic_expand_more_black</item>
+        <item name="iconExtension">@drawable/ic_extension_black</item>
     </style>
 
     <style name="SplashScreenTheme" parent="LightAppTheme">

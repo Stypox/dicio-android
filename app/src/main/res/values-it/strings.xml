@@ -50,4 +50,10 @@
     <string name="vosk_model_ready">Il modello di Vosk è pronto</string>
     <string name="listening">Sto ascoltando…</string>
     <string name="pref_search_engine">Motore di ricerca</string>
+    <string name="skill_name_search">Ricerca</string>
+    <string name="skill_name_weather">Meteo</string>
+    <string name="skill_name_lyrics">Testi di canzoni</string>
+    <string name="skill_name_open">Apertura di app</string>
+    <string name="skill_fallback_name_text">Messaggio testuale</string>
+    <string name="pref_skills">Abilità</string>
 </resources>

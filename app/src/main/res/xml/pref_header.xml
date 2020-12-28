@@ -12,4 +12,9 @@
         android:icon="?attr/iconQuestionAnswer"
         android:title="@string/pref_io"
         android:fragment="org.dicio.dicio_android.settings.IOFragment" />
+
+    <Preference
+        android:icon="?attr/iconExtension"
+        android:title="@string/pref_skills"
+        android:fragment="org.dicio.dicio_android.settings.skill.SkillsFragment" />
 </PreferenceScreen>
