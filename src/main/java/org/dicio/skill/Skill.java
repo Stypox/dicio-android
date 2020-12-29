@@ -1,6 +1,7 @@
 package org.dicio.skill;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
@@ -30,17 +31,25 @@ public interface Skill {
      * This will be called if this skill was deemed as the best one which could provide output for
      * what the user requested and it should therefore process the input previously received with
      * {@link #setInput(String, List, List)}, so that when {@link #generateOutput(Context,
-     * SpeechOutputDevice, GraphicalOutputDevice)} is called everything is ready.
-     * @see IntermediateProcessor#process(Object, Locale)
-     * @param locale the locale to use, useful for example to customize web requests to get the
-     *               correct language or country.
+     * SharedPreferences, Locale, SpeechOutputDevice, GraphicalOutputDevice)} is called everything
+     * is ready.
+     * @see IntermediateProcessor#process(Object, Context, SharedPreferences, Locale)
+     * @param context the Android context, useful for example to get preferences, resources, etc.
+     * @param preferences the Android preferences, useful for user customization, also see {@link
+     *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
+     * @param locale the current user locale, useful for example to customize web requests to get
+     *               the correct language or country
      */
-    void processInput(Locale locale) throws Exception;
+    void processInput(Context context, SharedPreferences preferences, Locale locale)
+            throws Exception;
 
     /**
-     * @see OutputGenerator#generate(Object, Context, SpeechOutputDevice, GraphicalOutputDevice)
+     * @see OutputGenerator#generate(Object, Context, SharedPreferences, Locale, SpeechOutputDevice,
+     * GraphicalOutputDevice)
      */
     void generateOutput(Context context,
+                        SharedPreferences preferences,
+                        Locale locale,
                         SpeechOutputDevice speechOutputDevice,
                         GraphicalOutputDevice graphicalOutputDevice);
 

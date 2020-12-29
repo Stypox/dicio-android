@@ -1,6 +1,7 @@
 package org.dicio.skill;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ChainSkill implements Skill {
 
     public static class Builder {
@@ -77,28 +79,32 @@ public class ChainSkill implements Skill {
     }
 
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void processInput(final Locale locale) throws Exception {
+    public void processInput(final Context context,
+                             final SharedPreferences preferences,
+                             final Locale locale)
+            throws Exception {
         lastResult = inputRecognizer.getResult();
 
         for (int i = 0; i < intermediateProcessors.size(); ++i) {
-            lastResult = intermediateProcessors.get(i).process(lastResult, locale);
+            lastResult = intermediateProcessors.get(i)
+                    .process(lastResult, context, preferences, locale);
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void generateOutput(final Context context,
+                               final SharedPreferences preferences,
+                               final Locale locale,
                                final SpeechOutputDevice speechOutputDevice,
                                final GraphicalOutputDevice graphicalOutputDevice) {
-        outputGenerator.generate(lastResult, context, speechOutputDevice, graphicalOutputDevice);
+        outputGenerator.generate(lastResult, context, preferences, locale,
+                speechOutputDevice, graphicalOutputDevice);
     }
 
     /**
      * @see OutputGenerator#nextSkills()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public List<Skill> nextSkills() {
         return outputGenerator.nextSkills();

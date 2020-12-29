@@ -1,12 +1,15 @@
 package org.dicio.skill;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.view.View;
 
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Hosts platform-specific code to produce platform-specific output based on the data obtained from
@@ -16,18 +19,37 @@ import java.util.List;
  */
 public interface OutputGenerator<FromType> {
 
+    /**
+     * Generates output to speak or to show to the user based on the data calculated in the previous
+     * steps. Do here calculations that require access to platform-specific APIs, such as looking
+     * for an app on the user's device.
+     *
+     * @param data the data to use to generate output, from the previous step
+     * @param context the Android context, useful for example to get preferences, resources, etc.
+     * @param preferences the Android preferences, useful for user customization, also see {@link
+     *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
+     * @param locale the current user locale, useful for example to customize web requests to get
+     *               the correct language or country
+     * @param speechOutputDevice use this to tell something short and textual to the user, e.g. "My
+     *                           name is Dicio"; see {@link SpeechOutputDevice#speak(String)}
+     * @param graphicalOutputDevice use this to show something to the user, such as a panel with an
+     *                              image, a title and a description, or search results; see {@link
+     *                              GraphicalOutputDevice#display(View)}
+     */
     void generate(FromType data,
                   Context context,
+                  SharedPreferences preferences,
+                  Locale locale,
                   SpeechOutputDevice speechOutputDevice,
                   GraphicalOutputDevice graphicalOutputDevice);
 
     /**
-     * Returns a list of skills to use for the next user input. This is needed to
-     * allow providing a stateful interaction with a set of skills. If the list is
-     * empty the current stateful conversation is interrupted. The function will be called after
-     * {@link #generate(Object, Context, SpeechOutputDevice, GraphicalOutputDevice)}, so that the
-     * calculated data can be used to choose what to do.
-     * @return a list of skills, empty by default
+     * @return a list of skills to use for the next user input. This is needed to allow providing a
+     *         stateful interaction with a set of skills. If the list is empty, and it is by
+     *         default, the current stateful conversation is interrupted. This function will be
+     *         called after {@link #generate(Object, Context, SharedPreferences, Locale,
+     *         SpeechOutputDevice, GraphicalOutputDevice)}, so that the calculated data can be used
+     *         to choose what to do.
      */
     default List<Skill> nextSkills() {
         // no next skills by default
