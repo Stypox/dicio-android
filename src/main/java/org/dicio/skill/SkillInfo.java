@@ -14,7 +14,7 @@ public abstract class SkillInfo {
     private final boolean hasPreferences;
 
     /**
-     * Constructor for {@link org.dicio.dicio_android.skills.SkillInfo}, providing basic information
+     * Constructor for {@link SkillInfo}, providing basic information about a skill
      * @param id a unique identifier for this skill (different from that of all other skills)
      * @param nameResource the Android string resource containing the skill name to show to the user
      * @param hasPreferences whether this skill has preferences. If this is false, then
