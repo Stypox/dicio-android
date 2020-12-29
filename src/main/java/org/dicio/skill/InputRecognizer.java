@@ -20,7 +20,8 @@ public interface InputRecognizer<ResultType> {
     /**
      * The specificity of this input recognizer
      * @return {@link Specificity#high high} for specific things (e.g. weather);<br>
-     * {@link Specificity#medium medium} for not-too-specific things (e.g. calculator that parses numbers);<br>
+     * {@link Specificity#medium medium} for not-too-specific things (e.g. calculator that parses
+     * numbers);<br>
      * {@link Specificity#low low} for broad things (e.g. omniscient API);<br>
      */
     Specificity specificity();
