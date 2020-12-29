@@ -8,14 +8,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
+import org.dicio.skill.Skill;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.WordExtractor;
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.Skill;
 import org.dicio.dicio_android.input.InputDevice;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.util.ExceptionUtils;
 
@@ -109,7 +110,9 @@ public class SkillEvaluator {
                     final Skill skill = skillRanker.getBest(
                             input, inputWords, normalizedWordKeys);
 
-                    skill.processInput(Sections.getCurrentLocale());
+                    skill.processInput(context,
+                            PreferenceManager.getDefaultSharedPreferences(context),
+                            Sections.getCurrentLocale());
                     return skill;
                 })
                 .subscribeOn(Schedulers.io())
@@ -118,7 +121,8 @@ public class SkillEvaluator {
     }
 
     private void generateOutput(final Skill skill) {
-        skill.generateOutput(context, speechOutputDevice, graphicalOutputDevice);
+        skill.generateOutput(context, PreferenceManager.getDefaultSharedPreferences(context),
+                Sections.getCurrentLocale(), speechOutputDevice, graphicalOutputDevice);
         graphicalOutputDevice.addDivider();
         skill.cleanup(); // cleanup the input that was set
 

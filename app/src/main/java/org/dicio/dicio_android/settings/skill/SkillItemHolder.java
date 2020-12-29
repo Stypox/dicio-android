@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.skills.SkillHandler;
-import org.dicio.dicio_android.skills.SkillInfo;
+import org.dicio.skill.SkillInfo;
 
 public class SkillItemHolder extends RecyclerView.ViewHolder {
 

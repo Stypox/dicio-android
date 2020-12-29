@@ -10,10 +10,12 @@ import org.dicio.dicio_android.skills.lyrics.LyricsInfo;
 import org.dicio.dicio_android.skills.open.OpenInfo;
 import org.dicio.dicio_android.skills.search.SearchInfo;
 import org.dicio.dicio_android.skills.weather.WeatherInfo;
+import org.dicio.skill.Skill;
+import org.dicio.skill.SkillInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 import java.util.Objects;
 
 public class SkillHandler {
@@ -34,24 +36,23 @@ public class SkillHandler {
         return "skills_handler_is_enabled_" + skillId;
     }
 
-    public static List<Skill> getStandardSkillBatch(
-            final Context context) {
+    public static List<Skill> getStandardSkillBatch(final Context context, final Locale locale) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final List<Skill> result = new ArrayList<>();
 
         for (final SkillInfo skillInfo : skillInfoList) {
             if (prefs.getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true)) {
-                result.add(skillInfo.build(context, prefs));
+                result.add(skillInfo.build(context, prefs, locale));
             }
         }
 
         return result;
     }
 
-    public static Skill getFallbackSkill(final Context context) {
+    public static Skill getFallbackSkill(final Context context, final Locale locale) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return Objects.requireNonNull(fallbackSkillInfoList.get(0))
-                .build(context, prefs);
+                .build(context, prefs, locale);
     }
 
     public static List<SkillInfo> getSkillInfoList() {

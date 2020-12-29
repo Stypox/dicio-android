@@ -1,6 +1,9 @@
 package org.dicio.dicio_android.skills.search;
 
-import org.dicio.skill.IntermediateProcessor;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.jsoup.Jsoup;
@@ -14,14 +17,18 @@ import java.util.Locale;
 
 import static org.dicio.dicio_android.Sentences_en.search;
 
-public class DuckDuckGoProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
+public class DuckDuckGoProcessor
+        implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
 
     private static final String duckDuckGoSearchUrl = "https://duckduckgo.com/html/?q=";
 
 
     @Override
-    public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
-            throws Exception {
+    public List<SearchOutput.Data> process(final StandardResult data,
+                                           final Context context,
+                                           final SharedPreferences preferences,
+                                           final Locale locale) throws Exception {
+
         final String html = ConnectionUtils.getPage(duckDuckGoSearchUrl
                 + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim())
                 + "&kl=" + locale.getCountry().toLowerCase()

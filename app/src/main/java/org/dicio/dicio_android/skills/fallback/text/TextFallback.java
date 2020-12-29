@@ -1,12 +1,13 @@
 package org.dicio.dicio_android.skills.fallback.text;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.fallback.FallbackSkill;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import org.dicio.skill.FallbackSkill;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,10 +23,14 @@ public class TextFallback implements FallbackSkill {
     public void cleanup() {}
 
     @Override
-    public void processInput(final Locale locale) {}
+    public void processInput(final Context context,
+                             final SharedPreferences preferences,
+                             final Locale locale) {}
 
     @Override
     public void generateOutput(final Context context,
+                               final SharedPreferences preferences,
+                               final Locale locale,
                                final SpeechOutputDevice speechOutputDevice,
                                final GraphicalOutputDevice graphicalOutputDevice) {
 

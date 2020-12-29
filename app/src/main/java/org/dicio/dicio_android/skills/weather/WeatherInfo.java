@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.dicio.dicio_android.R;
+import org.dicio.skill.Skill;
+import org.dicio.skill.SkillInfo;
+import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
-import org.dicio.dicio_android.skills.Skill;
-import org.dicio.dicio_android.skills.SkillInfo;
-import org.dicio.dicio_android.skills.ChainSkill;
+
+import java.util.Locale;
 
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.SectionsGenerated.weather;
@@ -23,7 +24,10 @@ public class WeatherInfo extends SkillInfo {
     }
 
     @Override
-    public Skill build(final Context context, final SharedPreferences preferences) {
+    public Skill build(final Context context,
+                       final SharedPreferences preferences,
+                       final Locale locale) {
+
         return new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(weather)))
                 .process(new OpenWeatherMapProcessor())

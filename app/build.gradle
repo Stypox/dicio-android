@@ -38,15 +38,16 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.preference:preference:1.1.1'
 
-    testImplementation 'junit:junit:4.13.1'
-
-    implementation 'com.github.Stypox:dicio-skill:24b51605041bbd281df27e4b1f019b3cf279d623'
-    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "io.reactivex.rxjava3:rxjava:3.0.8"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
+
+    implementation 'com.github.Stypox:dicio-skill:b2aea75b37d3ca231e03d914515d8d8c9e32a2ca'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.alphacep:vosk-android:0.3.15'
+
+    testImplementation 'junit:junit:4.13.1'
 }
 
 

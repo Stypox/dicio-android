@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.dicio.skill.output.SpeechOutputDevice;
+
 public class SnackbarSpeechDevice implements SpeechOutputDevice {
     private final View view;
 

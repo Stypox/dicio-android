@@ -5,14 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.Skill;
-import org.dicio.dicio_android.skills.SkillInfo;
-import org.dicio.dicio_android.skills.ChainSkill;
+import org.dicio.skill.Skill;
+import org.dicio.skill.SkillInfo;
+import org.dicio.skill.chain.ChainSkill;
+import org.dicio.skill.standard.StandardRecognizer;
+
+import java.util.Locale;
 
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.SectionsGenerated.search;
@@ -24,7 +25,10 @@ public class SearchInfo extends SkillInfo {
     }
 
     @Override
-    public Skill build(final Context context, final SharedPreferences preferences) {
+    public Skill build(final Context context,
+                       final SharedPreferences preferences,
+                       final Locale locale) {
+
         final ChainSkill.Builder builder = new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(search)));
 

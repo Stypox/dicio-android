@@ -1,6 +1,9 @@
 package org.dicio.dicio_android.skills.search;
 
-import org.dicio.skill.IntermediateProcessor;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.json.JSONArray;
@@ -15,7 +18,8 @@ import java.util.Map;
 import static org.dicio.dicio_android.Sentences_en.search;
 import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
 
-public class QwantProcessor implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
+public class QwantProcessor
+        implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
 
     private static final String qwantSearchUrl = "https://api.qwant.com/api/search/web";
 
@@ -46,8 +50,11 @@ public class QwantProcessor implements IntermediateProcessor<StandardResult, Lis
     }
 
     @Override
-    public List<SearchOutput.Data> process(final StandardResult data, final Locale locale)
-            throws Exception {
+    public List<SearchOutput.Data> process(final StandardResult data,
+                                           final Context context,
+                                           final SharedPreferences preferences,
+                                           final Locale locale) throws Exception {
+
         final JSONObject json = getPageJson(qwantSearchUrl
                 + "?count=10&offset=20&t=dicio&uiv=1&locale=" + getLocaleString(locale)
                 + "&q=" + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));

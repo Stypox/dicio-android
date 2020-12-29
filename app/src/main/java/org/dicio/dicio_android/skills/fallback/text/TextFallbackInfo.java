@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.Skill;
-import org.dicio.dicio_android.skills.SkillInfo;
+import org.dicio.skill.Skill;
+import org.dicio.skill.SkillInfo;
+
+import java.util.Locale;
 
 public class TextFallbackInfo extends SkillInfo {
 
@@ -18,7 +19,9 @@ public class TextFallbackInfo extends SkillInfo {
     }
 
     @Override
-    public Skill build(final Context context, final SharedPreferences preferences) {
+    public Skill build(final Context context,
+                       final SharedPreferences preferences,
+                       final Locale locale) {
         return new TextFallback();
     }
 

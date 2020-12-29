@@ -1,6 +1,9 @@
 package org.dicio.dicio_android.skills.weather;
 
-import org.dicio.skill.IntermediateProcessor;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
@@ -11,7 +14,8 @@ import java.util.Locale;
 
 import static org.dicio.dicio_android.Sentences_en.weather;
 
-public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
+public class OpenWeatherMapProcessor
+        implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
 
     private static final String ipInfoUrl = "https://ipinfo.io/json";
     private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
@@ -21,8 +25,11 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
 
 
     @Override
-    public WeatherOutput.Data process(final StandardResult data, final Locale locale)
-            throws Exception {
+    public WeatherOutput.Data process(final StandardResult data,
+                                      final Context context,
+                                      final SharedPreferences preferences,
+                                      final Locale locale) throws Exception {
+
         final WeatherOutput.Data result = new WeatherOutput.Data();
         result.city = data.getCapturingGroup(weather.where);
         if (result.city != null) {

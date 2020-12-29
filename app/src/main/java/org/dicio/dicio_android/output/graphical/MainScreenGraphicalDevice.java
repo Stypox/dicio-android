@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
+import org.dicio.skill.output.GraphicalOutputDevice;
 
 public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     private final LinearLayout outputLayout;

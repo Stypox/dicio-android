@@ -3,7 +3,7 @@ package org.dicio.dicio_android.eval;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.dicio.dicio_android.skills.Skill;
+import org.dicio.skill.Skill;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,18 +1,22 @@
 package org.dicio.dicio_android.skills.lyrics;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.output.OutputGenerator;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import org.dicio.skill.chain.OutputGenerator;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 
-public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
+import java.util.Locale;
+
+public class LyricsOutput
+        implements OutputGenerator<LyricsOutput.Data> {
 
     public static class Data {
         public boolean failed = false;
@@ -23,6 +27,8 @@ public class LyricsOutput implements OutputGenerator<LyricsOutput.Data> {
     @Override
     public void generate(final Data data,
                          final Context context,
+                         final SharedPreferences preferences,
+                         final Locale locale,
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
 

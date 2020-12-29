@@ -1,6 +1,7 @@
 package org.dicio.dicio_android.skills.weather;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,10 +9,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.output.OutputGenerator;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
+import org.dicio.skill.chain.OutputGenerator;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
+
+import java.util.Locale;
 
 public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
 
@@ -25,8 +28,11 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
     @Override
     public void generate(final Data data,
                          final Context context,
+                         final SharedPreferences preferences,
+                         final Locale locale,
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
+
         if (data.failed) {
             final String message =
                     context.getString(R.string.skill_weather_could_not_find_city, data.city);

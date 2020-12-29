@@ -3,20 +3,22 @@ package org.dicio.dicio_android.skills.open;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import androidx.annotation.Nullable;
 
+import org.dicio.skill.chain.OutputGenerator;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.output.OutputGenerator;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.util.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.dicio.dicio_android.Sentences_en.open;
 
@@ -25,6 +27,8 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
     @Override
     public void generate(final StandardResult data,
                          final Context context,
+                         final SharedPreferences preferences,
+                         final Locale locale,
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
 

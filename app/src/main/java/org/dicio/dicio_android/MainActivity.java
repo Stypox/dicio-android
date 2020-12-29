@@ -31,10 +31,10 @@ import org.dicio.dicio_android.input.VoskInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
 import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
 import org.dicio.dicio_android.output.speech.SnackbarSpeechDevice;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
 import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.util.BaseActivity;
+import org.dicio.skill.output.SpeechOutputDevice;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -202,8 +202,9 @@ public class MainActivity extends BaseActivity
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
         skillEvaluator = new SkillEvaluator(
-                new SkillRanker(SkillHandler.getStandardSkillBatch(this),
-                        SkillHandler.getFallbackSkill(this)),
+                new SkillRanker(
+                        SkillHandler.getStandardSkillBatch(this, Sections.getCurrentLocale()),
+                        SkillHandler.getFallbackSkill(this, Sections.getCurrentLocale())),
                 inputDevice,
                 speechOutputDevice,
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),
