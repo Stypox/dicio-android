@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
+
 public abstract class SkillInfo {
 
     private final String id;
@@ -54,11 +56,14 @@ public abstract class SkillInfo {
 
     /**
      * Builds an instance of the {@link Skill} this {@link SkillInfo} object represents
-     * @param context the Android context
-     * @param preferences the app preferences
+     * @param context the Android context, useful for example to access resources
+     * @param preferences the Android preferences, useful for user customization, also see {@link
+     *                    #hasPreferences()} and {@link #getPreferenceFragment()}
+     * @param locale the current user locale, useful to customize the skill based on language or
+     *               country
      * @return a skill
      */
-    public abstract Skill build(Context context, SharedPreferences preferences);
+    public abstract Skill build(Context context, SharedPreferences preferences, Locale locale);
 
     /**
      * Provides a custom preferences screen for this skill, allowing the user to customize it to
