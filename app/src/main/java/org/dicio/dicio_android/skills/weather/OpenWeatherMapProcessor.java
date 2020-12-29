@@ -2,7 +2,6 @@ package org.dicio.dicio_android.skills.weather;
 
 import org.dicio.skill.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
-import org.dicio.dicio_android.ApiKeys;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONObject;
@@ -16,6 +15,7 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
 
     private static final String ipInfoUrl = "https://ipinfo.io/json";
     private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
+    private static final String apiKey = "061f24cf3cde2f60644a8240302983f2";
     private static final String iconBaseUrl = "https://openweathermap.org/img/wn/";
     private static final String iconFormat = "@2x.png";
 
@@ -37,7 +37,7 @@ public class OpenWeatherMapProcessor implements IntermediateProcessor<StandardRe
         final JSONObject weatherData;
         try {
             weatherData = ConnectionUtils.getPageJson(weatherApiUrl
-                    + "?APPID=" + ApiKeys.openweathermap
+                    + "?APPID=" + apiKey
                     + "&units=metric&lang=" + locale.getLanguage().toLowerCase()
                     + "&q=" + ConnectionUtils.urlEncode(result.city));
         } catch (FileNotFoundException ignored) {
