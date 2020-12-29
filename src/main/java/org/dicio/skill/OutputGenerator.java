@@ -25,8 +25,8 @@ public interface OutputGenerator<FromType> {
      * Returns a list of skills to use for the next user input. This is needed to
      * allow providing a stateful interaction with a set of skills. If the list is
      * empty the current stateful conversation is interrupted. The function will be called after
-     * {@link #generate(Object, Context, SpeechOutputDevice, GraphicalOutputDevice) generate()), so
-     * that the calculated data can be used to choose what to do.
+     * {@link #generate(Object, Context, SpeechOutputDevice, GraphicalOutputDevice)}, so that the
+     * calculated data can be used to choose what to do.
      * @return a list of skills
      */
     default List<Skill> nextSkills() {
