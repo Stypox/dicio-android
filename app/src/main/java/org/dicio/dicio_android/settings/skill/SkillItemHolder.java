@@ -4,16 +4,13 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +44,7 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
                 = PreferenceManager.getDefaultSharedPreferences(fragment.requireContext());
         final String preferenceKey = SkillHandler.getIsEnabledPreferenceKey(skillInfo.getId());
 
-        checkBox.setText(fragment.getString(skillInfo.getName()));
+        checkBox.setText(skillInfo.getNameResource());
         checkBox.setChecked(sharedPreferences.getBoolean(preferenceKey, true));
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
                 sharedPreferences.edit().putBoolean(preferenceKey, isChecked).apply());
