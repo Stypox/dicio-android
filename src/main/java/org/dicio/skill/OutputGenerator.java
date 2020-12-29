@@ -27,7 +27,7 @@ public interface OutputGenerator<FromType> {
      * empty the current stateful conversation is interrupted. The function will be called after
      * {@link #generate(Object, Context, SpeechOutputDevice, GraphicalOutputDevice)}, so that the
      * calculated data can be used to choose what to do.
-     * @return a list of skills
+     * @return a list of skills, empty by default
      */
     default List<Skill> nextSkills() {
         // no next skills by default
