@@ -26,7 +26,7 @@ public interface IntermediateProcessor<FromType, ResultType> {
      * etc. It should not be used to perform platform-specific actions.
      *
      * @param data the data to process, from the previous step
-     * @param context the Android context, useful for example to get preferences, resources, etc.
+     * @param context the Android context, useful for example to access resources
      * @param preferences the Android preferences, useful for user customization, also see {@link
      *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
      * @param locale the current user locale, useful for example to customize web requests to get

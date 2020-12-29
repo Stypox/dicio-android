@@ -27,7 +27,8 @@ public interface OutputGenerator<FromType> {
      * for an app on the user's device.
      *
      * @param data the data to use to generate output, from the previous step
-     * @param context the Android context, useful for example to get preferences, resources, etc.
+     * @param context the Android context, needed to build views and also useful for example to
+     *                access resources or device-specific features
      * @param preferences the Android preferences, useful for user customization, also see {@link
      *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
      * @param locale the current user locale, useful for example to customize web requests to get
