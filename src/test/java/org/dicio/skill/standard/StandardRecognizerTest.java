@@ -1,6 +1,6 @@
 package org.dicio.skill.standard;
 
-import org.dicio.skill.InputRecognizer;
+import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.standard.word.CapturingGroup;
 import org.dicio.skill.standard.word.DiacriticsSensitiveWord;
 import org.dicio.skill.util.WordExtractor;

@@ -1,4 +1,4 @@
-package org.dicio.skill;
+package org.dicio.skill.chain;
 
 import java.util.List;
 

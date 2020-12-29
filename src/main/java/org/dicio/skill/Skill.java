@@ -3,6 +3,9 @@ package org.dicio.skill;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.dicio.skill.chain.InputRecognizer;
+import org.dicio.skill.chain.IntermediateProcessor;
+import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 

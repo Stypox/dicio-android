@@ -1,7 +1,9 @@
-package org.dicio.skill;
+package org.dicio.skill.chain;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import org.dicio.skill.SkillInfo;
 
 import java.util.Locale;
 

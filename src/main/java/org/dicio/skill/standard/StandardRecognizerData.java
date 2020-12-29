@@ -1,6 +1,6 @@
 package org.dicio.skill.standard;
 
-import org.dicio.skill.InputRecognizer;
+import org.dicio.skill.chain.InputRecognizer;
 
 public class StandardRecognizerData {
     private final InputRecognizer.Specificity specificity;

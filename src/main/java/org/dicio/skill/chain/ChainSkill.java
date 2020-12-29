@@ -1,8 +1,9 @@
-package org.dicio.skill;
+package org.dicio.skill.chain;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.dicio.skill.Skill;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 
