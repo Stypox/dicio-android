@@ -80,4 +80,8 @@ public class StringUtils {
     public static String removePunctuation(final String string) {
         return RegexUtils.replaceAll(punctuationPattern, string, "");
     }
+
+    public static boolean isNullOrEmpty(final String string) {
+        return string == null || string.isEmpty();
+    }
 }

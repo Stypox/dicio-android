@@ -5,7 +5,10 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class StringUtilsTest {
 
@@ -57,5 +60,14 @@ public class StringUtilsTest {
     public void removePunctuationTest() {
         assertEquals("hello how are you ", StringUtils.removePunctuation("hello, how are you? "));
         assertEquals("12345", StringUtils.removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~"));
+    }
+
+    @Test
+    public void isNullOrEmptyTest() {
+        assertFalse(isNullOrEmpty("hi"));
+        assertFalse(isNullOrEmpty(" \t"));
+        assertFalse(isNullOrEmpty("\0"));
+        assertTrue(isNullOrEmpty(null));
+        assertTrue(isNullOrEmpty(""));
     }
 }
