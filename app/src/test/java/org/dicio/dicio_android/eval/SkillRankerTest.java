@@ -1,13 +1,13 @@
 package org.dicio.dicio_android.eval;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
-import org.dicio.skill.InputRecognizer;
+import org.dicio.skill.Skill;
+import org.dicio.skill.chain.InputRecognizer;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.WordExtractor;
-import org.dicio.dicio_android.skills.Skill;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputDevice;
-import org.dicio.dicio_android.output.speech.SpeechOutputDevice;
-
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,7 +15,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import static org.dicio.skill.InputRecognizer.Specificity.*;
+import static org.dicio.skill.chain.InputRecognizer.Specificity.high;
+import static org.dicio.skill.chain.InputRecognizer.Specificity.low;
+import static org.dicio.skill.chain.InputRecognizer.Specificity.medium;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -44,6 +46,7 @@ public class SkillRankerTest {
         public float score() {
             return score;
         }
+
         @Override
         public void setInput(final String input,
                              final List<String> inputWords,
@@ -55,10 +58,14 @@ public class SkillRankerTest {
         }
 
         // useless for this test
-        @Override public void processInput(final Locale locale) {}
-        @Override public void generateOutput(
-                final Context context, final SpeechOutputDevice speechOutputDevice,
-                final GraphicalOutputDevice graphicalOutputDevice) {}
+        @Override public void processInput(final Context context,
+                                           final SharedPreferences preferences,
+                                           final Locale locale) {}
+        @Override public void generateOutput(final Context context,
+                                             final SharedPreferences preferences,
+                                             final Locale locale,
+                                             final SpeechOutputDevice speechOutputDevice,
+                                             final GraphicalOutputDevice graphicalOutputDevice) {}
         @Override public void cleanup() {}
     }
 
