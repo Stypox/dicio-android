@@ -59,4 +59,5 @@
     <string name="pref_weather_default_city">Città predefinita</string>
     <string name="pref_weather_default_city_using_ip_info">Imposta la città da usare per il meteo quando non ne espliciti una a voce. Il comportamento corrente è di estrarre la posizione dalle informazioni sull\'IP.</string>
     <string name="pref_speech_output_method_android">Motore di sintesi vocale di Android</string>
+    <string name="android_tts_unsupported_language" translatable="false">Il linguaggio corrente non è supportato dal motore di sintesi vocale di Android</string>
 </resources>
