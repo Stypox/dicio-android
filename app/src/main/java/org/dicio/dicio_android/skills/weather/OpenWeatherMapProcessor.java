@@ -3,6 +3,7 @@ package org.dicio.dicio_android.skills.weather;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.dicio.dicio_android.R;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.util.ConnectionUtils;
@@ -13,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Locale;
 
 import static org.dicio.dicio_android.Sentences_en.weather;
+import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 
 public class OpenWeatherMapProcessor
         implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
@@ -36,7 +38,12 @@ public class OpenWeatherMapProcessor
             result.city = StringUtils.removePunctuation(result.city.trim());
         }
 
-        if (result.city == null || result.city.isEmpty()) {
+        if (isNullOrEmpty(result.city)) {
+            result.city = StringUtils.removePunctuation(preferences.getString(
+                    context.getString(R.string.pref_key_weather_default_city), "").trim());
+        }
+
+        if (result.city.isEmpty()) {
             final JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
             result.city = ipInfo.getString("city");
         }
