@@ -214,23 +214,15 @@ public class MainActivity extends BaseActivity
 
     @NonNull
     private String getInputDevicePreference() {
-        final String inputDevicePreference = preferences
-                .getString(getString(R.string.pref_key_input_method), null);
-
-        if (inputDevicePreference == null) {
-            return getString(R.string.pref_val_input_method_text);
-        } else {
-            return inputDevicePreference;
-        }
+        return preferences.getString(getString(R.string.pref_key_input_method), "");
     }
 
     private InputDevice buildInputDevice() {
         if (currentInputDevicePreference.equals(
-                getString(R.string.pref_val_input_method_vosk))) {
-            return new VoskInputDevice(this);
-        } else /*if (currentInputDevicePreference.equals(
-                getString(R.string.settings_value_input_method_text)))*/ {
+                getString(R.string.pref_val_input_method_text))) {
             return new ToolbarInputDevice();
+        } else {
+            return new VoskInputDevice(this); // default
         }
     }
 

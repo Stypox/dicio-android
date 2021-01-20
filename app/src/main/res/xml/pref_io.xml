@@ -11,7 +11,7 @@
         android:title="@string/pref_language" />
 
     <ListPreference
-        android:defaultValue="@string/pref_val_input_method_text"
+        android:defaultValue="@string/pref_val_input_method_vosk"
         android:entries="@array/pref_input_method_entries"
         android:entryValues="@array/pref_input_method_entry_values"
         android:icon="?attr/iconMic"

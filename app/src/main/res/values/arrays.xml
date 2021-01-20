@@ -21,12 +21,12 @@
     </string-array>
 
     <string-array name="pref_input_method_entries">
-        <item>@string/pref_input_method_text</item>
         <item>@string/pref_input_method_vosk</item>
+        <item>@string/pref_input_method_text</item>
     </string-array>
     <string-array name="pref_input_method_entry_values">
-        <item>@string/pref_val_input_method_text</item>
         <item>@string/pref_val_input_method_vosk</item>
+        <item>@string/pref_val_input_method_text</item>
     </string-array>
 
     <string-array name="pref_speech_output_method_entries">
