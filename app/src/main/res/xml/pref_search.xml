@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        android:defaultValue="@string/pref_search_engine_qwant"
-        android:entries="@array/pref_search_provider_entries"
-        android:entryValues="@array/pref_search_provider_entry_values"
+        android:defaultValue="@string/pref_val_search_engine_qwant"
+        android:entries="@array/pref_search_engine_entries"
+        android:entryValues="@array/pref_search_engine_entry_values"
         android:key="@string/pref_key_search_engine"
         android:title="@string/pref_search_engine"
         app:iconSpaceReserved="false"
