@@ -21,6 +21,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import org.dicio.dicio_android.output.speech.AndroidTtsSpeechDevice;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.eval.SkillEvaluator;
 import org.dicio.dicio_android.eval.SkillRanker;
@@ -246,12 +247,13 @@ public class MainActivity extends BaseActivity
     }
 
     private SpeechOutputDevice buildSpeechOutputDevice() {
-        if (getSpeechOutputDevicePreference().equals(
-                getString(R.string.pref_val_speech_output_method_nothing))) {
+        final String preference = getSpeechOutputDevicePreference();
+        if (preference.equals(getString(R.string.pref_val_speech_output_method_nothing))) {
             return new NothingSpeechDevice();
-        } else if (getSpeechOutputDevicePreference().equals(
-                getString(R.string.pref_val_speech_output_method_snackbar))) {
+        } else if (preference.equals(getString(R.string.pref_val_speech_output_method_snackbar))) {
             return new SnackbarSpeechDevice(findViewById(android.R.id.content));
+        } else if (preference.equals(getString(R.string.pref_val_speech_output_method_android))) {
+            return new AndroidTtsSpeechDevice(this, Sections.getCurrentLocale());
         } else {
             return new ToastSpeechDevice(this);
         }

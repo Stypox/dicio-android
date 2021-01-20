@@ -11,6 +11,7 @@
     <string name="pref_val_input_method_vosk" translatable="false">vosk</string>
 
     <string name="pref_key_speech_output_method" translatable="false">speech_output_method</string>
+    <string name="pref_val_speech_output_method_android" translatable="false">android</string>
     <string name="pref_val_speech_output_method_toast" translatable="false">toast</string>
     <string name="pref_val_speech_output_method_snackbar" translatable="false">snackbar</string>
     <string name="pref_val_speech_output_method_nothing" translatable="false">nothing</string>

@@ -30,11 +30,13 @@
     </string-array>
 
     <string-array name="pref_speech_output_method_entries">
+        <item>@string/pref_speech_output_method_android</item>
         <item>@string/pref_speech_output_method_toast</item>
         <item>@string/pref_speech_output_method_snackbar</item>
         <item>@string/pref_speech_output_method_nothing</item>
     </string-array>
     <string-array name="pref_speech_output_method_entry_values">
+        <item>@string/pref_val_speech_output_method_android</item>
         <item>@string/pref_val_speech_output_method_toast</item>
         <item>@string/pref_val_speech_output_method_snackbar</item>
         <item>@string/pref_val_speech_output_method_nothing</item>
