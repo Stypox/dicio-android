@@ -20,7 +20,7 @@
         android:title="@string/pref_input_method" />
 
     <ListPreference
-        android:defaultValue="@string/pref_val_speech_output_method_toast"
+        android:defaultValue="@string/pref_val_speech_output_method_android"
         android:entries="@array/pref_speech_output_method_entries"
         android:entryValues="@array/pref_speech_output_method_entry_values"
         android:icon="?attr/iconSpeakerPhone"

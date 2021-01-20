@@ -224,18 +224,6 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @NonNull
-    private String getSpeechOutputDevicePreference() {
-        final String speechOutputDevicePreference = preferences
-                .getString(getString(R.string.pref_key_speech_output_method), null);
-
-        if (speechOutputDevicePreference == null) {
-            return getString(R.string.pref_val_speech_output_method_toast);
-        } else {
-            return speechOutputDevicePreference;
-        }
-    }
-
     private InputDevice buildInputDevice() {
         if (currentInputDevicePreference.equals(
                 getString(R.string.pref_val_input_method_vosk))) {
@@ -247,15 +235,16 @@ public class MainActivity extends BaseActivity
     }
 
     private SpeechOutputDevice buildSpeechOutputDevice() {
-        final String preference = getSpeechOutputDevicePreference();
+        final String preference = preferences
+                .getString(getString(R.string.pref_key_speech_output_method), "");
         if (preference.equals(getString(R.string.pref_val_speech_output_method_nothing))) {
             return new NothingSpeechDevice();
         } else if (preference.equals(getString(R.string.pref_val_speech_output_method_snackbar))) {
             return new SnackbarSpeechDevice(findViewById(android.R.id.content));
-        } else if (preference.equals(getString(R.string.pref_val_speech_output_method_android))) {
-            return new AndroidTtsSpeechDevice(this, Sections.getCurrentLocale());
-        } else {
+        } else if (preference.equals(getString(R.string.pref_val_speech_output_method_toast))) {
             return new ToastSpeechDevice(this);
+        } else {
+            return new AndroidTtsSpeechDevice(this, Sections.getCurrentLocale()); // default
         }
     }
 }
