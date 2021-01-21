@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DimenRes;
 import androidx.annotation.LayoutRes;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
@@ -74,14 +75,14 @@ public class GraphicalOutputUtils {
 
     public static View buildNetworkErrorMessage(Context context) {
         return buildContainer(context,
-                context.getResources().getDrawable(R.drawable.divider_items),
+                AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, context.getString(R.string.eval_network_error)),
                 buildDescription(context, context.getString(R.string.eval_network_error_description)));
     }
 
     public static View buildErrorMessage(Context context, Throwable throwable) {
         return buildContainer(context,
-                context.getResources().getDrawable(R.drawable.divider_items),
+                AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, throwable.getMessage()),
                 buildDescription(context, ExceptionUtils.getStackTraceString(throwable)));
     }
