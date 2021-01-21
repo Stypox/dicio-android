@@ -1,24 +1,27 @@
 package org.dicio.dicio_android.eval;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.preference.PreferenceManager;
 
+import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.Sections;
+import org.dicio.dicio_android.input.InputDevice;
+import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
+import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.WordExtractor;
-import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.input.InputDevice;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.Sections;
-import org.dicio.dicio_android.util.ExceptionUtils;
 
 import java.util.List;
 
@@ -69,21 +72,26 @@ public class SkillEvaluator {
     public void displayUserInput(final String input) {
         final View userInputView =
                 GraphicalOutputUtils.inflate(context, R.layout.skill_user_input);
-        final EditText inputEditText = userInputView.findViewById(R.id.userInput);
+        final AppCompatEditText inputEditText = userInputView.findViewById(R.id.userInput);
 
         inputEditText.setText(input);
-        inputEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEND
-                    || actionId == EditorInfo.IME_ACTION_DONE
-                    || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-                if (!v.getText().toString().trim().equals(input.trim())) {
-                    processInput(v.getText().toString());
-                    inputEditText.setText(input); // restore original input
+        inputEditText.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(final CharSequence s, final int start,
+                                                    final int count, final int after) {}
+            @Override public void onTextChanged(final CharSequence s, final int start,
+                                                final int before, final int count) {}
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.length() != 0 && s.charAt(s.length() - 1) == '\n') {
+                    s.delete(s.length() - 1, s.length());
+                    if (!s.toString().trim().equals(input.trim())) {
+                        processInput(s.toString());
+                        inputEditText.setText(input); // restore original input
+                    }
                 }
-                return true;
             }
-            return false;
         });
 
         userInputView.setOnClickListener(v -> {
