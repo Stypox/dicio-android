@@ -11,16 +11,15 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/actionBarStyle">
+        android:theme="@style/ActionBarTheme">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="?attr/actionBarPopupTheme"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ActionBarPopupTheme"
             app:navigationIcon="?attr/homeAsUpIndicator"/>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

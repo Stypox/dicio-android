@@ -3,13 +3,11 @@
     <style name="DarkAppTheme" parent="@style/Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
-        <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
+        <item name="colorAccent">@color/colorAccentDark</item>
 
         <item name="cardBackground">@color/cardBackgroundDark</item>
         <item name="cardForeground">@color/cardForegroundDark</item>
 
-        <item name="actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -30,13 +28,11 @@
     <style name="LightAppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
-        <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
+        <item name="colorAccent">@color/colorAccentLight</item>
 
         <item name="cardBackground">@color/cardBackgroundLight</item>
         <item name="cardForeground">@color/cardForegroundLight</item>
 
-        <item name="actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -54,10 +50,19 @@
     </style>
 
     <style name="SplashScreenTheme" parent="LightAppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
-        <item name="colorAccent">@color/colorAccent</item> <!-- TODO is this needed? -->
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="ActionBarPopupTheme" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
+        <item name="colorAccent">@color/white</item>
     </style>
 
 </resources>
