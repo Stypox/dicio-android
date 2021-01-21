@@ -33,8 +33,7 @@ public class SearchInfo extends SkillInfo {
                 .recognize(new StandardRecognizer(getSection(search)));
 
         final String searchEngine = preferences.getString(
-                context.getString(R.string.pref_key_search_engine),
-                context.getString(R.string.pref_val_search_engine_qwant));
+                context.getString(R.string.pref_key_search_engine), "");
         if (searchEngine.equals(context.getString(R.string.pref_val_search_engine_duckduckgo))) {
             builder.process(new DuckDuckGoProcessor());
         } else {
