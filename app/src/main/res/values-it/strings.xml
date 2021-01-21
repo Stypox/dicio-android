@@ -13,11 +13,11 @@
     <string name="settings">Impostazioni</string>
     <string name="pref_io">Modalità di input/output</string>
     <string name="pref_theme">Tema</string>
-    <string name="pref_theme_summary">Cambia i colori dell\'app</string>
+    <string name="pref_theme_summary">Cambia i colori dell\'app - %1$s</string>
     <string name="pref_input_method">Modalità di input</string>
-    <string name="pref_input_method_summary">Scegli il servizio da usare per parlare a Dicio</string>
+    <string name="pref_input_method_summary">Scegli il servizio da usare per parlare a Dicio - %1$s</string>
     <string name="pref_speech_output_method">Modalità di output vocale</string>
-    <string name="pref_speech_output_method_summary">Scegli il servizio che Dicio userà per parlarti</string>
+    <string name="pref_speech_output_method_summary">Scegli il servizio che Dicio userà per parlarti - %1$s</string>
     <string name="eval_fatal_error">Ho riscontrato un problema mentre esaminavo la tua richiesta, scusa</string>
     <string name="eval_network_error">Errore di connessione</string>
     <string name="eval_network_error_description">Dicio non è riuscito a raggiungere internet. Per favore controlla la connessione e riprova.</string>
@@ -39,7 +39,7 @@
     <string name="pref_speech_output_method_snackbar">Snackbar (messaggio in basso)</string>
     <string name="pref_speech_output_method_nothing">Niente</string>
     <string name="pref_language">Lingua</string>
-    <string name="pref_language_summary">Che lingua vuoi che Dicio usi per ascoltarti e rispondere?</string>
+    <string name="pref_language_summary">Che lingua vuoi che Dicio usi per ascoltarti e rispondere? - %1$s</string>
     <string name="pref_language_system">Usa la lingua di sistema</string>
     <string name="vosk_model_notification_title">Modello di Vosk</string>
     <string name="vosk_model_notification_description">Lingua: %1$s</string>
