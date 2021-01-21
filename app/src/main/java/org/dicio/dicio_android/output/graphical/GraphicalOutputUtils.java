@@ -20,12 +20,12 @@ import org.dicio.dicio_android.util.ExceptionUtils;
 
 public class GraphicalOutputUtils {
 
-    public static View inflate(Context context, @LayoutRes int layout) {
+    public static View inflate(final Context context, @LayoutRes final int layout) {
         return LayoutInflater.from(context).inflate(layout, null);
     }
 
     public static LinearLayoutCompat.LayoutParams getCenteredLayoutParams() {
-        LinearLayoutCompat.LayoutParams layoutParams = new LinearLayoutCompat.LayoutParams(
+        final LinearLayoutCompat.LayoutParams layoutParams = new LinearLayoutCompat.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
@@ -33,8 +33,10 @@ public class GraphicalOutputUtils {
         return layoutParams;
     }
 
-    public static TextView buildText(Context context, CharSequence text, @DimenRes int size) {
-        TextView header = new TextView(context);
+    public static TextView buildText(final Context context,
+                                     final CharSequence text,
+                                     @DimenRes final int size) {
+        final TextView header = new TextView(context);
         header.setLayoutParams(getCenteredLayoutParams());
         header.setGravity(Gravity.CENTER_HORIZONTAL);
         header.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(size));
@@ -42,20 +44,20 @@ public class GraphicalOutputUtils {
         return header;
     }
 
-    public static TextView buildHeader(Context context, CharSequence text) {
+    public static TextView buildHeader(final Context context, final CharSequence text) {
         return buildText(context, text, R.dimen.outputHeaderTextSize);
     }
 
-    public static TextView buildSubHeader(Context context, CharSequence text) {
+    public static TextView buildSubHeader(final Context context, final CharSequence text) {
         return buildText(context, text, R.dimen.outputSubHeaderTextSize);
     }
 
-    public static TextView buildDescription(Context context, CharSequence text) {
+    public static TextView buildDescription(final Context context, final CharSequence text) {
         return buildText(context, text, R.dimen.outputDescriptionTextSize);
     }
 
-    public static LinearLayout buildContainer(Context context, Drawable divider) {
-        LinearLayout linearLayout = new LinearLayout(context);
+    public static LinearLayout buildContainer(final Context context, final Drawable divider) {
+        final LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setLayoutParams(getCenteredLayoutParams());
         linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -64,23 +66,25 @@ public class GraphicalOutputUtils {
         return linearLayout;
     }
 
-    public static LinearLayout buildContainer(Context context, Drawable divider, View... views) {
-        LinearLayout linearLayout = buildContainer(context, divider);
-        for (View view : views) {
+    public static LinearLayout buildContainer(final Context context,
+                                              final Drawable divider,
+                                              final View... views) {
+        final LinearLayout linearLayout = buildContainer(context, divider);
+        for (final View view : views) {
             linearLayout.addView(view);
         }
         return linearLayout;
     }
 
 
-    public static View buildNetworkErrorMessage(Context context) {
+    public static View buildNetworkErrorMessage(final Context context) {
         return buildContainer(context,
                 AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, context.getString(R.string.eval_network_error)),
                 buildDescription(context, context.getString(R.string.eval_network_error_description)));
     }
 
-    public static View buildErrorMessage(Context context, Throwable throwable) {
+    public static View buildErrorMessage(final Context context, final Throwable throwable) {
         return buildContainer(context,
                 AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, throwable.getMessage()),
