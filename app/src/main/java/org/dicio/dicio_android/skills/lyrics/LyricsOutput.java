@@ -48,8 +48,9 @@ public class LyricsOutput
             lyricsView.setPadding(8, 0, 0, 0);
 
             graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildContainer(context,
-                            ResourcesCompat.getDrawable(context.getResources(), R.drawable.divider_items, null),
+                    GraphicalOutputUtils.buildVerticalLinearLayout(context,
+                            ResourcesCompat.getDrawable(context.getResources(),
+                                    R.drawable.divider_items, null),
                             GraphicalOutputUtils.buildHeader(context, data.title),
                             GraphicalOutputUtils.buildSubHeader(context, data.artist),
                             lyricsView));

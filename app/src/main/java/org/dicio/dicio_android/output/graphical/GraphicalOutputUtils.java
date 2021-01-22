@@ -20,11 +20,21 @@ import org.dicio.dicio_android.util.ExceptionUtils;
 
 public class GraphicalOutputUtils {
 
+    /**
+     * Inflates the provided layout using {@code null} as root view.
+     * @param context the Android context to use for the layout inflater
+     * @param layout the layout resource id of the layout to inflate
+     * @return the inflated view
+     */
     public static View inflate(final Context context, @LayoutRes final int layout) {
         return LayoutInflater.from(context).inflate(layout, null);
     }
 
-    public static LinearLayoutCompat.LayoutParams getCenteredLayoutParams() {
+    /**
+     * @return the layout parameters to apply to a child of a vertical linear layout in order to
+     * make it horizontally centered.
+     */
+    public static LinearLayoutCompat.LayoutParams getCenteredLinearLayoutParams() {
         final LinearLayoutCompat.LayoutParams layoutParams = new LinearLayoutCompat.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -33,32 +43,80 @@ public class GraphicalOutputUtils {
         return layoutParams;
     }
 
+    /**
+     * Builds a text view
+     * @param context the Android context to use to initialize the view
+     * @param text the content of the text view
+     * @param size the dimension resource id representing the text size
+     * @return the built view
+     */
     public static TextView buildText(final Context context,
                                      final CharSequence text,
                                      @DimenRes final int size) {
         final TextView header = new TextView(context);
-        header.setLayoutParams(getCenteredLayoutParams());
+        header.setLayoutParams(getCenteredLinearLayoutParams());
         header.setGravity(Gravity.CENTER_HORIZONTAL);
         header.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(size));
         header.setText(text);
         return header;
     }
 
+    /**
+     * Builds a text view with big text, to be used for headers or titles
+     * @see #buildText(Context, CharSequence, int)
+     * @see #buildSubHeader(Context, CharSequence)
+     * @see #buildDescription(Context, CharSequence)
+     *
+     * @param context the Android context to use to initialize the view
+     * @param text the content of the text view
+     * @return the built view
+     */
     public static TextView buildHeader(final Context context, final CharSequence text) {
         return buildText(context, text, R.dimen.outputHeaderTextSize);
     }
 
+    /**
+     * Builds a text view with medium-sized text, to be used for sub-headers or subtitles
+     * @see #buildText(Context, CharSequence, int)
+     * @see #buildHeader(Context, CharSequence)
+     * @see #buildDescription(Context, CharSequence)
+     *
+     * @param context the Android context to use to initialize the view
+     * @param text the content of the text view
+     * @return the built view
+     */
     public static TextView buildSubHeader(final Context context, final CharSequence text) {
         return buildText(context, text, R.dimen.outputSubHeaderTextSize);
     }
 
+    /**
+     * Builds a text view with normally-sized text, to be used for long texts, descriptions or
+     * captions
+     * @see #buildText(Context, CharSequence, int)
+     * @see #buildHeader(Context, CharSequence)
+     * @see #buildSubHeader(Context, CharSequence)
+     *
+     * @param context the Android context to use to initialize the view
+     * @param text the content of the text view
+     * @return the built view
+     */
     public static TextView buildDescription(final Context context, final CharSequence text) {
         return buildText(context, text, R.dimen.outputDescriptionTextSize);
     }
 
-    public static LinearLayout buildContainer(final Context context, final Drawable divider) {
+    /**
+     * Builds a vertical linear layout that uses the provided divider between each of the added
+     * views (see {@link LinearLayout#SHOW_DIVIDER_MIDDLE}).
+     * @see #buildVerticalLinearLayout(Context, Drawable, View...)
+     *
+     * @param context the Android context to use to initialize the view
+     * @param divider the drawable to display in between items
+     * @return the built view
+     */
+    public static LinearLayout buildVerticalLinearLayout(final Context context,
+                                                         final Drawable divider) {
         final LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setLayoutParams(getCenteredLayoutParams());
+        linearLayout.setLayoutParams(getCenteredLinearLayoutParams());
         linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setDividerDrawable(divider);
@@ -66,26 +124,51 @@ public class GraphicalOutputUtils {
         return linearLayout;
     }
 
-    public static LinearLayout buildContainer(final Context context,
-                                              final Drawable divider,
-                                              final View... views) {
-        final LinearLayout linearLayout = buildContainer(context, divider);
+    /**
+     * Builds a vertical linear layout that uses the provided divider between each of the added
+     * views (see {@link LinearLayout#SHOW_DIVIDER_MIDDLE}).
+     * @see #buildVerticalLinearLayout(Context, Drawable)
+     *
+     * @param context the Android context to use to initialize the view
+     * @param divider the drawable to display in between items
+     * @param views the children to add, in order, to the layout
+     * @return the built view
+     */
+    public static LinearLayout buildVerticalLinearLayout(final Context context,
+                                                         final Drawable divider,
+                                                         final View... views) {
+        final LinearLayout linearLayout = buildVerticalLinearLayout(context, divider);
         for (final View view : views) {
             linearLayout.addView(view);
         }
         return linearLayout;
     }
 
-
+    /**
+     * Builds a view explaining that a network error has occoured
+     * @see #buildErrorMessage(Context, Throwable)
+     *
+     * @param context the Android context to use to initialize the view
+     * @return the built view
+     */
     public static View buildNetworkErrorMessage(final Context context) {
-        return buildContainer(context,
+        return buildVerticalLinearLayout(context,
                 AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, context.getString(R.string.eval_network_error)),
                 buildDescription(context, context.getString(R.string.eval_network_error_description)));
     }
 
+    /**
+     * Builds a view explaining that an error has occoured, containing the {@code throwable}'s
+     * message as title and the {@code throwable}'s stack trace as description.
+     * @see #buildNetworkErrorMessage(Context)
+     *
+     * @param context the Android context to use to initialize the view
+     * @param throwable the exception to show information about
+     * @return the built view
+     */
     public static View buildErrorMessage(final Context context, final Throwable throwable) {
-        return buildContainer(context,
+        return buildVerticalLinearLayout(context,
                 AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, throwable.getMessage()),
                 buildDescription(context, ExceptionUtils.getStackTraceString(throwable)));

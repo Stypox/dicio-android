@@ -37,9 +37,10 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
 
-        final LinearLayout output = GraphicalOutputUtils.buildContainer(context, ResourcesCompat
-                .getDrawable(context.getResources(), R.drawable.divider_items, null));
-        for (Data item : data) {
+        final LinearLayout output = GraphicalOutputUtils.buildVerticalLinearLayout(context,
+                ResourcesCompat.getDrawable(context.getResources(),
+                        R.drawable.divider_items, null));
+        for (final Data item : data) {
             final View view =
                     GraphicalOutputUtils.inflate(context, R.layout.skill_search_result);
 
