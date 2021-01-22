@@ -2,7 +2,8 @@
 
     <style name="DarkAppTheme" parent="@style/Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
+        <!-- status bar will have the same color as the app bar -->
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccentDark</item>
 
         <item name="cardBackground">@color/cardBackgroundDark</item>
@@ -27,7 +28,8 @@
 
     <style name="LightAppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
+        <!-- status bar will have the same color as the app bar -->
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccentLight</item>
 
         <item name="cardBackground">@color/cardBackgroundLight</item>
@@ -55,13 +57,16 @@
 
     <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
+        <!-- status bar will have the same color as the app bar -->
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/white</item>
     </style>
 
+    <!-- TODO making this extend light theme always (under any theme) could be unwanted -->
     <style name="ActionBarPopupTheme" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item> <!-- status bar will have the same color as the app bar -->
+        <!-- status bar will have the same color as the app bar -->
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/white</item>
     </style>
 
