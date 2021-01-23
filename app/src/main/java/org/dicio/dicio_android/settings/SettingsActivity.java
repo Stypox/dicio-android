@@ -19,6 +19,7 @@ public class SettingsActivity extends LocaleAwareActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     private final String toolbarTitleKey = "toolbarTitle";
 
+    // package-private: used in IOFragment to set title after changing language
     Toolbar toolbar;
     String toolbarTitle;
 
@@ -34,7 +35,7 @@ public class SettingsActivity extends LocaleAwareActivity
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         setThemeFromPreferences();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -64,26 +65,27 @@ public class SettingsActivity extends LocaleAwareActivity
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
+    public void onSaveInstanceState(@NonNull final Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(toolbarTitleKey, toolbarTitle);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         toolbarTitle = savedInstanceState.getString(toolbarTitleKey);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         toolbar.setTitle(toolbarTitle);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
-        Fragment fragment = getSupportFragmentManager().getFragmentFactory()
+    public boolean onPreferenceStartFragment(final PreferenceFragmentCompat caller,
+                                             final Preference pref) {
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory()
                 .instantiate(getClassLoader(), pref.getFragment());
         fragment.setArguments(caller.getArguments());
         fragment.setTargetFragment(caller, 0);
