@@ -25,6 +25,10 @@
         <item name="iconExtension">@drawable/ic_extension_white</item>
     </style>
 
+    <style name="SettingsDarkAppTheme" parent="DarkAppTheme">
+        <item name="colorPrimary">@color/colorAccentDark</item>
+    </style>
+
 
     <style name="LightAppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -50,6 +54,11 @@
         <item name="iconExpandMore">@drawable/ic_expand_more_black</item>
         <item name="iconExtension">@drawable/ic_extension_black</item>
     </style>
+
+    <style name="SettingsLightAppTheme" parent="LightAppTheme">
+        <item name="colorPrimary">@color/colorAccentLight</item>
+    </style>
+
 
     <style name="SplashScreenTheme" parent="LightAppTheme">
         <item name="android:windowBackground">@drawable/splash_screen</item>
