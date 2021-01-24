@@ -93,10 +93,7 @@ public class MainActivity extends BaseActivity
         final ExtendedFloatingActionButton voiceFab = findViewById(R.id.voiceFab);
         if (inputDevice instanceof SpeechInputDevice) {
             voiceFab.setVisibility(View.VISIBLE);
-            voiceFab.setText(getString(R.string.listening));
-            ((SpeechInputDevice) inputDevice).setVoiceInputItem(voiceFab,
-                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_white),
-                    AppCompatResources.getDrawable(this, R.drawable.ic_mic_none_white));
+            ((SpeechInputDevice) inputDevice).setVoiceFab(voiceFab);
         } else {
             voiceFab.setVisibility(View.GONE);
         }
@@ -200,6 +197,7 @@ public class MainActivity extends BaseActivity
         // Sections language is initialized in BaseActivity.setLocale
 
         inputDevice = buildInputDevice();
+        inputDevice.load();
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
         skillEvaluator = new SkillEvaluator(
@@ -221,8 +219,8 @@ public class MainActivity extends BaseActivity
         if (currentInputDevicePreference.equals(
                 getString(R.string.pref_val_input_method_text))) {
             return new ToolbarInputDevice();
-        } else {
-            return new VoskInputDevice(this); // default
+        } else { // default
+            return new VoskInputDevice(this);
         }
     }
 
@@ -235,8 +233,8 @@ public class MainActivity extends BaseActivity
             return new SnackbarSpeechDevice(findViewById(android.R.id.content));
         } else if (preference.equals(getString(R.string.pref_val_speech_output_method_toast))) {
             return new ToastSpeechDevice(this);
-        } else {
-            return new AndroidTtsSpeechDevice(this, Sections.getCurrentLocale()); // default
+        } else { // default
+            return new AndroidTtsSpeechDevice(this, Sections.getCurrentLocale());
         }
     }
 }

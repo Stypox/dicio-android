@@ -18,13 +18,22 @@ public abstract class InputDevice {
     @Nullable
     private OnInputReceivedListener onInputReceivedListener = null;
 
+
     /**
-     * Tries to get input in any way (even asyncronically, if needed).
+     * Prepares the input device. If doing heavy work, run it in an asynchronous thread.
      * <br><br>
-     * Overriding functions should report results to the
-     * {@code notifyInputReceived()} and {@code notifyError()} functions.
+     * Overriding functions should report errors to {@code notifyError()}.
+     */
+    public abstract void load();
+
+    /**
+     * Tries to get input in any way. Should run in an asynchronous thread.
+     * <br><br>
+     * Overriding functions should report results to {@code notifyInputReceived()} and errors to
+     * {@code notifyError()}.
      */
     public abstract void tryToGetInput();
+
 
     public final void setOnInputReceivedListener(@Nullable final OnInputReceivedListener listener) {
         this.onInputReceivedListener = listener;

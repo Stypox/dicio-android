@@ -80,6 +80,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private final CompositeDisposable disposables = new CompositeDisposable();
     private SpeechService recognizer = null;
     private boolean currentlyInitializingRecognizer = false;
+    private boolean startListeningOnLoaded = false;
     private boolean currentlyListening = false;
 
 
@@ -89,30 +90,44 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     public VoskInputDevice(final Activity activity) {
         this.activity = activity;
-        ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO},
-                MICROPHONE_PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void load() {
+        if (recognizer == null && !currentlyInitializingRecognizer) {
+            currentlyInitializingRecognizer = true;
+            onLoading();
+
+            // TODO move this to SpeechInputDevice?
+            ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO},
+                    MICROPHONE_PERMISSION_REQUEST_CODE);
+
+            disposables.add(Single.fromCallable(this::initializeRecognizer)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(recognizerIsReady -> {
+                        currentlyInitializingRecognizer = false;
+                        if (recognizerIsReady) {
+                            if (startListeningOnLoaded) {
+                                startListeningOnLoaded = false;
+                                tryToGetInput();
+                            } else {
+                                onInactive();
+                            }
+                        } // else model is being downloaded, so keep loading state
+                    }, throwable -> {
+                        currentlyInitializingRecognizer = false;
+                        notifyError(throwable);
+                        onInactive();
+                    }));
+        }
     }
 
     @Override
     public synchronized void tryToGetInput() {
-
-        if (recognizer == null) {
-            if (!currentlyInitializingRecognizer) {
-                currentlyInitializingRecognizer = true;
-                disposables.add(Single.fromCallable(this::initializeRecognizer)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(recognizerIsReady -> {
-                            currentlyInitializingRecognizer = false;
-                            if (recognizerIsReady) {
-                                tryToGetInput();
-                            }
-                        }, throwable -> {
-                            currentlyInitializingRecognizer = false;
-                            throwable.printStackTrace();
-                        }));
-            }
-            return;
+        if (recognizer == null || currentlyInitializingRecognizer) {
+            startListeningOnLoaded = true;
+            return; // recognizer not ready
         }
 
         if (currentlyListening) {
@@ -194,7 +209,7 @@ public class VoskInputDevice extends SpeechInputDevice {
             private void stopListening() {
                 recognizer.stop();
                 currentlyListening = false;
-                onFinishedListening();
+                onInactive();
             }
         });
         return true;
@@ -263,6 +278,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                                             asyncMakeToast(R.string.vosk_model_ready);
                                             downloadManager.remove(modelDownloadId);
                                             putDownloadIdInPreferences(activity, null);
+                                            load();
                                         },
                                         throwable -> {
                                             asyncMakeToast(R.string.vosk_model_extraction_error);

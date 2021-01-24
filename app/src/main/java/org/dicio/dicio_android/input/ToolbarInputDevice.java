@@ -26,6 +26,10 @@ public class ToolbarInputDevice extends InputDevice {
     }
 
     @Override
+    public void load() {
+    }
+
+    @Override
     public void tryToGetInput() {
         textInputItem.expandActionView();
     }
