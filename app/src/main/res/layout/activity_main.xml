@@ -52,6 +52,20 @@
                     android:showDividers="middle" />
             </ScrollView>
 
+            <ProgressBar
+                android:id="@+id/voiceLoading"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/white"
+                android:indeterminateTintMode="src_atop"
+                android:padding="16dp"
+                android:translationZ="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/voiceFab"
+                app:layout_constraintDimensionRatio="1"
+                app:layout_constraintStart_toStartOf="@+id/voiceFab"
+                app:layout_constraintTop_toTopOf="@+id/voiceFab" />
+
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/voiceFab"
                 android:layout_width="wrap_content"
@@ -78,6 +92,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        tools:visibility="gone" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

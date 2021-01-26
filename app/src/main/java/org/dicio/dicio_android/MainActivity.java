@@ -7,11 +7,11 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -91,11 +91,14 @@ public class MainActivity extends BaseActivity
 
     private void setupVoiceButton() {
         final ExtendedFloatingActionButton voiceFab = findViewById(R.id.voiceFab);
+        final ProgressBar voiceLoading = findViewById(R.id.voiceLoading);
         if (inputDevice instanceof SpeechInputDevice) {
             voiceFab.setVisibility(View.VISIBLE);
-            ((SpeechInputDevice) inputDevice).setVoiceFab(voiceFab);
+            voiceLoading.setVisibility(View.VISIBLE);
+            ((SpeechInputDevice) inputDevice).setVoiceViews(voiceFab, voiceLoading);
         } else {
             voiceFab.setVisibility(View.GONE);
+            voiceLoading.setVisibility(View.GONE);
         }
     }
 

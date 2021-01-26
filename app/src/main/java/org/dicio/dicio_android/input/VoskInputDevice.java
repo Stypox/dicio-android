@@ -137,7 +137,7 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         Log.d(TAG, "starting recognizer");
         recognizer.startListening();
-        onStartedListening();
+        onListening();
     }
 
     public static void deleteCurrentModel(final Context context) {

@@ -1,6 +1,10 @@
 package org.dicio.dicio_android.input;
 
-import androidx.annotation.DrawableRes;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
@@ -10,13 +14,12 @@ import org.dicio.dicio_android.R;
 
 public abstract class SpeechInputDevice extends InputDevice {
 
-    @Nullable private ExtendedFloatingActionButton voiceFab = null;
-    @DrawableRes private int currentDrawable;
-    private boolean currentShowExtendedFab;
+    private static final int LOADING = 0, INACTIVE = 1, LISTENING = 2;
 
-    public SpeechInputDevice() {
-        onLoading(); // start with loading state
-    }
+    @Nullable private ExtendedFloatingActionButton voiceFab = null;
+    @Nullable private ProgressBar voiceLoading = null;
+
+    private int currentState = LOADING;
 
 
     /**
@@ -26,17 +29,19 @@ public abstract class SpeechInputDevice extends InputDevice {
      * @param voiceFab the fab, which should an empty string set as text so that the first time it
      *                 is extended everything is handled correctly.
      */
-    public final void setVoiceFab(@Nullable final ExtendedFloatingActionButton voiceFab) {
+    public final void setVoiceViews(@Nullable final ExtendedFloatingActionButton voiceFab,
+                                    @Nullable final ProgressBar voiceLoading) {
         if (this.voiceFab != null) {
             // release previous on click listener to allow garbage collection to kick in
             this.voiceFab.setOnClickListener(null);
         }
 
         this.voiceFab = voiceFab;
+        this.voiceLoading = voiceLoading;
 
         if (voiceFab != null) {
             voiceFab.setText(voiceFab.getContext().getString(R.string.listening));
-            showState(currentDrawable, currentShowExtendedFab);
+            showState(currentState);
             voiceFab.setOnClickListener(view -> tryToGetInput());
         }
     }
@@ -58,7 +63,7 @@ public abstract class SpeechInputDevice extends InputDevice {
      * <br><br>
      * Overriding functions should report results to the {@link
      * InputDevice#notifyInputReceived(String)} and {@link InputDevice#notifyError(Throwable)}
-     * functions, and they must call {@link #onStartedListening()} when they turn on the microphone
+     * functions, and they must call {@link #onListening()} when they turn on the microphone
      * and {@link #onInactive()} when instead they turn it off.
      */
     @Override
@@ -70,7 +75,7 @@ public abstract class SpeechInputDevice extends InputDevice {
      * listening, so that the microphone on icon can be shown.
      */
     protected final void onLoading() {
-        showState(R.drawable.ic_refresh_white, false);
+        showState(LOADING);
     }
 
     /**
@@ -79,28 +84,38 @@ public abstract class SpeechInputDevice extends InputDevice {
      * the so that the microphone off icon can be shown.
      */
     protected final void onInactive() {
-        showState(R.drawable.ic_mic_none_white, false);
+        showState(INACTIVE);
     }
 
     /**
      * This must be called by functions overriding {@link #tryToGetInput()} when they have started
      * listening, so that the microphone on icon can be shown.
      */
-    protected final void onStartedListening() {
-        showState(R.drawable.ic_mic_white, true);
+    protected final void onListening() {
+        showState(LISTENING);
     }
 
 
-    private void showState(@DrawableRes final int drawable, final boolean showExtendedFab) {
-        currentDrawable = drawable;
-        currentShowExtendedFab = showExtendedFab;
-        if (voiceFab != null) {
-            voiceFab.setIcon(
-                    AppCompatResources.getDrawable(voiceFab.getContext(), currentDrawable));
-            if (currentShowExtendedFab) {
-                voiceFab.extend();
-            } else {
-                voiceFab.shrink();
+    private void showState(final int state) {
+        if (voiceFab != null && voiceLoading != null) {
+            switch (state) {
+                case LOADING:
+                    voiceFab.setIcon(new ColorDrawable(Color.TRANSPARENT));
+                    voiceFab.shrink();
+                    voiceLoading.setVisibility(View.VISIBLE);
+                    break;
+                case INACTIVE: default:
+                    voiceFab.setIcon(AppCompatResources.getDrawable(voiceFab.getContext(),
+                            R.drawable.ic_mic_none_white));
+                    voiceFab.shrink();
+                    voiceLoading.setVisibility(View.GONE);
+                    break;
+                case LISTENING:
+                    voiceFab.setIcon(AppCompatResources.getDrawable(voiceFab.getContext(),
+                            R.drawable.ic_mic_white));
+                    voiceFab.extend();
+                    voiceLoading.setVisibility(View.GONE);
+                    break;
             }
         }
     }
