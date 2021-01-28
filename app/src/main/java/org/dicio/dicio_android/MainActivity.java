@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -45,9 +46,8 @@ public class MainActivity extends BaseActivity
     private DrawerLayout drawer;
     private MenuItem textInputItem = null;
 
-    private InputDevice inputDevice;
-    private SkillEvaluator skillEvaluator;
-    private String currentInputDevicePreference;
+    @Nullable private SkillEvaluator skillEvaluator = null;
+    private String currentInputDevicePreference = null;
     private boolean appJustOpened = false;
     private boolean textInputItemFocusJustChanged = false;
 
@@ -89,13 +89,29 @@ public class MainActivity extends BaseActivity
         appJustOpened = true;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (skillEvaluator != null) {
+            if (skillEvaluator.getPrimaryInputDevice() instanceof ToolbarInputDevice) {
+                ((ToolbarInputDevice) skillEvaluator.getPrimaryInputDevice())
+                        .setTextInputItem(null);
+            } else if (skillEvaluator.getSecondaryInputDevice() != null) {
+                skillEvaluator.getSecondaryInputDevice().setTextInputItem(null);
+            }
+            skillEvaluator.removeListeners();
+        }
+    }
+
     private void setupVoiceButton() {
         final ExtendedFloatingActionButton voiceFab = findViewById(R.id.voiceFab);
         final ProgressBar voiceLoading = findViewById(R.id.voiceLoading);
-        if (inputDevice instanceof SpeechInputDevice) {
+        if (skillEvaluator != null
+                && skillEvaluator.getPrimaryInputDevice() instanceof SpeechInputDevice) {
             voiceFab.setVisibility(View.VISIBLE);
             voiceLoading.setVisibility(View.VISIBLE);
-            ((SpeechInputDevice) inputDevice).setVoiceViews(voiceFab, voiceLoading);
+            ((SpeechInputDevice) skillEvaluator.getPrimaryInputDevice())
+                    .setVoiceViews(voiceFab, voiceLoading);
         } else {
             voiceFab.setVisibility(View.GONE);
             voiceLoading.setVisibility(View.GONE);
@@ -106,10 +122,20 @@ public class MainActivity extends BaseActivity
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
-        textInputItem = menu.findItem(R.id.action_text_input);
-        if (inputDevice instanceof ToolbarInputDevice) {
+        final ToolbarInputDevice toolbarInputDevice;
+        if (skillEvaluator == null) {
+            toolbarInputDevice = null;
+        } else if (skillEvaluator.getPrimaryInputDevice() instanceof ToolbarInputDevice) {
+            toolbarInputDevice = (ToolbarInputDevice) skillEvaluator.getPrimaryInputDevice();
+        } else {
+            toolbarInputDevice = skillEvaluator.getSecondaryInputDevice();
+        }
+
+        if (toolbarInputDevice != null) {
+            textInputItem = menu.findItem(R.id.action_text_input);
             textInputItem.setVisible(true);
-            ((ToolbarInputDevice) inputDevice).setTextInputItem(textInputItem);
+
+            toolbarInputDevice.setTextInputItem(textInputItem);
 
             textInputItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
@@ -132,12 +158,15 @@ public class MainActivity extends BaseActivity
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
             textInputView.setOnQueryTextFocusChangeListener(
                     (v, hasFocus) -> textInputItemFocusJustChanged = true);
+
         } else {
+            // this should be unreachable, but just to be future-proof
             textInputItem.setVisible(false);
         }
 
         if (appJustOpened) {
-            inputDevice.tryToGetInput();
+            // now everything should have been initialized
+            skillEvaluator.getPrimaryInputDevice().tryToGetInput();
             appJustOpened = false;
         }
         return true;
@@ -197,17 +226,20 @@ public class MainActivity extends BaseActivity
     /////////////////////
 
     private void initializeSkillEvaluator() {
-        // Sections language is initialized in BaseActivity.setLocale
+        if (skillEvaluator != null) {
+            skillEvaluator.removeListeners();
+        }
 
-        inputDevice = buildInputDevice();
+        final InputDevice inputDevice = buildPrimaryInputDevice();
         inputDevice.load();
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
         skillEvaluator = new SkillEvaluator(
-                new SkillRanker(
+                new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
                         SkillHandler.getStandardSkillBatch(this, Sections.getCurrentLocale()),
                         SkillHandler.getFallbackSkill(this, Sections.getCurrentLocale())),
                 inputDevice,
+                inputDevice instanceof ToolbarInputDevice ? null : new ToolbarInputDevice(),
                 speechOutputDevice,
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),
                 this);
@@ -218,7 +250,7 @@ public class MainActivity extends BaseActivity
         return preferences.getString(getString(R.string.pref_key_input_method), "");
     }
 
-    private InputDevice buildInputDevice() {
+    private InputDevice buildPrimaryInputDevice() {
         if (currentInputDevicePreference.equals(
                 getString(R.string.pref_val_input_method_text))) {
             return new ToolbarInputDevice();

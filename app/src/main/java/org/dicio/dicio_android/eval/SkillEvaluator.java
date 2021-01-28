@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.input.InputDevice;
+import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.skill.Skill;
@@ -29,7 +30,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SkillEvaluator {
     private final SkillRanker skillRanker;
-    private final InputDevice inputDevice;
+    private final InputDevice primaryInputDevice;
+    @Nullable private final ToolbarInputDevice secondaryInputDevice;
     private final SpeechOutputDevice speechOutputDevice;
     private final GraphicalOutputDevice graphicalOutputDevice;
     private final Context context;
@@ -37,36 +39,59 @@ public class SkillEvaluator {
     @Nullable private Disposable evaluationDisposable = null;
 
     public SkillEvaluator(final SkillRanker skillRanker,
-                          final InputDevice inputDevice,
+                          final InputDevice primaryInputDevice,
+                          @Nullable final ToolbarInputDevice secondaryInputDevice,
                           final SpeechOutputDevice speechOutputDevice,
                           final GraphicalOutputDevice graphicalOutputDevice,
                           final Context context) {
 
         this.skillRanker = skillRanker;
-        this.inputDevice = inputDevice;
+        this.primaryInputDevice = primaryInputDevice;
+        this.secondaryInputDevice = secondaryInputDevice;
         this.speechOutputDevice = speechOutputDevice;
         this.graphicalOutputDevice = graphicalOutputDevice;
         this.context = context;
 
-        inputDevice.setOnInputReceivedListener(new InputDevice.OnInputReceivedListener() {
-            @Override
-            public void onInputReceived(final String input) {
-                processInput(input);
-            }
+        final InputDevice.OnInputReceivedListener onInputReceivedListener =
+                new InputDevice.OnInputReceivedListener() {
+                    @Override
+                    public void onInputReceived(final String input) {
+                        processInput(input);
+                    }
 
-            @Override
-            public void onError(final Throwable e) {
-                SkillEvaluator.this.onError(e);
-            }
-        });
+                    @Override
+                    public void onError(final Throwable e) {
+                        SkillEvaluator.this.onError(e);
+                    }
+                };
+        primaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
+        if (secondaryInputDevice != null) {
+            secondaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
+        }
     }
 
-    public void processInput(final String input) {
+    public void removeListeners() {
+        primaryInputDevice.setOnInputReceivedListener(null);
+        if (secondaryInputDevice != null) {
+            secondaryInputDevice.setOnInputReceivedListener(null);
+        }
+    }
+
+    public InputDevice getPrimaryInputDevice() {
+        return primaryInputDevice;
+    }
+
+    @Nullable
+    public ToolbarInputDevice getSecondaryInputDevice() {
+        return secondaryInputDevice;
+    }
+
+    private void processInput(final String input) {
         displayUserInput(input.replace('\n', ' '));
         evaluateMatchingSkill(input);
     }
 
-    public void displayUserInput(final String input) {
+    private void displayUserInput(final String input) {
         final View userInputView =
                 GraphicalOutputUtils.inflate(context, R.layout.skill_user_input);
         final AppCompatEditText inputEditText = userInputView.findViewById(R.id.userInput);
@@ -147,7 +172,7 @@ public class SkillEvaluator {
         graphicalOutputDevice.display(userInputView);
     }
 
-    public void evaluateMatchingSkill(final String input) {
+    private void evaluateMatchingSkill(final String input) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
             evaluationDisposable.dispose();
         }
@@ -181,7 +206,7 @@ public class SkillEvaluator {
             skillRanker.removeAllBatches();
         } else {
             skillRanker.addBatchToTop(nextSkills);
-            inputDevice.tryToGetInput();
+            primaryInputDevice.tryToGetInput();
         }
 
         skill.cleanup(); // cleanup the input that was set
