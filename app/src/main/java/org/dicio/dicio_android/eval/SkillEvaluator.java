@@ -132,17 +132,17 @@ public class SkillEvaluator {
         skill.generateOutput(context, PreferenceManager.getDefaultSharedPreferences(context),
                 Sections.getCurrentLocale(), speechOutputDevice, graphicalOutputDevice);
         graphicalOutputDevice.addDivider();
-        skill.cleanup(); // cleanup the input that was set
 
-        final List<Skill> nextSkills =
-                skill.nextSkills();
-        if (nextSkills.isEmpty()) {
+        final List<Skill> nextSkills = skill.nextSkills();
+        if (nextSkills == null || nextSkills.isEmpty()) {
             // current conversation has ended, reset to the default batch of skills
             skillRanker.removeAllBatches();
         } else {
             skillRanker.addBatchToTop(nextSkills);
             inputDevice.tryToGetInput();
         }
+
+        skill.cleanup(); // cleanup the input that was set
     }
 
     private void onError(final Throwable t) {
