@@ -4,9 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
@@ -77,19 +75,60 @@ public class SkillEvaluator {
         inputEditText.setText(input);
 
         inputEditText.addTextChangedListener(new TextWatcher() {
+            // `count` characters beginning at `start` replaced old text that had length `before`
+            int startIndex = 0, countBefore = 0, countAfter = 0;
+            boolean ignore = false;
+
             @Override public void beforeTextChanged(final CharSequence s, final int start,
                                                     final int count, final int after) {}
+
             @Override public void onTextChanged(final CharSequence s, final int start,
-                                                final int before, final int count) {}
+                                                final int before, final int count) {
+                if (ignore) {
+                    return;
+                }
+
+                startIndex = start;
+                countBefore = before;
+                countAfter = count;
+            }
 
             @Override
             public void afterTextChanged(final Editable s) {
-                if (s.length() != 0 && s.charAt(s.length() - 1) == '\n') {
-                    s.delete(s.length() - 1, s.length());
-                    if (!s.toString().trim().equals(input.trim())) {
-                        processInput(s.toString());
-                        inputEditText.setText(input); // restore original input
+                if (ignore) {
+                     return;
+                }
+
+                if (countBefore == 0 && countAfter == 1) {
+                    // a single character has just been inserted, most probably from the keyboard,
+                    // so check if it is the Enter key (i.e. the newline '\n')
+
+                    if (s.length() > startIndex && s.charAt(startIndex) == '\n') {
+                        s.delete(startIndex, startIndex + 1);
+                        if (!s.toString().trim().equals(input.trim())) {
+                            processInput(s.toString());
+                            inputEditText.setText(input); // restore original input
+                        }
                     }
+                } else {
+                    // text was copy-pasted, so replace all newlines with spaces
+
+                    if (s.length() < startIndex + countAfter) {
+                        return; // should be impossible, but just to be sure
+                    }
+
+                    // do all at once for performance and otherwise `s.replace` indices get messed
+                    final char[] chars = new char[countAfter];
+                    s.getChars(startIndex, startIndex + countAfter, chars, 0);
+                    for (int i = 0; i < countAfter; ++i) {
+                        if (chars[i] == '\n') {
+                            chars[i] = ' ';
+                        }
+                    }
+
+                    ignore = true; // ignore the calls made to this listener by `s.replace`
+                    s.replace(startIndex, startIndex + countAfter, new String(chars));
+                    ignore = false;
                 }
             }
         });
