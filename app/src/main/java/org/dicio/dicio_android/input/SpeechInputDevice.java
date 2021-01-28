@@ -97,6 +97,7 @@ public abstract class SpeechInputDevice extends InputDevice {
 
 
     private void showState(final int state) {
+        currentState = state;
         if (voiceFab != null && voiceLoading != null) {
             switch (state) {
                 case LOADING:
