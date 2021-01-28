@@ -40,10 +40,10 @@ public class SkillEvaluator {
     @Nullable private Disposable evaluationDisposable = null;
 
     public SkillEvaluator(final SkillRanker skillRanker,
-                              final InputDevice inputDevice,
-                              final SpeechOutputDevice speechOutputDevice,
-                              final GraphicalOutputDevice graphicalOutputDevice,
-                              final Context context) {
+                          final InputDevice inputDevice,
+                          final SpeechOutputDevice speechOutputDevice,
+                          final GraphicalOutputDevice graphicalOutputDevice,
+                          final Context context) {
 
         this.skillRanker = skillRanker;
         this.inputDevice = inputDevice;
@@ -95,8 +95,12 @@ public class SkillEvaluator {
         });
 
         userInputView.setOnClickListener(v -> {
+            // focus test pointer after last character
             inputEditText.requestFocus();
-            inputEditText.setSelection(inputEditText.getText().length());
+            @Nullable final Editable text = inputEditText.getText();
+            inputEditText.setSelection(text == null ? 0 : text.length());
+
+            // open keyboard
             final InputMethodManager inputMethodManager =
                     (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(inputEditText, InputMethodManager.SHOW_FORCED);
