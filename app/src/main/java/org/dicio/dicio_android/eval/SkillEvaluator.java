@@ -3,7 +3,6 @@ package org.dicio.dicio_android.eval;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -63,7 +62,7 @@ public class SkillEvaluator {
     }
 
     public void processInput(final String input) {
-        displayUserInput(input);
+        displayUserInput(input.replace('\n', ' '));
         evaluateMatchingSkill(input);
     }
 
