@@ -18,7 +18,7 @@
     <string name="pref_input_method_summary">Scegli il servizio da usare per parlare a Dicio - %1$s</string>
     <string name="pref_speech_output_method">Modalità di output vocale</string>
     <string name="pref_speech_output_method_summary">Scegli il servizio che Dicio userà per parlarti - %1$s</string>
-    <string name="eval_fatal_error">Ho riscontrato un problema mentre esaminavo la tua richiesta, scusa</string>
+    <string name="eval_fatal_error">Ho riscontrato un problema mentre esaminavo la tua richiesta, mi dispiace</string>
     <string name="eval_network_error">Errore di connessione</string>
     <string name="eval_network_error_description">Dicio non è riuscito a raggiungere internet. Per favore controlla la connessione e riprova.</string>
     <string name="eval_no_match">Non ho capito, potresti ripetere?</string>
