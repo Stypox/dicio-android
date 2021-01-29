@@ -24,7 +24,8 @@ public abstract class SkillInfo {
      * @param nameResource the Android string resource containing the skill name to show to the user
      *                     (e.g. "Weather")
      * @param sentenceExampleResource the Android string resource containing an example of the usage
-     *                                of this skill to show to the user (e.g. "What's the weather?")
+     *                                of this skill to show to the user (e.g. "What's the
+     *                                weather?"). Should be 0 if this is a fallback skill.
      * @param iconResource the Android drawable resource containing the skill icon to show to the
      *                     user (e.g. an icon with sun and clouds representing weather)
      * @param hasPreferences whether this skill has preferences. If this is false, then
