@@ -189,6 +189,9 @@ public class VoskInputDevice extends SpeechInputDevice {
             @Override
             public void onPartialResult(final String s) {
                 Log.d(TAG, "onPartialResult called");
+                if (!currentlyListening) {
+                    return;
+                }
 
                 try {
                     lastPartialResult = new JSONObject(s).getString("partial");
