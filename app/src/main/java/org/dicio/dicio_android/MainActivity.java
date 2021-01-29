@@ -57,6 +57,7 @@ public class MainActivity extends BaseActivity
     private boolean appJustOpened = false;
     private boolean textInputItemFocusJustChanged = false;
 
+
     ////////////////////////
     // Activity lifecycle //
     ////////////////////////

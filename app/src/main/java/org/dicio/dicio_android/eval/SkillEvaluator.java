@@ -33,6 +33,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SkillEvaluator {
+
     private final SkillRanker skillRanker;
     private final InputDevice primaryInputDevice;
     @Nullable private final ToolbarInputDevice secondaryInputDevice;
@@ -44,6 +45,7 @@ public class SkillEvaluator {
     final Queue<String> queuedInputs = new LinkedList<>();
     @Nullable View partialInputView = null;
     @Nullable private Disposable evaluationDisposable = null;
+
 
     public SkillEvaluator(final SkillRanker skillRanker,
                           final InputDevice primaryInputDevice,
@@ -82,6 +84,11 @@ public class SkillEvaluator {
         }
     }
 
+
+    ////////////////////
+    // Public methods //
+    ////////////////////
+
     public void cleanup() {
         primaryInputDevice.setOnInputReceivedListener(null);
         if (secondaryInputDevice != null) {
@@ -105,6 +112,10 @@ public class SkillEvaluator {
     }
 
 
+    ///////////////////
+    // Partial input //
+    ///////////////////
+
     private void displayPartialUserInput(final String input) {
         if (partialInputView == null) {
             partialInputView =
@@ -115,6 +126,11 @@ public class SkillEvaluator {
         graphicalOutputDevice.displayTemporary(partialInputView);
     }
 
+
+
+    //////////////////////
+    // Input processing //
+    //////////////////////
 
     private void processInput(final String input) {
         queuedInputs.add(input);
@@ -222,6 +238,11 @@ public class SkillEvaluator {
     }
 
 
+
+    //////////////////////
+    // Skill evaluation //
+    //////////////////////
+
     private void evaluateMatchingSkill(final String input) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
             evaluationDisposable.dispose();
@@ -262,6 +283,11 @@ public class SkillEvaluator {
         skill.cleanup(); // cleanup the input that was set
         finishedProcessingInput();
     }
+
+
+    ///////////
+    // Error //
+    ///////////
 
     private void onError(final Throwable t) {
         t.printStackTrace();
