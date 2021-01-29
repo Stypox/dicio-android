@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
@@ -22,8 +23,6 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import org.dicio.dicio_android.output.speech.AndroidTtsSpeechDevice;
-import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.eval.SkillEvaluator;
 import org.dicio.dicio_android.eval.SkillRanker;
 import org.dicio.dicio_android.input.InputDevice;
@@ -31,15 +30,22 @@ import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.input.VoskInputDevice;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
+import org.dicio.dicio_android.output.speech.AndroidTtsSpeechDevice;
 import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
 import org.dicio.dicio_android.output.speech.SnackbarSpeechDevice;
 import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
+import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.BaseActivity;
 import org.dicio.skill.output.SpeechOutputDevice;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final int MICROPHONE_PERMISSION_REQUEST_CODE = 13893;
 
     private SharedPreferences preferences;
 
@@ -166,7 +172,12 @@ public class MainActivity extends BaseActivity
 
         if (appJustOpened) {
             // now everything should have been initialized
-            skillEvaluator.getPrimaryInputDevice().tryToGetInput();
+            if (!(skillEvaluator.getPrimaryInputDevice() instanceof SpeechInputDevice)
+                    || ActivityCompat.checkSelfPermission(this, RECORD_AUDIO)
+                            == PERMISSION_GRANTED) {
+                // if no voice permission start listening in onActivityResult
+                skillEvaluator.getPrimaryInputDevice().tryToGetInput();
+            }
             appJustOpened = false;
         }
         return true;
@@ -220,6 +231,20 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(final int requestCode,
+                                           @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MICROPHONE_PERMISSION_REQUEST_CODE
+                && grantResults.length > 0
+                && grantResults[0] == PERMISSION_GRANTED
+                && skillEvaluator != null
+                && skillEvaluator.getPrimaryInputDevice() instanceof SpeechInputDevice) {
+            skillEvaluator.getPrimaryInputDevice().load();
+            skillEvaluator.getPrimaryInputDevice().tryToGetInput();
+        }
+    }
 
     /////////////////////
     // Skill functions //
@@ -231,14 +256,23 @@ public class MainActivity extends BaseActivity
         }
 
         final InputDevice primaryInputDevice = buildPrimaryInputDevice();
-        primaryInputDevice.load();
 
         final ToolbarInputDevice secondaryInputDevice;
         if (primaryInputDevice instanceof ToolbarInputDevice) {
+            primaryInputDevice.load();
             secondaryInputDevice = null;
         } else {
             secondaryInputDevice = new ToolbarInputDevice();
             secondaryInputDevice.load();
+
+            if (primaryInputDevice instanceof SpeechInputDevice
+                    && ActivityCompat.checkSelfPermission(this, RECORD_AUDIO)
+                            != PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{RECORD_AUDIO},
+                        MICROPHONE_PERMISSION_REQUEST_CODE);
+            } else {
+                primaryInputDevice.load(); // load only if permission granted
+            }
         }
 
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();

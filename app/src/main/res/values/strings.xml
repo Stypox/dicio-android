@@ -13,6 +13,7 @@
     <string name="action_text_input">Text input</string>
     <string name="action_voice_input">Voice input</string>
     <string name="listening">Listening…</string>
+    <string name="microphone_error">Unable to access microphone, it is probably already in use or the relevant permission was denied.</string>
 
     <string name="vosk_model_notification_title">Vosk model</string>
     <string name="vosk_model_notification_description">Language: %1$s</string>

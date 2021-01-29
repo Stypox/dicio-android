@@ -12,7 +12,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.StringRes;
-import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
@@ -40,7 +39,6 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static android.Manifest.permission.RECORD_AUDIO;
 import static org.dicio.dicio_android.util.LocaleUtils.LocaleResolutionResult;
 import static org.dicio.dicio_android.util.LocaleUtils.UnsupportedLocaleException;
 import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPreferences;
@@ -49,7 +47,6 @@ import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
 public class VoskInputDevice extends SpeechInputDevice {
 
     public static final String TAG = VoskInputDevice.class.getSimpleName();
-    public static final int MICROPHONE_PERMISSION_REQUEST_CODE = 13893;
     public static final String MODEL_PATH = "/vosk-model";
     public static final String MODEL_ZIP_FILENAME = "model.zip";
     public static final float SAMPLE_RATE = 16000.0f;
@@ -98,10 +95,6 @@ public class VoskInputDevice extends SpeechInputDevice {
             currentlyInitializingRecognizer = true;
             onLoading();
 
-            // TODO move this to SpeechInputDevice?
-            ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO},
-                    MICROPHONE_PERMISSION_REQUEST_CODE);
-
             disposables.add(Single.fromCallable(this::initializeRecognizer)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -117,7 +110,12 @@ public class VoskInputDevice extends SpeechInputDevice {
                         } // else model is being downloaded, so keep loading state
                     }, throwable -> {
                         currentlyInitializingRecognizer = false;
-                        notifyError(throwable);
+                        if ("Failed to initialize recorder. Microphone might be already in use."
+                                .equals(throwable.getMessage())) {
+                            notifyError(new UnableToAccessMicrophoneException());
+                        } else {
+                            notifyError(throwable);
+                        }
                         onInactive();
                     }));
         }
@@ -125,8 +123,12 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     @Override
     public synchronized void tryToGetInput() {
-        if (recognizer == null || currentlyInitializingRecognizer) {
+        if (currentlyInitializingRecognizer) {
             startListeningOnLoaded = true;
+            return;
+        } else if (recognizer == null) {
+            startListeningOnLoaded = true;
+            load(); // not loaded before, retry
             return; // recognizer not ready
         }
 

@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.input.InputDevice;
+import org.dicio.dicio_android.input.SpeechInputDevice.UnableToAccessMicrophoneException;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.util.ExceptionUtils;
@@ -239,7 +240,11 @@ public class SkillEvaluator {
     private void onError(final Throwable t) {
         t.printStackTrace();
 
-        if (ExceptionUtils.isNetworkError(t)) {
+        if (ExceptionUtils.hasAssignableCause(t, UnableToAccessMicrophoneException.class)) {
+            speechOutputDevice.speak(context.getString(R.string.microphone_error));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildDescription(context,
+                    context.getString(R.string.microphone_error)));
+        } else if (ExceptionUtils.isNetworkError(t)) {
             speechOutputDevice.speak(context.getString(R.string.eval_network_error_description));
             graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(context));
         } else {

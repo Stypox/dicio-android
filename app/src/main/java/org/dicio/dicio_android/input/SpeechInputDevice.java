@@ -14,12 +14,20 @@ import org.dicio.dicio_android.R;
 
 public abstract class SpeechInputDevice extends InputDevice {
 
+    public static final class UnableToAccessMicrophoneException extends Exception {
+        UnableToAccessMicrophoneException() {
+            super("Unable to access microphone."
+                    + " Microphone might be already in use or the permission was not granted.");
+        }
+    }
+
+
     private static final int LOADING = 0, INACTIVE = 1, LISTENING = 2;
 
     @Nullable private ExtendedFloatingActionButton voiceFab = null;
     @Nullable private ProgressBar voiceLoading = null;
 
-    private int currentState = LOADING;
+    private int currentState = INACTIVE; // start with inactive state
 
 
     /**
