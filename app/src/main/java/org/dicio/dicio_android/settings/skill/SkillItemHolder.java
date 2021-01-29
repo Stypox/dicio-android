@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -20,6 +21,7 @@ import org.dicio.skill.SkillInfo;
 
 public class SkillItemHolder extends RecyclerView.ViewHolder {
 
+    final AppCompatImageView iconImageView;
     final AppCompatCheckBox checkBox;
     final AppCompatImageView expandImageView;
     final FrameLayout fragmentHolder;
@@ -30,6 +32,7 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
     public SkillItemHolder(@NonNull final LayoutInflater inflater,
                            @NonNull final ViewGroup parent) {
         super(inflater.inflate(R.layout.pref_skill_item, parent, false));
+        iconImageView = itemView.findViewById(R.id.skillIconImageView);
         checkBox = itemView.findViewById(R.id.skillCheckBox);
         expandImageView = itemView.findViewById(R.id.expandImageView);
         fragmentHolder = itemView.findViewById(R.id.fragmentHolder);
@@ -39,6 +42,10 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
         currentSkillInfoId = skillInfo.getId();
         expanded = false;
         expandImageView.setRotation(0);
+
+        // the correct tint is set in the xml
+        @DrawableRes final int icon = skillInfo.getIconResource();
+        iconImageView.setImageResource(icon == 0 ? R.drawable.ic_extension_white : icon);
 
         final SharedPreferences sharedPreferences
                 = PreferenceManager.getDefaultSharedPreferences(fragment.requireContext());

@@ -12,6 +12,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+        <item name="iconsTint">@color/white</item>
         <item name="iconBrush">@drawable/ic_brush_white</item>
         <item name="iconPalette">@drawable/ic_palette_white</item>
         <item name="iconQuestionAnswer">@drawable/ic_question_answer_white</item>
@@ -42,6 +43,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+        <item name="iconsTint">@color/black</item>
         <item name="iconBrush">@drawable/ic_brush_black</item>
         <item name="iconPalette">@drawable/ic_palette_black</item>
         <item name="iconQuestionAnswer">@drawable/ic_question_answer_black</item>
