@@ -230,16 +230,25 @@ public class MainActivity extends BaseActivity
             skillEvaluator.removeListeners();
         }
 
-        final InputDevice inputDevice = buildPrimaryInputDevice();
-        inputDevice.load();
+        final InputDevice primaryInputDevice = buildPrimaryInputDevice();
+        primaryInputDevice.load();
+
+        final ToolbarInputDevice secondaryInputDevice;
+        if (primaryInputDevice instanceof ToolbarInputDevice) {
+            secondaryInputDevice = null;
+        } else {
+            secondaryInputDevice = new ToolbarInputDevice();
+            secondaryInputDevice.load();
+        }
+
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
         skillEvaluator = new SkillEvaluator(
                 new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
                         SkillHandler.getStandardSkillBatch(this, Sections.getCurrentLocale()),
                         SkillHandler.getFallbackSkill(this, Sections.getCurrentLocale())),
-                inputDevice,
-                inputDevice instanceof ToolbarInputDevice ? null : new ToolbarInputDevice(),
+                primaryInputDevice,
+                secondaryInputDevice,
                 speechOutputDevice,
                 new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),
                 this);
