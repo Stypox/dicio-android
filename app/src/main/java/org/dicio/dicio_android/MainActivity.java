@@ -285,7 +285,8 @@ public class MainActivity extends BaseActivity
                 primaryInputDevice,
                 secondaryInputDevice,
                 speechOutputDevice,
-                new MainScreenGraphicalDevice(findViewById(R.id.outputViews)),
+                new MainScreenGraphicalDevice(
+                        findViewById(R.id.outputScrollView), findViewById(R.id.outputLayout)),
                 this);
     }
 

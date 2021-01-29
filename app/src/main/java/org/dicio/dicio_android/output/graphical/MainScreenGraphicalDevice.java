@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -15,15 +16,19 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
 
     private static final String DIVIDER_VIEW_TAG = "diVIdeR";
 
+    private final ScrollView outputScrollView;
     private final LinearLayout outputLayout;
     private final Context context;
+
     private boolean atLeastOnePermanentViewDisplayed = false;
     private boolean lastViewWasTemporary = false;
     private int pendingDividers = 0;
 
-    public MainScreenGraphicalDevice(final LinearLayout outputLayout) {
+    public MainScreenGraphicalDevice(final ScrollView outputScrollView,
+                                     final LinearLayout outputLayout) {
+        this.outputScrollView = outputScrollView;
         this.outputLayout = outputLayout;
-        this.context = outputLayout.getContext();
+        this.context = outputScrollView.getContext();
     }
 
     @Override
@@ -61,8 +66,10 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
         outputContainer.setContent(graphicalOutput);
         outputLayout.addView(outputContainer);
 
+        // scroll to the newly added view, and to the bottom as much as possible
         graphicalOutput.post(() ->
-                outputLayout.requestChildFocus(outputContainer, outputContainer));
+                outputScrollView.smoothScrollTo(0,
+                        (int) (outputContainer.getY() - outputLayout.getY())));
     }
 
     private void addPendingDividers() {
