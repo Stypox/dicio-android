@@ -46,10 +46,13 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
             if (outputLayout.getChildCount() > 0) {
                 final View lastChild = outputLayout.getChildAt(outputLayout.getChildCount() - 1);
 
-                if (lastChild instanceof OutputContainerView) {
-                    ((OutputContainerView) lastChild).removeContent();
-                    outputLayout.removeView(lastChild);
+                if (lastChild instanceof ViewGroup) {
+                    // this should always be the case. Cleanup so that views inside output container
+                    // can be added again to another parent if needed (i.e. they can be reused)
+                    ((ViewGroup) lastChild).removeAllViews();
                 }
+
+                outputLayout.removeView(lastChild);
             }
         }
     }

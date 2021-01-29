@@ -45,8 +45,4 @@ public class OutputContainerView extends CardView {
             setOnTouchListener((v, event) -> view.onTouchEvent(event));
         }
     }
-
-    public void removeContent() {
-        removeAllViews();
-    }
 }
