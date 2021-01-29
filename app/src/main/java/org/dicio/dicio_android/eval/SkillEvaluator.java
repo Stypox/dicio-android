@@ -21,7 +21,9 @@ import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.WordExtractor;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
@@ -36,6 +38,8 @@ public class SkillEvaluator {
     private final GraphicalOutputDevice graphicalOutputDevice;
     private final Context context;
 
+    boolean currentlyProcessingInput = false;
+    final Queue<String> queuedInputs = new LinkedList<>();
     @Nullable private Disposable evaluationDisposable = null;
 
     public SkillEvaluator(final SkillRanker skillRanker,
@@ -87,8 +91,27 @@ public class SkillEvaluator {
     }
 
     private void processInput(final String input) {
-        displayUserInput(input.replace('\n', ' '));
-        evaluateMatchingSkill(input);
+        queuedInputs.add(input);
+        tryToProcessQueuedInput();
+    }
+
+    private void finishedProcessingInput() {
+        queuedInputs.remove(); // current input has finished processing
+        currentlyProcessingInput = false;
+        tryToProcessQueuedInput(); // try to process next input, if present
+    }
+
+    private void tryToProcessQueuedInput() {
+        if (currentlyProcessingInput) {
+            return;
+        }
+
+        final String input = queuedInputs.peek();
+        if (input != null) {
+            currentlyProcessingInput = true;
+            displayUserInput(input.replace('\n', ' '));
+            evaluateMatchingSkill(input);
+        }
     }
 
     private void displayUserInput(final String input) {
@@ -210,6 +233,7 @@ public class SkillEvaluator {
         }
 
         skill.cleanup(); // cleanup the input that was set
+        finishedProcessingInput();
     }
 
     private void onError(final Throwable t) {
@@ -224,5 +248,7 @@ public class SkillEvaluator {
             graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(context, t));
         }
         graphicalOutputDevice.addDivider();
+
+        finishedProcessingInput();
     }
 }
