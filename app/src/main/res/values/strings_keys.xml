@@ -18,9 +18,9 @@
 
     <string name="pref_key_vosk_download_id" translatable="false">vosk_download_id</string>
 
-    <string name="pref_key_search_engine" translatable="false">speech_output_method</string>
+    <string name="pref_key_search_engine" translatable="false">search_engine</string>
     <string name="pref_val_search_engine_qwant" translatable="false">qwant</string>
     <string name="pref_val_search_engine_duckduckgo" translatable="false">duckduckgo</string>
 
-    <string name="pref_key_weather_default_city" translatable="false">weather_default_location</string>
+    <string name="pref_key_weather_default_city" translatable="false">weather_default_city</string>
 </resources>
