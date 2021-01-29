@@ -23,6 +23,7 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     private boolean atLeastOnePermanentViewDisplayed = false;
     private boolean lastViewWasTemporary = false;
     private int pendingDividers = 0;
+    private int previousScrollY = 0;
 
     public MainScreenGraphicalDevice(final ScrollView outputScrollView,
                                      final LinearLayout outputLayout) {
@@ -60,19 +61,25 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
 
     private void displayView(@NonNull final View graphicalOutput) {
         removeTemporaryView();
-        addPendingDividers();
+        // TODO verify if this is a good way to detect new conversation blocks being started
+        final boolean addedSomeDividers = addPendingDividers();
 
         final OutputContainerView outputContainer = new OutputContainerView(context);
         outputContainer.setContent(graphicalOutput);
         outputLayout.addView(outputContainer);
 
         // scroll to the newly added view, and to the bottom as much as possible
-        graphicalOutput.post(() ->
-                outputScrollView.smoothScrollTo(0,
-                        (int) (outputContainer.getY() - outputLayout.getY())));
+        graphicalOutput.post(() -> {
+            if (addedSomeDividers) {
+                // this is a new conversation: scroll to it even if it hides previous views
+                previousScrollY = (int) (outputContainer.getY() - outputLayout.getY());
+            } // otherwise scroll to the first view of this conversation
+            outputScrollView.smoothScrollTo(0, previousScrollY);
+        });
     }
 
-    private void addPendingDividers() {
+    private boolean addPendingDividers() {
+        final boolean addedSomeDividers = pendingDividers > 0;
         for (; pendingDividers > 0; --pendingDividers) {
             final View dividerView = new View(context);
             dividerView.setLayoutParams(new LinearLayoutCompat.LayoutParams(
@@ -82,6 +89,7 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
             dividerView.setTag(DIVIDER_VIEW_TAG);
             outputLayout.addView(dividerView);
         }
+        return addedSomeDividers;
     }
 
     private void removeTemporaryView() {
