@@ -20,7 +20,8 @@ import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 public class LyricsInfo extends SkillInfo {
 
     public LyricsInfo() {
-        super("lyrics", R.string.skill_name_lyrics, false);
+        super("lyrics", R.string.skill_name_lyrics, R.string.skill_sentence_example_lyrics,
+                R.drawable.ic_music_note_white, false);
     }
 
     @Override

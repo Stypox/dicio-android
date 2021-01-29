@@ -21,7 +21,8 @@ import static org.dicio.dicio_android.SectionsGenerated.search;
 public class SearchInfo extends SkillInfo {
 
     public SearchInfo() {
-        super("search", R.string.skill_name_search, true);
+        super("search", R.string.skill_name_search, R.string.skill_sentence_example_search,
+                R.drawable.ic_search_white, true);
     }
 
     @Override

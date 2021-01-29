@@ -22,7 +22,8 @@ import static org.dicio.dicio_android.SectionsGenerated.weather;
 public class WeatherInfo extends SkillInfo {
 
     public WeatherInfo() {
-        super("weather", R.string.skill_name_weather, true);
+        super("weather", R.string.skill_name_weather, R.string.skill_sentence_example_weather,
+                R.drawable.ic_cloud_white, true);
     }
 
     @Override

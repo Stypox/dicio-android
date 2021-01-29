@@ -58,9 +58,13 @@
     <string name="eval_no_match">I did not understand, could you repeat?</string>
 
     <string name="skill_name_search">Search</string>
+    <string name="skill_sentence_example_search">Search how to feed a cat</string>
     <string name="skill_name_weather">Weather</string>
+    <string name="skill_sentence_example_weather">What\'s the weather like in Rome?</string>
     <string name="skill_name_lyrics">Song lyrics</string>
+    <string name="skill_sentence_example_lyrics">What\'s the song that goes we will we will rock you?</string>
     <string name="skill_name_open">App opener</string>
+    <string name="skill_sentence_example_open">Open NewPipe</string>
     <string name="skill_fallback_name_text">Text message</string>
 
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>

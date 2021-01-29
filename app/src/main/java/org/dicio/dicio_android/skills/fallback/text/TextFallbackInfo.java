@@ -15,7 +15,7 @@ import java.util.Locale;
 public class TextFallbackInfo extends SkillInfo {
 
     public TextFallbackInfo() {
-        super("text", R.string.skill_fallback_name_text, false);
+        super("text", R.string.skill_fallback_name_text, 0, R.drawable.ic_short_text_white, false);
     }
 
     @Override

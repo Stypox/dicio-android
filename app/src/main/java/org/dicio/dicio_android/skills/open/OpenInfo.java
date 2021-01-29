@@ -20,7 +20,8 @@ import static org.dicio.dicio_android.SectionsGenerated.open;
 public class OpenInfo extends SkillInfo {
 
     public OpenInfo() {
-        super("open", R.string.skill_name_open, false);
+        super("open", R.string.skill_name_open, R.string.skill_sentence_example_open,
+                R.drawable.ic_open_in_new_white, false);
     }
 
     @Override
