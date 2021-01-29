@@ -96,7 +96,7 @@ public class SkillEvaluator {
     }
 
     private void finishedProcessingInput() {
-        queuedInputs.remove(); // current input has finished processing
+        queuedInputs.poll(); // current input has finished processing
         currentlyProcessingInput = false;
         tryToProcessQueuedInput(); // try to process next input, if present
     }
