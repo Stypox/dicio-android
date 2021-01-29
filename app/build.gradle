@@ -41,7 +41,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.8"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
-    implementation 'com.github.Stypox:dicio-skill:b2aea75b37d3ca231e03d914515d8d8c9e32a2ca'
+    implementation 'com.github.Stypox:dicio-skill:bd5484418676eebf954009bedd0f77a2750debbd'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
     implementation 'org.jsoup:jsoup:1.13.1'

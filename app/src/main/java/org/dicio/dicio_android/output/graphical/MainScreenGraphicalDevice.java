@@ -14,6 +14,7 @@ import org.dicio.skill.output.GraphicalOutputDevice;
 public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     private final LinearLayout outputLayout;
     private final Context context;
+    private boolean lastViewWasTemporary = false;
 
     public MainScreenGraphicalDevice(final LinearLayout outputLayout) {
         this.outputLayout = outputLayout;
@@ -22,6 +23,8 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
 
     @Override
     public void display(@NonNull final View graphicalOutput) {
+        removeTemporary();
+
         final OutputContainerView outputContainer = new OutputContainerView(context);
         outputContainer.setContent(graphicalOutput);
         outputLayout.addView(outputContainer);
@@ -31,7 +34,30 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     }
 
     @Override
+    public void displayTemporary(@NonNull final View graphicalOutput) {
+        display(graphicalOutput);
+        lastViewWasTemporary = true;
+    }
+
+    @Override
+    public void removeTemporary() {
+        if (lastViewWasTemporary) {
+            lastViewWasTemporary = false;
+            if (outputLayout.getChildCount() > 0) {
+                final View lastChild = outputLayout.getChildAt(outputLayout.getChildCount() - 1);
+
+                if (lastChild instanceof OutputContainerView) {
+                    ((OutputContainerView) lastChild).removeContent();
+                    outputLayout.removeView(lastChild);
+                }
+            }
+        }
+    }
+
+    @Override
     public void addDivider() {
+        removeTemporary();
+
         if (outputLayout.getChildCount() == 0) {
             // do not add a divider as the first item
             return;

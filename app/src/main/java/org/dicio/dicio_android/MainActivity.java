@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity
             } else if (skillEvaluator.getSecondaryInputDevice() != null) {
                 skillEvaluator.getSecondaryInputDevice().setTextInputItem(null);
             }
-            skillEvaluator.removeListeners();
+            skillEvaluator.cleanup();
         }
     }
 
@@ -252,7 +252,7 @@ public class MainActivity extends BaseActivity
 
     private void initializeSkillEvaluator() {
         if (skillEvaluator != null) {
-            skillEvaluator.removeListeners();
+            skillEvaluator.cleanup();
         }
 
         final InputDevice primaryInputDevice = buildPrimaryInputDevice();

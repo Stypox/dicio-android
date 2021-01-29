@@ -8,12 +8,31 @@ import org.dicio.dicio_android.BuildConfig;
 
 public abstract class InputDevice {
 
-    private static final String TAG = InputDevice.class.getSimpleName();
-
+    /**
+     * Used to provide the input from the user to whatever code uses it
+     */
     public interface OnInputReceivedListener {
+
+        /**
+         * Called when the user provided some partial input (e.g. while talking)
+         * @param input the received partial input
+         */
+        void onPartialInputReceived(String input);
+
+        /**
+         * Called when some input was received from the user
+         * @param input the received input
+         */
         void onInputReceived(String input);
+
+        /**
+         * Called when an error occurs while trying to get input or processing it
+         * @param e the exception
+         */
         void onError(Throwable e);
     }
+
+    private static final String TAG = InputDevice.class.getSimpleName();
 
     @Nullable
     private OnInputReceivedListener onInputReceivedListener = null;
@@ -22,26 +41,45 @@ public abstract class InputDevice {
     /**
      * Prepares the input device. If doing heavy work, run it in an asynchronous thread.
      * <br><br>
-     * Overriding functions should report errors to {@code notifyError()}.
+     * Overriding functions should report errors to {@link #notifyError(Throwable)}.
      */
     public abstract void load();
 
     /**
      * Tries to get input in any way. Should run in an asynchronous thread.
      * <br><br>
-     * Overriding functions should report results to {@code notifyInputReceived()} and errors to
-     * {@code notifyError()}.
+     * Overriding functions should report results to {@link #notifyInputReceived(String)} and errors
+     * to {@link #notifyError(Throwable)}.
      */
     public abstract void tryToGetInput();
 
-
+    /**
+     * Sets the listener, used to provide the input from the user to whatever code uses it
+     * @param listener the listener to use, set it to {@code null} to remove it
+     */
     public final void setOnInputReceivedListener(@Nullable final OnInputReceivedListener listener) {
         this.onInputReceivedListener = listener;
     }
 
+
     /**
-     * This has to be called by functions overriding {@code tryToGetInput()}
-     * when some input from the user is received.
+     * This has to be called by functions overriding {@link #tryToGetInput()} when some input from
+     * the user is received
+     * @param input the (raw) received input
+     */
+    protected void notifyPartialInputReceived(final String input) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "Partial input from user: " + input);
+        }
+
+        if (onInputReceivedListener != null) {
+            onInputReceivedListener.onPartialInputReceived(input);
+        }
+    }
+
+    /**
+     * This has to be called by functions overriding {@link #tryToGetInput()} when some input from
+     * the user is received
      * @param input the (raw) received input
      */
     protected void notifyInputReceived(final String input) {
@@ -54,12 +92,10 @@ public abstract class InputDevice {
         }
     }
 
-    // TODO add partialInputReceived()
-
     /**
-     * This has to be called by functions overriding {@code tryToGetInput()}
-     * when the user sent some input, but it could not be processed due to
-     * an error.
+     * This has to be called by functions overriding {@link #tryToGetInput()} when the user sent
+     * some input, but it could not be processed due to an error. This can also be called if there
+     * was an error while loading, and can be called by functions overriding {@link #load()}.
      * @param e an exception to handle
      */
     protected void notifyError(final Throwable e) {

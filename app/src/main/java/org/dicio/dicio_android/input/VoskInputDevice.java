@@ -15,6 +15,7 @@ import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.kaldi.KaldiRecognizer;
@@ -173,6 +174,17 @@ public class VoskInputDevice extends SpeechInputDevice {
             @Override
             public void onPartialResult(final String s) {
                 Log.d(TAG, "onPartialResult called");
+
+                String input = null;
+                try {
+                    input = new JSONObject(s).getString("partial");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (!StringUtils.isNullOrEmpty(input)) {
+                    notifyPartialInputReceived(input);
+                }
             }
 
             @Override
@@ -190,7 +202,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                     e.printStackTrace();
                 }
 
-                if (input != null && !input.isEmpty()) {
+                if (!StringUtils.isNullOrEmpty(input)) {
                     notifyInputReceived(input);
                 }
             }

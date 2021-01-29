@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -41,6 +42,7 @@ public class SkillEvaluator {
 
     boolean currentlyProcessingInput = false;
     final Queue<String> queuedInputs = new LinkedList<>();
+    @Nullable View partialInputView = null;
     @Nullable private Disposable evaluationDisposable = null;
 
     public SkillEvaluator(final SkillRanker skillRanker,
@@ -60,6 +62,11 @@ public class SkillEvaluator {
         final InputDevice.OnInputReceivedListener onInputReceivedListener =
                 new InputDevice.OnInputReceivedListener() {
                     @Override
+                    public void onPartialInputReceived(final String input) {
+                        displayPartialUserInput(input);
+                    }
+
+                    @Override
                     public void onInputReceived(final String input) {
                         processInput(input);
                     }
@@ -75,11 +82,17 @@ public class SkillEvaluator {
         }
     }
 
-    public void removeListeners() {
+    public void cleanup() {
         primaryInputDevice.setOnInputReceivedListener(null);
         if (secondaryInputDevice != null) {
             secondaryInputDevice.setOnInputReceivedListener(null);
         }
+
+        if (evaluationDisposable != null) {
+            evaluationDisposable.dispose();
+        }
+        queuedInputs.clear();
+        partialInputView = null;
     }
 
     public InputDevice getPrimaryInputDevice() {
@@ -90,6 +103,18 @@ public class SkillEvaluator {
     public ToolbarInputDevice getSecondaryInputDevice() {
         return secondaryInputDevice;
     }
+
+
+    private void displayPartialUserInput(final String input) {
+        if (partialInputView == null) {
+            partialInputView =
+                    GraphicalOutputUtils.inflate(context, R.layout.skill_user_input_partial);
+        }
+        final TextView textView = partialInputView.findViewById(R.id.userInput);
+        textView.setText(input);
+        graphicalOutputDevice.displayTemporary(partialInputView);
+    }
+
 
     private void processInput(final String input) {
         queuedInputs.add(input);
@@ -195,6 +220,7 @@ public class SkillEvaluator {
 
         graphicalOutputDevice.display(userInputView);
     }
+
 
     private void evaluateMatchingSkill(final String input) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
