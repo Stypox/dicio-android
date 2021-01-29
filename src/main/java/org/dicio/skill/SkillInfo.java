@@ -3,6 +3,7 @@ package org.dicio.skill;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
@@ -13,21 +14,32 @@ public abstract class SkillInfo {
 
     private final String id;
     @StringRes private final int nameResource;
+    @StringRes private final int sentenceExampleResource;
+    @DrawableRes private final int iconResource;
     private final boolean hasPreferences;
 
     /**
      * Constructor for {@link SkillInfo}, providing basic information about a skill
      * @param id a unique identifier for this skill (different from that of all other skills)
      * @param nameResource the Android string resource containing the skill name to show to the user
+     *                     (e.g. "Weather")
+     * @param sentenceExampleResource the Android string resource containing an example of the usage
+     *                                of this skill to show to the user (e.g. "What's the weather?")
+     * @param iconResource the Android drawable resource containing the skill icon to show to the
+     *                     user (e.g. an icon with sun and clouds representing weather)
      * @param hasPreferences whether this skill has preferences. If this is false, then
      *                       {@link #getPreferenceFragment()} is assumed to return {@code null},
      *                       otherwise it has to return a non-null preference fragment.
      */
     public SkillInfo(final String id,
                      @StringRes final int nameResource,
+                     @StringRes final int sentenceExampleResource,
+                     @DrawableRes final int iconResource,
                      final boolean hasPreferences) {
         this.id = id;
         this.nameResource = nameResource;
+        this.sentenceExampleResource = sentenceExampleResource;
+        this.iconResource = iconResource;
         this.hasPreferences = hasPreferences;
     }
 
@@ -39,11 +51,30 @@ public abstract class SkillInfo {
     }
 
     /**
-     * @return the Android string resource containing the skill name to show to the user
+     * @return the Android string resource containing the skill name to show to the user (e.g.
+     *         "Weather")
      */
     @StringRes
     public final int getNameResource() {
         return nameResource;
+    }
+
+    /**
+     * @return the Android string resource containing an example of the usage of this skill to show
+     *         to the user (e.g. "What's the weather?")
+     */
+    @StringRes
+    public int getSentenceExampleResource() {
+        return sentenceExampleResource;
+    }
+
+    /**
+     * @return the Android drawable resource containing the skill icon to show to the user (e.g. an
+     *         icon with sun and clouds representing weather)
+     */
+    @DrawableRes
+    public int getIconResource() {
+        return iconResource;
     }
 
     /**
