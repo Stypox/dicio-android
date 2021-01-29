@@ -22,12 +22,14 @@ public abstract class SpeechInputDevice extends InputDevice {
     }
 
 
-    private static final int LOADING = 0, INACTIVE = 1, LISTENING = 2;
+    private enum ShownState {
+        LOADING, INACTIVE, LISTENING
+    }
 
     @Nullable private ExtendedFloatingActionButton voiceFab = null;
     @Nullable private ProgressBar voiceLoading = null;
 
-    private int currentState = INACTIVE; // start with inactive state
+    private ShownState currentShownState = ShownState.INACTIVE; // start with inactive state
 
 
     /**
@@ -49,8 +51,15 @@ public abstract class SpeechInputDevice extends InputDevice {
 
         if (voiceFab != null) {
             voiceFab.setText(voiceFab.getContext().getString(R.string.listening));
-            showState(currentState);
-            voiceFab.setOnClickListener(view -> tryToGetInput());
+            showState(currentShownState);
+            voiceFab.setOnClickListener(view -> {
+                if (currentShownState == ShownState.LISTENING) {
+                    // already listening, so stop listening
+                    stopListening();
+                } else {
+                    tryToGetInput();
+                }
+            });
         }
     }
 
@@ -79,11 +88,17 @@ public abstract class SpeechInputDevice extends InputDevice {
 
 
     /**
+     * Stop listening and turns off the microphone. Called when the user tapped on the listen
+     * button and the last shown state function that was called is {@link #onListening()}.
+     */
+    protected abstract void stopListening();
+
+    /**
      * This must be called by functions overriding {@link #tryToGetInput()} when they have started
      * listening, so that the microphone on icon can be shown.
      */
     protected final void onLoading() {
-        showState(LOADING);
+        showState(ShownState.LOADING);
     }
 
     /**
@@ -92,7 +107,7 @@ public abstract class SpeechInputDevice extends InputDevice {
      * the so that the microphone off icon can be shown.
      */
     protected final void onInactive() {
-        showState(INACTIVE);
+        showState(ShownState.INACTIVE);
     }
 
     /**
@@ -100,12 +115,12 @@ public abstract class SpeechInputDevice extends InputDevice {
      * listening, so that the microphone on icon can be shown.
      */
     protected final void onListening() {
-        showState(LISTENING);
+        showState(ShownState.LISTENING);
     }
 
 
-    private void showState(final int state) {
-        currentState = state;
+    private void showState(final ShownState state) {
+        currentShownState = state;
         if (voiceFab != null && voiceLoading != null) {
             switch (state) {
                 case LOADING:
