@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ExceptionUtils;
+import org.dicio.dicio_android.util.ThemeUtils;
 
 public class GraphicalOutputUtils {
 
@@ -45,25 +47,29 @@ public class GraphicalOutputUtils {
 
     /**
      * Builds a text view
+     *
      * @param context the Android context to use to initialize the view
      * @param text the content of the text view
      * @param size the dimension resource id representing the text size
+     * @param attrColor the attribute resource id pointing to the themed color to give to the text
      * @return the built view
      */
     public static TextView buildText(final Context context,
                                      final CharSequence text,
-                                     @DimenRes final int size) {
+                                     @DimenRes final int size,
+                                     @AttrRes final int attrColor) {
         final TextView header = new TextView(context);
         header.setLayoutParams(getCenteredLinearLayoutParams());
         header.setGravity(Gravity.CENTER_HORIZONTAL);
         header.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(size));
+        header.setTextColor(ThemeUtils.resolveColorFromAttr(context, attrColor));
         header.setText(text);
         return header;
     }
 
     /**
      * Builds a text view with big text, to be used for headers or titles
-     * @see #buildText(Context, CharSequence, int)
+     * @see #buildText(Context, CharSequence, int, int)
      * @see #buildSubHeader(Context, CharSequence)
      * @see #buildDescription(Context, CharSequence)
      *
@@ -72,12 +78,13 @@ public class GraphicalOutputUtils {
      * @return the built view
      */
     public static TextView buildHeader(final Context context, final CharSequence text) {
-        return buildText(context, text, R.dimen.outputHeaderTextSize);
+        return buildText(context, text, R.dimen.outputHeaderTextSize,
+                android.R.attr.textColorPrimary);
     }
 
     /**
      * Builds a text view with medium-sized text, to be used for sub-headers or subtitles
-     * @see #buildText(Context, CharSequence, int)
+     * @see #buildText(Context, CharSequence, int, int)
      * @see #buildHeader(Context, CharSequence)
      * @see #buildDescription(Context, CharSequence)
      *
@@ -86,13 +93,14 @@ public class GraphicalOutputUtils {
      * @return the built view
      */
     public static TextView buildSubHeader(final Context context, final CharSequence text) {
-        return buildText(context, text, R.dimen.outputSubHeaderTextSize);
+        return buildText(context, text, R.dimen.outputSubHeaderTextSize,
+                android.R.attr.textColorPrimary);
     }
 
     /**
      * Builds a text view with normally-sized text, to be used for long texts, descriptions or
      * captions
-     * @see #buildText(Context, CharSequence, int)
+     * @see #buildText(Context, CharSequence, int, int)
      * @see #buildHeader(Context, CharSequence)
      * @see #buildSubHeader(Context, CharSequence)
      *
@@ -101,7 +109,8 @@ public class GraphicalOutputUtils {
      * @return the built view
      */
     public static TextView buildDescription(final Context context, final CharSequence text) {
-        return buildText(context, text, R.dimen.outputDescriptionTextSize);
+        return buildText(context, text, R.dimen.outputDescriptionTextSize,
+                android.R.attr.textColorSecondary);
     }
 
     /**
