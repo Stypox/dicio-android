@@ -5,10 +5,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
@@ -17,8 +20,10 @@ import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice.UnableToAccessMicrophoneException;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
+import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.skill.Skill;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.WordExtractor;
@@ -61,27 +66,8 @@ public class SkillEvaluator {
         this.graphicalOutputDevice = graphicalOutputDevice;
         this.context = context;
 
-        final InputDevice.OnInputReceivedListener onInputReceivedListener =
-                new InputDevice.OnInputReceivedListener() {
-                    @Override
-                    public void onPartialInputReceived(final String input) {
-                        displayPartialUserInput(input);
-                    }
-
-                    @Override
-                    public void onInputReceived(final String input) {
-                        processInput(input);
-                    }
-
-                    @Override
-                    public void onError(final Throwable e) {
-                        SkillEvaluator.this.onError(e);
-                    }
-                };
-        primaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
-        if (secondaryInputDevice != null) {
-            secondaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
-        }
+        setupInputDeviceListeners();
+        showInitialScreen();
     }
 
 
@@ -109,6 +95,57 @@ public class SkillEvaluator {
     @Nullable
     public ToolbarInputDevice getSecondaryInputDevice() {
         return secondaryInputDevice;
+    }
+
+
+    ///////////
+    // Setup //
+    ///////////
+
+    private void setupInputDeviceListeners() {
+        final InputDevice.OnInputReceivedListener onInputReceivedListener =
+                new InputDevice.OnInputReceivedListener() {
+                    @Override
+                    public void onPartialInputReceived(final String input) {
+                        displayPartialUserInput(input);
+                    }
+
+                    @Override
+                    public void onInputReceived(final String input) {
+                        processInput(input);
+                    }
+
+                    @Override
+                    public void onError(final Throwable e) {
+                        SkillEvaluator.this.onError(e);
+                    }
+                };
+
+        primaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
+        if (secondaryInputDevice != null) {
+            secondaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
+        }
+    }
+
+    private void showInitialScreen() {
+        final View initialScreen = GraphicalOutputUtils.inflate(context, R.layout.initial_screen);
+
+        final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
+        for (final SkillInfo skillInfo : SkillHandler.getRandomSkillInfoList(6)) {
+            final View skillInfoItem
+                    = GraphicalOutputUtils.inflate(context, R.layout.initial_screen_skill_item);
+
+            ((AppCompatImageView) skillInfoItem.findViewById(R.id.skillIconImageView))
+                    .setImageResource(SkillHandler.getSkillIconResource(skillInfo));
+            ((AppCompatTextView) skillInfoItem.findViewById(R.id.skillName))
+                    .setText(skillInfo.getNameResource());
+            ((AppCompatTextView) skillInfoItem.findViewById(R.id.skillSentenceExample))
+                    .setText(skillInfo.getSentenceExampleResource());
+
+            skillItemsLayout.addView(skillInfoItem);
+        }
+
+        graphicalOutputDevice.displayTemporary(initialScreen);
     }
 
 

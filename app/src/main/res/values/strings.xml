@@ -10,6 +10,7 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
 
     <string name="text_input_hint">Ask me anything…</string>
+    <string name="here_is_what_i_can_do">Here is what I can do!</string>
     <string name="action_text_input">Text input</string>
     <string name="action_voice_input">Voice input</string>
     <string name="listening">Listening…</string>

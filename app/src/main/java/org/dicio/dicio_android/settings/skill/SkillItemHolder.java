@@ -44,8 +44,7 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
         expandImageView.setRotation(0);
 
         // the correct tint is set in the xml
-        @DrawableRes final int icon = skillInfo.getIconResource();
-        iconImageView.setImageResource(icon == 0 ? R.drawable.ic_extension_white : icon);
+        iconImageView.setImageResource(SkillHandler.getSkillIconResource(skillInfo));
 
         final SharedPreferences sharedPreferences
                 = PreferenceManager.getDefaultSharedPreferences(fragment.requireContext());

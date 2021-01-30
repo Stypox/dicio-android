@@ -65,4 +65,5 @@
     <string name="skill_sentence_example_weather">Che tempo fa a Roma?</string>
     <string name="skill_sentence_example_lyrics">Qual\'è la canzone che fa we will we will rock you?</string>
     <string name="skill_sentence_example_open">Apri NewPipe</string>
+    <string name="here_is_what_i_can_do">Ecco cosa posso fare!</string>
 </resources>
