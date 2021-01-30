@@ -36,7 +36,7 @@ public class LyricsOutput
             final String message =
                     context.getString(R.string.skill_lyrics_song_not_found, data.title);
             speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(context, message));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(context, message));
 
         } else {
             speechOutputDevice.speak(
