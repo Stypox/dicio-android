@@ -156,7 +156,7 @@ public class SkillEvaluator {
     private void displayPartialUserInput(final String input) {
         if (partialInputView == null) {
             partialInputView =
-                    GraphicalOutputUtils.inflate(context, R.layout.skill_user_input_partial);
+                    GraphicalOutputUtils.inflate(context, R.layout.user_input_partial);
         }
         final TextView textView = partialInputView.findViewById(R.id.userInput);
         textView.setText(input);
@@ -195,7 +195,7 @@ public class SkillEvaluator {
 
     private void displayUserInput(final String input) {
         final View userInputView =
-                GraphicalOutputUtils.inflate(context, R.layout.skill_user_input);
+                GraphicalOutputUtils.inflate(context, R.layout.user_input);
         final AppCompatEditText inputEditText = userInputView.findViewById(R.id.userInput);
 
         inputEditText.setText(input);
