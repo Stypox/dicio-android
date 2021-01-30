@@ -358,6 +358,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                                         }));
                     }
                     activity.unregisterReceiver(downloadingBroadcastReceiver);
+                    downloadingBroadcastReceiver = null;
                 }
             }
         };
