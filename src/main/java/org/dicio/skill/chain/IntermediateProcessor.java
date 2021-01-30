@@ -19,12 +19,13 @@ import java.util.Locale;
  * @param <FromType> the type of the data from the previous step of computation (i.e. the input)
  * @param <ResultType> the type of the processed and returned data (i.e. the output)
  */
-public interface IntermediateProcessor<FromType, ResultType> extends CleanableUp {
+public interface IntermediateProcessor<FromType, ResultType> {
 
     /**
      * Processes the data obtained from the previous step to produce a result to be passed to the
      * next step. To be used to make calculations, to connect to the internet and extract things,
-     * etc. It should not be used to perform platform-specific actions.
+     * etc. It should not be used to perform platform-specific actions and should not store any
+     * temporary data inside the object (that's why it does not extend {@link CleanableUp}).
      *
      * @param data the data to process, from the previous step
      * @param context the Android context, useful for example to access resources

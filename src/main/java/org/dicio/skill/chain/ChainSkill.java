@@ -76,9 +76,6 @@ public class ChainSkill implements Skill {
     @Override
     public void cleanup() {
         inputRecognizer.cleanup();
-        for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
-            intermediateProcessor.cleanup();
-        }
         outputGenerator.cleanup();
         lastResult = null;
     }
