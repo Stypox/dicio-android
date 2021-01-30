@@ -61,7 +61,7 @@ public class ToolbarInputDevice extends InputDevice {
     public void cancelGettingInput() {
         if (textInputItem != null && textInputItem.isActionViewExpanded()) {
             textInputItem.collapseActionView();
+            notifyNoInputReceived();
         }
-        notifyNoInputReceived();
     }
 }
