@@ -76,6 +76,7 @@ public class SkillEvaluator {
     ////////////////////
 
     public void cleanup() {
+        cancelGettingInput();
         primaryInputDevice.setOnInputReceivedListener(null);
         if (secondaryInputDevice != null) {
             secondaryInputDevice.setOnInputReceivedListener(null);
@@ -86,6 +87,13 @@ public class SkillEvaluator {
         }
         queuedInputs.clear();
         partialInputView = null;
+    }
+
+    public void cancelGettingInput() {
+        primaryInputDevice.cancelGettingInput();
+        if (secondaryInputDevice != null) {
+            secondaryInputDevice.cancelGettingInput();
+        }
     }
 
     public InputDevice getPrimaryInputDevice() {

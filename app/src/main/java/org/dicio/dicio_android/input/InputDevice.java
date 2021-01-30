@@ -48,10 +48,18 @@ public abstract class InputDevice {
     /**
      * Tries to get input in any way. Should run in an asynchronous thread.
      * <br><br>
-     * Overriding functions should report results to {@link #notifyInputReceived(String)} and errors
-     * to {@link #notifyError(Throwable)}.
+     * Overriding functions should report partial results to {@link
+     * #notifyPartialInputReceived(String)} results to {@link #notifyInputReceived(String)} and
+     * errors to {@link #notifyError(Throwable)}.
      */
     public abstract void tryToGetInput();
+
+    /**
+     * Cancels any input being received after {@link #tryToGetInput()} was called. Should do nothing
+     * if called while not getting input. Any partial input is discarded. Called for
+     * example when the user leaves the app.
+     */
+    public abstract void cancelGettingInput();
 
     /**
      * Sets the listener, used to provide the input from the user to whatever code uses it

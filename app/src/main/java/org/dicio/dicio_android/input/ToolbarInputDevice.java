@@ -42,4 +42,11 @@ public class ToolbarInputDevice extends InputDevice {
             textInputItem.expandActionView();
         }
     }
+
+    @Override
+    public void cancelGettingInput() {
+        if (textInputItem != null && textInputItem.isActionViewExpanded()) {
+            textInputItem.collapseActionView();
+        }
+    }
 }

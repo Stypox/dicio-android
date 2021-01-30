@@ -86,10 +86,24 @@ public abstract class SpeechInputDevice extends InputDevice {
     @Override
     public abstract void tryToGetInput();
 
+    /**
+     * Stops listening and turns off the microphone after {@link #tryToGetInput()} was called.
+     * Should do nothing if called while not listening. Any partial result is discarded. Called for
+     * example when the user leaves the app.
+     * <br><br>
+     * Overriding functions should call {@link #onInactive()} when they turn off the microphone.
+     */
+    @Override
+    public abstract void cancelGettingInput();
 
     /**
-     * Stop listening and turns off the microphone. Called when the user tapped on the listen
-     * button and the last shown state function that was called is {@link #onListening()}.
+     * Stops listening, turns off the microphone and notifies of the current partial result. Called
+     * when the user tapped on the listen button and the last shown state function that was called
+     * is {@link #onListening()}.
+     * <br><br>
+     * Overriding functions should report any partial input received so far to {@link
+     * InputDevice#notifyInputReceived(String)} and call {@link #onInactive()} when they turn off
+     * the microphone.
      */
     protected abstract void stopListening();
 

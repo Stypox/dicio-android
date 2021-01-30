@@ -147,6 +147,14 @@ public class VoskInputDevice extends SpeechInputDevice {
     }
 
     @Override
+    public void cancelGettingInput() {
+        startListeningOnLoaded = false;
+        currentlyListening = false;
+        recognizer.cancel();
+        onInactive();
+    }
+
+    @Override
     protected void stopListening() {
         currentlyListening = false;
         recognizer.stop();

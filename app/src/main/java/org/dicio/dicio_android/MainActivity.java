@@ -192,6 +192,12 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        skillEvaluator.cancelGettingInput();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         boolean reinitializeSkillEvaluator = false;
