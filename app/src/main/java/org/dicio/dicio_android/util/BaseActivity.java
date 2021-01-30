@@ -14,6 +14,7 @@ import org.dicio.dicio_android.R;
 abstract public class BaseActivity extends LocaleAwareActivity {
 
     private int currentTheme;
+    private boolean isRecreating = false;
 
     private int getThemeFromPreferences() {
         final String preference = PreferenceManager.getDefaultSharedPreferences(this)
@@ -29,9 +30,16 @@ abstract public class BaseActivity extends LocaleAwareActivity {
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        isRecreating = false;
         currentTheme = getThemeFromPreferences();
         setTheme(currentTheme);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void recreate() {
+        isRecreating = true;
+        super.recreate();
     }
 
     @Override
@@ -40,5 +48,9 @@ abstract public class BaseActivity extends LocaleAwareActivity {
         if (currentTheme != getThemeFromPreferences()) {
             recreate();
         }
+    }
+
+    protected boolean isRecreating() {
+        return isRecreating;
     }
 }

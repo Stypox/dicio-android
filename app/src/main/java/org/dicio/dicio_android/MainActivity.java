@@ -193,7 +193,9 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (resumingFromSettings) {
+
+        // theme/language changes can cause recreation, so everything will be initialized there
+        if (resumingFromSettings && !isRecreating()) {
             // reinitialize everything if resuming from settings
             resumingFromSettings = false;
             initializeSkillEvaluator();
