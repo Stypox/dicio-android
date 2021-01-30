@@ -20,7 +20,7 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
     private final LinearLayout outputLayout;
     private final Context context;
 
-    private boolean atLeastOnePermanentViewDisplayed = false;
+    private boolean atLeastOnePermanentViewDisplayed;
     private boolean lastViewWasTemporary = false;
     private int pendingDividers = 0;
     private int previousScrollY = 0;
@@ -30,6 +30,7 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
         this.outputScrollView = outputScrollView;
         this.outputLayout = outputLayout;
         this.context = outputScrollView.getContext();
+        atLeastOnePermanentViewDisplayed = outputLayout.getChildCount() > 0;
     }
 
     @Override

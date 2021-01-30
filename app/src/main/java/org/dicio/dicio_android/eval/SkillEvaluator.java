@@ -68,7 +68,10 @@ public class SkillEvaluator {
         this.context = context;
 
         setupInputDeviceListeners();
-        showInitialScreen();
+
+        // this adds a divider only if there are already some output views (can happen when
+        // reloading the skill evaluator)
+        graphicalOutputDevice.addDivider();
     }
 
 
@@ -76,7 +79,35 @@ public class SkillEvaluator {
     // Public methods //
     ////////////////////
 
+    public void showInitialScreen() {
+        final View initialScreen = GraphicalOutputUtils.inflate(context, R.layout.initial_screen);
+
+        final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
+        for (final SkillInfo skillInfo : SkillHandler.getRandomSkillInfoList(6)) {
+            final View skillInfoItem
+                    = GraphicalOutputUtils.inflate(context, R.layout.initial_screen_skill_item);
+
+            ((AppCompatImageView) skillInfoItem.findViewById(R.id.skillIconImageView))
+                    .setImageResource(SkillHandler.getSkillIconResource(skillInfo));
+            ((AppCompatTextView) skillInfoItem.findViewById(R.id.skillName))
+                    .setText(skillInfo.getNameResource());
+            ((AppCompatTextView) skillInfoItem.findViewById(R.id.skillSentenceExample))
+                    .setText(skillInfo.getSentenceExampleResource());
+
+            skillItemsLayout.addView(skillInfoItem);
+        }
+
+        graphicalOutputDevice.displayTemporary(initialScreen);
+    }
+
     public void cleanup() {
+        if (primaryInputDevice instanceof ToolbarInputDevice) {
+            ((ToolbarInputDevice) primaryInputDevice).setTextInputItem(null);
+        }
+        if (secondaryInputDevice != null) {
+            secondaryInputDevice.setTextInputItem(null);
+        }
+
         cancelGettingInput();
         primaryInputDevice.setOnInputReceivedListener(null);
         if (secondaryInputDevice != null) {
@@ -139,27 +170,6 @@ public class SkillEvaluator {
         if (secondaryInputDevice != null) {
             secondaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
         }
-    }
-
-    private void showInitialScreen() {
-        final View initialScreen = GraphicalOutputUtils.inflate(context, R.layout.initial_screen);
-
-        final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
-        for (final SkillInfo skillInfo : SkillHandler.getRandomSkillInfoList(6)) {
-            final View skillInfoItem
-                    = GraphicalOutputUtils.inflate(context, R.layout.initial_screen_skill_item);
-
-            ((AppCompatImageView) skillInfoItem.findViewById(R.id.skillIconImageView))
-                    .setImageResource(SkillHandler.getSkillIconResource(skillInfo));
-            ((AppCompatTextView) skillInfoItem.findViewById(R.id.skillName))
-                    .setText(skillInfo.getNameResource());
-            ((AppCompatTextView) skillInfoItem.findViewById(R.id.skillSentenceExample))
-                    .setText(skillInfo.getSentenceExampleResource());
-
-            skillItemsLayout.addView(skillInfoItem);
-        }
-
-        graphicalOutputDevice.displayTemporary(initialScreen);
     }
 
 

@@ -53,8 +53,8 @@ public class MainActivity extends BaseActivity
     private MenuItem textInputItem = null;
 
     @Nullable private SkillEvaluator skillEvaluator = null;
-    private String currentInputDevicePreference = null;
     private boolean appJustOpened = false;
+    private boolean resumingFromSettings = false;
     private boolean textInputItemFocusJustChanged = false;
 
 
@@ -90,24 +90,15 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        currentInputDevicePreference = getInputDevicePreference();
+        appJustOpened = true; // determines whether to show initial screen and start listening
         initializeSkillEvaluator();
         setupVoiceButton();
-        appJustOpened = true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (skillEvaluator != null) {
-            if (skillEvaluator.getPrimaryInputDevice() instanceof ToolbarInputDevice) {
-                ((ToolbarInputDevice) skillEvaluator.getPrimaryInputDevice())
-                        .setTextInputItem(null);
-            } else if (skillEvaluator.getSecondaryInputDevice() != null) {
-                skillEvaluator.getSecondaryInputDevice().setTextInputItem(null);
-            }
-            skillEvaluator.cleanup();
-        }
+        destroySkillEvaluator();
     }
 
     private void setupVoiceButton() {
@@ -194,21 +185,17 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onPause() {
         super.onPause();
-        skillEvaluator.cancelGettingInput();
+        if (skillEvaluator != null) {
+            skillEvaluator.cancelGettingInput();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        boolean reinitializeSkillEvaluator = false;
-
-        final String inputDevicePreference = getInputDevicePreference();
-        if (!inputDevicePreference.equals(currentInputDevicePreference)) {
-            currentInputDevicePreference = inputDevicePreference;
-            reinitializeSkillEvaluator = true;
-        }
-
-        if (reinitializeSkillEvaluator) {
+        if (resumingFromSettings) {
+            // reinitialize everything if resuming from settings
+            resumingFromSettings = false;
             initializeSkillEvaluator();
             invalidateOptionsMenu();
             setupVoiceButton();
@@ -221,6 +208,7 @@ public class MainActivity extends BaseActivity
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             drawer.closeDrawer(GravityCompat.START);
+            resumingFromSettings = true;
         }
         return true;
     }
@@ -251,14 +239,13 @@ public class MainActivity extends BaseActivity
         }
     }
 
+
     /////////////////////
     // Skill functions //
     /////////////////////
 
     private void initializeSkillEvaluator() {
-        if (skillEvaluator != null) {
-            skillEvaluator.cleanup();
-        }
+        destroySkillEvaluator();
 
         final InputDevice primaryInputDevice = buildPrimaryInputDevice();
 
@@ -292,16 +279,16 @@ public class MainActivity extends BaseActivity
                 new MainScreenGraphicalDevice(
                         findViewById(R.id.outputScrollView), findViewById(R.id.outputLayout)),
                 this);
-    }
 
-    @NonNull
-    private String getInputDevicePreference() {
-        return preferences.getString(getString(R.string.pref_key_input_method), "");
+        if (appJustOpened) {
+            skillEvaluator.showInitialScreen();
+        }
     }
 
     private InputDevice buildPrimaryInputDevice() {
-        if (currentInputDevicePreference.equals(
-                getString(R.string.pref_val_input_method_text))) {
+        final String preference = preferences
+                .getString(getString(R.string.pref_key_input_method), "");
+        if (preference.equals(getString(R.string.pref_val_input_method_text))) {
             return new ToolbarInputDevice();
         } else { // default
             return new VoskInputDevice(this);
@@ -319,6 +306,13 @@ public class MainActivity extends BaseActivity
             return new ToastSpeechDevice(this);
         } else { // default
             return new AndroidTtsSpeechDevice(this, Sections.getCurrentLocale());
+        }
+    }
+
+    private void destroySkillEvaluator() {
+        if (skillEvaluator != null) {
+            skillEvaluator.cleanup();
+            skillEvaluator = null;
         }
     }
 }
