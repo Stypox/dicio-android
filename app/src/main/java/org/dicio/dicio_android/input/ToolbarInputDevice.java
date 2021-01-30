@@ -5,6 +5,8 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 
+import org.dicio.dicio_android.util.StringUtils;
+
 public class ToolbarInputDevice extends InputDevice {
     @Nullable private MenuItem textInputItem = null;
 
@@ -19,13 +21,19 @@ public class ToolbarInputDevice extends InputDevice {
             textInputView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(final String query) {
-                    notifyInputReceived(query);
+                    if (StringUtils.isNullOrEmpty(query)) {
+                        notifyNoInputReceived();
+                    } else {
+                        notifyInputReceived(query);
+                    }
                     textInputItem.collapseActionView();
                     return true;
                 }
 
                 @Override
                 public boolean onQueryTextChange(final String newText) {
+                    // here we could call notifyPartialInputReceived(), but it would be useless
+                    // since the user can already see what he is typing elsewhere
                     return true;
                 }
             });
@@ -48,5 +56,6 @@ public class ToolbarInputDevice extends InputDevice {
         if (textInputItem != null && textInputItem.isActionViewExpanded()) {
             textInputItem.collapseActionView();
         }
+        notifyNoInputReceived();
     }
 }

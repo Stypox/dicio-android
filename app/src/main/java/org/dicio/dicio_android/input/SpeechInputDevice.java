@@ -78,10 +78,11 @@ public abstract class SpeechInputDevice extends InputDevice {
     /**
      * Listens for some spoken input from the microphone. Should run in an asynchronous thread.
      * <br><br>
-     * Overriding functions should report results to the {@link
-     * InputDevice#notifyInputReceived(String)} and {@link InputDevice#notifyError(Throwable)}
-     * functions, and they must call {@link #onListening()} when they turn on the microphone
-     * and {@link #onInactive()} when instead they turn it off.
+     * Overriding functions should report partial results to {@link
+     * #notifyPartialInputReceived(String)}, final results to {@link #notifyInputReceived(String)}
+     * or {@link #notifyNoInputReceived()} (based on whether some input was received or not) and
+     * errors to {@link #notifyError(Throwable)}. They must call {@link #onListening()} when they
+     * turn on the microphone and {@link #onInactive()} when instead they turn it off.
      */
     @Override
     public abstract void tryToGetInput();
@@ -91,7 +92,8 @@ public abstract class SpeechInputDevice extends InputDevice {
      * Should do nothing if called while not listening. Any partial result is discarded. Called for
      * example when the user leaves the app.
      * <br><br>
-     * Overriding functions should call {@link #onInactive()} when they turn off the microphone.
+     * Overriding functions should call {@link #notifyNoInputReceived()} and {@link #onInactive()}
+     * when they turn off the microphone.
      */
     @Override
     public abstract void cancelGettingInput();

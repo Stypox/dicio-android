@@ -26,6 +26,11 @@ public abstract class InputDevice {
         void onInputReceived(String input);
 
         /**
+         * Called when no input was received from the user after he seemed to want to provide some
+         */
+        void onNoInputReceived();
+
+        /**
          * Called when an error occurs while trying to get input or processing it
          * @param e the exception
          */
@@ -49,7 +54,8 @@ public abstract class InputDevice {
      * Tries to get input in any way. Should run in an asynchronous thread.
      * <br><br>
      * Overriding functions should report partial results to {@link
-     * #notifyPartialInputReceived(String)} results to {@link #notifyInputReceived(String)} and
+     * #notifyPartialInputReceived(String)}, final results to {@link #notifyInputReceived(String)}
+     * or {@link #notifyNoInputReceived()} (based on whether some input was received or not) and
      * errors to {@link #notifyError(Throwable)}.
      */
     public abstract void tryToGetInput();
@@ -58,6 +64,9 @@ public abstract class InputDevice {
      * Cancels any input being received after {@link #tryToGetInput()} was called. Should do nothing
      * if called while not getting input. Any partial input is discarded. Called for
      * example when the user leaves the app.
+     * <br><br>
+     * Overriding functions should call {@link #notifyNoInputReceived()} when they stop getting
+     * input.
      */
     public abstract void cancelGettingInput();
 
@@ -72,7 +81,7 @@ public abstract class InputDevice {
 
     /**
      * This has to be called by functions overriding {@link #tryToGetInput()} when some input from
-     * the user is received
+     * the user is received. Can be called multiple times while getting input.
      * @param input the (raw) received input
      */
     protected void notifyPartialInputReceived(final String input) {
@@ -87,7 +96,8 @@ public abstract class InputDevice {
 
     /**
      * This has to be called by functions overriding {@link #tryToGetInput()} when some input from
-     * the user is received
+     * the user is received. Should be called only once, when stopping to get input. Should not be
+     * called if {@link #notifyNoInputReceived()} is called instead.
      * @param input the (raw) received input
      */
     protected void notifyInputReceived(final String input) {
@@ -97,6 +107,21 @@ public abstract class InputDevice {
 
         if (onInputReceivedListener != null) {
             onInputReceivedListener.onInputReceived(input);
+        }
+    }
+
+    /**
+     * This has to be called by functions overriding {@link #tryToGetInput()} when the user provided
+     * no input. Should be called only once, when stopping to get input. Should not be
+     * called if {@link #notifyInputReceived(String)} is called instead.
+     */
+    protected void notifyNoInputReceived() {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "No input from user");
+        }
+
+        if (onInputReceivedListener != null) {
+            onInputReceivedListener.onNoInputReceived();
         }
     }
 

@@ -152,6 +152,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         currentlyListening = false;
         recognizer.cancel();
         onInactive();
+        notifyNoInputReceived();
     }
 
     @Override
@@ -160,7 +161,9 @@ public class VoskInputDevice extends SpeechInputDevice {
         recognizer.stop();
         onInactive();
 
-        if (!StringUtils.isNullOrEmpty(lastPartialResult)) {
+        if (StringUtils.isNullOrEmpty(lastPartialResult)) {
+            notifyNoInputReceived();
+        } else {
             // if the user asked to stop listening, use the last partial input
             notifyInputReceived(lastPartialResult);
         }
@@ -231,7 +234,9 @@ public class VoskInputDevice extends SpeechInputDevice {
                     e.printStackTrace();
                 }
 
-                if (!StringUtils.isNullOrEmpty(input)) {
+                if (StringUtils.isNullOrEmpty(input)) {
+                    notifyNoInputReceived();
+                } else {
                     notifyInputReceived(input);
                 }
             }

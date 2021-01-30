@@ -46,9 +46,10 @@ public class SkillEvaluator {
     private final GraphicalOutputDevice graphicalOutputDevice;
     private final Context context;
 
-    boolean currentlyProcessingInput = false;
-    final Queue<String> queuedInputs = new LinkedList<>();
-    @Nullable View partialInputView = null;
+    private boolean currentlyProcessingInput = false;
+    private final Queue<String> queuedInputs = new LinkedList<>();
+    @Nullable private View partialInputView = null;
+    private boolean hasAddedPartialInputView = false;
     @Nullable private Disposable evaluationDisposable = null;
 
 
@@ -124,6 +125,11 @@ public class SkillEvaluator {
                     }
 
                     @Override
+                    public void onNoInputReceived() {
+                        handleNoInput();
+                    }
+
+                    @Override
                     public void onError(final Throwable e) {
                         SkillEvaluator.this.onError(e);
                     }
@@ -157,18 +163,26 @@ public class SkillEvaluator {
     }
 
 
-    ///////////////////
-    // Partial input //
-    ///////////////////
+    /////////////////////////////////////////
+    // Partial input and no input handling //
+    /////////////////////////////////////////
 
     private void displayPartialUserInput(final String input) {
+        hasAddedPartialInputView = true;
         if (partialInputView == null) {
-            partialInputView =
-                    GraphicalOutputUtils.inflate(context, R.layout.user_input_partial);
+            partialInputView = GraphicalOutputUtils.inflate(context, R.layout.user_input_partial);
         }
         final TextView textView = partialInputView.findViewById(R.id.userInput);
         textView.setText(input);
         graphicalOutputDevice.displayTemporary(partialInputView);
+    }
+
+    private void handleNoInput() {
+        if (hasAddedPartialInputView) {
+            // remove temporary partial input view: no input was provided
+            graphicalOutputDevice.removeTemporary();
+            hasAddedPartialInputView = false;
+        }
     }
 
 
@@ -178,6 +192,7 @@ public class SkillEvaluator {
     //////////////////////
 
     private void processInput(final String input) {
+        hasAddedPartialInputView = false;
         queuedInputs.add(input);
         tryToProcessQueuedInput();
     }
