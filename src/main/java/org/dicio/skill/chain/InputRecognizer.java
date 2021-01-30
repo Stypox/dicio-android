@@ -1,5 +1,7 @@
 package org.dicio.skill.chain;
 
+import org.dicio.skill.util.CleanableUp;
+
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * not allow throwing exceptions.
  * @param <ResultType> the type of the data extracted from the input
  */
-public interface InputRecognizer<ResultType> {
+public interface InputRecognizer<ResultType> extends CleanableUp {
     enum Specificity {
         high,
         medium,
@@ -56,5 +58,6 @@ public interface InputRecognizer<ResultType> {
      * To prevent excessive memory usage, release all temporary resources and set to {@code null}
      * all temporary variables used while calculating the score and getting the result.
      */
+    @Override
     void cleanup();
 }

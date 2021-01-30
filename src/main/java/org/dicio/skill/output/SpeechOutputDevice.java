@@ -2,7 +2,9 @@ package org.dicio.skill.output;
 
 import androidx.annotation.NonNull;
 
-public interface SpeechOutputDevice {
+import org.dicio.skill.util.CleanableUp;
+
+public interface SpeechOutputDevice extends CleanableUp {
     /**
      * Speaks the provided text
      * @param speechOutput what to tell to the user

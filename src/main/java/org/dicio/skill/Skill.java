@@ -8,12 +8,13 @@ import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
+import org.dicio.skill.util.CleanableUp;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public interface Skill {
+public interface Skill extends CleanableUp {
 
     /**
      * @see InputRecognizer#specificity()
@@ -61,6 +62,7 @@ public interface Skill {
      * all temporary variables used while calculating the score, getting the result or generating
      * output.
      */
+    @Override
     void cleanup();
 
     /**

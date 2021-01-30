@@ -74,8 +74,8 @@ public class StandardRecognizer implements InputRecognizer<StandardResult> {
     @Override
     public void cleanup() {
         input = null;
-        inputWords = null;
-        normalizedInputWords = null;
+        inputWords = Collections.emptyList();
+        normalizedInputWords = Collections.emptyList();
         bestResultSoFar = null;
         bestSentenceIdSoFar = null;
     }

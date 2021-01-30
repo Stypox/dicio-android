@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.dicio.skill.SkillInfo;
+import org.dicio.skill.util.CleanableUp;
 
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ import java.util.Locale;
  * @param <FromType> the type of the data from the previous step of computation (i.e. the input)
  * @param <ResultType> the type of the processed and returned data (i.e. the output)
  */
-public interface IntermediateProcessor<FromType, ResultType> {
+public interface IntermediateProcessor<FromType, ResultType> extends CleanableUp {
 
     /**
      * Processes the data obtained from the previous step to produce a result to be passed to the

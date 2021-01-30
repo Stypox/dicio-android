@@ -76,6 +76,10 @@ public class ChainSkill implements Skill {
     @Override
     public void cleanup() {
         inputRecognizer.cleanup();
+        for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
+            intermediateProcessor.cleanup();
+        }
+        outputGenerator.cleanup();
         lastResult = null;
     }
 
@@ -86,10 +90,8 @@ public class ChainSkill implements Skill {
                              final Locale locale)
             throws Exception {
         lastResult = inputRecognizer.getResult();
-
-        for (int i = 0; i < intermediateProcessors.size(); ++i) {
-            lastResult = intermediateProcessors.get(i)
-                    .process(lastResult, context, preferences, locale);
+        for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
+            lastResult = intermediateProcessor.process(lastResult, context, preferences, locale);
         }
     }
 
