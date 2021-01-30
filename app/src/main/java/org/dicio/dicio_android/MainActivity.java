@@ -220,8 +220,6 @@ public class MainActivity extends BaseActivity
         if (item.getItemId() == R.id.action_settings) {
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-        } else {
-            final DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
