@@ -83,7 +83,6 @@ public class VoskInputDevice extends SpeechInputDevice {
     private boolean currentlyInitializingRecognizer = false;
     private boolean startListeningOnLoaded = false;
     private boolean currentlyListening = false;
-    @Nullable private String lastPartialResult = null;
 
 
     /////////////////////
@@ -165,31 +164,23 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     @Override
     public void cancelGettingInput() {
+        if (currentlyListening) {
+            if (recognizer != null) {
+                recognizer.cancel();
+            }
+            notifyNoInputReceived();
+        }
+
         startListeningOnLoaded = false;
         currentlyListening = false;
 
-        if (recognizer != null) {
-            recognizer.cancel();
-        }
-
         onInactive();
-        notifyNoInputReceived();
     }
 
     @Override
     protected void stopListening() {
-        currentlyListening = false;
-
         if (recognizer != null) {
             recognizer.stop();
-        }
-
-        onInactive();
-        if (StringUtils.isNullOrEmpty(lastPartialResult)) {
-            notifyNoInputReceived();
-        } else {
-            // if the user asked to stop listening, use the last partial input
-            notifyInputReceived(lastPartialResult);
         }
     }
 
@@ -228,15 +219,15 @@ public class VoskInputDevice extends SpeechInputDevice {
                     return;
                 }
 
+                String partialInput = null;
                 try {
-                    lastPartialResult = new JSONObject(s).getString("partial");
+                    partialInput = new JSONObject(s).getString("partial");
                 } catch (JSONException e) {
-                    lastPartialResult = null;
                     e.printStackTrace();
                 }
 
-                if (!StringUtils.isNullOrEmpty(lastPartialResult)) {
-                    notifyPartialInputReceived(lastPartialResult);
+                if (!StringUtils.isNullOrEmpty(partialInput)) {
+                    notifyPartialInputReceived(partialInput);
                 }
             }
 
@@ -247,9 +238,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                     return;
                 }
 
-                // finished listening, no partial result to process in stopListening()
-                lastPartialResult = null;
-                stopListening();
+                stopRecognizer();
 
                 String input = null;
                 try {
@@ -268,17 +257,28 @@ public class VoskInputDevice extends SpeechInputDevice {
             @Override
             public void onError(final Exception e) {
                 Log.d(TAG, "onError called");
-                stopListening();
+                stopRecognizer();
                 notifyError(e);
             }
 
             @Override
             public void onTimeout() {
                 Log.d(TAG, "onTimeout called");
-                stopListening();
+                stopRecognizer();
+                notifyNoInputReceived();
             }
         });
         return true;
+    }
+
+    private void stopRecognizer() {
+        currentlyListening = false;
+
+        if (recognizer != null) {
+            recognizer.stop();
+        }
+
+        onInactive();
     }
 
 
