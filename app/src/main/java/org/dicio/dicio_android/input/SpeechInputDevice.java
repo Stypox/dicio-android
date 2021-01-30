@@ -63,6 +63,13 @@ public abstract class SpeechInputDevice extends InputDevice {
         }
     }
 
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        setVoiceViews(null, null);
+        currentShownState = ShownState.INACTIVE;
+    }
+
 
     /**
      * Prepares the speech recognizer. If doing heavy work, run it in an asynchronous thread.

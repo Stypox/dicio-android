@@ -9,4 +9,8 @@ public class NothingSpeechDevice implements SpeechOutputDevice {
     public void speak(@NonNull final String speechOutput) {
         // do nothing
     }
+
+    @Override
+    public void cleanup() {
+    }
 }

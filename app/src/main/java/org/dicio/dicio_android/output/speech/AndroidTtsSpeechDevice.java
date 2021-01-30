@@ -13,7 +13,7 @@ import java.util.Locale;
 
 public class AndroidTtsSpeechDevice implements SpeechOutputDevice {
 
-    private final Context context;
+    private Context context;
     private TextToSpeech textToSpeech = null;
     private boolean initializedCorrectly = false;
 
@@ -39,6 +39,15 @@ public class AndroidTtsSpeechDevice implements SpeechOutputDevice {
             textToSpeech.speak(speechOutput, TextToSpeech.QUEUE_ADD, null, null);
         } else {
             Toast.makeText(context, speechOutput, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void cleanup() {
+        context = null;
+        if (textToSpeech != null) {
+            textToSpeech.shutdown();
+            textToSpeech = null;
         }
     }
 }

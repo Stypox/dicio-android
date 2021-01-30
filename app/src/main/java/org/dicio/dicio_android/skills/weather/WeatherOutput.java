@@ -58,4 +58,8 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
             graphicalOutputDevice.display(weatherView);
         }
     }
+
+    @Override
+    public void cleanup() {
+    }
 }

@@ -41,6 +41,12 @@ public class ToolbarInputDevice extends InputDevice {
     }
 
     @Override
+    public void cleanup() {
+        super.cleanup();
+        setTextInputItem(null);
+    }
+
+    @Override
     public void load() {
     }
 

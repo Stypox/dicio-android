@@ -75,9 +75,10 @@ public class VoskInputDevice extends SpeechInputDevice {
     }};
 
 
-    private final Activity activity;
+    private Activity activity;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private SpeechService recognizer = null;
+    @Nullable private BroadcastReceiver downloadingBroadcastReceiver = null;
+    @Nullable private SpeechService recognizer = null;
 
     private boolean currentlyInitializingRecognizer = false;
     private boolean startListeningOnLoaded = false;
@@ -123,6 +124,22 @@ public class VoskInputDevice extends SpeechInputDevice {
                         onInactive();
                     }));
         }
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        disposables.clear();
+        if (recognizer != null) {
+             recognizer.shutdown();
+             recognizer = null;
+        }
+
+        if (downloadingBroadcastReceiver != null) {
+            activity.unregisterReceiver(downloadingBroadcastReceiver);
+            downloadingBroadcastReceiver = null;
+        }
+        activity = null;
     }
 
     @Override
@@ -313,9 +330,13 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         // setup download completion listener
         final IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        downloadingBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
+                if (downloadingBroadcastReceiver == null) {
+                    return; // just to be sure there are no issues with threads
+                }
+
                 if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                     final long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
                     if (id == modelDownloadId) {
@@ -336,10 +357,11 @@ public class VoskInputDevice extends SpeechInputDevice {
                                             putDownloadIdInPreferences(activity, null);
                                         }));
                     }
+                    activity.unregisterReceiver(downloadingBroadcastReceiver);
                 }
             }
         };
-        activity.registerReceiver(broadcastReceiver, filter);
+        activity.registerReceiver(downloadingBroadcastReceiver, filter);
     }
 
     private void extractModelZip() throws IOException {

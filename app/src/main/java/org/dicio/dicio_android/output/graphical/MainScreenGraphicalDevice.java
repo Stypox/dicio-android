@@ -16,9 +16,9 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
 
     private static final String DIVIDER_VIEW_TAG = "diVIdeR";
 
-    private final ScrollView outputScrollView;
-    private final LinearLayout outputLayout;
-    private final Context context;
+    private ScrollView outputScrollView;
+    private LinearLayout outputLayout;
+    private Context context;
 
     private boolean atLeastOnePermanentViewDisplayed;
     private boolean lastViewWasTemporary = false;
@@ -57,6 +57,13 @@ public class MainScreenGraphicalDevice implements GraphicalOutputDevice {
             // do not add a divider as the first item
             ++pendingDividers;
         }
+    }
+
+    @Override
+    public void cleanup() {
+        outputScrollView = null;
+        outputLayout = null;
+        context = null;
     }
 
 

@@ -5,8 +5,9 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import org.dicio.dicio_android.BuildConfig;
+import org.dicio.skill.util.CleanableUp;
 
-public abstract class InputDevice {
+public abstract class InputDevice implements CleanableUp {
 
     /**
      * Used to provide the input from the user to whatever code uses it
@@ -76,6 +77,11 @@ public abstract class InputDevice {
      */
     public final void setOnInputReceivedListener(@Nullable final OnInputReceivedListener listener) {
         this.onInputReceivedListener = listener;
+    }
+
+    @Override
+    public void cleanup() {
+        setOnInputReceivedListener(null);
     }
 
 

@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.dicio.skill.Skill;
+import org.dicio.skill.util.CleanableUp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class SkillRanker {
+public class SkillRanker implements CleanableUp {
+
     // various thresholds for different specificity categories (high, medium and low)
     private static final float
             // first round
@@ -23,7 +25,7 @@ public class SkillRanker {
             highThreshold3   = 0.70f;
 
 
-    private static class SkillScoreResult {
+    private static class SkillScoreResult implements CleanableUp {
         @Nullable final Skill skill;
         final float score;
 
@@ -32,7 +34,8 @@ public class SkillRanker {
             this.score = score;
         }
 
-        void cleanup() {
+        @Override
+        public void cleanup() {
             if (skill != null) {
                 skill.cleanup();
             }
@@ -145,21 +148,19 @@ public class SkillRanker {
         }
     }
 
-    @NonNull
-    private final SkillBatch defaultBatch;
-    @NonNull
-    private final Skill fallbackSkill;
+    private SkillBatch defaultBatch;
+    private Skill fallbackSkill;
     @NonNull
     private final Stack<SkillBatch> batches;
 
-    public SkillRanker(List<Skill> defaultSkillBatch,
-                           @NonNull Skill fallbackSkill) {
+    public SkillRanker(final List<Skill> defaultSkillBatch,
+                       @NonNull final Skill fallbackSkill) {
         this.defaultBatch = new SkillBatch(defaultSkillBatch);
         this.fallbackSkill = fallbackSkill;
         this.batches = new Stack<>();
     }
 
-    public void addBatchToTop(List<Skill> skillBatch) {
+    public void addBatchToTop(final List<Skill> skillBatch) {
         batches.push(new SkillBatch(skillBatch));
     }
 
@@ -172,18 +173,18 @@ public class SkillRanker {
     }
 
     public Skill getBest(final String input,
-                                       final List<String> inputWords,
-                                       final List<String> normalizedWordKeys) {
+                         final List<String> inputWords,
+                         final List<String> normalizedWordKeys) {
         for(int i = batches.size() - 1; i >= 0; --i) {
-            final Skill skillFromBatch =
-                    batches.get(i).getBest(input, inputWords, normalizedWordKeys);
+            final Skill skillFromBatch
+                    = batches.get(i).getBest(input, inputWords, normalizedWordKeys);
             if (skillFromBatch != null) {
                 return skillFromBatch;
             }
         }
 
-        final Skill skillFromDefault =
-                defaultBatch.getBest(input, inputWords, normalizedWordKeys);
+        final Skill skillFromDefault
+                = defaultBatch.getBest(input, inputWords, normalizedWordKeys);
         if (skillFromDefault == null) {
             // nothing was matched
             fallbackSkill.setInput(input, inputWords, normalizedWordKeys);
@@ -191,5 +192,12 @@ public class SkillRanker {
         } else {
             return skillFromDefault;
         }
+    }
+
+    @Override
+    public void cleanup() {
+        defaultBatch = null;
+        fallbackSkill = null;
+        batches.clear();
     }
 }

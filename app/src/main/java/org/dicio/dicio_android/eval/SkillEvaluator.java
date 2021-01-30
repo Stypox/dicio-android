@@ -26,6 +26,7 @@ import org.dicio.skill.Skill;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
+import org.dicio.skill.util.CleanableUp;
 import org.dicio.skill.util.WordExtractor;
 
 import java.util.LinkedList;
@@ -37,14 +38,14 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SkillEvaluator {
+public class SkillEvaluator implements CleanableUp {
 
     private final SkillRanker skillRanker;
     private final InputDevice primaryInputDevice;
     @Nullable private final ToolbarInputDevice secondaryInputDevice;
     private final SpeechOutputDevice speechOutputDevice;
     private final GraphicalOutputDevice graphicalOutputDevice;
-    private final Context context;
+    private Context context;
 
     private boolean currentlyProcessingInput = false;
     private final Queue<String> queuedInputs = new LinkedList<>();
@@ -100,19 +101,16 @@ public class SkillEvaluator {
         graphicalOutputDevice.displayTemporary(initialScreen);
     }
 
+    @Override
     public void cleanup() {
-        if (primaryInputDevice instanceof ToolbarInputDevice) {
-            ((ToolbarInputDevice) primaryInputDevice).setTextInputItem(null);
-        }
-        if (secondaryInputDevice != null) {
-            secondaryInputDevice.setTextInputItem(null);
-        }
-
         cancelGettingInput();
-        primaryInputDevice.setOnInputReceivedListener(null);
+        primaryInputDevice.cleanup();
         if (secondaryInputDevice != null) {
-            secondaryInputDevice.setOnInputReceivedListener(null);
+            secondaryInputDevice.cleanup();
         }
+        speechOutputDevice.cleanup();
+        graphicalOutputDevice.cleanup();
+        context = null;
 
         if (evaluationDisposable != null) {
             evaluationDisposable.dispose();

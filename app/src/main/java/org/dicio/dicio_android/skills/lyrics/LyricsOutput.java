@@ -56,4 +56,8 @@ public class LyricsOutput
                             lyricsView));
         }
     }
+
+    @Override
+    public void cleanup() {
+    }
 }

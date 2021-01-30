@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 public class SnackbarSpeechDevice implements SpeechOutputDevice {
-    private final View view;
+    private View view;
 
     public SnackbarSpeechDevice(final View view) {
         this.view = view;
@@ -18,5 +18,10 @@ public class SnackbarSpeechDevice implements SpeechOutputDevice {
     @Override
     public void speak(@NonNull final String speechOutput) {
         Snackbar.make(view, speechOutput, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void cleanup() {
+        view = null;
     }
 }

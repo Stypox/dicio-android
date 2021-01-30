@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 public class ToastSpeechDevice implements SpeechOutputDevice {
-    private final Context context;
+    private Context context;
 
     public ToastSpeechDevice(final Context context) {
         this.context = context;
@@ -17,5 +17,10 @@ public class ToastSpeechDevice implements SpeechOutputDevice {
     @Override
     public void speak(@NonNull final String speechOutput) {
         Toast.makeText(context, speechOutput, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void cleanup() {
+        context = null;
     }
 }
