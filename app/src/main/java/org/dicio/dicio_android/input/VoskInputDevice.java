@@ -51,7 +51,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     public static final String TAG = VoskInputDevice.class.getSimpleName();
     public static final String MODEL_PATH = "/vosk-model";
     public static final String MODEL_ZIP_FILENAME = "model.zip";
-    public static final float SAMPLE_RATE = 16000.0f;
+    public static final float SAMPLE_RATE = 44100.0f;
 
     /**
      * All small models from <a href="https://alphacephei.com/vosk/models">Vosk</a>
