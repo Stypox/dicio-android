@@ -281,10 +281,7 @@ public class MainActivity extends BaseActivity
                 new MainScreenGraphicalDevice(
                         findViewById(R.id.outputScrollView), findViewById(R.id.outputLayout)),
                 this);
-
-        if (appJustOpened) {
-            skillEvaluator.showInitialScreen();
-        }
+        skillEvaluator.showInitialScreen();
     }
 
     private InputDevice buildPrimaryInputDevice() {
