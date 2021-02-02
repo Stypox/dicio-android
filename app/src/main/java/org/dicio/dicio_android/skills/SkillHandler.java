@@ -45,10 +45,8 @@ public class SkillHandler {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final List<Skill> result = new ArrayList<>();
 
-        for (final SkillInfo skillInfo : skillInfoList) {
-            if (prefs.getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true)) {
-                result.add(skillInfo.build(context, prefs, locale));
-            }
+        for (final SkillInfo skillInfo : getEnabledSkillInfoList(context)) {
+            result.add(skillInfo.build(context, prefs, locale));
         }
 
         return result;
@@ -64,17 +62,32 @@ public class SkillHandler {
         return skillInfoList;
     }
 
-    public static List<SkillInfo> getRandomSkillInfoList(final int maxCount) {
+    public static List<SkillInfo> getEnabledSkillInfoList(final Context context) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final List<SkillInfo> result = new ArrayList<>();
+
+        for (final SkillInfo skillInfo : skillInfoList) {
+            if (prefs.getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true)) {
+                result.add(skillInfo);
+            }
+        }
+
+        return result;
+    }
+
+    public static List<SkillInfo> getRandomEnabledSkillInfoList(final Context context, final int maxCount) {
         final Random random = new Random();
-        if (skillInfoList.size() <= maxCount) {
-            final List<SkillInfo> result = new ArrayList<>(skillInfoList);
-            Collections.shuffle(result, random);
-            return result;
+        final List<SkillInfo> enabledSkillInfoList = getEnabledSkillInfoList(context);
+
+        if (enabledSkillInfoList.size() <= maxCount) {
+            Collections.shuffle(enabledSkillInfoList, random);
+            return enabledSkillInfoList;
 
         } else {
             final List<SkillInfo> result = new ArrayList<>();
             while (result.size() < maxCount) {
-                final SkillInfo chosen = skillInfoList.get(random.nextInt(skillInfoList.size()));
+                final SkillInfo chosen = enabledSkillInfoList.get(
+                        random.nextInt(enabledSkillInfoList.size()));
                 if (!result.contains(chosen)) {
                     result.add(chosen);
                 }
