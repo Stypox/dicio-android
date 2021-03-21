@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import org.dicio.numbers.NumberParserFormatter;
+
 import java.util.Locale;
 
 /**
@@ -16,6 +18,7 @@ public final class SkillContext {
     @NonNull final Context androidContext;
     @NonNull final SharedPreferences preferences;
     @NonNull final Locale locale;
+    @NonNull final NumberParserFormatter numberParserFormatter;
 
     /**
      * Constructs a new instance of {@link SkillContext} wrapping the provided arguments.
@@ -26,13 +29,18 @@ public final class SkillContext {
      *                    {@link SkillInfo#getPreferenceFragment()}
      * @param locale the current user locale, useful for example to customize web requests to get
      *               the correct language or country
+     * @param numberParserFormatter the number parser formatter for the current locale, useful for
+     *                              example to format a number to show to the user or extract
+     *                              numbers from an utterance. See {@link NumberParserFormatter}.
      */
     public SkillContext(@NonNull final Context androidContext,
                         @NonNull final SharedPreferences preferences,
-                        @NonNull final Locale locale) {
+                        @NonNull final Locale locale,
+                        @NonNull final NumberParserFormatter numberParserFormatter) {
         this.androidContext = androidContext;
         this.preferences = preferences;
         this.locale = locale;
+        this.numberParserFormatter = numberParserFormatter;
     }
 
     /**
@@ -59,5 +67,15 @@ public final class SkillContext {
     @NonNull
     public Locale getLocale() {
         return locale;
+    }
+
+    /**
+     * @return the number parser formatter for the current locale, useful for example to format a
+     *         number to show to the user or extract numbers from an utterance
+     * @see NumberParserFormatter
+     */
+    @NonNull
+    public NumberParserFormatter getNumberParserFormatter() {
+        return numberParserFormatter;
     }
 }
