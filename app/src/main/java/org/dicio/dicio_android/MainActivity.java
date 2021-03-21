@@ -37,11 +37,9 @@ import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.BaseActivity;
+import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.output.SpeechOutputDevice;
-import org.dicio.numbers.NumberParserFormatter;
-
-import java.util.Locale;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
