@@ -321,20 +321,17 @@ public class SkillEvaluator implements CleanableUp {
             evaluationDisposable.dispose();
         }
 
-        evaluationDisposable = Single
-                .fromCallable(() -> {
-                    final List<String> inputWords = WordExtractor.extractWords(input);
-                    final List<String> normalizedWordKeys =
-                            WordExtractor.normalizeWords(inputWords);
-                    final Skill skill = skillRanker.getBest(
-                            input, inputWords, normalizedWordKeys);
+        evaluationDisposable = Single.fromCallable(() -> {
+            final List<String> inputWords = WordExtractor.extractWords(input);
+            final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
+            final Skill skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
 
-                    skill.processInput(skillContext);
-                    return skill;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::generateOutput, this::onError);
+            skill.processInput(skillContext);
+            return skill;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::generateOutput, this::onError);
     }
 
     private void generateOutput(final Skill skill) {
