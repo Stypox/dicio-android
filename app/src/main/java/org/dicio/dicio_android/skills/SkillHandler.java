@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.skills.calculator.CalculatorInfo;
 import org.dicio.dicio_android.skills.fallback.text.TextFallbackInfo;
 import org.dicio.dicio_android.skills.lyrics.LyricsInfo;
 import org.dicio.dicio_android.skills.open.OpenInfo;
@@ -29,6 +30,7 @@ public class SkillHandler {
         add(new SearchInfo());
         add(new LyricsInfo());
         add(new OpenInfo());
+        add(new CalculatorInfo());
     }};
 
     private static final List<SkillInfo> fallbackSkillInfoList = new ArrayList<SkillInfo>() {{
@@ -72,7 +74,8 @@ public class SkillHandler {
         return result;
     }
 
-    public static List<SkillInfo> getRandomEnabledSkillInfoList(final Context context, final int maxCount) {
+    public static List<SkillInfo> getRandomEnabledSkillInfoList(final Context context,
+                                                                final int maxCount) {
         final Random random = new Random();
         final List<SkillInfo> enabledSkillInfoList = getEnabledSkillInfoList(context);
 
