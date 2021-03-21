@@ -279,7 +279,7 @@ public class MainActivity extends BaseActivity
         final SkillContext skillContext = new SkillContext(this,
                 PreferenceManager.getDefaultSharedPreferences(this),
                 Sections.getCurrentLocale(),
-                new NumberParserFormatter(Locale.ENGLISH));
+                new NumberParserFormatter(Sections.getCurrentLocale()));
 
         skillEvaluator = new SkillEvaluator(
                 new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
