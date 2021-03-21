@@ -1,7 +1,5 @@
 package org.dicio.dicio_android.skills.lyrics;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -9,11 +7,10 @@ import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
-
-import java.util.Locale;
 
 public class LyricsOutput
         implements OutputGenerator<LyricsOutput.Data> {
@@ -26,33 +23,34 @@ public class LyricsOutput
 
     @Override
     public void generate(final Data data,
-                         final Context context,
-                         final SharedPreferences preferences,
-                         final Locale locale,
+                         final SkillContext context,
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
 
         if (data.failed) {
-            final String message =
-                    context.getString(R.string.skill_lyrics_song_not_found, data.title);
+            final String message = context.getAndroidContext().getString(
+                    R.string.skill_lyrics_song_not_found, data.title);
             speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(context, message));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
+                    context.getAndroidContext(), message));
 
         } else {
-            speechOutputDevice.speak(
-                    context.getString(R.string.skill_lyrics_found_song_by_artist,
-                            data.title, data.artist));
+            speechOutputDevice.speak(context.getAndroidContext().getString(
+                    R.string.skill_lyrics_found_song_by_artist, data.title, data.artist));
 
-            final TextView lyricsView = GraphicalOutputUtils.buildDescription(context, data.lyrics);
+            final TextView lyricsView = GraphicalOutputUtils.buildDescription(
+                    context.getAndroidContext(), data.lyrics);
             lyricsView.setGravity(Gravity.START);
             lyricsView.setPadding(8, 0, 0, 0);
 
             graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildVerticalLinearLayout(context,
-                            ResourcesCompat.getDrawable(context.getResources(),
+                    GraphicalOutputUtils.buildVerticalLinearLayout(context.getAndroidContext(),
+                            ResourcesCompat.getDrawable(context.getAndroidContext().getResources(),
                                     R.drawable.divider_items, null),
-                            GraphicalOutputUtils.buildHeader(context, data.title),
-                            GraphicalOutputUtils.buildSubHeader(context, data.artist),
+                            GraphicalOutputUtils.buildHeader(
+                                    context.getAndroidContext(), data.title),
+                            GraphicalOutputUtils.buildSubHeader(
+                                    context.getAndroidContext(), data.artist),
                             lyricsView));
         }
     }

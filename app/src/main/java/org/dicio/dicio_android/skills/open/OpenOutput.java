@@ -1,24 +1,22 @@
 package org.dicio.dicio_android.skills.open;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import androidx.annotation.Nullable;
 
+import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.util.StringUtils;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardResult;
-import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.util.StringUtils;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.dicio.dicio_android.Sentences_en.open;
 
@@ -26,22 +24,21 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
 
     @Override
     public void generate(final StandardResult data,
-                         final Context context,
-                         final SharedPreferences preferences,
-                         final Locale locale,
+                         final SkillContext context,
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
 
         final String userAppName = data.getCapturingGroup(open.what).trim();
-        final PackageManager packageManager = context.getPackageManager();
+        final PackageManager packageManager = context.getAndroidContext().getPackageManager();
         final ApplicationInfo applicationInfo = getMostSimilarApp(packageManager, userAppName);
 
         if (applicationInfo == null) {
-            speechOutputDevice.speak(
-                    context.getString(R.string.skill_open_unknown_app, userAppName));
+            speechOutputDevice.speak(context.getAndroidContext().getString(
+                    R.string.skill_open_unknown_app, userAppName));
 
         } else {
-            speechOutputDevice.speak(context.getString(R.string.skill_open_opening,
+            speechOutputDevice.speak(context.getAndroidContext().getString(
+                    R.string.skill_open_opening,
                     packageManager.getApplicationLabel(applicationInfo)));
 
             final Intent launchIntent =
@@ -49,7 +46,7 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
             launchIntent.setAction(Intent.ACTION_MAIN);
             launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(launchIntent);
+            context.getAndroidContext().startActivity(launchIntent);
         }
     }
 

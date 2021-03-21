@@ -37,7 +37,11 @@ import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.BaseActivity;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.output.SpeechOutputDevice;
+import org.dicio.numbers.NumberParserFormatter;
+
+import java.util.Locale;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -271,10 +275,17 @@ public class MainActivity extends BaseActivity
 
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
+        assert Sections.getCurrentLocale() != null;
+        final SkillContext skillContext = new SkillContext(this,
+                PreferenceManager.getDefaultSharedPreferences(this),
+                Sections.getCurrentLocale(),
+                new NumberParserFormatter(Locale.ENGLISH));
+
         skillEvaluator = new SkillEvaluator(
                 new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
-                        SkillHandler.getStandardSkillBatch(this, Sections.getCurrentLocale()),
-                        SkillHandler.getFallbackSkill(this, Sections.getCurrentLocale())),
+                        SkillHandler.getStandardSkillBatch(skillContext),
+                        SkillHandler.getFallbackSkill(skillContext)),
+                skillContext,
                 primaryInputDevice,
                 secondaryInputDevice,
                 speechOutputDevice,

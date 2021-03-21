@@ -12,10 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice.UnableToAccessMicrophoneException;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
@@ -23,6 +21,7 @@ import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.skill.Skill;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
@@ -41,6 +40,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SkillEvaluator implements CleanableUp {
 
     private final SkillRanker skillRanker;
+    private SkillContext skillContext;
     private final InputDevice primaryInputDevice;
     @Nullable private final ToolbarInputDevice secondaryInputDevice;
     private final SpeechOutputDevice speechOutputDevice;
@@ -55,6 +55,7 @@ public class SkillEvaluator implements CleanableUp {
 
 
     public SkillEvaluator(final SkillRanker skillRanker,
+                          final SkillContext skillContext,
                           final InputDevice primaryInputDevice,
                           @Nullable final ToolbarInputDevice secondaryInputDevice,
                           final SpeechOutputDevice speechOutputDevice,
@@ -62,6 +63,7 @@ public class SkillEvaluator implements CleanableUp {
                           final Context context) {
 
         this.skillRanker = skillRanker;
+        this.skillContext = skillContext;
         this.primaryInputDevice = primaryInputDevice;
         this.secondaryInputDevice = secondaryInputDevice;
         this.speechOutputDevice = speechOutputDevice;
@@ -104,6 +106,9 @@ public class SkillEvaluator implements CleanableUp {
     @Override
     public void cleanup() {
         cancelGettingInput();
+        skillRanker.cleanup();
+        skillContext = null;
+
         primaryInputDevice.cleanup();
         if (secondaryInputDevice != null) {
             secondaryInputDevice.cleanup();
@@ -324,9 +329,7 @@ public class SkillEvaluator implements CleanableUp {
                     final Skill skill = skillRanker.getBest(
                             input, inputWords, normalizedWordKeys);
 
-                    skill.processInput(context,
-                            PreferenceManager.getDefaultSharedPreferences(context),
-                            Sections.getCurrentLocale());
+                    skill.processInput(skillContext);
                     return skill;
                 })
                 .subscribeOn(Schedulers.io())
@@ -335,8 +338,7 @@ public class SkillEvaluator implements CleanableUp {
     }
 
     private void generateOutput(final Skill skill) {
-        skill.generateOutput(context, PreferenceManager.getDefaultSharedPreferences(context),
-                Sections.getCurrentLocale(), speechOutputDevice, graphicalOutputDevice);
+        skill.generateOutput(skillContext, speechOutputDevice, graphicalOutputDevice);
         graphicalOutputDevice.addDivider();
 
         final List<Skill> nextSkills = skill.nextSkills();

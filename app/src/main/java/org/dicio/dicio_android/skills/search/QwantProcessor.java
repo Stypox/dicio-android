@@ -1,11 +1,9 @@
 package org.dicio.dicio_android.skills.search;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
+import org.dicio.dicio_android.util.ConnectionUtils;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
-import org.dicio.dicio_android.util.ConnectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,13 +48,11 @@ public class QwantProcessor
     }
 
     @Override
-    public List<SearchOutput.Data> process(final StandardResult data,
-                                           final Context context,
-                                           final SharedPreferences preferences,
-                                           final Locale locale) throws Exception {
+    public List<SearchOutput.Data> process(final StandardResult data, final SkillContext context)
+            throws Exception {
 
         final JSONObject json = getPageJson(qwantSearchUrl
-                + "?count=10&offset=20&t=dicio&uiv=1&locale=" + getLocaleString(locale)
+                + "?count=10&offset=20&t=dicio&uiv=1&locale=" + getLocaleString(context.getLocale())
                 + "&q=" + ConnectionUtils.urlEncode(data.getCapturingGroup(search.what).trim()));
         final JSONArray items =
                 json.getJSONObject("data").getJSONObject("result").getJSONArray("items");

@@ -1,17 +1,14 @@
 package org.dicio.dicio_android.skills.weather;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import org.dicio.dicio_android.R;
-import org.dicio.skill.chain.IntermediateProcessor;
-import org.dicio.skill.standard.StandardResult;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
+import org.dicio.skill.SkillContext;
+import org.dicio.skill.chain.IntermediateProcessor;
+import org.dicio.skill.standard.StandardResult;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
-import java.util.Locale;
 
 import static org.dicio.dicio_android.Sentences_en.weather;
 import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
@@ -27,10 +24,8 @@ public class OpenWeatherMapProcessor
 
 
     @Override
-    public WeatherOutput.Data process(final StandardResult data,
-                                      final Context context,
-                                      final SharedPreferences preferences,
-                                      final Locale locale) throws Exception {
+    public WeatherOutput.Data process(final StandardResult data, final SkillContext context)
+            throws Exception {
 
         final WeatherOutput.Data result = new WeatherOutput.Data();
         result.city = data.getCapturingGroup(weather.where);
@@ -39,8 +34,9 @@ public class OpenWeatherMapProcessor
         }
 
         if (isNullOrEmpty(result.city)) {
-            result.city = StringUtils.removePunctuation(preferences.getString(
-                    context.getString(R.string.pref_key_weather_default_city), "").trim());
+            result.city = context.getPreferences().getString(context.getAndroidContext().getString(
+                    R.string.pref_key_weather_default_city), "");
+            result.city = StringUtils.removePunctuation(result.city.trim());
         }
 
         if (result.city.isEmpty()) {
@@ -52,7 +48,7 @@ public class OpenWeatherMapProcessor
         try {
             weatherData = ConnectionUtils.getPageJson(weatherApiUrl
                     + "?APPID=" + apiKey
-                    + "&units=metric&lang=" + locale.getLanguage().toLowerCase()
+                    + "&units=metric&lang=" + context.getLocale().getLanguage().toLowerCase()
                     + "&q=" + ConnectionUtils.urlEncode(result.city));
         } catch (FileNotFoundException ignored) {
             result.failed = true;
