@@ -82,7 +82,7 @@ public class LocaleUtils {
      */
     @NonNull
     static String resolveLocaleString(final Locale locale,
-                                             final Collection<String> supportedLocales)
+                                      final Collection<String> supportedLocales)
             throws UnsupportedLocaleException {
         // first try with full locale name (e.g. en-US)
         String localeString = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
