@@ -1,12 +1,7 @@
 package org.dicio.skill.chain;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import org.dicio.skill.SkillInfo;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.util.CleanableUp;
-
-import java.util.Locale;
 
 /**
  * Processes the data from the previous step of computation to produce a result to be passed to the
@@ -28,13 +23,8 @@ public interface IntermediateProcessor<FromType, ResultType> {
      * temporary data inside the object (that's why it does not extend {@link CleanableUp}).
      *
      * @param data the data to process, from the previous step
-     * @param context the Android context, useful for example to access resources
-     * @param preferences the Android preferences, useful for user customization, also see {@link
-     *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
-     * @param locale the current user locale, useful for example to customize web requests to get
-     *               the correct language or country
+     * @param context the skill context with useful resources, see {@link SkillContext}
      * @return the result of the data processing
      */
-    ResultType process(FromType data, Context context, SharedPreferences preferences, Locale locale)
-            throws Exception;
+    ResultType process(FromType data, SkillContext context) throws Exception;
 }

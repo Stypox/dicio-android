@@ -1,18 +1,15 @@
 package org.dicio.skill.chain;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillInfo;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.CleanableUp;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Hosts platform-specific code to produce platform-specific output based on the data obtained from
@@ -28,12 +25,7 @@ public interface OutputGenerator<FromType> extends CleanableUp {
      * for an app on the user's device.
      *
      * @param data the data to use to generate output, from the previous step
-     * @param context the Android context, needed to build views and also useful for example to
-     *                access resources or device-specific features
-     * @param preferences the Android preferences, useful for user customization, also see {@link
-     *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
-     * @param locale the current user locale, useful for example to customize web requests to get
-     *               the correct language or country
+     * @param context the skill context with useful resources, see {@link SkillContext}
      * @param speechOutputDevice use this to tell something short and textual to the user, e.g. "My
      *                           name is Dicio"; see {@link SpeechOutputDevice#speak(String)}
      * @param graphicalOutputDevice use this to show something to the user, such as a panel with an
@@ -41,9 +33,7 @@ public interface OutputGenerator<FromType> extends CleanableUp {
      *                              GraphicalOutputDevice#display(View)}
      */
     void generate(FromType data,
-                  Context context,
-                  SharedPreferences preferences,
-                  Locale locale,
+                  SkillContext context,
                   SpeechOutputDevice speechOutputDevice,
                   GraphicalOutputDevice graphicalOutputDevice);
 
@@ -51,9 +41,9 @@ public interface OutputGenerator<FromType> extends CleanableUp {
      * @return a list of skills to use for the next user input. This is needed to allow providing a
      *         stateful interaction with a set of skills. If the list is empty, and it is by
      *         default, the current stateful conversation is interrupted. This function will be
-     *         called after {@link #generate(Object, Context, SharedPreferences, Locale,
-     *         SpeechOutputDevice, GraphicalOutputDevice)}, so that the calculated data can be used
-     *         to choose what to do.
+     *         called after {@link #generate(Object, SkillContext, SpeechOutputDevice,
+     *         GraphicalOutputDevice)}, so that the calculated data can be used to choose what to
+     *         do.
      */
     default List<Skill> nextSkills() {
         // no next skills by default

@@ -1,15 +1,12 @@
 package org.dicio.skill.chain;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import org.dicio.skill.Skill;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ChainSkill implements Skill {
@@ -82,24 +79,19 @@ public class ChainSkill implements Skill {
 
 
     @Override
-    public void processInput(final Context context,
-                             final SharedPreferences preferences,
-                             final Locale locale)
+    public void processInput(final SkillContext context)
             throws Exception {
         lastResult = inputRecognizer.getResult();
         for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
-            lastResult = intermediateProcessor.process(lastResult, context, preferences, locale);
+            lastResult = intermediateProcessor.process(lastResult, context);
         }
     }
 
     @Override
-    public void generateOutput(final Context context,
-                               final SharedPreferences preferences,
-                               final Locale locale,
+    public void generateOutput(final SkillContext context,
                                final SpeechOutputDevice speechOutputDevice,
                                final GraphicalOutputDevice graphicalOutputDevice) {
-        outputGenerator.generate(lastResult, context, preferences, locale,
-                speechOutputDevice, graphicalOutputDevice);
+        outputGenerator.generate(lastResult, context, speechOutputDevice, graphicalOutputDevice);
     }
 
     /**

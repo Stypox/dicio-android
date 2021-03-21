@@ -1,8 +1,5 @@
 package org.dicio.skill;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.chain.OutputGenerator;
@@ -12,7 +9,6 @@ import org.dicio.skill.util.CleanableUp;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public interface Skill extends CleanableUp {
 
@@ -34,26 +30,20 @@ public interface Skill extends CleanableUp {
     /**
      * This will be called if this skill was deemed as the best one which could provide output for
      * what the user requested and it should therefore process the input previously received with
-     * {@link #setInput(String, List, List)}, so that when {@link #generateOutput(Context,
-     * SharedPreferences, Locale, SpeechOutputDevice, GraphicalOutputDevice)} is called everything
+     * {@link #setInput(String, List, List)}, so that when {@link #generateOutput(SkillContext,
+     * SpeechOutputDevice, GraphicalOutputDevice)} is called everything
      * is ready.
-     * @see IntermediateProcessor#process(Object, Context, SharedPreferences, Locale)
-     * @param context the Android context, useful for example to get preferences, resources, etc.
-     * @param preferences the Android preferences, useful for user customization, also see {@link
-     *                    SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
-     * @param locale the current user locale, useful for example to customize web requests to get
-     *               the correct language or country
+     *
+     * @see IntermediateProcessor#process(Object, SkillContext)
+     * @param context the skill context with useful resources, see {@link SkillContext}
      */
-    void processInput(Context context, SharedPreferences preferences, Locale locale)
-            throws Exception;
+    void processInput(SkillContext context) throws Exception;
 
     /**
-     * @see OutputGenerator#generate(Object, Context, SharedPreferences, Locale, SpeechOutputDevice,
+     * @see OutputGenerator#generate(Object, SkillContext, SpeechOutputDevice,
      * GraphicalOutputDevice)
      */
-    void generateOutput(Context context,
-                        SharedPreferences preferences,
-                        Locale locale,
+    void generateOutput(SkillContext context,
                         SpeechOutputDevice speechOutputDevice,
                         GraphicalOutputDevice graphicalOutputDevice);
 
