@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath 'com.github.Stypox:dicio-sentences-compiler:9c5aacb7089a83e249a7068616572e90ee2ba440'
+        classpath 'com.github.Stypox:dicio-sentences-compiler:dca27421729e082214e11f9a8577636bdda80926'
     }
 }
 
