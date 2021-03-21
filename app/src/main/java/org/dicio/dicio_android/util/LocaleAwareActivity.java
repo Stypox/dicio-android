@@ -21,7 +21,7 @@ import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPr
  * A base for all of the activities that automatically recreates itself when the language (locale)
  * changes
  */
-public class LocaleAwareActivity extends AppCompatActivity {
+public abstract class LocaleAwareActivity extends AppCompatActivity {
 
     @Nullable
     private String currentLanguage = null;
