@@ -22,7 +22,6 @@ public class OpenInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-
         return new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(open)))
                 .output(new OpenOutput());

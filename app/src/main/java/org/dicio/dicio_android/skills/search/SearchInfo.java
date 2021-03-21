@@ -24,7 +24,6 @@ public class SearchInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-
         final ChainSkill.Builder builder = new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(search)));
 
