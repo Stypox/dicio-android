@@ -103,8 +103,8 @@ public class SkillRanker implements CleanableUp {
 
         @Nullable
         Skill getBest(final String input,
-                                    final List<String> inputWords,
-                                    final List<String> normalizedWordKeys) {
+                      final List<String> inputWords,
+                      final List<String> normalizedWordKeys) {
             // first round: considering only high-priority skills
             final SkillScoreResult bestHigh = getFirstAboveThresholdOrBest(
                     highSkills, input, inputWords, normalizedWordKeys, highThreshold1);
