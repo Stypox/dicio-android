@@ -13,9 +13,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +45,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import static org.dicio.dicio_android.util.LocaleUtils.LocaleResolutionResult;
 import static org.dicio.dicio_android.util.LocaleUtils.UnsupportedLocaleException;
-import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPreferences;
 import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
 
 public class VoskInputDevice extends SpeechInputDevice {
@@ -298,7 +299,8 @@ public class VoskInputDevice extends SpeechInputDevice {
                 // download zip if not already downloading
                 try {
                     final LocaleResolutionResult result = resolveSupportedLocale(
-                            getAvailableLocalesFromPreferences(activity), MODEL_URLS.keySet());
+                            LocaleListCompat.create(Sections.getCurrentLocale()),
+                            MODEL_URLS.keySet());
                     startDownloadingModel(downloadManager, result.supportedLocaleString);
                 } catch (UnsupportedLocaleException e) {
                     asyncMakeToast(R.string.vosk_model_unsupported_language);
