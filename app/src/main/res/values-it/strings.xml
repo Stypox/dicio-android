@@ -67,5 +67,6 @@
     <string name="skill_sentence_example_open">Apri NewPipe</string>
     <string name="here_is_what_i_can_do">Ecco cosa posso fare!</string>
     <string name="skill_name_calculator">Calcolatrice</string>
-    <string name="skill_sentence_example_calculator">Quanto fa cinque per quattro più sei meno venti sette?</string>
+    <string name="skill_sentence_example_calculator">Quanto fa cinque per quattro meno un milione?</string>
+    <string name="skill_calculator_could_not_calculate">Non sono riuscito a calcolare ciò che mi hai chiesto</string>
 </resources>

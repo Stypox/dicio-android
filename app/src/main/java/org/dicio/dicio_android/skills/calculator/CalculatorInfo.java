@@ -4,13 +4,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.Sections;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
 
-import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.SectionsGenerated.calculator;
 
 public class CalculatorInfo extends SkillInfo {
@@ -23,7 +23,7 @@ public class CalculatorInfo extends SkillInfo {
     @Override
     public Skill build(SkillContext context) {
         return new ChainSkill.Builder()
-                .recognize(new StandardRecognizer(getSection(calculator)))
+                .recognize(new StandardRecognizer(Sections.getSection(calculator)))
                 .process(new CalculatorProcessor())
                 .output(new CalculatorOutput());
     }

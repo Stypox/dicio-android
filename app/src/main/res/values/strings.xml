@@ -67,7 +67,7 @@
     <string name="skill_name_open">App opener</string>
     <string name="skill_sentence_example_open">Open NewPipe</string>
     <string name="skill_name_calculator">Calculator</string>
-    <string name="skill_sentence_example_calculator">What is five times four plus six minus twenty seven?</string>
+    <string name="skill_sentence_example_calculator">What is five times four minus a million?</string>
     <string name="skill_fallback_name_text">Text message</string>
 
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>
@@ -79,4 +79,5 @@
     <string name="skill_lyrics_found_song_by_artist">Found %1$s by %2$s</string>
     <string name="skill_open_unknown_app">Unknown app %1$s</string>
     <string name="skill_open_opening">Opening %1$s</string>
+    <string name="skill_calculator_could_not_calculate">I could not calculate your request</string>
 </resources>
