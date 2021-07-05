@@ -16,16 +16,18 @@ import androidx.annotation.StringRes;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 
+import org.dicio.dicio_android.BuildConfig;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kaldi.KaldiRecognizer;
-import org.kaldi.Model;
-import org.kaldi.RecognitionListener;
-import org.kaldi.SpeechService;
-import org.kaldi.Vosk;
+import org.vosk.LibVosk;
+import org.vosk.LogLevel;
+import org.vosk.Model;
+import org.vosk.Recognizer;
+import org.vosk.android.RecognitionListener;
+import org.vosk.android.SpeechService;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -159,7 +161,70 @@ public class VoskInputDevice extends SpeechInputDevice {
         currentlyListening = true;
 
         Log.d(TAG, "starting recognizer");
-        recognizer.startListening();
+        recognizer.startListening(new RecognitionListener() {
+
+            @Override
+            public void onPartialResult(final String s) {
+                Log.d(TAG, "onPartialResult called with s = " + s);
+                if (!currentlyListening) {
+                    return;
+                }
+
+                String partialInput = null;
+                try {
+                    partialInput = new JSONObject(s).getString("partial");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (!StringUtils.isNullOrEmpty(partialInput)) {
+                    notifyPartialInputReceived(partialInput);
+                }
+            }
+
+            @Override
+            public void onResult(final String s) {
+                Log.d(TAG, "onResult called with s = " + s);
+                if (!currentlyListening) {
+                    return;
+                }
+
+                stopRecognizer();
+
+                String input = null;
+                try {
+                    input = new JSONObject(s).getString("text");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (StringUtils.isNullOrEmpty(input)) {
+                    notifyNoInputReceived();
+                } else {
+                    notifyInputReceived(input);
+                }
+            }
+
+            @Override
+            public void onFinalResult(final String s) {
+                Log.d(TAG, "onFinalResult called with s = " + s);
+                // TODO
+            }
+
+            @Override
+            public void onError(final Exception e) {
+                Log.d(TAG, "onError called");
+                stopRecognizer();
+                notifyError(e);
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.d(TAG, "onTimeout called");
+                stopRecognizer();
+                notifyNoInputReceived();
+            }
+        });
         onListening();
     }
 
@@ -207,68 +272,10 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
         Log.d(TAG, "initializing recognizer");
 
-        Vosk.SetLogLevel(0);
+        LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
         final Model model = new Model(getModelDirectory().getAbsolutePath());
-        recognizer = new SpeechService(new KaldiRecognizer(model, SAMPLE_RATE), SAMPLE_RATE);
+        recognizer = new SpeechService(new Recognizer(model, SAMPLE_RATE), SAMPLE_RATE);
 
-        recognizer.addListener(new RecognitionListener() {
-
-            @Override
-            public void onPartialResult(final String s) {
-                Log.d(TAG, "onPartialResult called");
-                if (!currentlyListening) {
-                    return;
-                }
-
-                String partialInput = null;
-                try {
-                    partialInput = new JSONObject(s).getString("partial");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (!StringUtils.isNullOrEmpty(partialInput)) {
-                    notifyPartialInputReceived(partialInput);
-                }
-            }
-
-            @Override
-            public void onResult(final String s) {
-                Log.d(TAG, "onResult called");
-                if (!currentlyListening) {
-                    return;
-                }
-
-                stopRecognizer();
-
-                String input = null;
-                try {
-                    input = new JSONObject(s).getString("text");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (StringUtils.isNullOrEmpty(input)) {
-                    notifyNoInputReceived();
-                } else {
-                    notifyInputReceived(input);
-                }
-            }
-
-            @Override
-            public void onError(final Exception e) {
-                Log.d(TAG, "onError called");
-                stopRecognizer();
-                notifyError(e);
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.d(TAG, "onTimeout called");
-                stopRecognizer();
-                notifyNoInputReceived();
-            }
-        });
         return true;
     }
 

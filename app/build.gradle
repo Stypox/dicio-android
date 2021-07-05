@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
     implementation 'org.jsoup:jsoup:1.13.1'
-    implementation 'com.alphacep:vosk-android:0.3.15'
+    implementation 'com.alphacephei:vosk-android:0.3.30'
 
     testImplementation 'junit:junit:4.13.1'
 }
