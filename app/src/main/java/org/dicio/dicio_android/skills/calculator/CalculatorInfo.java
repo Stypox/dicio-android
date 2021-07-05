@@ -24,7 +24,7 @@ public class CalculatorInfo extends SkillInfo {
 
     @Override
     public boolean isAvailable(final SkillContext context) {
-        return isSectionAvailable(calculator);
+        return isSectionAvailable(calculator) && context.getNumberParserFormatter() != null;
     }
 
     @Override

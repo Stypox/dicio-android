@@ -273,11 +273,7 @@ public class MainActivity extends BaseActivity
 
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
 
-        assert Sections.getCurrentLocale() != null;
-        SkillHandler.setSkillContext(new SkillContext(this,
-                PreferenceManager.getDefaultSharedPreferences(this),
-                Sections.getCurrentLocale(),
-                new NumberParserFormatter(Sections.getCurrentLocale())));
+        SkillHandler.setupSkillContext(this);
 
         skillEvaluator = new SkillEvaluator(
                 new SkillRanker( // Sections language is initialized in BaseActivity.setLocale

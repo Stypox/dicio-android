@@ -1,5 +1,6 @@
 package org.dicio.dicio_android.skills;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.DrawableRes;
@@ -7,12 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.skills.calculator.CalculatorInfo;
 import org.dicio.dicio_android.skills.fallback.text.TextFallbackInfo;
 import org.dicio.dicio_android.skills.lyrics.LyricsInfo;
 import org.dicio.dicio_android.skills.open.OpenInfo;
 import org.dicio.dicio_android.skills.search.SearchInfo;
 import org.dicio.dicio_android.skills.weather.WeatherInfo;
+import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
@@ -40,8 +43,28 @@ public class SkillHandler {
     @Nullable private static SkillContext context = null; // TODO verify warning
 
 
-    public static void setSkillContext(@Nullable SkillContext context) {
-        SkillHandler.context = context;
+    /**
+     * Sets up the static skill context used throughout the app. Requires the sections locale to
+     * be ready. Has to be called before working with skills or skill infos.
+     * @param androidContext the android context to use in the skill context
+     */
+    public static void setupSkillContext(final Context androidContext) {
+        if (Sections.getCurrentLocale() == null) {
+            throw new RuntimeException(
+                    "setupSkillContext() requires the Sections locale to be initialized");
+        }
+
+        @Nullable NumberParserFormatter numberParserFormatter = null;
+        try {
+            numberParserFormatter = new NumberParserFormatter(Sections.getCurrentLocale());
+        } catch (final IllegalArgumentException e) {
+            // current locale is not supported by dicio-numbers
+        }
+
+        context = new SkillContext(androidContext,
+                PreferenceManager.getDefaultSharedPreferences(androidContext),
+                Sections.getCurrentLocale(),
+                numberParserFormatter);
     }
 
     @Nullable
