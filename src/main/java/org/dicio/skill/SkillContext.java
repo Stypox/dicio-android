@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.dicio.numbers.NumberParserFormatter;
 
@@ -18,7 +19,7 @@ public final class SkillContext {
     @NonNull final Context androidContext;
     @NonNull final SharedPreferences preferences;
     @NonNull final Locale locale;
-    @NonNull final NumberParserFormatter numberParserFormatter;
+    @Nullable final NumberParserFormatter numberParserFormatter;
 
     /**
      * Constructs a new instance of {@link SkillContext} wrapping the provided arguments.
@@ -32,11 +33,13 @@ public final class SkillContext {
      * @param numberParserFormatter the number parser formatter for the current locale, useful for
      *                              example to format a number to show to the user or extract
      *                              numbers from an utterance. See {@link NumberParserFormatter}.
+     *                              Pass {@code null} if the current user language is not supported
+     *                              by any {@link NumberParserFormatter}.
      */
     public SkillContext(@NonNull final Context androidContext,
                         @NonNull final SharedPreferences preferences,
                         @NonNull final Locale locale,
-                        @NonNull final NumberParserFormatter numberParserFormatter) {
+                        @Nullable final NumberParserFormatter numberParserFormatter) {
         this.androidContext = androidContext;
         this.preferences = preferences;
         this.locale = locale;
@@ -71,10 +74,11 @@ public final class SkillContext {
 
     /**
      * @return the number parser formatter for the current locale, useful for example to format a
-     *         number to show to the user or extract numbers from an utterance
+     *         number to show to the user or extract numbers from an utterance. Returns null if
+     *         the current user language is not supported by any {@link NumberParserFormatter}.
      * @see NumberParserFormatter
      */
-    @NonNull
+    @Nullable
     public NumberParserFormatter getNumberParserFormatter() {
         return numberParserFormatter;
     }
