@@ -81,6 +81,15 @@ public abstract class SkillInfo {
         return hasPreferences;
     }
 
+
+    /**
+     * Use this method to signal that the skill is not available in case, for example, the user
+     * locale is not supported.
+     * @param context the skill context with useful resources, see {@link SkillContext}
+     * @return whether this skill can be used with the current system configuation or not
+     */
+    public abstract boolean isAvailable(SkillContext context);
+
     /**
      * Builds an instance of the {@link Skill} this {@link SkillInfo} object represents
      * @param context the skill context with useful resources, see {@link SkillContext}
