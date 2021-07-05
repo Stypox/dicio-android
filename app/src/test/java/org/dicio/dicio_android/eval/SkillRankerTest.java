@@ -1,9 +1,7 @@
 package org.dicio.dicio_android.eval;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import org.dicio.skill.Skill;
+import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
@@ -13,7 +11,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import static org.dicio.skill.chain.InputRecognizer.Specificity.high;
 import static org.dicio.skill.chain.InputRecognizer.Specificity.low;
@@ -47,6 +44,7 @@ public class SkillRankerTest {
             return score;
         }
 
+
         @Override
         public void setInput(final String input,
                              final List<String> inputWords,
@@ -58,12 +56,8 @@ public class SkillRankerTest {
         }
 
         // useless for this test
-        @Override public void processInput(final Context context,
-                                           final SharedPreferences preferences,
-                                           final Locale locale) {}
-        @Override public void generateOutput(final Context context,
-                                             final SharedPreferences preferences,
-                                             final Locale locale,
+        @Override public void processInput(final SkillContext context) {}
+        @Override public void generateOutput(final SkillContext context,
                                              final SpeechOutputDevice speechOutputDevice,
                                              final GraphicalOutputDevice graphicalOutputDevice) {}
         @Override public void cleanup() {}
