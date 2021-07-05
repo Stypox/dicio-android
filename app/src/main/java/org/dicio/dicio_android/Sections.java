@@ -57,6 +57,14 @@ public class Sections {
 
     /**
      * @param sectionName the name of the section to obtain
+     * @return whether the section with the provided name exists under the current locale
+     */
+    public static boolean isSectionAvailable(final String sectionName) {
+        return sectionsMap.containsKey(sectionName);
+    }
+
+    /**
+     * @param sectionName the name of the section to obtain
      * @return the section with the provided name under the current locale
      */
     @Nullable

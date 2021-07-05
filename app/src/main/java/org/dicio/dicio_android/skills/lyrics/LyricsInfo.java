@@ -11,6 +11,7 @@ import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
 
 import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
 import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 
 public class LyricsInfo extends SkillInfo {
@@ -18,6 +19,11 @@ public class LyricsInfo extends SkillInfo {
     public LyricsInfo() {
         super("lyrics", R.string.skill_name_lyrics, R.string.skill_sentence_example_lyrics,
                 R.drawable.ic_music_note_white, false);
+    }
+
+    @Override
+    public boolean isAvailable(final SkillContext context) {
+        return isSectionAvailable(lyrics);
     }
 
     @Override

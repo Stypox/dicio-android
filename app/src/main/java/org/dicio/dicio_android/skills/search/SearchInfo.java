@@ -13,6 +13,8 @@ import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
 
 import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
+import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 import static org.dicio.dicio_android.SectionsGenerated.search;
 
 public class SearchInfo extends SkillInfo {
@@ -20,6 +22,11 @@ public class SearchInfo extends SkillInfo {
     public SearchInfo() {
         super("search", R.string.skill_name_search, R.string.skill_sentence_example_search,
                 R.drawable.ic_search_white, true);
+    }
+
+    @Override
+    public boolean isAvailable(final SkillContext context) {
+        return isSectionAvailable(search);
     }
 
     @Override

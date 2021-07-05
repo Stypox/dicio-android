@@ -11,13 +11,20 @@ import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
 
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
 import static org.dicio.dicio_android.SectionsGenerated.calculator;
+import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 
 public class CalculatorInfo extends SkillInfo {
 
     public CalculatorInfo() {
         super("calculator", R.string.skill_name_calculator,
                 R.string.skill_sentence_example_calculator, R.drawable.ic_calculate_white, false);
+    }
+
+    @Override
+    public boolean isAvailable(final SkillContext context) {
+        return isSectionAvailable(calculator);
     }
 
     @Override

@@ -41,7 +41,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.8"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
-    implementation 'com.github.Stypox:dicio-skill:1303cd40cbb0c4bc879ccf5a0572ef142ed8d38b'
+    implementation 'com.github.Stypox:dicio-skill:22da51929bb28e497dc8e707b429cc4cee4ff16f'
     implementation 'com.github.Stypox:dicio-numbers:cf224eafd3c57bad6dd1c57f2c0e5fdc981a9e7d'
 
     implementation 'com.squareup.picasso:picasso:2.71828'

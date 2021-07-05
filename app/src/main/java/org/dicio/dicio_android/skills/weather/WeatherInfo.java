@@ -14,6 +14,8 @@ import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
 
 import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
+import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 import static org.dicio.dicio_android.SectionsGenerated.weather;
 
 public class WeatherInfo extends SkillInfo {
@@ -21,6 +23,11 @@ public class WeatherInfo extends SkillInfo {
     public WeatherInfo() {
         super("weather", R.string.skill_name_weather, R.string.skill_sentence_example_weather,
                 R.drawable.ic_cloud_white, true);
+    }
+
+    @Override
+    public boolean isAvailable(final SkillContext context) {
+        return isSectionAvailable(weather);
     }
 
     @Override

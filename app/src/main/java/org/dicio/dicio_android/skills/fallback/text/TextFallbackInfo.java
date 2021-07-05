@@ -15,6 +15,11 @@ public class TextFallbackInfo extends SkillInfo {
     }
 
     @Override
+    public boolean isAvailable(final SkillContext context) {
+        return true;
+    }
+
+    @Override
     public Skill build(final SkillContext context) {
         return new TextFallback();
     }

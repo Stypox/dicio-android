@@ -11,6 +11,8 @@ import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
 
 import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
+import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 import static org.dicio.dicio_android.SectionsGenerated.open;
 
 public class OpenInfo extends SkillInfo {
@@ -18,6 +20,11 @@ public class OpenInfo extends SkillInfo {
     public OpenInfo() {
         super("open", R.string.skill_name_open, R.string.skill_sentence_example_open,
                 R.drawable.ic_open_in_new_white, false);
+    }
+
+    @Override
+    public boolean isAvailable(final SkillContext context) {
+        return isSectionAvailable(open);
     }
 
     @Override
