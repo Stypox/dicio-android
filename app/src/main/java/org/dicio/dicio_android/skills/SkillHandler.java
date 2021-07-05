@@ -1,9 +1,9 @@
 package org.dicio.dicio_android.skills;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
@@ -37,36 +37,51 @@ public class SkillHandler {
         add(new TextFallbackInfo());
     }};
 
+    @Nullable private static SkillContext context = null; // TODO verify warning
+
+
+    public static void setSkillContext(@Nullable SkillContext context) {
+        SkillHandler.context = context;
+    }
+
+    @Nullable
+    public static SkillContext getSkillContext() {
+        return context;
+    }
+
+    private static void assertSkillContextNotNull() {
+        if (context == null) {
+            throw new RuntimeException("Skill context is null");
+        }
+    }
+
 
     public static String getIsEnabledPreferenceKey(final String skillId) {
         return "skills_handler_is_enabled_" + skillId;
     }
 
 
-    public static List<Skill> getStandardSkillBatch(final SkillContext context) {
+    public static List<Skill> getStandardSkillBatch() {
+        assertSkillContextNotNull();
         final List<Skill> result = new ArrayList<>();
 
-        for (final SkillInfo skillInfo : getEnabledSkillInfoList(context.getAndroidContext())) {
+        for (final SkillInfo skillInfo : getEnabledSkillInfoList()) {
             result.add(skillInfo.build(context));
         }
 
         return result;
     }
 
-    public static Skill getFallbackSkill(final SkillContext context) {
+    public static Skill getFallbackSkill() {
         return Objects.requireNonNull(fallbackSkillInfoList.get(0)).build(context);
     }
 
-    public static List<SkillInfo> getSkillInfoList() {
-        return skillInfoList;
-    }
-
-    public static List<SkillInfo> getEnabledSkillInfoList(final Context context) {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    public static List<SkillInfo> getAvailableSkillInfoList() {
+        assertSkillContextNotNull();
         final List<SkillInfo> result = new ArrayList<>();
 
         for (final SkillInfo skillInfo : skillInfoList) {
-            if (prefs.getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true)) {
+            if (skillInfo.isAvailable(context)) {
                 result.add(skillInfo);
             }
         }
@@ -74,10 +89,26 @@ public class SkillHandler {
         return result;
     }
 
-    public static List<SkillInfo> getRandomEnabledSkillInfoList(final Context context,
-                                                                final int maxCount) {
+    public static List<SkillInfo> getEnabledSkillInfoList() {
+        assertSkillContextNotNull();
+        final SharedPreferences prefs
+                = PreferenceManager.getDefaultSharedPreferences(context.getAndroidContext());
+        final List<SkillInfo> result = new ArrayList<>();
+
+        for (final SkillInfo skillInfo : skillInfoList) {
+            // check both if available and enabled
+            if (skillInfo.isAvailable(context)
+                    && prefs.getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true)) {
+                result.add(skillInfo);
+            }
+        }
+
+        return result;
+    }
+
+    public static List<SkillInfo> getRandomEnabledSkillInfoList(final int maxCount) {
         final Random random = new Random();
-        final List<SkillInfo> enabledSkillInfoList = getEnabledSkillInfoList(context);
+        final List<SkillInfo> enabledSkillInfoList = getEnabledSkillInfoList();
 
         if (enabledSkillInfoList.size() <= maxCount) {
             Collections.shuffle(enabledSkillInfoList, random);

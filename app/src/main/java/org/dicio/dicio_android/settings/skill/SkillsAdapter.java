@@ -8,15 +8,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.dicio.dicio_android.skills.SkillHandler;
+import org.dicio.skill.SkillInfo;
+
+import java.util.List;
 
 public class SkillsAdapter extends RecyclerView.Adapter<SkillItemHolder> {
 
     final Fragment fragment;
     @NonNull final LayoutInflater inflater;
+    final List<SkillInfo> skillInfoList;
 
-    public SkillsAdapter(final Fragment fragment, @NonNull final LayoutInflater inflater) {
+    public SkillsAdapter(final Fragment fragment,
+                         @NonNull final LayoutInflater inflater,
+                         final List<SkillInfo> skillInfoList) {
         this.fragment = fragment;
         this.inflater = inflater;
+        this.skillInfoList = skillInfoList;
     }
 
     @NonNull
@@ -27,7 +34,7 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillItemHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final SkillItemHolder holder, final int position) {
-        holder.bind(fragment, SkillHandler.getSkillInfoList().get(position));
+        holder.bind(fragment, skillInfoList.get(position));
     }
 
     @Override
@@ -37,6 +44,6 @@ public class SkillsAdapter extends RecyclerView.Adapter<SkillItemHolder> {
 
     @Override
     public int getItemCount() {
-        return SkillHandler.getSkillInfoList().size();
+        return skillInfoList.size();
     }
 }

@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.skills.SkillHandler;
+import org.dicio.skill.SkillContext;
 
 public class SkillsFragment extends Fragment {
 
@@ -24,7 +26,7 @@ public class SkillsFragment extends Fragment {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(new SkillsAdapter(this, inflater));
+        recyclerView.setAdapter(new SkillsAdapter(this, inflater, SkillHandler.getAvailableSkillInfoList()));
 
         return view;
     }

@@ -40,7 +40,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SkillEvaluator implements CleanableUp {
 
     private final SkillRanker skillRanker;
-    private SkillContext skillContext;
     private final InputDevice primaryInputDevice;
     @Nullable private final ToolbarInputDevice secondaryInputDevice;
     private final SpeechOutputDevice speechOutputDevice;
@@ -55,7 +54,6 @@ public class SkillEvaluator implements CleanableUp {
 
 
     public SkillEvaluator(final SkillRanker skillRanker,
-                          final SkillContext skillContext,
                           final InputDevice primaryInputDevice,
                           @Nullable final ToolbarInputDevice secondaryInputDevice,
                           final SpeechOutputDevice speechOutputDevice,
@@ -63,7 +61,6 @@ public class SkillEvaluator implements CleanableUp {
                           final Context context) {
 
         this.skillRanker = skillRanker;
-        this.skillContext = skillContext;
         this.primaryInputDevice = primaryInputDevice;
         this.secondaryInputDevice = secondaryInputDevice;
         this.speechOutputDevice = speechOutputDevice;
@@ -86,7 +83,8 @@ public class SkillEvaluator implements CleanableUp {
         final View initialScreen = GraphicalOutputUtils.inflate(context, R.layout.initial_screen);
 
         final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
-        for (final SkillInfo skillInfo : SkillHandler.getRandomEnabledSkillInfoList(context, 6)) {
+        for (final SkillInfo skillInfo
+                : SkillHandler.getRandomEnabledSkillInfoList(6)) {
             final View skillInfoItem
                     = GraphicalOutputUtils.inflate(context, R.layout.initial_screen_skill_item);
 
@@ -107,7 +105,6 @@ public class SkillEvaluator implements CleanableUp {
     public void cleanup() {
         cancelGettingInput();
         skillRanker.cleanup();
-        skillContext = null;
 
         primaryInputDevice.cleanup();
         if (secondaryInputDevice != null) {
@@ -326,7 +323,7 @@ public class SkillEvaluator implements CleanableUp {
             final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
             final Skill skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
 
-            skill.processInput(skillContext);
+            skill.processInput(SkillHandler.getSkillContext());
             return skill;
         })
         .subscribeOn(Schedulers.io())
@@ -335,7 +332,8 @@ public class SkillEvaluator implements CleanableUp {
     }
 
     private void generateOutput(final Skill skill) {
-        skill.generateOutput(skillContext, speechOutputDevice, graphicalOutputDevice);
+        skill.generateOutput(SkillHandler.getSkillContext(),
+                speechOutputDevice, graphicalOutputDevice);
         graphicalOutputDevice.addDivider();
 
         final List<Skill> nextSkills = skill.nextSkills();
