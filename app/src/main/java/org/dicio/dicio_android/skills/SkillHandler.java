@@ -1,5 +1,6 @@
 package org.dicio.dicio_android.skills;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -40,7 +41,8 @@ public class SkillHandler {
         add(new TextFallbackInfo());
     }};
 
-    @Nullable private static SkillContext context = null; // TODO verify warning
+    @SuppressLint("StaticFieldLeak") // releaseSkillContext() is called in MainActivity.onDestroy()
+    @Nullable private static SkillContext context = null;
 
 
     /**
@@ -65,6 +67,10 @@ public class SkillHandler {
                 PreferenceManager.getDefaultSharedPreferences(androidContext),
                 Sections.getCurrentLocale(),
                 numberParserFormatter);
+    }
+
+    public static void releaseSkillContext() {
+        context = null;
     }
 
     @Nullable

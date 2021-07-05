@@ -11,6 +11,7 @@ import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.Sections;
+import org.dicio.dicio_android.skills.SkillHandler;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -52,6 +53,8 @@ public abstract class LocaleAwareActivity extends AppCompatActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         currentLanguage = getLocaleFromPreferences();
         setLocale();
+        // setup each time the activity is (re)created, but only clear in MainActivity.onDestroy()
+        SkillHandler.setupSkillContext(this);
         super.onCreate(savedInstanceState);
     }
 

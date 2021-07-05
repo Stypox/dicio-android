@@ -101,6 +101,7 @@ public class MainActivity extends BaseActivity
     protected void onDestroy() {
         super.onDestroy();
         destroySkillEvaluator();
+        SkillHandler.releaseSkillContext();
     }
 
     private void setupVoiceButton() {
@@ -272,8 +273,6 @@ public class MainActivity extends BaseActivity
         }
 
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
-
-        SkillHandler.setupSkillContext(this);
 
         skillEvaluator = new SkillEvaluator(
                 new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
