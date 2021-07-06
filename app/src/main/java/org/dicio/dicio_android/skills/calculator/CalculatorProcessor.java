@@ -1,5 +1,8 @@
 package org.dicio.dicio_android.skills.calculator;
 
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.numbers.util.Number;
@@ -10,7 +13,9 @@ import org.dicio.skill.standard.StandardResult;
 import org.dicio.skill.util.WordExtractor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CalculatorProcessor
         implements IntermediateProcessor<StandardResult, CalculatorOutput.Data> {
@@ -44,21 +49,31 @@ public class CalculatorProcessor
         final StandardRecognizer operatorRecognizer = new StandardRecognizer(
                 Sections.getSection(SectionsGenerated.calculator_operators));
 
+        Number firstNumber;
         int i;
         if (textWithNumbers.get(0) instanceof Number) {
-            result.number = (Number) textWithNumbers.get(0);
+            firstNumber = (Number) textWithNumbers.get(0);
             i = 1;
         } else {
-            result.number = (Number) textWithNumbers.get(1);
+            firstNumber = (Number) textWithNumbers.get(1);
             if (getOperation(operatorRecognizer, (String) textWithNumbers.get(0))
                     .equals("subtraction")) {
-                result.number = result.number.multiply(-1);
+                firstNumber = firstNumber.multiply(-1);
             }
             i = 2;
         }
 
         result.inputInterpretation = new ArrayList<>();
-        result.inputInterpretation.add(result.number);
+        result.inputInterpretation.add(firstNumber);
+
+        int currentVariableNumber = 0;
+        final Map<String, Double> variables = new HashMap<>();
+        variables.put("_" + currentVariableNumber,
+                firstNumber.isDecimal() ? firstNumber.decimalValue() : firstNumber.integerValue());
+
+        final StringBuilder expressionString = new StringBuilder();
+        expressionString.append("_").append(currentVariableNumber);
+        ++currentVariableNumber;
 
         while (i < textWithNumbers.size()) {
             final String operation;
@@ -74,55 +89,48 @@ public class CalculatorProcessor
             Number number = (Number) textWithNumbers.get(i);
             ++i;
 
+
             switch (operation) {
                 default: // default to addition
                 case "addition":
                     result.inputInterpretation.add(number.lessThan(0) ? "-" : "+");
-                    result.number = result.number.plus(number);
+                    expressionString.append(
+                            result.inputInterpretation.get(result.inputInterpretation.size() - 1));
                     number = number.lessThan(0) ? number.multiply(-1) : number;
                     break;
                 case "subtraction":
                     result.inputInterpretation.add("-");
-                    result.number = result.number.plus(number.multiply(-1));
+                    expressionString.append(
+                            result.inputInterpretation.get(result.inputInterpretation.size() - 1));
                     break;
                 case "multiplication":
                     result.inputInterpretation.add("x");
-                    result.number = result.number.multiply(number);
+                    expressionString.append("*");
                     break;
                 case "division":
                     result.inputInterpretation.add("÷");
-                    result.number = result.number.divide(number);
+                    expressionString.append("/");
                     break;
                 case "power":
                     result.inputInterpretation.add("^");
-                    if (result.number.equals(0)) {
-                        if (number.equals(0)) {
-                            result.number = new Number(Double.NaN);
-                        }
-                        break;
-                    } else if (result.number.equals(1)) {
-                        break;
-                    }
-
-                    final long sign = result.number.lessThan(0) ? -1 : 1;
-                    if (result.number.isDecimal() || number.isDecimal() || number.lessThan(0)) {
-                        final double valueBefore = Math.abs(result.number.isDecimal() ?
-                                result.number.decimalValue() : result.number.integerValue());
-                        final double valueAfter =
-                                number.isDecimal() ? number.decimalValue() : number.integerValue();
-                        result.number = new Number(Math.pow(valueBefore, valueAfter) * sign);
-                    } else {
-                        final Number before = result.number;
-                        result.number = new Number(1);
-                        for (long j = 0; j < number.integerValue(); ++j) {
-                            result.number = result.number.multiply(before);
-                        }
-                        result.number = result.number.multiply(sign);
-                    }
+                    expressionString.append(
+                            result.inputInterpretation.get(result.inputInterpretation.size() - 1));
                     break;
             }
+
+            variables.put("_" + currentVariableNumber,
+                    number.isDecimal() ? number.decimalValue() : number.integerValue());
+            expressionString.append("_").append(currentVariableNumber);
+            ++currentVariableNumber;
+
             result.inputInterpretation.add(number);
         }
+
+        result.number = new Number(new ExpressionBuilder(expressionString.toString())
+                .variables(variables.keySet())
+                .build()
+                .setVariables(variables)
+                .evaluate());
 
         operatorRecognizer.cleanup();
         return result;

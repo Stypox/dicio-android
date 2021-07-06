@@ -56,6 +56,9 @@ dependencies {
     implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
     implementation 'org.jsoup:jsoup:1.13.1'
 
+    // Used by skills
+    implementation 'net.objecthunter:exp4j:0.4.8'
+
     // Testing
     testImplementation 'junit:junit:4.13.2'
 }
