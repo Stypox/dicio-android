@@ -183,12 +183,13 @@ public class SentenceTest {
     public void test2pRightEmpty() {
         final Sentence s = sent("hello", "");
 
-        assertSentence(s, "hello bob",       1.0f, 1.0f, "bob",             null);
-        assertSentence(s, "hi hello bob",    0.3f, 0.4f, "bob",             null);
-        assertSentence(s, "hi hi hello bob", 0.2f, 0.3f, "hi hi hello bob", null);
-        assertSentence(s, "mary and bob",    0.2f, 0.3f, "mary and bob",    null);
-        assertSentence(s, "hello",           0.1f, 0.2f, null,              null);
-        assertSentence(s, "",                0.0f, 0.0f, null,              null);
+        assertSentence(s, "hello bob",          1.0f, 1.0f, "bob",             null);
+        assertSentence(s, "hello bob and mary", 1.0f, 1.0f, "bob and mary",    null);
+        assertSentence(s, "hi hello bob",       0.3f, 0.4f, "bob",             null);
+        assertSentence(s, "hi hi hello bob",    0.2f, 0.3f, "hi hi hello bob", null);
+        assertSentence(s, "mary and bob",       0.2f, 0.3f, "mary and bob",    null);
+        assertSentence(s, "hello",              0.1f, 0.2f, null,              null);
+        assertSentence(s, "",                   0.0f, 0.0f, null,              null);
     }
 
 
