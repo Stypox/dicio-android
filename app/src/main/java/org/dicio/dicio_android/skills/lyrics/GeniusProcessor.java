@@ -32,7 +32,7 @@ public class GeniusProcessor
     public LyricsOutput.Data process(final StandardResult data, final SkillContext context)
             throws Exception {
 
-        final String songName = data.getCapturingGroup(lyrics.song);
+        final String songName = data.getCapturingGroup(lyrics.song).trim();
         final JSONObject search = ConnectionUtils.getPageJson(
                 geniusSearchUrl + ConnectionUtils.urlEncode(songName));
         final JSONArray searchHits =
