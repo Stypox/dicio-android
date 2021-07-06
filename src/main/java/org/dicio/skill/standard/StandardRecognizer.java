@@ -53,12 +53,23 @@ public class StandardRecognizer implements InputRecognizer<StandardResult> {
     @Override
     public float score() {
         bestResultSoFar = data.getSentences()[0].score(inputWords, normalizedInputWords);
+        float bestValueSoFar = bestResultSoFar.value(inputWords.size());
         bestSentenceIdSoFar = data.getSentences()[0].getSentenceId();
+
         for (int i = 1; i < data.getSentences().length; ++i) {
             final PartialScoreResult result =
                     data.getSentences()[i].score(inputWords, normalizedInputWords);
-            if (result.value(inputWords.size()) > bestResultSoFar.value(inputWords.size())) {
+            final float value = result.value(inputWords.size());
+
+            final boolean valuesAlmostEqual = Math.abs(value - bestValueSoFar) < 0.01f;
+            final boolean lessWordsInCapturingGroups = result.getWordsInCapturingGroups()
+                    < bestResultSoFar.getWordsInCapturingGroups();
+
+            if ((valuesAlmostEqual && lessWordsInCapturingGroups) || value > bestValueSoFar) {
+                // update the best result so far also if new result evaluates approximately equal
+                // but has less words in capturing groups
                 bestResultSoFar = result;
+                bestValueSoFar = value;
                 bestSentenceIdSoFar = data.getSentences()[i].getSentenceId();
             }
         }

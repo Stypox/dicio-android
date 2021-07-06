@@ -1,5 +1,7 @@
 package org.dicio.skill.standard;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ class PartialScoreResult {
     private int skippedInputWordsAmid;
     private int wordsInCapturingGroups;
     private boolean foundWordBeforeEnd;
-    private Map<String, InputWordRange> capturingGroups;
+    private final Map<String, InputWordRange> capturingGroups;
 
     /**
      * Deep copy constructor
@@ -79,10 +81,15 @@ class PartialScoreResult {
         return calculatedScore;
     }
 
+    int getWordsInCapturingGroups() {
+        return wordsInCapturingGroups;
+    }
+
     public Map<String, InputWordRange> getCapturingGroups() {
         return capturingGroups;
     }
 
+    @NonNull
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
