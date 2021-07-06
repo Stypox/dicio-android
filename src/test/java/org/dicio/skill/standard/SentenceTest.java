@@ -12,7 +12,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SentenceTest {
     // [1-3]p means [1-3] packs, that is, [0-2] capturing groups (e.g. test1p=testOnePack)
@@ -106,7 +109,7 @@ public class SentenceTest {
 
         assertThat(actualCaptGrWords, CoreMatchers.is(captGrWords));
     }
-    
+
     private static void assertSentence(final Sentence s, final String input,
                                        final float a, final float b,
                                        final String captGr0, final String captGr1) {
