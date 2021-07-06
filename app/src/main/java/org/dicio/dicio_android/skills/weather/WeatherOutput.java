@@ -32,7 +32,7 @@ public class WeatherOutput implements OutputGenerator<WeatherOutput.Data> {
             final String message = context.getAndroidContext().getString(
                     R.string.skill_weather_could_not_find_city, data.city);
             speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
                     context.getAndroidContext(), message));
 
         } else {
