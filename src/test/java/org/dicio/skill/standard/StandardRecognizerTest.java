@@ -2,6 +2,7 @@ package org.dicio.skill.standard;
 
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.standard.word.CapturingGroup;
+import org.dicio.skill.standard.word.DiacriticsInsensitiveWord;
 import org.dicio.skill.standard.word.DiacriticsSensitiveWord;
 import org.dicio.skill.util.WordExtractor;
 
@@ -48,6 +49,13 @@ public class StandardRecognizerTest {
                     new CapturingGroup("place", 10, 1), new DiacriticsSensitiveWord("is", 8, 2), new DiacriticsSensitiveWord("the", 7, 3),
                     new DiacriticsSensitiveWord("place", 6, 4), new DiacriticsSensitiveWord("i", 5, 5), new DiacriticsSensitiveWord("want", 4, 6),
                     new DiacriticsSensitiveWord("to", 3, 7), new DiacriticsSensitiveWord("go", 2, 8), new DiacriticsSensitiveWord("to", 1, 9)));
+
+    public static final StandardRecognizerData section_hello = new StandardRecognizerData(
+            InputRecognizer.Specificity.low,
+            new Sentence("first", new int[]{0},
+                    new DiacriticsInsensitiveWord("hello", 3, 1), new CapturingGroup("hi", 2, 2)),
+            new Sentence("second", new int[]{0},
+                    new DiacriticsInsensitiveWord("hello", 4, 1), new DiacriticsInsensitiveWord("hello", 3, 2), new CapturingGroup("hi", 2, 3)));
 
 
     private static void assertRecognized(final StandardRecognizer sr, final String input,
@@ -135,5 +143,22 @@ public class StandardRecognizerTest {
         assertRecognized(sr, "gave me directions to a",        "question",  0.7f, 0.8f, place);
         assertRecognized(sr, "please i want to go to a",       "statement", 0.9f, 1.0f, place);
         assertRecognized(sr, "please i want to go to a by b",  "statement", 0.9f, 1.0f, placeAndVehicle);
+    }
+
+    @Test
+    public void testSmallerCapturingGroupIsPreferred() {
+        final StandardRecognizer sr = new StandardRecognizer(section_hello);
+        assertEquals(InputRecognizer.Specificity.low, sr.specificity());
+
+        final Map<String, String> guys = Collections.singletonMap("hi", "guys");
+        final Map<String, String> girlsAndBoys = Collections.singletonMap("hi", "girls and boys");
+        final Map<String, String> hello = Collections.singletonMap("hi", "hello");
+
+        assertRecognized(sr, "hello guys",                 "first",  1.0f, 1.0f, guys);
+        assertRecognized(sr, "hello girls and boys",       "first",  1.0f, 1.0f, girlsAndBoys);
+        assertRecognized(sr, "hello hello guys",           "second", 1.0f, 1.0f, guys);
+        assertRecognized(sr, "hello hello girls and boys", "second", 1.0f, 1.0f, girlsAndBoys);
+        assertRecognized(sr, "hello hello",                "first",  1.0f, 1.0f, hello);
+        assertRecognized(sr, "hello hello hello",          "second", 1.0f, 1.0f, hello);
     }
 }
