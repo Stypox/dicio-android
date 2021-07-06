@@ -1,6 +1,5 @@
 package org.dicio.dicio_android.skills.calculator;
 
-import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.dicio.dicio_android.Sections;
