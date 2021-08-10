@@ -59,7 +59,7 @@ public class SkillHandler {
         @Nullable NumberParserFormatter numberParserFormatter = null;
         try {
             numberParserFormatter = new NumberParserFormatter(Sections.getCurrentLocale());
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException ignored) {
             // current locale is not supported by dicio-numbers
         }
 
