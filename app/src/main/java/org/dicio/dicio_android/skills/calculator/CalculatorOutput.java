@@ -59,6 +59,10 @@ public class CalculatorOutput implements OutputGenerator<CalculatorOutput.Data> 
             }
             inputInterpretation.append("=");
 
+            speechOutputDevice.speak(context.getNumberParserFormatter()
+                    .niceNumber(data.number.isDecimal()
+                            ? data.number.decimalValue() : data.number.integerValue())
+                    .get());
             graphicalOutputDevice.display(GraphicalOutputUtils.buildVerticalLinearLayout(
                     context.getAndroidContext(),
                     ResourcesCompat.getDrawable(context.getAndroidContext().getResources(),
