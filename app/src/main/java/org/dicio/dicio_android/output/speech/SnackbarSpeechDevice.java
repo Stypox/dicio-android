@@ -10,6 +10,7 @@ import org.dicio.skill.output.SpeechOutputDevice;
 
 public class SnackbarSpeechDevice implements SpeechOutputDevice {
     private View view;
+    private Snackbar currentSnackbar = null;
 
     public SnackbarSpeechDevice(final View view) {
         this.view = view;
@@ -17,11 +18,20 @@ public class SnackbarSpeechDevice implements SpeechOutputDevice {
 
     @Override
     public void speak(@NonNull final String speechOutput) {
-        Snackbar.make(view, speechOutput, Snackbar.LENGTH_LONG).show();
+        currentSnackbar = Snackbar.make(view, speechOutput, Snackbar.LENGTH_LONG);
+        currentSnackbar.show();
+    }
+
+    @Override
+    public void stopSpeaking() {
+        if (currentSnackbar != null) {
+            currentSnackbar.dismiss();
+        }
     }
 
     @Override
     public void cleanup() {
+        currentSnackbar = null;
         view = null;
     }
 }
