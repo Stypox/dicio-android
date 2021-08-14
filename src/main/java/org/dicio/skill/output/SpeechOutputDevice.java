@@ -10,4 +10,9 @@ public interface SpeechOutputDevice extends CleanableUp {
      * @param speechOutput what to tell to the user
      */
     void speak(@NonNull String speechOutput);
+
+    /**
+     * If the device is currently speaking, it is stopped
+     */
+    void stopSpeaking();
 }
