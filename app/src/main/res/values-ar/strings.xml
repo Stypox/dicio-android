@@ -1,0 +1,34 @@
+<resources>
+    <string name="drawer_header_subtitle">كيف يمكنني مساعدتك؟</string>
+
+    <string name="share">مشاركة</string>
+    <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
+
+    <string name="text_input_hint">اسئلني أي شيء</string>
+    <string name="here_is_what_i_can_do">هذا ما يمكنني فعله!</string>
+
+    <string name="vosk_model_notification_description">اللغة: %1$s</string>
+
+
+    <string name="settings">الإعدادات</string>ing>
+    <string name="pref_appearance">المظهر</string>
+    <string name="pref_skills">المهارات</string>
+    <string name="pref_theme">السمة</string>
+    <string name="pref_theme_light">فاتح</string>
+    <string name="pref_theme_dark">داكن</string>
+    <string name="pref_language">اللغة</string>
+    <string name="pref_language_system">استخدم لغة النظام</string>
+    <string name="pref_search_engine">محرك البحث</string>
+    <string name="pref_weather_default_city">المدينة الافتراضية</string>
+
+    <string name="eval_no_match">لم أفهمك، هلا كررت؟</string>
+
+    <string name="skill_name_search">البحث</string>
+    <string name="skill_name_weather">الطقس</string>
+    <string name="skill_sentence_example_weather">ما الطقس في روما؟</string>
+    <string name="skill_name_lyrics">كلمات الأغاني</string>
+    <string name="skill_name_calculator">الآلة الحاسبة</string>
+    <string name="skill_sentence_example_calculator">ما خمسة ضرب أربعة ناقص مليون؟</string>
+
+    <string name="skill_search_here_is_what_i_found">هذا ما وجدته</string>
+</resources>
