@@ -11,6 +11,10 @@ public class NothingSpeechDevice implements SpeechOutputDevice {
     }
 
     @Override
+    public void stopSpeaking() {
+    }
+
+    @Override
     public void cleanup() {
     }
 }
