@@ -12,7 +12,7 @@ public abstract class InputDevice implements CleanableUp {
     /**
      * Used to provide the input from the user to whatever code uses it
      */
-    public interface OnInputReceivedListener {
+    public interface InputDeviceListener {
 
         /**
          * Called when the user provided some partial input (e.g. while talking)
@@ -41,7 +41,7 @@ public abstract class InputDevice implements CleanableUp {
     private static final String TAG = InputDevice.class.getSimpleName();
 
     @Nullable
-    private OnInputReceivedListener onInputReceivedListener = null;
+    private InputDeviceListener inputDeviceListener = null;
 
 
     /**
@@ -75,13 +75,13 @@ public abstract class InputDevice implements CleanableUp {
      * Sets the listener, used to provide the input from the user to whatever code uses it
      * @param listener the listener to use, set it to {@code null} to remove it
      */
-    public final void setOnInputReceivedListener(@Nullable final OnInputReceivedListener listener) {
-        this.onInputReceivedListener = listener;
+    public final void setInputDeviceListener(@Nullable final InputDeviceListener listener) {
+        this.inputDeviceListener = listener;
     }
 
     @Override
     public void cleanup() {
-        setOnInputReceivedListener(null);
+        setInputDeviceListener(null);
     }
 
 
@@ -95,8 +95,8 @@ public abstract class InputDevice implements CleanableUp {
             Log.i(TAG, "Partial input from user: " + input);
         }
 
-        if (onInputReceivedListener != null) {
-            onInputReceivedListener.onPartialInputReceived(input);
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onPartialInputReceived(input);
         }
     }
 
@@ -111,8 +111,8 @@ public abstract class InputDevice implements CleanableUp {
             Log.i(TAG, "Input from user: " + input);
         }
 
-        if (onInputReceivedListener != null) {
-            onInputReceivedListener.onInputReceived(input);
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onInputReceived(input);
         }
     }
 
@@ -126,8 +126,8 @@ public abstract class InputDevice implements CleanableUp {
             Log.i(TAG, "No input from user");
         }
 
-        if (onInputReceivedListener != null) {
-            onInputReceivedListener.onNoInputReceived();
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onNoInputReceived();
         }
     }
 
@@ -142,8 +142,8 @@ public abstract class InputDevice implements CleanableUp {
             Log.i(TAG, "Input error: " + e.getMessage(), e);
         }
 
-        if (onInputReceivedListener != null) {
-            onInputReceivedListener.onError(e);
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onError(e);
         }
     }
 }

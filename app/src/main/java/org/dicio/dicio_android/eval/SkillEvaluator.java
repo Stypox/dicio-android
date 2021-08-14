@@ -21,7 +21,6 @@ import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
@@ -143,8 +142,8 @@ public class SkillEvaluator implements CleanableUp {
     ///////////
 
     private void setupInputDeviceListeners() {
-        final InputDevice.OnInputReceivedListener onInputReceivedListener =
-                new InputDevice.OnInputReceivedListener() {
+        final InputDevice.InputDeviceListener inputDeviceListener =
+                new InputDevice.InputDeviceListener() {
                     @Override
                     public void onPartialInputReceived(final String input) {
                         displayPartialUserInput(input);
@@ -166,9 +165,9 @@ public class SkillEvaluator implements CleanableUp {
                     }
                 };
 
-        primaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
+        primaryInputDevice.setInputDeviceListener(inputDeviceListener);
         if (secondaryInputDevice != null) {
-            secondaryInputDevice.setOnInputReceivedListener(onInputReceivedListener);
+            secondaryInputDevice.setInputDeviceListener(inputDeviceListener);
         }
     }
 
