@@ -17,6 +17,23 @@ public class ToolbarInputDevice extends InputDevice {
 
         this.textInputItem = textInputItem;
         if (textInputItem != null) {
+            textInputItem.setOnMenuItemClickListener(item -> {
+                ToolbarInputDevice.super.tryToGetInput(); // notify we are starting to get input
+                return false; // returning false causes the item to expand
+            });
+            textInputItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(final MenuItem item) {
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemActionCollapse(final MenuItem item) {
+                    notifyNoInputReceived();
+                    return true;
+                }
+            });
+
             final SearchView textInputView = (SearchView) textInputItem.getActionView();
             textInputView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
