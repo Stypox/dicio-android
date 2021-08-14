@@ -1,5 +1,8 @@
 package org.dicio.dicio_android;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,12 +40,7 @@ import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.BaseActivity;
-import org.dicio.numbers.NumberParserFormatter;
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.output.SpeechOutputDevice;
-
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
