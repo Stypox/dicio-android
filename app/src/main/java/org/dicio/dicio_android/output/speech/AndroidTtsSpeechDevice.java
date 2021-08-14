@@ -43,6 +43,13 @@ public class AndroidTtsSpeechDevice implements SpeechOutputDevice {
     }
 
     @Override
+    public void stopSpeaking() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+        }
+    }
+
+    @Override
     public void cleanup() {
         context = null;
         if (textToSpeech != null) {
