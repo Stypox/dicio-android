@@ -13,7 +13,6 @@ import org.dicio.skill.output.SpeechOutputDevice;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
-import java.util.Locale;
 
 public class CalculatorOutput implements OutputGenerator<CalculatorOutput.Data> {
 
