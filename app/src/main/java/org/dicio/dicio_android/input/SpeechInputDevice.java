@@ -92,7 +92,9 @@ public abstract class SpeechInputDevice extends InputDevice {
      * turn on the microphone and {@link #onInactive()} when instead they turn it off.
      */
     @Override
-    public abstract void tryToGetInput();
+    public void tryToGetInput() {
+        super.tryToGetInput(); // overridden just to provide a more detailed documentation ^
+    }
 
     /**
      * Stops listening and turns off the microphone after {@link #tryToGetInput()} was called.

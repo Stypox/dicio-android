@@ -2,6 +2,7 @@ package org.dicio.dicio_android.input;
 
 import android.util.Log;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 
 import org.dicio.dicio_android.BuildConfig;
@@ -13,6 +14,12 @@ public abstract class InputDevice implements CleanableUp {
      * Used to provide the input from the user to whatever code uses it
      */
     public interface InputDeviceListener {
+
+        /**
+         * Called right at the beginning of {@link #tryToGetInput()} to notify that the device is
+         * trying to get some input (useful for stopping other input or output devices)
+         */
+        void onTryingToGetInput();
 
         /**
          * Called when the user provided some partial input (e.g. while talking)
@@ -59,7 +66,12 @@ public abstract class InputDevice implements CleanableUp {
      * or {@link #notifyNoInputReceived()} (based on whether some input was received or not) and
      * errors to {@link #notifyError(Throwable)}.
      */
-    public abstract void tryToGetInput();
+    @CallSuper
+    public void tryToGetInput() {
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onTryingToGetInput();
+        }
+    }
 
     /**
      * Cancels any input being received after {@link #tryToGetInput()} was called. Should do nothing

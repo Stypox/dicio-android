@@ -53,6 +53,7 @@ public class ToolbarInputDevice extends InputDevice {
     @Override
     public void tryToGetInput() {
         if (textInputItem != null) {
+            super.tryToGetInput();
             textInputItem.expandActionView();
         }
     }

@@ -159,6 +159,7 @@ public class VoskInputDevice extends SpeechInputDevice {
             return;
         }
         currentlyListening = true;
+        super.tryToGetInput();
 
         Log.d(TAG, "starting recognizer");
         recognizer.startListening(new RecognitionListener() {

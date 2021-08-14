@@ -142,32 +142,64 @@ public class SkillEvaluator implements CleanableUp {
     ///////////
 
     private void setupInputDeviceListeners() {
-        final InputDevice.InputDeviceListener inputDeviceListener =
-                new InputDevice.InputDeviceListener() {
-                    @Override
-                    public void onPartialInputReceived(final String input) {
-                        displayPartialUserInput(input);
-                    }
+        primaryInputDevice.setInputDeviceListener(new InputDevice.InputDeviceListener() {
+            @Override
+            public void onTryingToGetInput() {
+                speechOutputDevice.stopSpeaking();
+                if (secondaryInputDevice != null) {
+                    secondaryInputDevice.cancelGettingInput();
+                }
+            }
 
-                    @Override
-                    public void onInputReceived(final String input) {
-                        processInput(input);
-                    }
+            @Override
+            public void onPartialInputReceived(final String input) {
+                displayPartialUserInput(input);
+            }
 
-                    @Override
-                    public void onNoInputReceived() {
-                        handleNoInput();
-                    }
+            @Override
+            public void onInputReceived(final String input) {
+                processInput(input);
+            }
 
-                    @Override
-                    public void onError(final Throwable e) {
-                        SkillEvaluator.this.onError(e);
-                    }
-                };
+            @Override
+            public void onNoInputReceived() {
+                handleNoInput();
+            }
 
-        primaryInputDevice.setInputDeviceListener(inputDeviceListener);
+            @Override
+            public void onError(final Throwable e) {
+                SkillEvaluator.this.onError(e);
+            }
+        });
+
         if (secondaryInputDevice != null) {
-            secondaryInputDevice.setInputDeviceListener(inputDeviceListener);
+            secondaryInputDevice.setInputDeviceListener(new InputDevice.InputDeviceListener() {
+                @Override
+                public void onTryingToGetInput() {
+                    speechOutputDevice.stopSpeaking();
+                    primaryInputDevice.cancelGettingInput();
+                }
+
+                @Override
+                public void onPartialInputReceived(final String input) {
+                    displayPartialUserInput(input);
+                }
+
+                @Override
+                public void onInputReceived(final String input) {
+                    processInput(input);
+                }
+
+                @Override
+                public void onNoInputReceived() {
+                    handleNoInput();
+                }
+
+                @Override
+                public void onError(final Throwable e) {
+                    SkillEvaluator.this.onError(e);
+                }
+            });
         }
     }
 
