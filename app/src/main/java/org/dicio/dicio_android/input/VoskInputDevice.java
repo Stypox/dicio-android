@@ -63,7 +63,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         put("en",    "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip");
         put("en-in", "https://alphacephei.com/vosk/models/vosk-model-small-en-in-0.4.zip");
         put("cn",    "https://alphacephei.com/vosk/models/vosk-model-small-cn-0.3.zip");
-        put("ru",    "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.4.zip");
+        put("ru",    "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.15.zip");
         put("fr",    "https://alphacephei.com/vosk/models/vosk-model-small-fr-pguyot-0.3.zip");
         put("de",    "https://alphacephei.com/vosk/models/vosk-model-small-de-0.15.zip");
         put("es",    "https://alphacephei.com/vosk/models/vosk-model-small-es-0.3.zip");
@@ -75,6 +75,8 @@ public class VoskInputDevice extends SpeechInputDevice {
         put("ca",    "https://alphacephei.com/vosk/models/vosk-model-small-ca-0.4.zip");
         put("fa",    "https://alphacephei.com/vosk/models/vosk-model-small-fa-0.4.zip");
         put("ph",    "https://alphacephei.com/vosk/models/vosk-model-tl-ph-generic-0.6.zip");
+        put("uk",    "https://alphacephei.com/vosk/models/vosk-model-small-uk-v3-nano.zip");
+        put("kz",    "https://alphacephei.com/vosk/models/vosk-model-small-kz-0.15.zip");
     }};
 
 
