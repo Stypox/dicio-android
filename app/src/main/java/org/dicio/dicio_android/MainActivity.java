@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity
     ////////////////////////
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    private void hideAllItems(Menu menu) {
+    private void hideAllItems(final Menu menu) {
         for (int i = 0; i < menu.size(); ++i) {
             final MenuItem item = menu.getItem(i);
             item.setVisible(false);
@@ -206,7 +206,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(final MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
