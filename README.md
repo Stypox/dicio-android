@@ -15,6 +15,7 @@ Currently Dicio answers questions about:
 - **weather**: collects weather information from **OpenWeatherMap** - _What's the weather like?_
 - **lyrics**: shows **Genius** lyrics for songs - _What's the song that goes we will we will rock you?_
 - **open**: opens an app on your device - _Open NewPipe_
+- **calculator**: evaluates basic calculations - _What is four thousand and two times three minus a million divided by three hundred?_
 
 ## Speech to text
 
