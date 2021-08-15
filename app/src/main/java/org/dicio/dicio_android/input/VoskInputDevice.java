@@ -235,7 +235,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     public void cancelGettingInput() {
         if (currentlyListening) {
             if (recognizer != null) {
-                recognizer.cancel();
+                recognizer.stop();
             }
             notifyNoInputReceived();
         }
