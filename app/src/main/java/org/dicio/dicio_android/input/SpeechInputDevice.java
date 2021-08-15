@@ -55,7 +55,7 @@ public abstract class SpeechInputDevice extends InputDevice {
             voiceFab.setOnClickListener(view -> {
                 if (currentShownState == ShownState.LISTENING) {
                     // already listening, so stop listening
-                    stopListening();
+                    cancelGettingInput();
                 } else {
                     tryToGetInput();
                 }
@@ -106,17 +106,6 @@ public abstract class SpeechInputDevice extends InputDevice {
      */
     @Override
     public abstract void cancelGettingInput();
-
-    /**
-     * Stops listening, turns off the microphone and notifies of the current partial result. Called
-     * when the user tapped on the listen button and the last shown state function that was called
-     * is {@link #onListening()}.
-     * <br><br>
-     * Overriding functions should report any partial input received so far to {@link
-     * InputDevice#notifyInputReceived(String)} and call {@link #onInactive()} when they turn off
-     * the microphone.
-     */
-    protected abstract void stopListening();
 
     /**
      * This must be called by functions overriding {@link #tryToGetInput()} when they have started

@@ -246,13 +246,6 @@ public class VoskInputDevice extends SpeechInputDevice {
         onInactive();
     }
 
-    @Override
-    protected void stopListening() {
-        if (recognizer != null) {
-            recognizer.stop();
-        }
-    }
-
     public static void deleteCurrentModel(final Context context) {
         final DownloadManager downloadManager =
                 (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
