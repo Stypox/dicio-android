@@ -1,16 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="drawer_header_subtitle">كيف يمكنني مساعدتك؟</string>
-
     <string name="share">مشاركة</string>
     <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
-
-    <string name="text_input_hint">اسئلني أي شيء</string>
+    <string name="text_input_hint">اسئلني أي شيء…</string>
     <string name="here_is_what_i_can_do">هذا ما يمكنني فعله!</string>
-
     <string name="vosk_model_notification_description">اللغة: %1$s</string>
-
-
-    <string name="settings">الإعدادات</string>ing>
+    <string name="settings">الإعدادات</string>ing&gt;
     <string name="pref_appearance">المظهر</string>
     <string name="pref_skills">المهارات</string>
     <string name="pref_theme">السمة</string>
@@ -20,15 +16,53 @@
     <string name="pref_language_system">استخدم لغة النظام</string>
     <string name="pref_search_engine">محرك البحث</string>
     <string name="pref_weather_default_city">المدينة الافتراضية</string>
-
     <string name="eval_no_match">لم أفهمك، هلا كررت؟</string>
-
     <string name="skill_name_search">البحث</string>
     <string name="skill_name_weather">الطقس</string>
-    <string name="skill_sentence_example_weather">ما الطقس في روما؟</string>
+    <string name="skill_sentence_example_weather">كيف الطقس في روما؟</string>
     <string name="skill_name_lyrics">كلمات الأغاني</string>
     <string name="skill_name_calculator">الآلة الحاسبة</string>
     <string name="skill_sentence_example_calculator">ما خمسة ضرب أربعة ناقص مليون؟</string>
-
     <string name="skill_search_here_is_what_i_found">هذا ما وجدته</string>
+    <string name="skill_weather_min_max_wind">الحرارة الأدنى: %1$.1f درجة مئوية
+\nالحرارة القصوى: %2$.1f درجة مئوية
+\nسرعة الرياح: %3$.1f م/س</string>
+    <string name="skill_weather_in_city_there_is_description">حاليًّا في %1$s هناك %2$s</string>
+    <string name="eval_network_error_description">لم يستطع Dicio الاتصال بالانترنت. رجاءً تأكّد من اتّصالك ثم حاول مجددًا.</string>
+    <string name="eval_fatal_error">المعذرة، لقد واجهني خطأ أثناء تنفيذ طلبك</string>
+    <string name="skill_calculator_could_not_calculate">لم أستطع حساب طلبك</string>
+    <string name="skill_open_opening">يتم فتح %1$s</string>
+    <string name="skill_open_unknown_app">%1$s تطبيق غير معروف</string>
+    <string name="skill_lyrics_found_song_by_artist">وجدت %1$s من صنع %2$s</string>
+    <string name="skill_lyrics_song_not_found">لم أستطع إيجاد الأغنية %1$s</string>
+    <string name="skill_weather_could_not_find_city">لم أستطع أن أجد مدينة %1$s</string>
+    <string name="skill_sentence_example_open">افتح نيو بايب</string>
+    <string name="skill_name_open">فاتح التطبيقات</string>
+    <string name="skill_sentence_example_search">ابحث عن كيفية إطعام قطة</string>
+    <string name="eval_network_error">خطأ في الشبكة</string>
+    <string name="pref_weather_default_city_using_ip_info">اختر المدينة المستعملة للحصول على الطقس عندما لا تحدد مدينة بوضوح. السلوك الحالي هو الحصول علي الموقع من عنوان بروتوكول الانترنت.</string>
+    <string name="pref_speech_output_method_nothing">لا شيء</string>
+    <string name="pref_speech_output_method_summary">اختر الخدمة التي يجب إن يستعملها Dicio للكلام معك - %1$s</string>
+    <string name="pref_input_method_vosk">خاصية ڤوسك للتعرف على الكلام بلا انترنت</string>
+    <string name="pref_input_method_summary">اختر الخدمات التي تريد أن تستعملها للكلام مع Dicio - %1$s</string>
+    <string name="listening">أستمع الآن…</string>
+    <string name="action_voice_input">إدخال صوت</string>
+    <string name="action_text_input">إدخال كلام</string>
+    <string name="share_view">فتح في…</string>
+    <string name="drawer_close">إغلاق درج التصفح</string>
+    <string name="drawer_open">فتح درج التصفح</string>
+    <string name="pref_speech_output_method_android">محرك أندرويد لتحويل النص إلى كلام</string>
+    <string name="pref_speech_output_method">طريقة إخراج الكلام</string>
+    <string name="pref_input_method_text">صندوق النص</string>
+    <string name="pref_input_method">طريقة الإدخال</string>
+    <string name="pref_language_summary">ما اللغة التي يجب أن يستعملها Dicio للاستماع إليك وإعطاء الأجوبة؟ - %1$s</string>
+    <string name="pref_theme_summary">اختر لون التطبيق - %1$s</string>
+    <string name="pref_io">طرق الإدخال والإخراج</string>
+    <string name="android_tts_unsupported_language">اللغة الخالية غير مدعومة من محرك أندرويد لتحويل النص إلى كلام</string>
+    <string name="vosk_model_ready">موديل ڤوسك جاهز</string>
+    <string name="vosk_model_extraction_error">فشل اسنخراج موديل ڤوسك من الأرشيف</string>
+    <string name="vosk_model_extracting">موديل ڤوسك قيد الاستخراج…</string>
+    <string name="vosk_model_downloading">موديل ڤوسك قيد التحميل…</string>
+    <string name="vosk_model_unsupported_language">لا يوجد موديل ڤوسك للغة الحاليّة</string>
+    <string name="vosk_model_notification_title">موديل ڤوسك</string>
 </resources>
