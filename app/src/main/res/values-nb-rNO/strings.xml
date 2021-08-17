@@ -1,2 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="settings">Innstillinger</string>
+    <string name="skill_calculator_could_not_calculate">Kunne ikke regne ut forespørselen din</string>
+    <string name="skill_open_opening">Åpner %1$s…</string>
+    <string name="skill_open_unknown_app">Ukjent program %1$s</string>
+    <string name="skill_lyrics_found_song_by_artist">Fant %1$s av %2$s</string>
+    <string name="skill_lyrics_song_not_found">Fant ikke sangen %1$s</string>
+    <string name="skill_weather_min_max_wind">Laveste temperatur: %1$.1f°C
+\nHøyeste temperatur: %2$.1f°C
+\nVindhastighet: %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_in_city_there_is_description">I %1$s er det nå %2$s</string>
+    <string name="skill_weather_could_not_find_city">Fant ikke byen %1$s</string>
+    <string name="skill_search_here_is_what_i_found">Dette ble funnet</string>
+    <string name="skill_fallback_name_text">Tekstbasert melding</string>
+    <string name="skill_sentence_example_calculator">Hva er fem ganger fire minus én million\?</string>
+    <string name="skill_name_calculator">Kalkulator</string>
+    <string name="skill_sentence_example_open">Åpne NewPipe</string>
+    <string name="skill_name_open">Programåpner</string>
+    <string name="skill_sentence_example_lyrics">Hva er den sangen som inneholder «We will, we will, rock you»\?</string>
+    <string name="skill_name_lyrics">Sangtekster</string>
+    <string name="skill_sentence_example_weather">Hvordan er været i Roma\?</string>
+    <string name="skill_name_weather">Vær</string>
+    <string name="skill_sentence_example_search">Søk om hvordan man mater en katt</string>
+    <string name="skill_name_search">Søk</string>
+    <string name="eval_no_match">Kan du gjenta\?</string>
+    <string name="eval_network_error_description">Sjekk at du er tilkoblet Internett og prøv igjen.</string>
+    <string name="eval_network_error">Nettverksfeil</string>
+    <string name="eval_fatal_error">Oppdaget en feil ved vurdering av forespørselen din.</string>
+    <string name="pref_weather_default_city_using_ip_info">Velg by for værvarsling når du ikke angir det. (Nå brukes nærmeste sted basert på IP-adresse.)</string>
+    <string name="pref_weather_default_city">Forvalgt by</string>
+    <string name="pref_search_engine">Søkemotor</string>
+    <string name="pref_speech_output_method_nothing">Ingenting</string>
+    <string name="pref_speech_output_method_snackbar">Bunnmelding</string>
+    <string name="pref_speech_output_method_toast">Oppsprettsmelding</string>
+    <string name="pref_speech_output_method_android">Android sin tekst-til-tale -motor</string>
+    <string name="pref_speech_output_method_summary">Velg hvilken tjeneste Dicio skal bruke for å snakke med deg — %1$s</string>
+    <string name="pref_speech_output_method">Taleutdata og metode</string>
+    <string name="pref_input_method_vosk">Frakoblet Vosk-gjenkjennelse av tale</string>
+    <string name="pref_input_method_text">Tekstboks</string>
+    <string name="pref_input_method_summary">Velg tjeneste for å snakke med Dicio — %1$s</string>
+    <string name="pref_input_method">Inndatametode</string>
+    <string name="pref_language_system">Bruk systemspråk</string>
+    <string name="pref_language_summary">Hvilket språk skal Dicio bruke for å lytte til deg og tilby svar\? — %1$s</string>
+    <string name="pref_language">Språk</string>
+    <string name="pref_theme_dark">Mørk</string>
+    <string name="pref_theme_light">Lys</string>
+    <string name="pref_theme_summary">Velg programfargen — %1$s</string>
+    <string name="pref_theme">Drakt</string>
+    <string name="pref_skills">Ferdigheter</string>
+    <string name="pref_appearance">Utseende</string>
+    <string name="pref_io">Inndata- og utdatametoder</string>
+    <string name="android_tts_unsupported_language">Nåværende språk er ikke støttet av Android sin tekst-til-tale -motor</string>
+    <string name="vosk_model_ready">Vosk-modell klar</string>
+    <string name="vosk_model_extraction_error">Kunne ikke pakke ut Vosk-modell</string>
+    <string name="vosk_model_extracting">Pakker ut Vosk-modell…</string>
+    <string name="vosk_model_downloading">Laster ned Vosk-modell…</string>
+    <string name="vosk_model_unsupported_language">Ingen Vosk-modell tilgjengelig for valgt språk</string>
+    <string name="vosk_model_notification_description">Språk: %1$s</string>
+    <string name="vosk_model_notification_title">Vosk-modell</string>
+    <string name="microphone_error">Fikk ikke tilgang til mikrofonen, den er antagelig i bruk eller så er ikke relevant tilgang innvilget.</string>
+    <string name="listening">Lytter…</string>
+    <string name="action_voice_input">Talelytting</string>
+    <string name="action_text_input">Tekstinnsending</string>
+    <string name="here_is_what_i_can_do">Dette kan gjøres:</string>
+    <string name="text_input_hint">Spør om hva som helst…</string>
+    <string name="copied_to_clipboard">Kopiert til utklippstavle</string>
+    <string name="share_view">Vis i…</string>
+    <string name="share">Del</string>
+    <string name="drawer_header_subtitle">Trenger du hjelp\?</string>
+    <string name="drawer_close">Lukk navigasjonsskuff</string>
+    <string name="drawer_open">Åpne navigasjonsskuff</string>
+</resources>
