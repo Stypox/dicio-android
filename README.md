@@ -23,7 +23,9 @@ Dicio uses [Vosk](https://github.com/alphacep/vosk-api/) as its speech to text (
 
 ## Contributing
 
-Dicio's code is not only here! The repository with the compiler for sentences language files is at [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler) and the repository which takes care of input matching and provides skill interfaces is at [`dicio-skill`](https://github.com/Stypox/dicio-skill)
+Dicio's code is not only here! The repository with the compiler for sentences language files is at [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler) and the repository which takes care of input matching and provides skill interfaces is at [`dicio-skill`](https://github.com/Stypox/dicio-skill).
+
+When contributing keep in mind that other people may have **needs** and **views different** than yours, so please *respect* them. For any question feel free to contact the project team at [@Stypox](https://github.com/Stypox).
 
 ### Translating
 
