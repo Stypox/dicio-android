@@ -1,5 +1,9 @@
 package org.dicio.dicio_android.input;
 
+import static org.dicio.dicio_android.util.LocaleUtils.LocaleResolutionResult;
+import static org.dicio.dicio_android.util.LocaleUtils.UnsupportedLocaleException;
+import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
+
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -44,10 +48,6 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static org.dicio.dicio_android.util.LocaleUtils.LocaleResolutionResult;
-import static org.dicio.dicio_android.util.LocaleUtils.UnsupportedLocaleException;
-import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
 
 public class VoskInputDevice extends SpeechInputDevice {
 

@@ -1,5 +1,7 @@
 package org.dicio.dicio_android.util;
 
+import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPreferences;
+
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,8 +17,6 @@ import org.dicio.dicio_android.skills.SkillHandler;
 
 import java.util.Locale;
 import java.util.Objects;
-
-import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPreferences;
 
 /**
  * A base for all of the activities that automatically recreates itself when the language (locale)

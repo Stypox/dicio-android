@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.skill.SkillInfo;
 
 import java.util.List;

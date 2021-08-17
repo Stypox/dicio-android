@@ -1,5 +1,7 @@
 package org.dicio.dicio_android.skills.open;
 
+import static org.dicio.dicio_android.Sentences_en.open;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -17,8 +19,6 @@ import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardResult;
 
 import java.util.List;
-
-import static org.dicio.dicio_android.Sentences_en.open;
 
 public class OpenOutput implements OutputGenerator<StandardResult> {
 

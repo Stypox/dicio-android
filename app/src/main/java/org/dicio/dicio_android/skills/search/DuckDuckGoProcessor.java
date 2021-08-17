@@ -1,5 +1,7 @@
 package org.dicio.dicio_android.skills.search;
 
+import static org.dicio.dicio_android.Sentences_en.search;
+
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.IntermediateProcessor;
@@ -11,8 +13,6 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.dicio.dicio_android.Sentences_en.search;
 
 public class DuckDuckGoProcessor
         implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {

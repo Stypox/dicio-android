@@ -1,5 +1,9 @@
 package org.dicio.dicio_android.skills.open;
 
+import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
+import static org.dicio.dicio_android.SectionsGenerated.open;
+
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -9,11 +13,6 @@ import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
-
-import static org.dicio.dicio_android.Sections.getSection;
-import static org.dicio.dicio_android.Sections.isSectionAvailable;
-import static org.dicio.dicio_android.SectionsGenerated.lyrics;
-import static org.dicio.dicio_android.SectionsGenerated.open;
 
 public class OpenInfo extends SkillInfo {
 

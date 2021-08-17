@@ -1,18 +1,18 @@
 package org.dicio.dicio_android;
 
+import static org.dicio.dicio_android.SectionsGenerated.localeSectionsMap;
+import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.os.LocaleListCompat;
 
-import org.dicio.skill.standard.StandardRecognizerData;
 import org.dicio.dicio_android.util.LocaleUtils;
+import org.dicio.skill.standard.StandardRecognizerData;
 
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
-
-import static org.dicio.dicio_android.SectionsGenerated.localeSectionsMap;
-import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
 
 public class Sections {
 

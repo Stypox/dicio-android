@@ -1,5 +1,9 @@
 package org.dicio.dicio_android.skills.search;
 
+import static org.dicio.dicio_android.Sections.getSection;
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
+import static org.dicio.dicio_android.SectionsGenerated.search;
+
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,11 +15,6 @@ import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
-
-import static org.dicio.dicio_android.Sections.getSection;
-import static org.dicio.dicio_android.Sections.isSectionAvailable;
-import static org.dicio.dicio_android.SectionsGenerated.lyrics;
-import static org.dicio.dicio_android.SectionsGenerated.search;
 
 public class SearchInfo extends SkillInfo {
 

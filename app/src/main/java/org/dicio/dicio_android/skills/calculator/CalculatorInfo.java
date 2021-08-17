@@ -1,5 +1,8 @@
 package org.dicio.dicio_android.skills.calculator;
 
+import static org.dicio.dicio_android.Sections.isSectionAvailable;
+import static org.dicio.dicio_android.SectionsGenerated.calculator;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -10,10 +13,6 @@ import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
-
-import static org.dicio.dicio_android.Sections.isSectionAvailable;
-import static org.dicio.dicio_android.SectionsGenerated.calculator;
-import static org.dicio.dicio_android.SectionsGenerated.lyrics;
 
 public class CalculatorInfo extends SkillInfo {
 

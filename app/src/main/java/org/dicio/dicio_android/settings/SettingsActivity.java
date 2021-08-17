@@ -12,7 +12,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.util.BaseActivity;
 import org.dicio.dicio_android.util.LocaleAwareActivity;
 
 public class SettingsActivity extends LocaleAwareActivity

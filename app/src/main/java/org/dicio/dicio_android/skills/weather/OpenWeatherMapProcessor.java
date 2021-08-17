@@ -1,5 +1,8 @@
 package org.dicio.dicio_android.skills.weather;
 
+import static org.dicio.dicio_android.Sentences_en.weather;
+import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
+
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
@@ -9,9 +12,6 @@ import org.dicio.skill.standard.StandardResult;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
-
-import static org.dicio.dicio_android.Sentences_en.weather;
-import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 
 public class OpenWeatherMapProcessor
         implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {

@@ -2,7 +2,6 @@ package org.dicio.dicio_android.settings;
 
 import android.os.Bundle;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.dicio.dicio_android.R;

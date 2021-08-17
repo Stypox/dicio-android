@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.skills.SkillHandler;
-import org.dicio.skill.SkillContext;
 
 public class SkillsFragment extends Fragment {
 

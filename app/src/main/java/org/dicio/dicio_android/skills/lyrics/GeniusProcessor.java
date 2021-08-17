@@ -1,5 +1,7 @@
 package org.dicio.dicio_android.skills.lyrics;
 
+import static org.dicio.dicio_android.Sentences_en.lyrics;
+
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.RegexUtils;
 import org.dicio.skill.SkillContext;
@@ -14,8 +16,6 @@ import org.unbescape.javascript.JavaScriptEscape;
 import org.unbescape.json.JsonEscape;
 
 import java.util.regex.Pattern;
-
-import static org.dicio.dicio_android.Sentences_en.lyrics;
 
 public class GeniusProcessor
         implements IntermediateProcessor<StandardResult, LyricsOutput.Data> {

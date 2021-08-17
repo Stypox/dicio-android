@@ -1,5 +1,8 @@
 package org.dicio.dicio_android.skills.search;
 
+import static org.dicio.dicio_android.Sentences_en.search;
+import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
+
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.IntermediateProcessor;
@@ -12,9 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static org.dicio.dicio_android.Sentences_en.search;
-import static org.dicio.dicio_android.util.ConnectionUtils.getPageJson;
 
 public class QwantProcessor
         implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
