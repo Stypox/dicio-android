@@ -84,3 +84,4 @@ Create a class named `SKILL_IDInfo` (e.g. `WeatherInfo`) overriding `SkillInfo`:
 - If your input recognizer, processor or output generator use some resources that need to be cleaned up in order **not to create memory leaks**, make sure to override the `cleanup()` method.
 - If the skill **doesn't do any processing** (e.g. it may just answer with random quotes from famous people after a request for quotes by the user) you may skip step [4](https://github.com/Stypox/dicio-android#4-intermediate-processor) above. Also skip [3.1](https://github.com/Stypox/dicio-android#3-output-generator) in that case, and have `SKILL_IDOutput` implement `OutputGenerator<StandardResult>`.
 - The **names** used for things (files, classes, packages, sections, etc.) are not mandatory, but they help **avoiding confusion**, so try to stick to them.
+- If you have any question, **don't hesitate** to ask. 😃
