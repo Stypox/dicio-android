@@ -68,7 +68,7 @@ A skill is a component that enables the assistant to **understand** some specifi
 		4. At the end add `.output
 	4. _\[Optional\]_ If your skill wants to present some preferences to the user, it has to do so by overriding `getPreferenceFragment()` (return `null` otherwise). Create a subclass of `SKILL_IDInfo` named `Preferences` extending `PreferenceFragmentCompat` (Android requires you not to use anonymous classes) and override the `onCreatePreferences()` as you would do normally. `getPreferenceFragment()` should then `return new Preferences()`. Make sure the `hasPreferences` parameter you use in the constructor (see <u>5.1</u>) reflects whether there are preferences or not. 
 
-Notes:
+#### Notes
 - `skillContext` is provided in many places and can be used to **access resources and services**, similarly to Andorid's `context`.
 - If your input recognizer, processor or output generator use some resources that need to be cleaned up in order **not to create memory leaks**, make sure to override the `cleanup()` method.
 - If the skill **doesn't do any processing** (e.g. it may just answer with random quotes from famous people after a request for quotes by the user) you may skip step <u>4</u> above. Also skip <u>3.1</u> in that case, and have `SKILL_IDOutput` implement `OutputGenerator<StandardResult>`.
