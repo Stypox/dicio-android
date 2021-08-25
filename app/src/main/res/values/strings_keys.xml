@@ -18,8 +18,8 @@
 
     <string name="pref_key_vosk_download_id" translatable="false">vosk_download_id</string>
 
+    <!-- Qwant was once available as a second search engine, that's why there are settings -->
     <string name="pref_key_search_engine" translatable="false">search_engine</string>
-    <string name="pref_val_search_engine_qwant" translatable="false">qwant</string>
     <string name="pref_val_search_engine_duckduckgo" translatable="false">duckduckgo</string>
 
     <string name="pref_key_weather_default_city" translatable="false">weather_default_city</string>

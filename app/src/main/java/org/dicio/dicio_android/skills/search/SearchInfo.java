@@ -33,14 +33,14 @@ public class SearchInfo extends SkillInfo {
         final ChainSkill.Builder builder = new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(search)));
 
-        final String searchEngine = context.getPreferences().getString(
+        // Qwant was once available as a second search engine; restore this if adding a new engine
+        /*final String searchEngine = context.getPreferences().getString(
                 context.getAndroidContext().getString(R.string.pref_key_search_engine), "");
         if (searchEngine.equals(context.getAndroidContext()
                 .getString(R.string.pref_val_search_engine_duckduckgo))) {
-            builder.process(new DuckDuckGoProcessor());
-        } else {
-            builder.process(new QwantProcessor());
-        }
+        }*/
+
+        builder.process(new DuckDuckGoProcessor());
 
         return builder.output(new SearchOutput());
     }

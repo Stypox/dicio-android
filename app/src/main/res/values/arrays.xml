@@ -42,12 +42,11 @@
         <item>@string/pref_val_speech_output_method_nothing</item>
     </string-array>
 
+    <!-- Qwant was once available as a second search engine, that's why there are settings -->
     <string-array name="pref_search_engine_entries">
-        <item>@string/pref_search_engine_qwant</item>
         <item>@string/pref_search_engine_duckduckgo</item>
     </string-array>
     <string-array name="pref_search_engine_entry_values">
-        <item>@string/pref_val_search_engine_qwant</item>
         <item>@string/pref_val_search_engine_duckduckgo</item>
     </string-array>
 </resources>
