@@ -54,7 +54,7 @@ dependencies {
     // Miscellaneous
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
-    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'org.jsoup:jsoup:1.14.2'
 
     // Used by skills
     implementation 'net.objecthunter:exp4j:0.4.8'
