@@ -85,4 +85,5 @@ Create a class named `SKILL_IDInfo` (e.g. `WeatherInfo`) overriding `SkillInfo`:
 - If the skill **doesn't do any processing** (e.g. it may just answer with random quotes from famous people after a request for quotes by the user) you may skip step [4](https://github.com/Stypox/dicio-android#4-intermediate-processor) above. Also skip [3.1](https://github.com/Stypox/dicio-android#3-output-generator) in that case, and have `SKILL_IDOutput` implement `OutputGenerator<StandardResult>`.
 - The **names** used for things (files, classes, packages, sections, etc.) are not mandatory, but they help **avoiding confusion**, so try to stick to them.
 - When committing changes about a skill, prefix the commit message with "[SKILL_ID]", e.g. "[Weather] Fix crash".
+- Add your skill with a short description and an example in the README under [Skills](https://github.com/Stypox/dicio-android#skills) and in the [fastlane's long description](https://github.com/Stypox/dicio-android/tree/master/fastlane/metadata/android/en-US/full_description.txt).
 - If you have any question, **don't hesitate** to ask. 😃
