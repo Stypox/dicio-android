@@ -1,0 +1,9 @@
+Dicio's initial release:
+- 5 skills: search, weather, lyrics, open, calculator
+- 2 input methods: speech to text with Vosk and a text box
+- 4 output methods: Android speech synthesis, toast, snackbar, nothing
+- 2 languages: English and Italian
+- 2 themes: dark and light
+- Sentence recognition is done with dicio-sentences-compiler and dicio-skill
+- Skills can extract or say numbers using dicio-numbers
+- Translatable on Fastlane
