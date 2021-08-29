@@ -1,0 +1,9 @@
+Prima release di Dicio:
+- 5 abilità: ricerca, tempo atmosferico, testi di canzoni, apertura di app, calcolatrice
+- 2 metodi di input: riconoscimento vocale con Vosk, casella di testo
+- 4 metodi di output: sintesi vocale di Android, toast, snackbar, niente
+- 2 lingue: inglese e italiano
+- 2 temi: chiaro e scuro
+- L'interpetazione delle frasi è fatta con dicio-sentences-compiler e dicio-skill
+- Le abilità possono estrarre o dire numeri con dicio-numbers
+- Traducibile su Fastlane
