@@ -34,7 +34,7 @@ public class GeniusProcessor
 
         final String songName = data.getCapturingGroup(lyrics.song).trim();
         final JSONObject search = ConnectionUtils.getPageJson(
-                geniusSearchUrl + ConnectionUtils.urlEncode(songName));
+                geniusSearchUrl + ConnectionUtils.urlEncode(songName) + "&count=1");
         final JSONArray searchHits =
                 search.getJSONObject("response").getJSONArray("sections")
                         .getJSONObject(0).getJSONArray("hits");
