@@ -65,7 +65,7 @@
     <string name="microphone_error">Impossibile accedere al microfono, probabilmente è già in uso o non è stato concesso il permesso di accedervi.</string>
     <string name="skill_sentence_example_search">Cerca come dar da mangiare ad un gatto</string>
     <string name="skill_sentence_example_weather">Che tempo fa a Roma?</string>
-    <string name="skill_sentence_example_lyrics">Qual\'è la canzone che fa we will we will rock you?</string>
+    <string name="skill_sentence_example_lyrics">Qual è la canzone che fa il cielo è sempre più blu\?</string>
     <string name="skill_sentence_example_open">Apri NewPipe</string>
     <string name="here_is_what_i_can_do">Ecco cosa posso fare!</string>
     <string name="skill_name_calculator">Calcolatrice</string>
