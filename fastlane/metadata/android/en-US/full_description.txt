@@ -1,0 +1,16 @@
+Dicio is a <i>free and open source</i> <b>voice assistant</b> running on Android. It supports many different <b>skills</b> and input/output methods, and it provides both <b>speech</b> and <b>graphical</b> feedback to a question. It uses <a href="https://github.com/alphacep/vosk-api/">Vosk</a> for <i>speech to text</i>. It has <b>multilanguage</b> support, and is currently available in these English and Italian.
+
+Currently Dicio answers questions about:
+<ul>
+<li><b>search</b>: looks up information on <b>DuckDuckGo</b> (and in the future more engines) - <i>Search for Dicio</i></li>
+<li><b>weather</b>: collects weather information from <b>OpenWeatherMap</b> - <i>What's the weather like?</i></li>
+<li><b>lyrics</b>: shows <b>Genius</b> lyrics for songs - <i>What's the song that goes we will we will rock you?</i></li>
+<li><b>open</b>: opens an app on your device - <i>Open NewPipe</i></li>
+<li><b>calculator</b>: evaluates basic calculations - <i>What is four thousand and two times three minus a million divided by three hundred?</i></li>
+</ul>
+
+Dicio can receive input through a text box or through <a href="https://github.com/alphacep/vosk-api/">Vosk</a> <i>speech to text</i>, and can talk using toasts or the Android <i>speech synthesis</i> engine. <b>Interactive graphical output</b> is provided by skills when they answer a question.
+
+Each skill can be enabled, disabled or customized using the related settings screen. A dark theme is available.
+
+The user input is interpreted by specific, yet reusable, libraries: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a>, <a href="https://github.com/Stypox/dicio-skill">dicio-skill</a> and <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
