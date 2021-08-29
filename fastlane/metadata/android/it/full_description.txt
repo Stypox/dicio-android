@@ -1,0 +1,16 @@
+Dicio è un <b>assistente vocale</b> <i>libero e open source</i>. Supporta svariate <b>abilità</b> e metodi di input/output, e risponde a una richiesta sia con <b>parole</b> che con <b>schermate</b>. Usa <a href="https://github.com/alphacep/vosk-api/">Vosk</a> per il <i>riconoscimento vocale</i>. Supporta <b>più lingue</b>, al momento inglese e italiano.
+
+Dicio risponde a richieste di questi tipi:
+<ul>
+<li><b>ricerca</b>: cerca informazioni su <b>DuckDuckGo</b> (e nel futuro anche altri motori di ricerca) - <i>Cerca Dicio</i></li>
+<li><b>tempo atmosferico</b>: raccoglie informazioni da <b>OpenWeatherMap</b> - <i>Che tempo fa?</i></li>
+<li><b>testi di canzoni</b>: mostra testi di canzoni da <b>Genius</b> - <i>Qual è la canzone che fa il cielo è sempre più blu?</i></li>
+<li><b>apertura di app</b>: apre un'app sul tuo dispositivo - <i>Apri NewPipe</i></li>
+<li><b>calcolatrice</b>: calcola delle semplici espressioni matematiche - <i>Quanto fa quattromiladue per tre meno un milione diviso trecento?</i></li>
+</ul>
+
+Dicio può ricevere input tramite una casella di testo o tramite il <i>riconoscimento vocale</i> <a href="https://github.com/alphacep/vosk-api/">Vosk</a>, e può parlare con messaggi pop-up o con il <i>motore di sintesi vocale</i> di Android. Le abilità generano anche dell'<b>output grafico interattivo</b> quando rispondono a una domanda.
+
+Ogni abilità può essere abilitata, disabilitata o personalizzata usando il menu apposito nelle impostazioni. È disponibile anche il tema scuro.
+
+L'input dell'utente viene interpretato usando librerie specifiche, ma riutilizzabili: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a>, <a href="https://github.com/Stypox/dicio-skill">dicio-skill</a> e <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
