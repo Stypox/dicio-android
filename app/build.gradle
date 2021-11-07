@@ -49,7 +49,7 @@ dependencies {
 
     // Vosk
     implementation 'net.java.dev.jna:jna:5.8.0@aar'
-    implementation 'com.alphacephei:vosk-android:0.3.30'
+    implementation 'com.alphacephei:vosk-android:0.3.32'
 
     // Miscellaneous
     implementation 'com.squareup.picasso:picasso:2.71828'
