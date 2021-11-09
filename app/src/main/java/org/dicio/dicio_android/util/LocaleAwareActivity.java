@@ -5,10 +5,12 @@ import static org.dicio.dicio_android.util.LocaleUtils.getAvailableLocalesFromPr
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
@@ -24,6 +26,8 @@ import java.util.Objects;
  */
 public abstract class LocaleAwareActivity extends AppCompatActivity {
 
+    public static final String TAG = LocaleAwareActivity.class.getSimpleName();
+
     @Nullable
     private String currentLanguage = null;
 
@@ -33,19 +37,26 @@ public abstract class LocaleAwareActivity extends AppCompatActivity {
     }
 
     private void setLocale() {
+        @NonNull Locale sectionsLocale;
         try {
-            @NonNull final Locale sectionsLocale = Sections.setLocale(
-                    getAvailableLocalesFromPreferences(this));
+            sectionsLocale = Sections.setLocale(getAvailableLocalesFromPreferences(this));
 
-            Locale.setDefault(sectionsLocale);
-            final Resources resources = getResources();
-            final Configuration configuration = resources.getConfiguration();
-            configuration.setLocale(sectionsLocale);
-            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-
-        } catch (LocaleUtils.UnsupportedLocaleException e) {
-            e.printStackTrace(); //TODO ask the user to manually choose a locale
+        } catch (final LocaleUtils.UnsupportedLocaleException e) {
+            Log.w(TAG, "Current locale is not supported, defaulting to English", e);
+            try {
+                // TODO ask the user to manually choose a locale instead of defaulting to english
+                sectionsLocale = Sections.setLocale(LocaleListCompat.create(Locale.ENGLISH));
+            } catch (final LocaleUtils.UnsupportedLocaleException e1) {
+                Log.wtf(TAG, "COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!", e1);
+                return;
+            }
         }
+
+        Locale.setDefault(sectionsLocale);
+        final Resources resources = getResources();
+        final Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(sectionsLocale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
 
