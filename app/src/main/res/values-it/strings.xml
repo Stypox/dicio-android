@@ -25,7 +25,7 @@
     <string name="skill_lyrics_song_not_found">Non ho trovato il brano %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Ecco %1$s di %2$s</string>
     <string name="skill_open_unknown_app">L\'app %1$s è sconosciuta</string>
-    <string name="skill_open_opening">Apro %1$s</string>
+    <string name="skill_open_opening">Apro %1$s…</string>
     <string name="skill_search_here_is_what_i_found">Ecco cosa ho trovato</string>
     <string name="skill_weather_could_not_find_city">Non ho trovato la città %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Al momento a %1$s c\'è %2$s</string>
