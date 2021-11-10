@@ -1,5 +1,5 @@
 calculator: medium
-calculate|evaluate|(what is)|(find the value of?) .calculation.;
+calculate|evaluate|(what is)|(whats)|(what s)|(find the value of?) .calculation.;
 
 calculator_operators: low
 [addition] plus|add|adding|addition|sum|summing to?;
