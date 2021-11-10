@@ -1,0 +1,3 @@
+Correzioni:
+- L'applicazione non si apriva su dispositivi in lingue diverse dall'italiano e l'inglese
+- [Calcolatrice] migliorata l'interpretazione in lingua inglese
