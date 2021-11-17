@@ -1,2 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="drawer_open">Abrir gaveta de navegação</string>
+    <string name="drawer_close">Fechar gaveta de navegação</string>
+    <string name="drawer_header_subtitle">Posso te ajudar\?</string>
+    <string name="share">Compartilhar</string>
+    <string name="share_view">Ver em…</string>
+    <string name="copied_to_clipboard">Copiado para a área de transferência</string>
+    <string name="text_input_hint">Me pergunte qualquer coisa…</string>
+    <string name="here_is_what_i_can_do">Aqui está o que eu posso fazer!</string>
+    <string name="action_text_input">Entrada de texto</string>
+    <string name="action_voice_input">Entrada de voz</string>
+    <string name="listening">Ouvindo…</string>
+    <string name="microphone_error">Não foi possível acessar o microfone, provavelmente já está em uso ou a respectiva permissão foi negada.</string>
+    <string name="vosk_model_notification_title">Modelo de Vosk</string>
+    <string name="vosk_model_notification_description">Idioma: %1$s</string>
+    <string name="vosk_model_unsupported_language">Nenhum modelo de Vosk disponível para o idioma atual</string>
+    <string name="vosk_model_downloading">Baixando modelo de Vosk…</string>
+    <string name="vosk_model_extracting">Extraindo modelo de Vosk…</string>
+    <string name="vosk_model_extraction_error">A extração do modelo de Vosk do Zip falhou</string>
+    <string name="vosk_model_ready">Modelo de Vosk pronto</string>
+    <string name="android_tts_unsupported_language">O idioma atual não é compatível com o mecanismo de texto para fala do Android</string>
+    <string name="settings">Configurações</string>
+    <string name="pref_io">Métodos de entrada e saída</string>
+    <string name="pref_appearance">Aparência</string>
+    <string name="pref_skills">Habilidades</string>
+    <string name="pref_theme_summary">Escolha o conjunto de cores do app - %1$s</string>
+    <string name="pref_theme_light">Claro</string>
+    <string name="pref_theme_dark">Escuro</string>
+    <string name="pref_language">Idioma</string>
+    <string name="pref_language_system">Usar o idioma do sistema</string>
+    <string name="pref_input_method_summary">Escolha o serviço a utilizar para falar com Dicio - %1$s</string>
+    <string name="pref_input_method_text">Caixa de texto</string>
+    <string name="pref_input_method_vosk">Reconhecimento de voz Vosk offline</string>
+    <string name="pref_speech_output_method">Método de saída de fala</string>
+    <string name="pref_speech_output_method_summary">Escolha o serviço que Dicio deve usar para falar com você - %1$s</string>
+    <string name="pref_speech_output_method_android">Texto do Android para mecanismo de fala</string>
+    <string name="pref_speech_output_method_toast">Toast (mensagem pop-up)</string>
+    <string name="pref_speech_output_method_nothing">Nada</string>
+    <string name="pref_search_engine">Motor de busca</string>
+    <string name="eval_fatal_error">Não foi possível avaliar seu pedido</string>
+    <string name="eval_network_error">Erro de rede</string>
+    <string name="eval_network_error_description">O Dicio não conseguiu acessar a internet. Verifique sua conexão e tente novamente.</string>
+    <string name="eval_no_match">Eu não entendi, pode repetir\?</string>
+    <string name="skill_sentence_example_search">Pesquise como alimentar um gato</string>
+    <string name="skill_name_search">Pesquise</string>
+    <string name="skill_name_weather">Clima</string>
+    <string name="skill_sentence_example_weather">Qual é o clima em Roma\?</string>
+    <string name="skill_name_lyrics">Letras de músicas</string>
+    <string name="skill_sentence_example_lyrics">Qual é a música que diz \"we will we will rock you\"\?</string>
+    <string name="skill_name_open">Abra apps</string>
+    <string name="skill_sentence_example_open">Abrir NewPipe</string>
+    <string name="skill_name_calculator">Calculadora</string>
+    <string name="skill_sentence_example_calculator">Quanto é cinco vezes quatro menos um milhão\?</string>
+    <string name="skill_fallback_name_text">Mensagem de texto</string>
+    <string name="skill_search_here_is_what_i_found">Aqui está o que eu encontrei</string>
+    <string name="skill_weather_could_not_find_city">Não consegui encontrar a cidade %1$s</string>
+    <string name="skill_weather_in_city_there_is_description">Atualmente em %1$s existe %2$s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_lyrics_song_not_found">Não foi possível encontrar a música %1$s</string>
+    <string name="skill_lyrics_found_song_by_artist">Encontrado %1$s por %2$s</string>
+    <string name="skill_open_unknown_app">App desconhecido %1$s</string>
+    <string name="skill_open_opening">Abrindo %1$s…</string>
+    <string name="skill_calculator_could_not_calculate">Não consegui calcular seu pedido</string>
+    <string name="pref_theme">Tema</string>
+    <string name="pref_language_summary">Que idioma o Dicio deve usar para ouvir você e dar respostas\? - %1$s</string>
+    <string name="pref_input_method">Método de entrada</string>
+    <string name="pref_speech_output_method_snackbar">Snackbar (mensagem na parte inferior)</string>
+    <string name="pref_weather_default_city">Cidade padrão</string>
+    <string name="pref_weather_default_city_using_ip_info">Definir a cidade para usar para o clima quando você não disser um explicitamente. O comportamento atual é obter a localização a partir das informações de IP.</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
+\nTemperatura máxima: %2$.1f°C
+\nVelocidade do vento: %3$.1fm/s</string>
+</resources>
