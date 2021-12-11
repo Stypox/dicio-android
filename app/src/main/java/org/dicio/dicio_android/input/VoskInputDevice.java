@@ -83,6 +83,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private Activity activity;
     private final CompositeDisposable disposables = new CompositeDisposable();
     @Nullable private BroadcastReceiver downloadingBroadcastReceiver = null;
+    private Long currentModelDownloadId = null;
     @Nullable private SpeechService recognizer = null;
 
     private boolean currentlyInitializingRecognizer = false;
@@ -137,6 +138,13 @@ public class VoskInputDevice extends SpeechInputDevice {
         if (recognizer != null) {
              recognizer.shutdown();
              recognizer = null;
+        }
+
+        if (currentModelDownloadId != null) {
+            final DownloadManager downloadManager =
+                    (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+            downloadManager.remove(currentModelDownloadId);
+            updateCurrentDownloadId(activity, null);
         }
 
         if (downloadingBroadcastReceiver != null) {
@@ -246,6 +254,11 @@ public class VoskInputDevice extends SpeechInputDevice {
         onInactive();
     }
 
+    /**
+     * Deletes the Vosk model downloaded in the {@link Context#getFilesDir()} if it exists. It also
+     * stops any Vosk model download currently in progress based on the id stored in settings.
+     * @param context the Android context used to get the download manager and the files dir
+     */
     public static void deleteCurrentModel(final Context context) {
         final DownloadManager downloadManager =
                 (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -287,18 +300,21 @@ public class VoskInputDevice extends SpeechInputDevice {
 
 
     ////////////////////
-    // File utilities //
+    // Model download //
     ////////////////////
 
     private boolean prepareModel() {
         if (new File(getModelDirectory(), "README").exists()) {
             // one file is in the correct place, so everything should be ok
+            Log.d(TAG, "Vosk model in place");
             return true;
         } else {
+            Log.d(TAG, "Vosk model not in place");
             final DownloadManager downloadManager =
                     (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
 
-            if (getDownloadIdFromPreferences(activity, downloadManager) == null) {
+            if (currentModelDownloadId == null) {
+                Log.d(TAG, "Vosk model is not already being downloaded");
                 // download zip if not already downloading
                 try {
                     final LocaleResolutionResult result = resolveSupportedLocale(
@@ -309,6 +325,8 @@ public class VoskInputDevice extends SpeechInputDevice {
                     asyncMakeToast(R.string.vosk_model_unsupported_language);
                     e.printStackTrace();
                 }
+            } else {
+                Log.d(TAG, "Vosk model already being downloaded: " + currentModelDownloadId);
             }
             return false;
         }
@@ -319,7 +337,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         asyncMakeToast(R.string.vosk_model_downloading);
         final File modelZipFile = getModelZipFile();
         //noinspection ResultOfMethodCallIgnored
-        modelZipFile.delete(); // if existing, delete the model zip file
+        modelZipFile.delete(); // if existing, delete the model zip file (should never happen)
 
         // build download manager request
         final String modelUrl = MODEL_URLS.get(language);
@@ -329,37 +347,36 @@ public class VoskInputDevice extends SpeechInputDevice {
                         R.string.vosk_model_notification_description, language))
                 .setDestinationUri(Uri.fromFile(modelZipFile));
 
-        // launch download
-        final long modelDownloadId = downloadManager.enqueue(request);
-        putDownloadIdInPreferences(activity, modelDownloadId);
-
         // setup download completion listener
         final IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         downloadingBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
+                Log.d(TAG, "Got intent for downloading broadcast receiver: " + intent);
                 if (downloadingBroadcastReceiver == null) {
                     return; // just to be sure there are no issues with threads
                 }
 
                 if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                     final long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                    if (id == modelDownloadId) {
+                    if (currentModelDownloadId != null && id == currentModelDownloadId) {
+                        Log.d(TAG, "Vosk model download complete, extracting from zip");
                         disposables.add(Completable
                                 .fromAction(VoskInputDevice.this::extractModelZip)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(() -> {
                                             asyncMakeToast(R.string.vosk_model_ready);
-                                            downloadManager.remove(modelDownloadId);
-                                            putDownloadIdInPreferences(activity, null);
+                                            downloadManager.remove(currentModelDownloadId);
+                                            updateCurrentDownloadId(activity, null);
                                             load();
                                         },
                                         throwable -> {
                                             asyncMakeToast(R.string.vosk_model_extraction_error);
                                             throwable.printStackTrace();
-                                            downloadManager.remove(modelDownloadId);
-                                            putDownloadIdInPreferences(activity, null);
+                                            downloadManager.remove(currentModelDownloadId);
+                                            updateCurrentDownloadId(activity, null);
+                                            onInactive();
                                         }));
                     }
                     activity.unregisterReceiver(downloadingBroadcastReceiver);
@@ -368,6 +385,10 @@ public class VoskInputDevice extends SpeechInputDevice {
             }
         };
         activity.registerReceiver(downloadingBroadcastReceiver, filter);
+
+        // launch download
+        Log.d(TAG, "Starting vosk model download: " + request);
+        updateCurrentDownloadId(activity, downloadManager.enqueue(request));
     }
 
     private void extractModelZip() throws IOException {
@@ -448,9 +469,9 @@ public class VoskInputDevice extends SpeechInputDevice {
     }
 
 
-    //////////////////////////
-    // Preference utilities //
-    //////////////////////////
+    ///////////////////////////
+    // Download id utilities //
+    ///////////////////////////
 
     private static Long getDownloadIdFromPreferences(final Context context,
                                                      final DownloadManager manager) {
@@ -470,7 +491,10 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
     }
 
-    private void putDownloadIdInPreferences(final Context context, final Long id) {
+    private void updateCurrentDownloadId(final Context context, final Long id) {
+        // this field is used anywhere except in static contexts, where the preference is used
+        currentModelDownloadId = id;
+
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String downloadIdKey = context.getString(R.string.pref_key_vosk_download_id);
         if (id == null) {
