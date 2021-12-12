@@ -63,7 +63,7 @@
     <string name="listening">Lytter…</string>
     <string name="action_voice_input">Talelytting</string>
     <string name="action_text_input">Tekstinnsending</string>
-    <string name="here_is_what_i_can_do">Dette kan gjøres:</string>
+    <string name="here_is_what_i_can_do">Dette kan gjøres!</string>
     <string name="text_input_hint">Spør om hva som helst…</string>
     <string name="copied_to_clipboard">Kopiert til utklippstavle</string>
     <string name="share_view">Vis i…</string>
