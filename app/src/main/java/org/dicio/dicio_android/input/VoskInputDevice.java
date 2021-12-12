@@ -359,28 +359,46 @@ public class VoskInputDevice extends SpeechInputDevice {
 
                 if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                     final long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                    if (currentModelDownloadId != null && id == currentModelDownloadId) {
-                        Log.d(TAG, "Vosk model download complete, extracting from zip");
-                        disposables.add(Completable
-                                .fromAction(VoskInputDevice.this::extractModelZip)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(() -> {
-                                            asyncMakeToast(R.string.vosk_model_ready);
-                                            downloadManager.remove(currentModelDownloadId);
-                                            updateCurrentDownloadId(activity, null);
-                                            load();
-                                        },
-                                        throwable -> {
-                                            asyncMakeToast(R.string.vosk_model_extraction_error);
-                                            throwable.printStackTrace();
-                                            downloadManager.remove(currentModelDownloadId);
-                                            updateCurrentDownloadId(activity, null);
-                                            onInactive();
-                                        }));
+
+                    if (currentModelDownloadId == null || id != currentModelDownloadId) {
+                        Log.w(TAG, "Download complete listener notified with unknown id: " + id);
+                        return; // do not unregister broadcast receiver
                     }
-                    activity.unregisterReceiver(downloadingBroadcastReceiver);
-                    downloadingBroadcastReceiver = null;
+
+                    if (downloadingBroadcastReceiver != null) {
+                        Log.d(TAG, "Unregistering downloading broadcast receiver");
+                        activity.unregisterReceiver(downloadingBroadcastReceiver);
+                        downloadingBroadcastReceiver = null;
+                    }
+
+                    if (downloadManager.getMimeTypeForDownloadedFile(currentModelDownloadId)
+                            == null) {
+                        Log.e(TAG, "Failed to download vosk model");
+                        asyncMakeToast(R.string.vosk_model_download_error);;
+                        downloadManager.remove(currentModelDownloadId);
+                        updateCurrentDownloadId(activity, null);
+                        onInactive();
+                        return;
+                    }
+
+                    Log.d(TAG, "Vosk model download complete, extracting from zip");
+                    disposables.add(Completable
+                            .fromAction(VoskInputDevice.this::extractModelZip)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(() -> {
+                                        asyncMakeToast(R.string.vosk_model_ready);
+                                        downloadManager.remove(currentModelDownloadId);
+                                        updateCurrentDownloadId(activity, null);
+                                        load();
+                                    },
+                                    throwable -> {
+                                        asyncMakeToast(R.string.vosk_model_extraction_error);
+                                        throwable.printStackTrace();
+                                        downloadManager.remove(currentModelDownloadId);
+                                        updateCurrentDownloadId(activity, null);
+                                        onInactive();
+                                    }));
                 }
             }
         };
