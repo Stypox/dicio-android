@@ -2,12 +2,12 @@
 <resources>
     <string name="eval_network_error_description">Dicio n\'a pas pu se connecter à internet. Veuillez vérifier votre connexion et réessayer.</string>
     <string name="eval_network_error">Erreur réseau</string>
-    <string name="eval_fatal_error">J\'ai rencontré une erreur lors de l\'évaluation de votre demande, désolé</string>
+    <string name="eval_fatal_error">J\'ai rencontré une erreur lors de l\'évaluation de votre demande</string>
     <string name="pref_speech_output_method_nothing">Rien</string>
     <string name="pref_speech_output_method_snackbar">Snackbar (message en bas)</string>
     <string name="pref_speech_output_method_toast">Toast (message popup)</string>
     <string name="pref_speech_output_method_android">Moteur de synthèse vocale Android</string>
-    <string name="skill_open_opening">Ouverture de %1$s</string>
+    <string name="skill_open_opening">Ouverture de %1$s…</string>
     <string name="skill_open_unknown_app">Application inconnue %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Voici %1$s de %2$s</string>
     <string name="skill_lyrics_song_not_found">Impossible de trouver la chanson %1$s</string>
