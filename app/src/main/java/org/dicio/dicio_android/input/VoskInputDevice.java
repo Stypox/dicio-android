@@ -290,12 +290,14 @@ public class VoskInputDevice extends SpeechInputDevice {
                 recognizer.stop();
             }
             notifyNoInputReceived();
+
+            // call onInactive() only if we really were listening, so that the SpeechInputDevice
+            // state icon is preserved if something different from "microphone on" was being shown
+            onInactive();
         }
 
         startListeningOnLoaded = false;
         currentlyListening = false;
-
-        onInactive();
     }
 
     /**
