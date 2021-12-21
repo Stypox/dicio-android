@@ -5,6 +5,9 @@ plugins {
 
 android {
     compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 14 // must be at least 4, otherwise some unwanted permissions are requested
+    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
