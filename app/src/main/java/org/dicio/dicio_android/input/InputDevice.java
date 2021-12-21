@@ -16,8 +16,8 @@ public abstract class InputDevice implements CleanableUp {
     public interface InputDeviceListener {
 
         /**
-         * Called right at the beginning of {@link #tryToGetInput()} to notify that the device is
-         * trying to get some input (useful for stopping other input or output devices)
+         * Called right at the beginning of {@link #tryToGetInput(boolean)} to notify that the
+         * device is trying to get some input (useful for stopping other input or output devices)
          */
         void onTryingToGetInput();
 
@@ -65,18 +65,23 @@ public abstract class InputDevice implements CleanableUp {
      * #notifyPartialInputReceived(String)}, final results to {@link #notifyInputReceived(String)}
      * or {@link #notifyNoInputReceived()} (based on whether some input was received or not) and
      * errors to {@link #notifyError(Throwable)}.
+     *
+     * @param manual true if and only if the user manually pressed on the specific button that
+     *               activates this input device, false otherwise. This might be useful to prevent
+     *               e.g. voice model downloads from starting in case the user didn't explicitly
+     *               trigger the input device.
      */
     @CallSuper
-    public void tryToGetInput() {
+    public void tryToGetInput(boolean manual) {
         if (inputDeviceListener != null) {
             inputDeviceListener.onTryingToGetInput();
         }
     }
 
     /**
-     * Cancels any input being received after {@link #tryToGetInput()} was called. Should do nothing
-     * if called while not getting input. Any partial input is discarded. Called for
-     * example when the user leaves the app.
+     * Cancels any input being received after {@link #tryToGetInput(boolean)} was called. Should do
+     * nothing if called while not getting input. Any partial input is discarded. Called for example
+     * when the user leaves the app.
      * <br><br>
      * Overriding functions should call {@link #notifyNoInputReceived()} when they stop getting
      * input.
@@ -98,8 +103,8 @@ public abstract class InputDevice implements CleanableUp {
 
 
     /**
-     * This has to be called by functions overriding {@link #tryToGetInput()} when some input from
-     * the user is received. Can be called multiple times while getting input.
+     * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when some input
+     * from the user is received. Can be called multiple times while getting input.
      * @param input the (raw) received input
      */
     protected void notifyPartialInputReceived(final String input) {
@@ -113,9 +118,9 @@ public abstract class InputDevice implements CleanableUp {
     }
 
     /**
-     * This has to be called by functions overriding {@link #tryToGetInput()} when some input from
-     * the user is received. Should be called only once, when stopping to get input. Should not be
-     * called if {@link #notifyNoInputReceived()} is called instead.
+     * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when some input
+     * from the user is received. Should be called only once, when stopping to get input. Should not
+     * be called if {@link #notifyNoInputReceived()} is called instead.
      * @param input the (raw) received input
      */
     protected void notifyInputReceived(final String input) {
@@ -129,8 +134,8 @@ public abstract class InputDevice implements CleanableUp {
     }
 
     /**
-     * This has to be called by functions overriding {@link #tryToGetInput()} when the user provided
-     * no input. Should be called only once, when stopping to get input. Should not be
+     * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when the user
+     * provided no input. Should be called only once, when stopping to get input. Should not be
      * called if {@link #notifyInputReceived(String)} is called instead.
      */
     protected void notifyNoInputReceived() {
@@ -144,9 +149,9 @@ public abstract class InputDevice implements CleanableUp {
     }
 
     /**
-     * This has to be called by functions overriding {@link #tryToGetInput()} when the user sent
-     * some input, but it could not be processed due to an error. This can also be called if there
-     * was an error while loading, and can be called by functions overriding {@link #load()}.
+     * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when the user
+     * sent some input, but it could not be processed due to an error. This can also be called if
+     * there was an error while loading, and can be called by functions overriding {@link #load()}.
      * @param e an exception to handle
      */
     protected void notifyError(final Throwable e) {

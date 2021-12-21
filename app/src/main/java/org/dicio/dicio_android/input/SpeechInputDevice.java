@@ -23,7 +23,7 @@ public abstract class SpeechInputDevice extends InputDevice {
 
 
     private enum ShownState {
-        LOADING, INACTIVE, LISTENING
+        REQUIRES_DOWNLOAD, LOADING, INACTIVE, LISTENING
     }
 
     @Nullable private ExtendedFloatingActionButton voiceFab = null;
@@ -57,7 +57,7 @@ public abstract class SpeechInputDevice extends InputDevice {
                     // already listening, so stop listening
                     cancelGettingInput();
                 } else {
-                    tryToGetInput();
+                    tryToGetInput(true);
                 }
             });
         }
@@ -90,16 +90,21 @@ public abstract class SpeechInputDevice extends InputDevice {
      * or {@link #notifyNoInputReceived()} (based on whether some input was received or not) and
      * errors to {@link #notifyError(Throwable)}. They must call {@link #onListening()} when they
      * turn on the microphone and {@link #onInactive()} when instead they turn it off.
+     *
+     * @param manual true if and only if the user manually pressed on the specific button that
+     *               activates this input device, false otherwise. This might be useful to prevent
+     *               e.g. voice model downloads from starting in case the user didn't explicitly
+     *               trigger the input device.
      */
     @Override
-    public void tryToGetInput() {
-        super.tryToGetInput(); // overridden just to provide a more detailed documentation ^
+    public void tryToGetInput(boolean manual) {
+        super.tryToGetInput(manual); // overridden just to provide a more detailed documentation ^
     }
 
     /**
-     * Stops listening and turns off the microphone after {@link #tryToGetInput()} was called.
-     * Should do nothing if called while not listening. Any partial result is discarded. Called for
-     * example when the user leaves the app.
+     * Stops listening and turns off the microphone after {@link #tryToGetInput(boolean)} was
+     * called. Should do nothing if called while not listening. Any partial result is discarded.
+     * Called for example when the user leaves the app.
      * <br><br>
      * Overriding functions should call {@link #notifyNoInputReceived()} and {@link #onInactive()}
      * when they turn off the microphone.
@@ -108,25 +113,37 @@ public abstract class SpeechInputDevice extends InputDevice {
     public abstract void cancelGettingInput();
 
     /**
-     * This must be called by functions overriding {@link #tryToGetInput()} when they have started
-     * listening, so that the microphone on icon can be shown.
+     * This must be called by functions overriding {@link #tryToGetInput(boolean)} if the {@code
+     * manual} parameter is {@code false} and loading the voice model would require downloading
+     * files from the internet. It must also be called by {@link #load()} when loading the voice
+     * model would require downloading files from the internet (since {@link #load()} is never
+     * called after a user action but automatically, which is equivalent to having {@code
+     * manual=false} for {@link #tryToGetInput(boolean)}). A download icon will be shown.
+     */
+    protected final void onRequiresDownload() {
+        showState(ShownState.REQUIRES_DOWNLOAD);
+    }
+
+    /**
+     * This must be called by functions overriding {@link #tryToGetInput(boolean)} when they have
+     * started listening, so that the microphone on icon can be shown.
      */
     protected final void onLoading() {
         showState(ShownState.LOADING);
     }
 
     /**
-     * This must be called by functions overriding {@link #tryToGetInput()} when they have finished
-     * listening or by functions overriding {@link #load()} when they have finished loading, so that
-     * the so that the microphone off icon can be shown.
+     * This must be called by functions overriding {@link #tryToGetInput(boolean)} when they have
+     * finished listening or by functions overriding {@link #load()} when they have finished
+     * loading, so that the so that the microphone off icon can be shown.
      */
     protected final void onInactive() {
         showState(ShownState.INACTIVE);
     }
 
     /**
-     * This must be called by functions overriding {@link #tryToGetInput()} when they have started
-     * listening, so that the microphone on icon can be shown.
+     * This must be called by functions overriding {@link #tryToGetInput(boolean)} when they have
+     * started listening, so that the microphone on icon can be shown.
      */
     protected final void onListening() {
         showState(ShownState.LISTENING);
@@ -137,6 +154,12 @@ public abstract class SpeechInputDevice extends InputDevice {
         currentShownState = state;
         if (voiceFab != null && voiceLoading != null) {
             switch (state) {
+                case REQUIRES_DOWNLOAD:
+                    voiceFab.setIcon(AppCompatResources.getDrawable(voiceFab.getContext(),
+                            R.drawable.ic_download_white));
+                    voiceFab.shrink();
+                    voiceLoading.setVisibility(View.GONE);
+                    break;
                 case LOADING:
                     voiceFab.setIcon(new ColorDrawable(Color.TRANSPARENT));
                     voiceFab.shrink();
