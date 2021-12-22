@@ -105,6 +105,10 @@ public class SkillHandler {
         return Objects.requireNonNull(fallbackSkillInfoList.get(0)).build(context);
     }
 
+    public static List<SkillInfo> getAllSkillInfoList() {
+        return skillInfoList;
+    }
+
     public static List<SkillInfo> getAvailableSkillInfoList() {
         assertSkillContextNotNull();
         final List<SkillInfo> result = new ArrayList<>();
@@ -120,6 +124,7 @@ public class SkillHandler {
 
     public static List<SkillInfo> getEnabledSkillInfoList() {
         assertSkillContextNotNull();
+        //noinspection ConstantConditions (context is not null, asserted just above here)
         final SharedPreferences prefs
                 = PreferenceManager.getDefaultSharedPreferences(context.getAndroidContext());
         final List<SkillInfo> result = new ArrayList<>();

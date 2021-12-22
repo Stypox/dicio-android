@@ -13,13 +13,12 @@
         android:id="@+id/skillIconImageView"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginStart="12dp"
         android:tint="?attr/iconsTint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toBottomOf="@+id/skillCheckBox"
         app:layout_constraintStart_toEndOf="@+id/skillCheckBox"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/skillCheckBox"
         tools:src="@drawable/ic_music_note_white" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
@@ -35,13 +34,26 @@
         android:id="@+id/expandImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/skillCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/skillCheckBox"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/skillCheckBox"
         app:srcCompat="?attr/iconExpandMore" />
+
+    <TextView
+        android:id="@+id/notAvailableTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:paddingBottom="12dp"
+        android:text="@string/pref_skill_not_available"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/skillCheckBox" />
 
     <FrameLayout
         android:id="@+id/fragmentHolder"
@@ -49,9 +61,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/skillCheckBox"
+        app:layout_constraintTop_toBottomOf="@id/notAvailableTextView"
         tools:layout_height="20dp"
         tools:visibility="visible" />
 
