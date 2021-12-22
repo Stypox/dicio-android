@@ -1,0 +1,10 @@
+calculator: medium
+berechne|(was ist|ergibt) (die|das|der)? .calculation.;
+
+calculator_operators: low
+[addition] plus|summe|summiere|addiere|(füge hinzu);
+[subtraction] minus|subtrahiere|(ziehe von?);
+[multiplication] mal|(prudukt von)|(multipliziere mit?);
+[division] dividiere|(quotient von?)|(geteilt durch?)|durch);
+[power] hoch;
+[square_root] die wurzel von?;
