@@ -1,0 +1,9 @@
+weather: high
+regnet|schneit|hagelt es draußen?;
+ist es kalt|warm|eisig|nebelig|regnerisch|verschneit|sonnig draußen?;
+regnet|schneit|hagelt es in .where.;
+ist es in .where. kalt|warm|eisig|nebelig|regnerisch|verschneit|sonnig;
+wie ist das wetter in .where.;
+scheint die sonne in .where.;
+
+
