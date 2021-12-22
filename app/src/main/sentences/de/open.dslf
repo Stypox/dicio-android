@@ -1,2 +1,2 @@
 open: medium
-starte|zeige|öffne ((die|den|das)|(die app|anwendung))? .what. (app|anwendung)?;
+starte|zeige|öffne|oeffne ((die|den|das)|(die app|anwendung))? .what. (app|anwendung)?;
