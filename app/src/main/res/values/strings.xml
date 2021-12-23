@@ -5,8 +5,10 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_header_subtitle">May I help you?</string>
     <string name="share">Share</string>
-    <string name="share_view">View in…</string>
+    <string name="open_with">Open with</string>
+    <string name="no_app_to_open_intent">No app on your device can open this</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="permission_denied">Permission denied</string>
     <string name="text_input_hint">Ask me anything…</string>
     <string name="here_is_what_i_can_do">Here is what I can do!</string>
     <string name="action_text_input">Text input</string>

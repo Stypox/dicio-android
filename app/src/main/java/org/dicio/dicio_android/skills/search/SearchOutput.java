@@ -2,6 +2,7 @@ package org.dicio.dicio_android.skills.search;
 
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.Sentences_en.search;
+import static org.dicio.dicio_android.util.ShareUtils.openUrlInBrowser;
 
 import android.text.Html;
 import android.view.View;
@@ -75,7 +76,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             ((TextView) view.findViewById(R.id.description))
                     .setText(Html.fromHtml(item.description));
 
-            view.setOnClickListener(v -> ShareUtils.view(context.getAndroidContext(), item.url));
+            view.setOnClickListener(v -> openUrlInBrowser(context.getAndroidContext(), item.url));
             output.addView(view);
         }
 
