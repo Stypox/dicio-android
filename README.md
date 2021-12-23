@@ -31,7 +31,7 @@ When contributing keep in mind that other people may have **needs** and **views 
 
 If you want to translate Dicio to a new language you have to follow these **steps**:
 <ul><li>
-  Translate the <b>strings used inside the app</b> via <a href="https://hosted.weblate.org/engage/dicio-android/">Weblate</a>. If your language isn't already there, add it with <a href="https://hosted.weblate.org/new-lang/dicio-android/strings/">tool -> start new translation</a> then add it to the app's language selector (the instructions for this are similar to <a href="https://github.com/TeamNewPipe/NewPipe/wiki/How-to-add-a-new-language-to-NewPipe#add-it-to-the-language-selector">NewPipe's</a>, don't hesitate to ask for help).
+  Translate the <b>strings used inside the app</b> via <a href="https://hosted.weblate.org/engage/dicio-android/">Weblate</a>. If your language isn't already there, add it with <a href="https://hosted.weblate.org/new-lang/dicio-android/strings/">tool -> start new translation</a>.
   </br>
   <a href="https://hosted.weblate.org/engage/dicio-android/">
   <img src="https://hosted.weblate.org/widgets/dicio-android/-/287x66-grey.png" alt="Translation status" />
@@ -39,6 +39,12 @@ If you want to translate Dicio to a new language you have to follow these **step
 </li></ul>
 
 - Translate the **sentences** used by Dicio to identify a user's request and to feed it to the correct skill. To do this open the repository root and navigate to `app/src/main/sentences/`. Copy-paste the `en` folder (i.e. the one containing English translations) and call the new folder with the 2- or 3-letter name of your language (in particular, any `ISO-639`-compliant language ID is supported). Then open the newly created folder: inside there should be some files with the `.dslf` extension and in English language. Open each one of them and translate the English content; feel free to add/remove sentences if their translation does not fit into your language and remember those sentences need to identify as better as possible what the user said. Do **NOT** edit the name of the copied files or the first line in them (i.e. the `ID: SPECIFICITY` line, like `weather: high`): they should remain English. To learn about the Dicio sentences language syntax, please refer to the documentation and the [example](https://github.com/Stypox/dicio-sentences-compiler#example) in [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler#dicio-sentences-language). Hopefully in the future a custom translation system will be used for sentences.
+
+- Once both the Weblate and the sentences translations are ready, add the new language to the app's language selector. You can do so by editing [this file](./app/src/main/res/values/arrays.xml):
+  1. Add the [language code](https://en.wikipedia.org/wiki/Language_code) in the language code array `pref_language_entry_values`. You must respect the alphabetic order. You can find the language code with Weblate: click on a language to translate, and the language code is in the last part of the URL. For example, English is `https://hosted.weblate.org/projects/newpipe/strings/en`, and English language code is `en`.
+  2. Add the language name in the language name array `pref_language_entries`. It must be placed at the same index as language code. For instance, if `en` is the 3rd on the language code array, then it's the 3rd on the language name array, too.
+
+- Open a pull request containing both the translated sentences files and the language selector addition. You may want to take a look at [the pull request that added German, #19](https://github.com/Stypox/dicio-android/pull/19), and if you need help don't hesitate to ask :-) 
 
 ### Adding skills
 

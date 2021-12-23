@@ -11,15 +11,15 @@
 
     <string-array name="pref_language_entries">
         <item>@string/pref_language_system</item>
+        <item>Deutsch</item>
         <item>English</item>
         <item>Italiano</item>
-        <item>Deutsch</item>
     </string-array>
     <string-array name="pref_language_entry_values">
         <item />
+        <item>de</item>
         <item>en</item>
         <item>it</item>
-        <item>de</item>
     </string-array>
 
     <string-array name="pref_input_method_entries">
