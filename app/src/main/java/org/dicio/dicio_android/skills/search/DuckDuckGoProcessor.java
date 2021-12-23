@@ -76,8 +76,8 @@ public class DuckDuckGoProcessor
                 searchResult.title = element.select("a[class=result__a]").first().html();
                 searchResult.thumbnailUrl = "https:"
                         + element.select("img[class=result__icon__img]").first().attr("src");
-                searchResult.url = element.select("a[class=result__a]").first().attr("href");
-                searchResult.url = ConnectionUtils.urlDecode(searchResult.url.substring(15));
+                searchResult.url = ConnectionUtils.urlDecode(
+                        element.select("a[class=result__a]").first().attr("href"));
                 searchResult.description
                         = element.select("a[class=result__snippet]").first().html();
 
