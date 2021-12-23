@@ -9,14 +9,25 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ConnectionUtils {
 
-    public static String getPage(final String url) throws IOException {
+    public static String getPage(final String url,
+                                 final Map<String, String> headers) throws IOException {
         final URLConnection connection = new URL(url).openConnection();
+        for (final Map.Entry<String, String> header : headers.entrySet()) {
+            connection.setRequestProperty(header.getKey(), header.getValue());
+        }
+
         final Scanner scanner = new Scanner(connection.getInputStream());
         return scanner.useDelimiter("\\A").next();
+    }
+
+    public static String getPage(final String url) throws IOException {
+        return getPage(url, Collections.emptyMap());
     }
 
     public static JSONObject getPageJson(final String url) throws IOException, JSONException {
