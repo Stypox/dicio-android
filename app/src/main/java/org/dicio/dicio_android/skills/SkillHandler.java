@@ -29,6 +29,7 @@ import java.util.Random;
 
 public class SkillHandler {
 
+    // TODO improve id handling (maybe just use an int that can point to an Android resource)
     private static final List<SkillInfo> skillInfoList = new ArrayList<SkillInfo>() {{
         add(new WeatherInfo());
         add(new SearchInfo());
@@ -102,8 +103,10 @@ public class SkillHandler {
     }
 
     public static Skill getFallbackSkill() {
+        assertSkillContextNotNull();
         return Objects.requireNonNull(fallbackSkillInfoList.get(0)).build(context);
     }
+
 
     public static List<SkillInfo> getAllSkillInfoList() {
         return skillInfoList;

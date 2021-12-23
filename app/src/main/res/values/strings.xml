@@ -65,6 +65,8 @@
     <string name="skill_sentence_example_calculator">What is five times four minus a million?</string>
     <string name="skill_fallback_name_text">Text message</string>
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>
+    <string name="skill_search_no_results">The search returned no results, try telling me again what you want to search for</string>
+    <string name="skill_search_what_question">What do you want to search for?</string>
     <string name="skill_weather_could_not_find_city">I could not find city %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Currently in %1$s there is %2$s</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
