@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import org.dicio.dicio_android.BuildConfig;
 import org.dicio.skill.util.CleanableUp;
 
+import java.util.Arrays;
+
 public abstract class InputDevice implements CleanableUp {
 
     /**
@@ -32,6 +34,12 @@ public abstract class InputDevice implements CleanableUp {
          * @param input the received input
          */
         void onInputReceived(String input);
+
+        /**
+         * Called when alternative Inputs are Received from Vosk
+         * Alternative Inputs are tried, when the first doesn't match
+         */
+        void onMultipleInputsReceived(String[] input,double[] confidence);
 
         /**
          * Called when no input was received from the user after he seemed to want to provide some
@@ -130,6 +138,23 @@ public abstract class InputDevice implements CleanableUp {
 
         if (inputDeviceListener != null) {
             inputDeviceListener.onInputReceived(input);
+        }
+    }
+    /**
+     * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when some input
+     * from the user is received. Should be called only once, when stopping to get input. Should not
+     * be called if {@link #notifyNoInputReceived()} is called instead.
+     * Vosk can return multiple outputs with diffrent propability. If the first input doesn't fit to any skill the next input will be tried.
+     * @param input sorted list of (raw) Inputs
+     * @param conf the confidence of each input.
+     */
+    protected void notifyInputReceived(final String[] input,final double[] conf) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "Input from user: " + Arrays.toString(input));
+        }
+
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onMultipleInputsReceived(input,conf);
         }
     }
 
