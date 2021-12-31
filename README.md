@@ -44,7 +44,9 @@ If you want to translate Dicio to a new language you have to follow these **step
   1. Add the [language code](https://en.wikipedia.org/wiki/Language_code) in the language code array `pref_language_entry_values`. You must respect the alphabetic order. You can find the language code with Weblate: click on a language to translate, and the language code is in the last part of the URL. For example, English is `https://hosted.weblate.org/projects/newpipe/strings/en`, and English language code is `en`.
   2. Add the language name in the language name array `pref_language_entries`. It must be placed at the same index as language code. For instance, if `en` is the 3rd on the language code array, then it's the 3rd on the language name array, too.
 
-- Open a pull request containing both the translated sentences files and the language selector addition. You may want to take a look at [the pull request that added German, #19](https://github.com/Stypox/dicio-android/pull/19), and if you need help don't hesitate to ask :-) 
+- Then update the app descriptions so that people know that the language you are adding is supported. The files you should edit are [README.md](./README.md) (i.e. the file you are currently viewing) and [fastlane/metadata/android/en-US/full_description.txt](./fastlane/metadata/android/en-US/full_description.txt) (the English description for F-Droid).
+
+- Open a pull request containing both the translated sentences files, the language selector addition and the app descriptions updates. You may want to take a look at [the pull request that added German, #19](https://github.com/Stypox/dicio-android/pull/19), and if you need help don't hesitate to ask :-) 
 
 ### Adding skills
 
