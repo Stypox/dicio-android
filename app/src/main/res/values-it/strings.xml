@@ -72,4 +72,9 @@
     <string name="skill_calculator_could_not_calculate">Non sono riuscito a calcolare ciò che mi hai chiesto</string>
     <string name="pref_skill_not_available">Questa abilità non è ancora disponibile nella tua lingua. Se vuoi contribuire sarai ben accetto!</string>
     <string name="vosk_model_download_error">Non è stato possibile scaricare il modello di Vosk</string>
+    <string name="open_with">Apri con</string>
+    <string name="no_app_to_open_intent">Nessuna app sul tuo dispositivo può aprire questo contenuto</string>
+    <string name="permission_denied">Permesso negato</string>
+    <string name="skill_search_what_question">Cosa vuoi cercare\?</string>
+    <string name="skill_search_no_results">La ricerca non ha prodotto risultati, prova a dirmi di nuovo cosa vuoi cercare</string>
 </resources>
