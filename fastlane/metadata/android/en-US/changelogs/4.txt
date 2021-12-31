@@ -1,0 +1,12 @@
+New:
+- Add German and Russian languages
+
+Improved:
+- Show skills that can't be enabled, too, in the skill settings
+- [Weather] Improve English sentences
+- [Search] Ask the user again if there were no results
+
+Fixed:
+- Fix initial screen title alignment
+- [Search] Fix clicking on results
+- [Search] Fix DuckDuckGo locale
