@@ -11,7 +11,6 @@
     <string name="skill_name_search">Cerca</string>
     <string name="drawer_header_subtitle">En què puc ajudar-vos\?</string>
     <string name="share">Comparteix</string>
-    <string name="share_view">Mostra en…</string>
     <string name="copied_to_clipboard">S\'ha copiat al porta-retalls</string>
     <string name="text_input_hint">Pregunteu-me alguna cosa…</string>
     <string name="listening">S\'està escoltant…</string>
