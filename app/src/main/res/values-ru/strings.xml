@@ -52,7 +52,6 @@
     <string name="skill_lyrics_found_song_by_artist">Нашёл %1$s исполнителя %2$s</string>
     <string name="skill_open_opening">Открываю %1$s…</string>
     <string name="eval_no_match">Я не понимаю, пожалуйста повторите</string>
-    <string name="share_view">Открыть в …</string>
     <string name="vosk_model_notification_description">Язык: %1$s</string>
     <string name="vosk_model_notification_title">модель Vosk</string>
     <string name="pref_skills">Умения</string>

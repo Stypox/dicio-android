@@ -66,7 +66,6 @@
     <string name="action_text_input">Texteingabe</string>
     <string name="here_is_what_i_can_do">Folgendes kann ich für dich machen!</string>
     <string name="copied_to_clipboard">in die Zwischenablage Kopiert</string>
-    <string name="share_view">Zeige in…</string>
     <string name="share">Teile</string>
     <string name="drawer_header_subtitle">Kann ich dir helfen\?</string>
     <string name="drawer_close">Schließe die Navigationsleiste</string>
