@@ -71,4 +71,5 @@
     <string name="skill_sentence_example_calculator">Quanto fa cinque per quattro meno un milione?</string>
     <string name="skill_calculator_could_not_calculate">Non sono riuscito a calcolare ciò che mi hai chiesto</string>
     <string name="pref_skill_not_available">Questa abilità non è ancora disponibile nella tua lingua. Se vuoi contribuire sarai ben accetto!</string>
+    <string name="vosk_model_download_error">Non è stato possibile scaricare il modello di Vosk</string>
 </resources>
