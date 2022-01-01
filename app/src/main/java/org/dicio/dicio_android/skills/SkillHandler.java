@@ -15,6 +15,7 @@ import org.dicio.dicio_android.skills.fallback.text.TextFallbackInfo;
 import org.dicio.dicio_android.skills.lyrics.LyricsInfo;
 import org.dicio.dicio_android.skills.open.OpenInfo;
 import org.dicio.dicio_android.skills.search.SearchInfo;
+import org.dicio.dicio_android.skills.telephone.TelephoneInfo;
 import org.dicio.dicio_android.skills.weather.WeatherInfo;
 import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.skill.Skill;
@@ -36,6 +37,7 @@ public class SkillHandler {
         add(new LyricsInfo());
         add(new OpenInfo());
         add(new CalculatorInfo());
+        add(new TelephoneInfo());
     }};
 
     private static final List<SkillInfo> fallbackSkillInfoList = new ArrayList<SkillInfo>() {{
