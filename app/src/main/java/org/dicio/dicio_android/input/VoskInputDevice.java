@@ -267,12 +267,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                 if (input.isEmpty()) {
                     notifyNoInputReceived();
                 } else {
-                    String[] inputarray=new String[input.size()];
-                    double[] confidencearray=new double[input.size()];
-                    for(int i=0;i<input.size();i++)
-                        confidencearray[i]=confidence.get(i);
-                    input.toArray(inputarray);
-                    notifyInputReceived(inputarray,confidencearray );
+                    notifyInputReceived(input);
                 }
             }
 

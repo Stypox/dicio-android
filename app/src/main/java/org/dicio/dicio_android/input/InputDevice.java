@@ -8,7 +8,8 @@ import androidx.annotation.Nullable;
 import org.dicio.dicio_android.BuildConfig;
 import org.dicio.skill.util.CleanableUp;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class InputDevice implements CleanableUp {
 
@@ -31,15 +32,10 @@ public abstract class InputDevice implements CleanableUp {
 
         /**
          * Called when some input was received from the user
-         * @param input the received input
+         * @param input the list of alternative (raw) inputs, sorted by confidence (the most confident item is the first one). Use a List with one String if there are no alternative inputs.
          */
-        void onInputReceived(String input);
+        void onInputReceived(List<String> input);
 
-        /**
-         * Called when alternative Inputs are Received from Vosk
-         * Alternative Inputs are tried, when the first doesn't match
-         */
-        void onMultipleInputsReceived(String[] input,double[] confidence);
 
         /**
          * Called when no input was received from the user after he seemed to want to provide some
@@ -137,7 +133,7 @@ public abstract class InputDevice implements CleanableUp {
         }
 
         if (inputDeviceListener != null) {
-            inputDeviceListener.onInputReceived(input);
+            inputDeviceListener.onInputReceived(Collections.singletonList(input));
         }
     }
     /**
@@ -145,16 +141,15 @@ public abstract class InputDevice implements CleanableUp {
      * from the user is received. Should be called only once, when stopping to get input. Should not
      * be called if {@link #notifyNoInputReceived()} is called instead.
      * Vosk can return multiple outputs with diffrent propability. If the first input doesn't fit to any skill the next input will be tried.
-     * @param input sorted list of (raw) Inputs
-     * @param conf the confidence of each input.
+     * @param input sorted list of (raw) inputs, the most confident input must be the first item in the list.
      */
-    protected void notifyInputReceived(final String[] input,final double[] conf) {
+    protected void notifyInputReceived(final List<String> input) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "Input from user: " + Arrays.toString(input));
+            Log.i(TAG, "Input from user: " + input.toString());
         }
 
         if (inputDeviceListener != null) {
-            inputDeviceListener.onMultipleInputsReceived(input,conf);
+            inputDeviceListener.onInputReceived(input);
         }
     }
 

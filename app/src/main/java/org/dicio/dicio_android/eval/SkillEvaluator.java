@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
@@ -34,12 +33,12 @@ import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.CleanableUp;
 import org.dicio.skill.util.WordExtractor;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -54,7 +53,7 @@ public class SkillEvaluator implements CleanableUp {
     private Activity activity;
 
     private boolean currentlyProcessingInput = false;
-    private final Queue<Object> queuedInputs = new LinkedList<>();
+    private final Queue<List<String>> queuedInputs = new LinkedList<>();
     @Nullable private View partialInputView = null;
     private boolean hasAddedPartialInputView = false;
     @Nullable private Disposable evaluationDisposable = null;
@@ -201,12 +200,7 @@ public class SkillEvaluator implements CleanableUp {
             }
 
             @Override
-            public void onInputReceived(final String input) {
-                processInput(input);
-            }
-
-            @Override
-            public void onMultipleInputsReceived(String[] input, double[] confidence) {
+            public void onInputReceived(final List<String> input) {
                 processInput(input);
             }
 
@@ -235,14 +229,10 @@ public class SkillEvaluator implements CleanableUp {
                 }
 
                 @Override
-                public void onInputReceived(final String input) {
+                public void onInputReceived(final List<String> input) {
                     processInput(input);
                 }
 
-                @Override
-                public void onMultipleInputsReceived(String[] input, double[] confidence) {
-                    processInput(input);
-                }
 
                 @Override
                 public void onNoInputReceived() {
@@ -292,7 +282,7 @@ public class SkillEvaluator implements CleanableUp {
     // Input processing //
     //////////////////////
 
-    private void processInput(final Object input) {
+    private void processInput(final List<String> input) {
         hasAddedPartialInputView = false;
         queuedInputs.add(input);
         tryToProcessQueuedInput();
@@ -309,19 +299,11 @@ public class SkillEvaluator implements CleanableUp {
             return;
         }
 
-        final Object inputobj = queuedInputs.peek();
-        if(inputobj instanceof String) {
-            String input= (String) inputobj;
-            currentlyProcessingInput = true;
-            displayUserInput(input.replace('\n', ' '));
-            evaluateMatchingSkill(input);
 
-        }else if(inputobj instanceof String[]){
-            String[] input=(String[]) inputobj;
-            currentlyProcessingInput = true;
-            displayUserInput(input[0].replace('\n', ' '));
-            evaluateMatchingSkill(input);
-        }
+        List<String> input=queuedInputs.peek();
+        currentlyProcessingInput = true;
+        evaluateMatchingSkill(input);
+
     }
 
     private void displayUserInput(final String input) {
@@ -363,7 +345,7 @@ public class SkillEvaluator implements CleanableUp {
                     if (s.length() > startIndex && s.charAt(startIndex) == '\n') {
                         s.delete(startIndex, startIndex + 1);
                         if (!s.toString().trim().equals(input.trim())) {
-                            processInput(s.toString());
+                            processInput(Collections.singletonList(s.toString()));
                             inputEditText.setText(input); // restore original input
                         }
                     }
@@ -411,18 +393,27 @@ public class SkillEvaluator implements CleanableUp {
     // Skill evaluation //
     //////////////////////
 
-    private void evaluateMatchingSkill(final String input) {
+    private void evaluateMatchingSkill(final List<String> inputs) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
             evaluationDisposable.dispose();
         }
 
-        evaluationDisposable = Maybe.fromCallable(() -> {
-            final List<String> inputWords = WordExtractor.extractWords(input);
-            final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
-            final Skill skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
+        evaluationDisposable = Single.fromCallable(() -> {
+            Skill skill=null;
+            String input="";
+            for(int i=0;i<inputs.size();i++){
+                input=inputs.get(i);
+                final List<String> inputWords = WordExtractor.extractWords(input);
+                final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
+                skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
+                if (skill != null&&!(skill instanceof TextFallback)) {
+                    break;
+                }
 
-            if(skill==null) {
-                Log.w("SKILLS", "No matching Skill found");
+            }
+            displayUserInput(input);
+
+            if (skill == null) {
                 return null;
             }
 
@@ -437,29 +428,6 @@ public class SkillEvaluator implements CleanableUp {
                 skillNeedingPermissions = skill;
                 return null;
             }
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(this::generateOutput, this::onError);
-    }
-    private void evaluateMatchingSkill(final String[] inputs) {
-        if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
-            evaluationDisposable.dispose();
-        }
-
-        evaluationDisposable = Single.fromCallable(() -> {
-            Skill skill=null;
-            for(String input :inputs){
-                final List<String> inputWords = WordExtractor.extractWords(input);
-                final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
-                skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
-                if (skill != null&&!(skill instanceof TextFallback)) {
-                    break;
-                }
-
-            }
-            skill.processInput(SkillHandler.getSkillContext());
-            return skill;
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
