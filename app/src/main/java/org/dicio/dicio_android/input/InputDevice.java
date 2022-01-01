@@ -32,7 +32,8 @@ public abstract class InputDevice implements CleanableUp {
 
         /**
          * Called when some input was received from the user
-         * @param input the list of alternative (raw) inputs, sorted by confidence (the most confident item is the first one). Use a List with one String if there are no alternative inputs.
+         * Sometimes input devices can return multiple alternative outputs with different confidences. If the first input in the List doesn't fit to any skill the next input will be tried.
+         * @param input the list of alternative (raw) inputs, sorted by confidence (the most confident item is the first one). Use Collections.singletonlist() if there's only one input.
          */
         void onInputReceived(List<String> input);
 
