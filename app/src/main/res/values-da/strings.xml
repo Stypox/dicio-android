@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="drawer_open">Åbn navigation</string>
+    <string name="drawer_close">Luk navigation</string>
+    <string name="drawer_header_subtitle">Kan jeg hjælpe dig\?</string>
+    <string name="share">Del</string>
+    <string name="open_with">Åbn med</string>
+    <string name="copied_to_clipboard">Kopieret</string>
+    <string name="permission_denied">Adgang nægtet</string>
+    <string name="text_input_hint">Spørg mig om hvad som helst…</string>
+    <string name="action_voice_input">Stemmeinput</string>
+    <string name="listening">Lytter…</string>
+    <string name="vosk_model_notification_title">Vosk model</string>
+    <string name="vosk_model_notification_description">Sprog: %1$s</string>
+    <string name="vosk_model_unsupported_language">Der er ingen Vosk model for dette sprog</string>
+    <string name="vosk_model_downloading">Downloader Vosk model…</string>
+    <string name="vosk_model_extracting">Udpakker Vosk model…</string>
+    <string name="vosk_model_download_error">Vosk model kunne ikke downloades</string>
+    <string name="vosk_model_extraction_error">Vosk model udpakning fra Zip mislykkedes</string>
+    <string name="vosk_model_ready">Vosk model er klar</string>
+    <string name="android_tts_unsupported_language">Dette sprog er ikke understøttet af Android tekst til tale</string>
+    <string name="pref_io">Input og output metoder</string>
+    <string name="pref_appearance">Udseende</string>
+    <string name="pref_skills">Færdigheder</string>
+    <string name="pref_theme">Tema</string>
+    <string name="pref_theme_summary">Vælg farvetema - %1$s</string>
+    <string name="pref_theme_light">Lys</string>
+    <string name="pref_theme_dark">Mørk</string>
+    <string name="pref_language">Sprog</string>
+    <string name="no_app_to_open_intent">Der blev ikke fundet en app til at åbne det</string>
+    <string name="here_is_what_i_can_do">Her er hvad jeg kan gøre!</string>
+    <string name="settings">Indstillinger</string>
+    <string name="action_text_input">Tekstinput</string>
+    <string name="microphone_error">Det er ikke muligt at bruge mikrofonen, da den sandsynligvis allerede er i brug eller at der ikke er de nødvendige tilladelser.</string>
+</resources>
