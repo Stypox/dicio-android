@@ -67,8 +67,14 @@
     <string name="text_input_hint">Demandez-moi quelque chose…</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
     <string name="share">Partager</string>
-    <string name="drawer_header_subtitle">Puis-je vous aider \?</string>
+    <string name="drawer_header_subtitle">Puis-je vous aider\?</string>
     <string name="drawer_close">Fermer le panneau de navigation</string>
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
     <string name="vosk_model_download_error">Le téléchargement du modèle Vosk a échoué</string>
+    <string name="open_with">Ouvrir avec</string>
+    <string name="no_app_to_open_intent">Aucune application installée ne peut ouvrir ce lien</string>
+    <string name="skill_search_no_results">La recherche n\'a retourné aucun résultat. Essayez à nouveau de me dire ce que vous souhaitez rechercher.</string>
+    <string name="skill_search_what_question">Que recherchez-vous \?</string>
+    <string name="permission_denied">Permission refusée</string>
+    <string name="pref_skill_not_available">Cette fonctionnalité n\'est pas encore disponible dans votre langue. Les contributions sont les bienvenues !</string>
 </resources>
