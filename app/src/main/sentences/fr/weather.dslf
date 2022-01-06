@@ -1,10 +1,7 @@
 weather: high
-regnet|schneit|hagelt es draußen?;
-wie ist das wetter draußen;
-ist es kalt|warm|eisig|nebelig|regnerisch|verschneit|sonnig draußen?;
-regnet|schneit|hagelt es (in .where.)?;
-ist es (in .where.)? kalt|warm|eisig|nebelig|regnerisch|verschneit|sonnig (in .where.)?;
-wie ist das wetter (in .where.)?;
-scheint die sonne (in .where.)?;
+(quelle est)? la? météo ((à|en .where.)|dehors)?;
+quel temps fait il ((à|en .where.)|dehors)?;
+fait il froid|frais|tiède|chaud|humide dehors?;
+(est ce que)? le temps est il? pluvieux ((à .where.)|dehors)?
 
 
