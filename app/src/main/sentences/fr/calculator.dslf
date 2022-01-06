@@ -1,0 +1,10 @@
+calculator: medium
+calcule|(calcule? combien fait|font) .calculation.;
+
+calculator_operators: low
+[addition] plus;
+[subtraction] moins;
+[multiplication] fois|("multiplié" par);
+[division] ("divisé" par)|sur;
+[power] puissance|exposant;
+[square_root] la racine "carrée" de?;
