@@ -67,7 +67,7 @@
     <string name="text_input_hint">Demandez-moi quelque chose…</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
     <string name="share">Partager</string>
-    <string name="drawer_header_subtitle">Puis-je vous aider\?</string>
+    <string name="drawer_header_subtitle">Puis-je vous aider \?</string>
     <string name="drawer_close">Fermer le panneau de navigation</string>
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
     <string name="vosk_model_download_error">Le téléchargement du modèle Vosk a échoué</string>
