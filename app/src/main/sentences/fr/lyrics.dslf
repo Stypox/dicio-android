@@ -1,5 +1,5 @@
 lyrics: high
-(trouve|trouvez|cherche|cherchez|recherche|recherchez|charge|chargez|consulte|consultez)? (pour? moi)? les?|le? paroles|texte (de (la musique|chanson)?)?  .song.;
+trouve|trouvez|cherche|cherchez|recherche|recherchez|charge|chargez|consulte|consultez (pour? moi)? les?|le? paroles|texte (de (la musique|chanson)?)?  .song.;
 .song. paroles|texte;
 paroles|texte de .song.;
 comment s appelle (la musique|chanson) (qui dit|(va avec?)|chante)|(avec (le texte)|les paroles) .song.;
