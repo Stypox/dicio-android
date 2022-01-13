@@ -70,4 +70,11 @@
     <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
 \nTemperatura máxima: %2$.1f°C
 \nVelocidade do vento: %3$.1fm/s</string>
+    <string name="permission_denied">Permissão negada</string>
+    <string name="vosk_model_download_error">O download do modelo Vosk falhou</string>
+    <string name="skill_search_what_question">O que você quer pesquisar\?</string>
+    <string name="open_with">Abrir com</string>
+    <string name="skill_search_no_results">Sem resultados para a pesquisa, tente me dizer novamente o que você quer pesquisar</string>
+    <string name="no_app_to_open_intent">Nenhum aplicativo do seu dispositivo pode abrir isso</string>
+    <string name="pref_skill_not_available">Essa habilidade ainda não está disponível para o seu idioma. Contribuições são bem-vindas!</string>
 </resources>
