@@ -7,4 +7,4 @@ calculator_operators: low
 [multiplication] fois|(multiplié par);
 [division] sur|(divisé par);
 [power] ((à la)? puissance)|(à l)? exposant;
-[square_root] la racine carrée de?;
+[square_root] la? racine carrée de?;

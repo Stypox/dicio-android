@@ -1,2 +1,2 @@
 open: medium
-ouvre|lance|charge|execute (l'app|l'application)? .what.;
+ouvre|lance|charge|execute (l? app|application)? .what.;
