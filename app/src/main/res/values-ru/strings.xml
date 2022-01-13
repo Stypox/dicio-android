@@ -51,7 +51,7 @@
     <string name="skill_lyrics_song_not_found">Не могу найти песню %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Нашёл %1$s исполнителя %2$s</string>
     <string name="skill_open_opening">Открываю %1$s…</string>
-    <string name="eval_no_match">Я не понимаю, пожалуйста повторите</string>
+    <string name="eval_no_match">Не понимаю, не могли бы вы повторить\?</string>
     <string name="vosk_model_notification_description">Язык: %1$s</string>
     <string name="vosk_model_notification_title">модель Vosk</string>
     <string name="pref_skills">Умения</string>
@@ -70,4 +70,11 @@
     <string name="skill_name_calculator">Калькулятор</string>
     <string name="skill_weather_could_not_find_city">Не могу найти город %1$s</string>
     <string name="skill_calculator_could_not_calculate">Не могу посчитать</string>
+    <string name="open_with">Открыть в</string>
+    <string name="no_app_to_open_intent">У вас нет приложений, способных открыть этот файл</string>
+    <string name="permission_denied">Доступ запрещён</string>
+    <string name="vosk_model_download_error">Скачивание модели Vosk не удалось</string>
+    <string name="pref_skill_not_available">Это умение недоступно для вашего языка. Помогите разработчику усовершенствовать программу!</string>
+    <string name="skill_search_no_results">Поиск не дал результата, скажите ещё раз что вы хотите найти</string>
+    <string name="skill_search_what_question">Что вы хотите найти\?</string>
 </resources>

@@ -56,7 +56,7 @@
     <string name="skill_search_here_is_what_i_found">Esto es lo que he encontrado</string>
     <string name="skill_weather_could_not_find_city">No pude encontrar la ciudad %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Actualmente en %1$s esta %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s - %2$.1f°C</string>
     <string name="skill_lyrics_song_not_found">No se ha encontrado la canción %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Se ha encontrado la canción %1$s de %2$s</string>
     <string name="skill_open_unknown_app">Aplicación desconocida %1$s</string>
@@ -69,4 +69,11 @@
     <string name="vosk_model_extracting">Extrayendo el modelo Vosk…</string>
     <string name="pref_language_summary">¿Qué lenguaje debería usar Dicio para escucharte y darte respuestas\? - %1$s</string>
     <string name="pref_weather_default_city_using_ip_info">Configure la ciudad que se usará para el clima cuando no diga específicamente una. El comportamiento actual es obtener la ubicación de tú IP.</string>
+    <string name="open_with">Abrir con</string>
+    <string name="vosk_model_download_error">Fallo en la descarga del modelo Vosk</string>
+    <string name="pref_skill_not_available">Esta habilidad aún no está disponible para su idioma. ¡Las contribuciones son bienvenidas!</string>
+    <string name="skill_search_what_question">¿Qué quieres buscar\?</string>
+    <string name="no_app_to_open_intent">Ninguna aplicación de su dispositivo puede abrir esto</string>
+    <string name="permission_denied">Permiso denegado</string>
+    <string name="skill_search_no_results">La búsqueda no arrojó resultados, intenta decirme de nuevo lo que quieres buscar</string>
 </resources>

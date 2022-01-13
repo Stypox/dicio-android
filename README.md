@@ -2,6 +2,17 @@
 
 Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English, French, German, Italian and Russian. Open to contributions :-D
 
+<p align="center">
+    <a href="https://f-droid.org/packages/org.dicio.dicio_android">
+        <img height="80" alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
+    </a>
+    <a href="https://github.com/Stypox/dicio-android/releases">
+        <img height="80" alt="Get it on GitHub" src="./get-it-on-github.png">
+    </a>
+</p>
+
+## Screenshots
+
 [<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/0.png" width=200>](./fastlane/metadata/android/en-US/images/phoneScreenshots/0.png)
 [<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width=200>](./fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 [<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width=200>](./fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
