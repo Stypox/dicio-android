@@ -14,6 +14,7 @@
         <item>@string/pref_language_system</item>
         <item>Deutsch</item>
         <item>English</item>
+        <item>English (India)</item>
         <item>Italiano</item>
         <item>Русский</item>
     </string-array>
@@ -24,6 +25,7 @@
         <item />
         <item>de</item>
         <item>en</item>
+        <item>en-in</item>
         <item>it</item>
         <item>ru</item>
     </string-array>
