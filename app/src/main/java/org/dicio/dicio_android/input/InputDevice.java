@@ -141,7 +141,7 @@ public abstract class InputDevice implements CleanableUp {
      * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when some input
      * from the user is received. Should be called only once, when stopping to get input. Should not
      * be called if {@link #notifyNoInputReceived()} is called instead.
-     * Vosk can return multiple outputs with diffrent propability. If the first input doesn't fit to any skill the next input will be tried.
+     * Sometimes input devices can return multiple alternative inputs with different confidences. If the first input doesn't fit to any skill the next input will be tried.
      * @param input sorted list of (raw) inputs, the most confident input must be the first item in the list.
      */
     protected void notifyInputReceived(final List<String> input) {

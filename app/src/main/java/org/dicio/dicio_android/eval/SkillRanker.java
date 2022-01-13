@@ -190,13 +190,13 @@ public class SkillRanker implements CleanableUp {
 
         final Skill skillFromDefault
                 = defaultBatch.getBest(input, inputWords, normalizedWordKeys);
-        if (skillFromDefault == null) {
-            // nothing was matched
-            fallbackSkill.setInput(input, inputWords, normalizedWordKeys);
-            return fallbackSkill;
-        } else {
-            return skillFromDefault;
-        }
+        return skillFromDefault;
+    }
+    public Skill getFallbackSkill(final String input,
+                     final List<String> inputWords,
+                     final List<String> normalizedWordKeys) {
+        fallbackSkill.setInput(input, inputWords, normalizedWordKeys);
+        return fallbackSkill;
     }
 
     @Override

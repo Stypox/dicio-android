@@ -33,6 +33,7 @@ import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.CleanableUp;
 import org.dicio.skill.util.WordExtractor;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -406,10 +407,15 @@ public class SkillEvaluator implements CleanableUp {
                 final List<String> inputWords = WordExtractor.extractWords(input);
                 final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
                 skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
-                if (skill != null&&!(skill instanceof TextFallback)) {
+                if (skill != null) {
                     break;
                 }
-
+            }
+            if(skill == null) {
+                input=inputs.get(0);
+                final List<String> inputWords = WordExtractor.extractWords(input);
+                final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
+                skill = skillRanker.getFallbackSkill(input,inputWords,normalizedWordKeys );
             }
             displayUserInput(input);
 
