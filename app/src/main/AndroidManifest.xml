@@ -45,5 +45,11 @@
         <activity
             android:name=".settings.SettingsActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".util.PermissionRequesterActivity"
+            android:theme="@style/PermissionRequesterActivityTheme"
+            android:exported="false" />
+
     </application>
 </manifest>

@@ -79,6 +79,6 @@
     <string name="vosk_model_download_error">Herunterladen von Vosk Modell fehlgeschlagen</string>
     <string name="skill_name_telephone">Anrufen</string>
     <string name="skill_sentence_example_telephone">Rufe Tom an</string>
-    <string name="skill_telephone_unknown_contact">Es wurde kein passender Kontakt gefunden.</string>
-    <string name="skill_telephone_found_contacts">Es wurden %1$s Kontakte gefunden.</string>
+    <string name="skill_telephone_unknown_contact">Es wurde kein passender Kontakt gefunden</string>
+    <string name="skill_telephone_found_contacts">Es wurden %1$d Kontakte gefunden</string>
 </resources>

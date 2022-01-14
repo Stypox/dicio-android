@@ -85,5 +85,6 @@
     <string name="skill_open_opening">Opening %1$s…</string>
     <string name="skill_calculator_could_not_calculate">I could not calculate your request</string>
     <string name="skill_telephone_unknown_contact">No matching contact found, try again!</string>
-    <string name="skill_telephone_found_contacts">%1$s contacts where found.</string>
+    <string name="skill_telephone_found_contacts">%1$d contacts where found</string>
+    <string name="skill_telephone_missing_permission">The telephone skill needs the permission to see contacts and call them</string>
 </resources>
