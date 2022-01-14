@@ -159,6 +159,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                         } catch (UnsupportedLocaleException e) {
                             asyncMakeToast(R.string.vosk_model_unsupported_language);
                             e.printStackTrace();
+                            onRequiresDownload();
                         }
 
                     } else {
