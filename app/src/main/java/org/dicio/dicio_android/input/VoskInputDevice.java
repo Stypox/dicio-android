@@ -109,8 +109,8 @@ public class VoskInputDevice extends SpeechInputDevice {
      */
     private void load(final boolean manual) {
         if (recognizer == null && !currentlyInitializingRecognizer) {
-            if (new File(getModelDirectory(), "README").exists()) {
-                // one file is in the correct place, so everything should be ok
+            if (new File(getModelDirectory(), "ivector").exists()) {
+                // one directory is in the correct place, so everything should be ok
                 Log.d(TAG, "Vosk model in place");
 
                 currentlyInitializingRecognizer = true;
