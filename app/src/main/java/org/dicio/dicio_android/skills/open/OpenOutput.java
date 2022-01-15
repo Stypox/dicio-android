@@ -66,7 +66,7 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
                 final ApplicationInfo currentApplicationInfo = packageManager.getApplicationInfo(
                         resolveInfo.activityInfo.packageName, PackageManager.GET_META_DATA);
 
-                final int currentDistance = StringUtils.levenshteinDistance(appName,
+                final int currentDistance = StringUtils.stringSimilarity(appName,
                         packageManager.getApplicationLabel(currentApplicationInfo).toString());
                 if (currentDistance < bestDistance) {
                     bestDistance = currentDistance;
