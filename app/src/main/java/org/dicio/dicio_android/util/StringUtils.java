@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
     private static final Pattern punctuationPattern = Pattern.compile("\\p{Punct}");
-    private static final Pattern wordDelimitersPattern = Pattern.compile("[^\\p{L}]");
+    private static final Pattern wordDelimitersPattern = Pattern.compile("[^\\p{L}0-9]");
 
     private StringUtils() {
     }
