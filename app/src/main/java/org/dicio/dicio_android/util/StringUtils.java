@@ -132,8 +132,8 @@ public class StringUtils {
      * between two strings, that is the number of characters that need to be changed to turn one
      * string into the other. The two strings will be cleaned with {@link
      * #cleanStringForDistance(String)} before calculating the distance. Use {@link
-     * #stringSimilarity(String, String)} for better results.
-     * @see #stringSimilarity(String, String)
+     * #customStringDistance(String, String)} for better results when e.g. comparing app names.
+     * @see #customStringDistance(String, String)
      * @param a the first string
      * @param b the second string
      * @return the Levenshtein distance between the two cleaned strings, lower is better, values are
@@ -145,91 +145,22 @@ public class StringUtils {
         return levenshteinDistanceMemory(a, b)[a.length()][b.length()];
     }
 
-    /* TODO remove the code below, added here just to test out many different algorithms easily
     /**
-     * Finds the {@link #levenshteinDistance(String, String)} between the two strings, and then
-     * mitigates the score increase caused by non-matching characters before the first and after the
-     * last matching character. E.g. distance("abc123def", "123") = 4, instead of 6. Note that this
-     * is not a good approach, since for example distance("abcd123", "123") = 2, while
-     * distance("abcd123", "a123") = 3, so this algorithm is not stable. The two strings will be
-     * cleaned with {@link #cleanStringForDistance(String)} before calculating the distance.
-     * @param a the first string
-     * @param b the second string
-     * @return the modified Levenshtein distance between the two strings as described above
-     * /
-    public static int modifiedLevenshteinDistance(String a, String b) {
-        a = cleanStringForDistance(a);
-        b = cleanStringForDistance(b);
-        final int[][] memory = levenshteinDistanceMemory(a, b);
-
-        int minIndexOnMatch = Math.max(a.length(), b.length());
-        int maxIndexOnMatch = minIndexOnMatch;
-        for (final LevenshteinMemoryPos pos : pathInLevenshteinMemory(a, b, memory)) {
-            if (Character.toLowerCase(a.codePointAt(pos.i))
-                    == Character.toLowerCase(b.codePointAt(pos.j))) {
-                minIndexOnMatch = Math.min(minIndexOnMatch, Math.max(pos.i, pos.j));
-                maxIndexOnMatch = Math.min(maxIndexOnMatch,
-                        Math.max(a.length() - pos.i - 1, b.length() - pos.j - 1));
-            }
-        }
-
-        return memory[a.length()][b.length()] - minIndexOnMatch - maxIndexOnMatch
-                + Math.min(2, minIndexOnMatch) + Math.min(2, maxIndexOnMatch);
-    }
-
-    public static int matchingCharCountInLevenshtein(String a, String b) {
-        a = cleanStringForDistance(a);
-        b = cleanStringForDistance(b);
-        final int[][] memory = levenshteinDistanceMemory(a, b);
-
-        int matchingCharCount = 0;
-        for (final LevenshteinMemoryPos pos : pathInLevenshteinMemory(a, b, memory)) {
-            if (Character.toLowerCase(a.codePointAt(pos.i))
-                    == Character.toLowerCase(b.codePointAt(pos.j))) {
-                ++matchingCharCount;
-            }
-        }
-
-        return -matchingCharCount;
-    }
-
-    public static int maxSubsequentCharsInLevenshtein(String a, String b) {
-        a = cleanStringForDistance(a);
-        b = cleanStringForDistance(b);
-        final int[][] memory = levenshteinDistanceMemory(a, b);
-
-        int subsequentChars = 0;
-        int maxSubsequentChars = 0;
-        for (final LevenshteinMemoryPos pos : pathInLevenshteinMemory(a, b, memory)) {
-            if (Character.toLowerCase(a.codePointAt(pos.i))
-                    == Character.toLowerCase(b.codePointAt(pos.j))) {
-                ++subsequentChars;
-                maxSubsequentChars = Math.max(maxSubsequentChars, subsequentChars);
-            } else {
-                subsequentChars = Math.max(0, subsequentChars - 1);
-            }
-        }
-
-        return -maxSubsequentChars;
-    }
-    */
-
-    /**
-     * Calculates the similarity between the two provided strings. Internally calculates the dynamic
-     * programming memory of the
+     * Calculates a custom string distance between the two provided strings. Internally calculates
+     * the dynamic programming memory of the
      * <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a>, then
      * follows the path chosen by the dynamic programming algorithm and draws some statistics about
      * the total number of matched character and the maximum number of roughly subsequent characters
      * matched. The result is a combination of the latter statistics and the actual Levenshtein
      * distance. The two strings will be cleaned with {@link #cleanStringForDistance(String)} before
-     * calculating the similarity.
+     * calculating the distance.
      * @param a the first string
      * @param b the second string
-     * @return the similarity between the two cleaned strings, lower is better, values can be lower
-     *         than 0, values are always less than or equal to the
+     * @return the custom string distance between the two cleaned strings as described above, lower
+     *         is better, values can be lower than 0, values are always less than or equal to the
      *         {@link #levenshteinDistance(String, String)} between the two strings
      */
-    public static int stringSimilarity(String a, String b) {
+    public static int customStringDistance(String a, String b) {
         a = cleanStringForDistance(a);
         b = cleanStringForDistance(b);
         final int[][] memory = levenshteinDistanceMemory(a, b);

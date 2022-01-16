@@ -7,7 +7,7 @@ import java.util.Collections;
 
 import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 import static org.dicio.dicio_android.util.StringUtils.levenshteinDistance;
-import static org.dicio.dicio_android.util.StringUtils.stringSimilarity;
+import static org.dicio.dicio_android.util.StringUtils.customStringDistance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +28,22 @@ public class StringUtilsTest {
         assertEquals("", StringUtils.join("-", Collections.emptyList()));
         assertEquals("abc", StringUtils.join("-", Collections.singletonList("abc")));
         assertEquals("-", StringUtils.join("-", Arrays.asList("", "")));
+    }
+
+    @Test
+    public void removePunctuationTest() {
+        assertEquals("hello how are you ", StringUtils.removePunctuation("hello, how are you? "));
+        assertEquals("12345", StringUtils.removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~"));
+    }
+
+    @Test
+    public void isNullOrEmptyTest() {
+        assertFalse(isNullOrEmpty("hi"));
+        assertFalse(isNullOrEmpty(" \t"));
+        assertFalse(isNullOrEmpty("\0"));
+        //noinspection ConstantConditions
+        assertTrue(isNullOrEmpty(null));
+        assertTrue(isNullOrEmpty(""));
     }
 
     @Test
@@ -56,37 +72,6 @@ public class StringUtilsTest {
     public void levenshteinDistanceSpecialTest() {
         assertEquals(0, StringUtils.levenshteinDistance("abc123ABC&%$", "ABC123abc&%$"));
         assertEquals(5, StringUtils.levenshteinDistance("email@email.email", "EMAILatEMAILdotEMAIL"));
-    }
-
-    @Test
-    public void removePunctuationTest() {
-        assertEquals("hello how are you ", StringUtils.removePunctuation("hello, how are you? "));
-        assertEquals("12345", StringUtils.removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~"));
-    }
-
-    @Test
-    public void isNullOrEmptyTest() {
-        assertFalse(isNullOrEmpty("hi"));
-        assertFalse(isNullOrEmpty(" \t"));
-        assertFalse(isNullOrEmpty("\0"));
-        //noinspection ConstantConditions
-        assertTrue(isNullOrEmpty(null));
-        assertTrue(isNullOrEmpty(""));
-    }
-
-    @Test
-    public void compareStringDistances() {
-        String[] primary = new String[] {"Notes", "Maps", "Telegram", "NewPipe"};
-        String[] secondary = new String[] {"YouTube", "OMNI Notes FOSS", "Ciaone", "Protonmail",
-                "Calculator++", "Magic Maps", "Telegram X", "Telegram", "Notify", "Move"};
-
-        for (String pri : primary) {
-            System.out.printf("\n%30s\n", pri);
-            for (String sec : secondary) {
-                System.out.printf("%20s %4d %4d\n", sec,
-                        levenshteinDistance(pri, sec),
-                        stringSimilarity(pri, sec));
-            }
-        }
+        assertEquals(0, StringUtils.levenshteinDistance("Hello, how are you?", "hellohowareyou"));
     }
 }
