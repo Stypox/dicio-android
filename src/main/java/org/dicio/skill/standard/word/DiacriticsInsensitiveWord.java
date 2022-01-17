@@ -7,11 +7,11 @@ public final class DiacriticsInsensitiveWord extends StringWord {
     /**
      * A word in a sentence with the indices of all possible subsequent words. When matching,
      * diacritics and accents will not be checked (see e.g. CTRL+F -> Match Diacritics in Firefox).
-     * For diacritics-sensitive matching see {@link DiacriticsSensitiveWord}.
+     * For diacritics sensitive matching see {@link DiacriticsSensitiveWord}.
      *
      * @param normalizedValue the unicode NFKD normalized value for this word. Use
-     *      *                 {@link org.dicio.skill.util.WordExtractor#nfkdNormalizeWord(String)}
-     *      *                 to NFKD normalize a word.
+     *                        {@link org.dicio.skill.util.WordExtractor#nfkdNormalizeWord(String)}
+     *                        to NFKD normalize a word.
      * @param minimumSkippedWordsToEnd the minimum number of subsequent words that have to be
      *                                 skipped to reach the end of the sentence. Used in case the
      *                                 end of input is reached on this word. Capturing groups count
