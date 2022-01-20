@@ -115,7 +115,12 @@ public class LocaleUtils {
         if (language == null || language.trim().isEmpty()) {
             return ConfigurationCompat.getLocales(context.getResources().getConfiguration());
         } else {
-            return LocaleListCompat.create(new Locale(language));
+            final String[] languageCountry = language.split("-");
+            if (languageCountry.length == 1) {
+                return LocaleListCompat.create(new Locale(language));
+            } else {
+                return LocaleListCompat.create(new Locale(languageCountry[0], languageCountry[1]));
+            }
         }
     }
 }
