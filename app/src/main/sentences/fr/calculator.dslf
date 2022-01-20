@@ -1,5 +1,5 @@
 calculator: medium
-calcule|calculez|calucler|(calcule? combien fait|font) .calculation.;
+calcule<r|z?>|(calcule<r|z?>? combien fait|font) .calculation.;
 
 calculator_operators: low
 [addition] plus;
