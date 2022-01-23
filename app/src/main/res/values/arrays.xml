@@ -15,7 +15,8 @@
         <item>Deutsch</item>
         <item>English</item>
         <item>English (India)</item>
-        <item>French</item>
+        <item>Español</item>
+        <item>Français</item>
         <item>Italiano</item>
         <item>Русский</item>
     </string-array>
@@ -27,6 +28,7 @@
         <item>de</item>
         <item>en</item>
         <item>en-in</item>
+        <item>es</item>
         <item>fr</item>
         <item>it</item>
         <item>ru</item>
