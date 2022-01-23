@@ -373,7 +373,7 @@ public class SkillEvaluator implements CleanableUp {
             skillRanker.removeAllBatches();
         } else {
             skillRanker.addBatchToTop(nextSkills);
-            primaryInputDevice.tryToGetInput();
+            primaryInputDevice.tryToGetInput(false);
         }
 
         skill.cleanup(); // cleanup the input that was set

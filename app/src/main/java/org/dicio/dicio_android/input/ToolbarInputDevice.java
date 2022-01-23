@@ -18,7 +18,7 @@ public class ToolbarInputDevice extends InputDevice {
         this.textInputItem = textInputItem;
         if (textInputItem != null) {
             textInputItem.setOnMenuItemClickListener(item -> {
-                ToolbarInputDevice.super.tryToGetInput(); // notify we are starting to get input
+                ToolbarInputDevice.super.tryToGetInput(true); // notify we are starting to get input
                 return false; // returning false causes the item to expand
             });
             textInputItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
@@ -68,9 +68,9 @@ public class ToolbarInputDevice extends InputDevice {
     }
 
     @Override
-    public void tryToGetInput() {
+    public void tryToGetInput(boolean manual) {
         if (textInputItem != null) {
-            super.tryToGetInput();
+            super.tryToGetInput(manual);
             textInputItem.expandActionView();
         }
     }

@@ -9,15 +9,25 @@
         <item>@string/pref_val_theme_dark</item>
     </string-array>
 
+    <!-- Add language names below here (make sure they are ordered alphabetically!) -->
     <string-array name="pref_language_entries">
         <item>@string/pref_language_system</item>
+        <item>Deutsch</item>
         <item>English</item>
+        <item>English (India)</item>
         <item>Italiano</item>
+        <item>Русский</item>
     </string-array>
+
+    <!-- Add language codes below here
+    (make sure they are in the same order as the language names array!) -->
     <string-array name="pref_language_entry_values">
         <item />
+        <item>de</item>
         <item>en</item>
+        <item>en-in</item>
         <item>it</item>
+        <item>ru</item>
     </string-array>
 
     <string-array name="pref_input_method_entries">

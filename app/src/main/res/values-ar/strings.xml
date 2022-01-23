@@ -48,7 +48,6 @@
     <string name="listening">أستمع الآن…</string>
     <string name="action_voice_input">إدخال صوت</string>
     <string name="action_text_input">إدخال كلام</string>
-    <string name="share_view">فتح في…</string>
     <string name="drawer_close">إغلاق درج التصفح</string>
     <string name="drawer_open">فتح درج التصفح</string>
     <string name="pref_speech_output_method_android">محرك أندرويد لتحويل النص إلى كلام</string>

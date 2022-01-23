@@ -2,12 +2,12 @@
 <resources>
     <string name="eval_network_error_description">Dicio n\'a pas pu se connecter à internet. Veuillez vérifier votre connexion et réessayer.</string>
     <string name="eval_network_error">Erreur réseau</string>
-    <string name="eval_fatal_error">J\'ai rencontré une erreur lors de l\'évaluation de votre demande, désolé</string>
+    <string name="eval_fatal_error">J\'ai rencontré une erreur lors de l\'évaluation de votre demande</string>
     <string name="pref_speech_output_method_nothing">Rien</string>
     <string name="pref_speech_output_method_snackbar">Snackbar (message en bas)</string>
     <string name="pref_speech_output_method_toast">Toast (message popup)</string>
     <string name="pref_speech_output_method_android">Moteur de synthèse vocale Android</string>
-    <string name="skill_open_opening">Ouverture de %1$s</string>
+    <string name="skill_open_opening">Ouverture de %1$s…</string>
     <string name="skill_open_unknown_app">Application inconnue %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Voici %1$s de %2$s</string>
     <string name="skill_lyrics_song_not_found">Impossible de trouver la chanson %1$s</string>
@@ -66,9 +66,15 @@
     <string name="here_is_what_i_can_do">Voici ce que je peux faire !</string>
     <string name="text_input_hint">Demandez-moi quelque chose…</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
-    <string name="share_view">Ouvrir dans…</string>
     <string name="share">Partager</string>
-    <string name="drawer_header_subtitle">Puis-je vous aider \?</string>
+    <string name="drawer_header_subtitle">Puis-je vous aider \?</string>
     <string name="drawer_close">Fermer le panneau de navigation</string>
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
+    <string name="vosk_model_download_error">Le téléchargement du modèle Vosk a échoué</string>
+    <string name="open_with">Ouvrir avec</string>
+    <string name="no_app_to_open_intent">Aucune application installée ne peut ouvrir ce lien</string>
+    <string name="skill_search_no_results">La recherche n\'a retourné aucun résultat. Essayez à nouveau de me dire ce que vous souhaitez rechercher.</string>
+    <string name="skill_search_what_question">Que recherchez-vous \?</string>
+    <string name="permission_denied">Permission refusée</string>
+    <string name="pref_skill_not_available">Cette fonctionnalité n\'est pas encore disponible dans votre langue. Les contributions sont les bienvenues !</string>
 </resources>

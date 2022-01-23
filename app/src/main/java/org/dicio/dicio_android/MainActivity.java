@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity
                     || ActivityCompat.checkSelfPermission(this, RECORD_AUDIO)
                             == PERMISSION_GRANTED) {
                 // if no voice permission start listening in onActivityResult
-                skillEvaluator.getPrimaryInputDevice().tryToGetInput();
+                skillEvaluator.getPrimaryInputDevice().tryToGetInput(false);
             }
             appJustOpened = false;
         }
@@ -238,7 +238,7 @@ public class MainActivity extends BaseActivity
                 && skillEvaluator != null
                 && skillEvaluator.getPrimaryInputDevice() instanceof SpeechInputDevice) {
             skillEvaluator.getPrimaryInputDevice().load();
-            skillEvaluator.getPrimaryInputDevice().tryToGetInput();
+            skillEvaluator.getPrimaryInputDevice().tryToGetInput(false);
         }
     }
 

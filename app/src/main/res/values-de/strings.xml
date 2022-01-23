@@ -66,9 +66,15 @@
     <string name="action_text_input">Texteingabe</string>
     <string name="here_is_what_i_can_do">Folgendes kann ich für dich machen!</string>
     <string name="copied_to_clipboard">in die Zwischenablage Kopiert</string>
-    <string name="share_view">Zeige in…</string>
     <string name="share">Teile</string>
     <string name="drawer_header_subtitle">Kann ich dir helfen\?</string>
     <string name="drawer_close">Schließe die Navigationsleiste</string>
     <string name="drawer_open">Oeffne die Navigationsleiste</string>
+    <string name="open_with">Öffnen mit</string>
+    <string name="no_app_to_open_intent">Keine Anwendung auf deinem Gerät kann das öffnen</string>
+    <string name="permission_denied">Berechtigung Verwehrt</string>
+    <string name="pref_skill_not_available">Diese Fähigkeit ist noch nicht in deiner Sprache verfügbar. Mitarbeit ist Willkommen!</string>
+    <string name="skill_search_no_results">Die Suche hat nichts gefunden, versuche mich noch einmal nach dem zu fragen, was du suchst</string>
+    <string name="skill_search_what_question">Wonach willst du suchen\?</string>
+    <string name="vosk_model_download_error">Herunterladen von Vosk Modell fehlgeschlagen</string>
 </resources>

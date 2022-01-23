@@ -25,7 +25,8 @@ public class SkillsFragment extends Fragment {
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(new SkillsAdapter(this, inflater, SkillHandler.getAvailableSkillInfoList()));
+        recyclerView.setAdapter(new SkillsAdapter(
+                this, inflater, SkillHandler.getAllSkillInfoList()));
 
         return view;
     }

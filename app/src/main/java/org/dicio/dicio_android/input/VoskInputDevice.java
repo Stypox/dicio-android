@@ -45,7 +45,6 @@ import java.util.zip.ZipInputStream;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -83,6 +82,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private Activity activity;
     private final CompositeDisposable disposables = new CompositeDisposable();
     @Nullable private BroadcastReceiver downloadingBroadcastReceiver = null;
+    private Long currentModelDownloadId = null;
     @Nullable private SpeechService recognizer = null;
 
     private boolean currentlyInitializingRecognizer = false;
@@ -100,33 +100,79 @@ public class VoskInputDevice extends SpeechInputDevice {
 
     @Override
     public void load() {
-        if (recognizer == null && !currentlyInitializingRecognizer) {
-            currentlyInitializingRecognizer = true;
-            onLoading();
+        load(false); // the user did not press on a button, so manual=false
+    }
 
-            disposables.add(Single.fromCallable(this::initializeRecognizer)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(recognizerIsReady -> {
-                        currentlyInitializingRecognizer = false;
-                        if (recognizerIsReady) {
+    /**
+     * @param manual if this is true and the model is not already downloaded, do not start
+     *               downloading it. See {@link #tryToGetInput(boolean)}.
+     */
+    private void load(final boolean manual) {
+        if (recognizer == null && !currentlyInitializingRecognizer) {
+            if (new File(getModelDirectory(), "ivector").exists()) {
+                // one directory is in the correct place, so everything should be ok
+                Log.d(TAG, "Vosk model in place");
+
+                currentlyInitializingRecognizer = true;
+                onLoading();
+
+                disposables.add(Completable.fromAction(this::initializeRecognizer)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            currentlyInitializingRecognizer = false;
                             if (startListeningOnLoaded) {
                                 startListeningOnLoaded = false;
-                                tryToGetInput();
+                                tryToGetInput(manual);
                             } else {
                                 onInactive();
                             }
-                        } // else model is being downloaded, so keep loading state
-                    }, throwable -> {
-                        currentlyInitializingRecognizer = false;
-                        if ("Failed to initialize recorder. Microphone might be already in use."
-                                .equals(throwable.getMessage())) {
-                            notifyError(new UnableToAccessMicrophoneException());
-                        } else {
-                            notifyError(throwable);
+                        }, throwable -> {
+                            currentlyInitializingRecognizer = false;
+                            if ("Failed to initialize recorder. Microphone might be already in use."
+                                    .equals(throwable.getMessage())) {
+                                notifyError(new UnableToAccessMicrophoneException());
+                            } else {
+                                notifyError(throwable);
+                            }
+                            onInactive();
+                        }));
+
+            } else {
+                Log.d(TAG, "Vosk model not in place");
+                final DownloadManager downloadManager =
+                        (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+
+                if (currentModelDownloadId == null) {
+                    Log.d(TAG, "Vosk model is not already being downloaded");
+
+                    if (manual) {
+                        // the model needs to be downloaded and no download has already started;
+                        // the user manually triggered the input device, so he surely wants the
+                        // model to be downloaded, so we can proceed
+                        onLoading();
+                        try {
+                            final LocaleResolutionResult result = resolveSupportedLocale(
+                                    LocaleListCompat.create(Sections.getCurrentLocale()),
+                                    MODEL_URLS.keySet());
+                            startDownloadingModel(downloadManager, result.supportedLocaleString);
+                        } catch (UnsupportedLocaleException e) {
+                            asyncMakeToast(R.string.vosk_model_unsupported_language);
+                            e.printStackTrace();
+                            onRequiresDownload();
                         }
-                        onInactive();
-                    }));
+
+                    } else {
+                        // loading the model would require downloading it, but the user didn't
+                        // explicitly tell the voice recognizer to download files, so notify them
+                        // that a download is required
+                        onRequiresDownload();
+                    }
+
+                } else {
+                    Log.d(TAG, "Vosk model already being downloaded: " + currentModelDownloadId);
+                }
+            }
         }
     }
 
@@ -139,6 +185,13 @@ public class VoskInputDevice extends SpeechInputDevice {
              recognizer = null;
         }
 
+        if (currentModelDownloadId != null) {
+            final DownloadManager downloadManager =
+                    (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+            downloadManager.remove(currentModelDownloadId);
+            updateCurrentDownloadId(activity, null);
+        }
+
         if (downloadingBroadcastReceiver != null) {
             activity.unregisterReceiver(downloadingBroadcastReceiver);
             downloadingBroadcastReceiver = null;
@@ -147,13 +200,13 @@ public class VoskInputDevice extends SpeechInputDevice {
     }
 
     @Override
-    public synchronized void tryToGetInput() {
+    public synchronized void tryToGetInput(boolean manual) {
         if (currentlyInitializingRecognizer) {
             startListeningOnLoaded = true;
             return;
         } else if (recognizer == null) {
             startListeningOnLoaded = true;
-            load(); // not loaded before, retry
+            load(manual); // not loaded before, retry
             return; // recognizer not ready
         }
 
@@ -161,7 +214,7 @@ public class VoskInputDevice extends SpeechInputDevice {
             return;
         }
         currentlyListening = true;
-        super.tryToGetInput();
+        super.tryToGetInput(manual);
 
         Log.d(TAG, "starting recognizer");
         recognizer.startListening(new RecognitionListener() {
@@ -238,14 +291,21 @@ public class VoskInputDevice extends SpeechInputDevice {
                 recognizer.stop();
             }
             notifyNoInputReceived();
+
+            // call onInactive() only if we really were listening, so that the SpeechInputDevice
+            // state icon is preserved if something different from "microphone on" was being shown
+            onInactive();
         }
 
         startListeningOnLoaded = false;
         currentlyListening = false;
-
-        onInactive();
     }
 
+    /**
+     * Deletes the Vosk model downloaded in the {@link Context#getFilesDir()} if it exists. It also
+     * stops any Vosk model download currently in progress based on the id stored in settings.
+     * @param context the Android context used to get the download manager and the files dir
+     */
     public static void deleteCurrentModel(final Context context) {
         final DownloadManager downloadManager =
                 (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -262,17 +322,12 @@ public class VoskInputDevice extends SpeechInputDevice {
     // Initialization //
     ////////////////////
 
-    private synchronized boolean initializeRecognizer() throws IOException {
-        if (!prepareModel()) {
-            return false;
-        }
+    private synchronized void initializeRecognizer() throws IOException {
         Log.d(TAG, "initializing recognizer");
 
         LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
         final Model model = new Model(getModelDirectory().getAbsolutePath());
         recognizer = new SpeechService(new Recognizer(model, SAMPLE_RATE), SAMPLE_RATE);
-
-        return true;
     }
 
     private void stopRecognizer() {
@@ -287,39 +342,15 @@ public class VoskInputDevice extends SpeechInputDevice {
 
 
     ////////////////////
-    // File utilities //
+    // Model download //
     ////////////////////
-
-    private boolean prepareModel() {
-        if (new File(getModelDirectory(), "README").exists()) {
-            // one file is in the correct place, so everything should be ok
-            return true;
-        } else {
-            final DownloadManager downloadManager =
-                    (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-
-            if (getDownloadIdFromPreferences(activity, downloadManager) == null) {
-                // download zip if not already downloading
-                try {
-                    final LocaleResolutionResult result = resolveSupportedLocale(
-                            LocaleListCompat.create(Sections.getCurrentLocale()),
-                            MODEL_URLS.keySet());
-                    startDownloadingModel(downloadManager, result.supportedLocaleString);
-                } catch (UnsupportedLocaleException e) {
-                    asyncMakeToast(R.string.vosk_model_unsupported_language);
-                    e.printStackTrace();
-                }
-            }
-            return false;
-        }
-    }
 
     private void startDownloadingModel(final DownloadManager downloadManager,
                                        final String language) {
         asyncMakeToast(R.string.vosk_model_downloading);
         final File modelZipFile = getModelZipFile();
         //noinspection ResultOfMethodCallIgnored
-        modelZipFile.delete(); // if existing, delete the model zip file
+        modelZipFile.delete(); // if existing, delete the model zip file (should never happen)
 
         // build download manager request
         final String modelUrl = MODEL_URLS.get(language);
@@ -329,45 +360,69 @@ public class VoskInputDevice extends SpeechInputDevice {
                         R.string.vosk_model_notification_description, language))
                 .setDestinationUri(Uri.fromFile(modelZipFile));
 
-        // launch download
-        final long modelDownloadId = downloadManager.enqueue(request);
-        putDownloadIdInPreferences(activity, modelDownloadId);
-
         // setup download completion listener
         final IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         downloadingBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
+                Log.d(TAG, "Got intent for downloading broadcast receiver: " + intent);
                 if (downloadingBroadcastReceiver == null) {
                     return; // just to be sure there are no issues with threads
                 }
 
                 if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                     final long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                    if (id == modelDownloadId) {
-                        disposables.add(Completable
-                                .fromAction(VoskInputDevice.this::extractModelZip)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(() -> {
-                                            asyncMakeToast(R.string.vosk_model_ready);
-                                            downloadManager.remove(modelDownloadId);
-                                            putDownloadIdInPreferences(activity, null);
-                                            load();
-                                        },
-                                        throwable -> {
-                                            asyncMakeToast(R.string.vosk_model_extraction_error);
-                                            throwable.printStackTrace();
-                                            downloadManager.remove(modelDownloadId);
-                                            putDownloadIdInPreferences(activity, null);
-                                        }));
+
+                    if (currentModelDownloadId == null || id != currentModelDownloadId) {
+                        Log.w(TAG, "Download complete listener notified with unknown id: " + id);
+                        return; // do not unregister broadcast receiver
                     }
-                    activity.unregisterReceiver(downloadingBroadcastReceiver);
-                    downloadingBroadcastReceiver = null;
+
+                    if (downloadingBroadcastReceiver != null) {
+                        Log.d(TAG, "Unregistering downloading broadcast receiver");
+                        activity.unregisterReceiver(downloadingBroadcastReceiver);
+                        downloadingBroadcastReceiver = null;
+                    }
+
+                    if (downloadManager.getMimeTypeForDownloadedFile(currentModelDownloadId)
+                            == null) {
+                        Log.e(TAG, "Failed to download vosk model");
+                        asyncMakeToast(R.string.vosk_model_download_error);
+                        downloadManager.remove(currentModelDownloadId);
+                        updateCurrentDownloadId(activity, null);
+                        onInactive();
+                        return;
+                    }
+
+                    Log.d(TAG, "Vosk model download complete, extracting from zip");
+                    disposables.add(Completable
+                            .fromAction(VoskInputDevice.this::extractModelZip)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(() -> {
+                                        asyncMakeToast(R.string.vosk_model_ready);
+                                        downloadManager.remove(currentModelDownloadId);
+                                        updateCurrentDownloadId(activity, null);
+
+                                        // surely the user pressed a button a while ago that
+                                        // triggered the download process, so manual=true
+                                        load(true);
+                                    },
+                                    throwable -> {
+                                        asyncMakeToast(R.string.vosk_model_extraction_error);
+                                        throwable.printStackTrace();
+                                        downloadManager.remove(currentModelDownloadId);
+                                        updateCurrentDownloadId(activity, null);
+                                        onInactive();
+                                    }));
                 }
             }
         };
         activity.registerReceiver(downloadingBroadcastReceiver, filter);
+
+        // launch download
+        Log.d(TAG, "Starting vosk model download: " + request);
+        updateCurrentDownloadId(activity, downloadManager.enqueue(request));
     }
 
     private void extractModelZip() throws IOException {
@@ -448,9 +503,9 @@ public class VoskInputDevice extends SpeechInputDevice {
     }
 
 
-    //////////////////////////
-    // Preference utilities //
-    //////////////////////////
+    ///////////////////////////
+    // Download id utilities //
+    ///////////////////////////
 
     private static Long getDownloadIdFromPreferences(final Context context,
                                                      final DownloadManager manager) {
@@ -470,7 +525,10 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
     }
 
-    private void putDownloadIdInPreferences(final Context context, final Long id) {
+    private void updateCurrentDownloadId(final Context context, final Long id) {
+        // this field is used anywhere except in static contexts, where the preference is used
+        currentModelDownloadId = id;
+
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final String downloadIdKey = context.getString(R.string.pref_key_vosk_download_id);
         if (id == null) {

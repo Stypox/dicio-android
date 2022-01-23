@@ -1,4 +1,4 @@
-Dicio è un <b>assistente vocale</b> <i>libero e open source</i>. Supporta svariate <b>abilità</b> e metodi di input/output, e risponde a una richiesta sia con <b>parole</b> che con <b>schermate</b>. Usa <a href="https://github.com/alphacep/vosk-api/">Vosk</a> per il <i>riconoscimento vocale</i>. Supporta <b>più lingue</b>, al momento inglese e italiano.
+Dicio è un <b>assistente vocale</b> <i>libero e open source</i>. Supporta svariate <b>abilità</b> e metodi di input/output, e risponde a una richiesta sia con <b>parole</b> che con <b>schermate</b>. Usa <a href="https://github.com/alphacep/vosk-api/">Vosk</a> per il <i>riconoscimento vocale</i>. Supporta <b>più lingue</b>, al momento inglese, tedesco, italiano e russo.
 
 Dicio risponde a richieste di questi tipi:
 <ul>
@@ -14,3 +14,5 @@ Dicio può ricevere input tramite una casella di testo o tramite il <i>riconosci
 Ogni abilità può essere abilitata, disabilitata o personalizzata usando il menu apposito nelle impostazioni. È disponibile anche il tema scuro.
 
 L'input dell'utente viene interpretato usando librerie specifiche, ma riutilizzabili: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a>, <a href="https://github.com/Stypox/dicio-skill">dicio-skill</a> e <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
+
+Questa app ha l'anti-feature <i>NonFreeNet</i> perchè alcune abilità usano servizi non liberi per ottenere le informazioni richieste dall'utente. Si possono facilmente disabilitare le abilità indesiderate o scegliere servizi alternativi nelle impostazioni.
