@@ -2,6 +2,4 @@ weather: high
 (que es|es)|cual es el clima en? (en .where.)?;
 clima (en? .where.)?;
 como esta hoy;
-esta frio|congelado|calor|caliente|soleado|lluvioso|lloviendo afuera?;
-esta frio|congelado|calor|caluroso|soleado|lluvioso|lloviendo en .where.;
-esta lloviendo en .where.;
+esta frio|congelado|calor|caliente|soleado|lluvioso|lloviendo afuera|(en .where.)?;
