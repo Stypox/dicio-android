@@ -1,0 +1,12 @@
+Novità:
+- Aggiunte le lingue francese, greco e spagnolo
+
+Miglioramenti:
+- Aggiunta "English (India)" (en-in) tra le lingue impostabili
+- [Apertura di app] Migliorato l'algoritmo che trova l'app col nome più somigliante
+- [Calcolatrice] Migliorate le frasi in inglese
+- [Meteo] Migliorate le frasi in italiano
+
+Correzioni:
+- [Vosk] Sistemato il controllo dell'esistenza del modello già scaricato
+- [Vosk] Ora l'icona di download resta mostrata se non c'è nessun modello per il locale dell'utente

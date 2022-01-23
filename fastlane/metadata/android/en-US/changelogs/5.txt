@@ -1,0 +1,12 @@
+New:
+- Add French, Greek and Spanish languages
+
+Improved:
+- Add "English (India)" (en-in) to language selector
+- [Open] Improve the algorithm that finds the best matching app
+- [Calculator] Improve English operators
+- [Weather] Improve Italian sentences
+
+Fixed:
+- [Vosk] Fix checking whether the model is already downloaded
+- [Vosk] Keep showing the download icon when no model is available for the current user locale
