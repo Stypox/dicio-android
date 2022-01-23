@@ -13,10 +13,10 @@
     <string-array name="pref_language_entries">
         <item>@string/pref_language_system</item>
         <item>Deutsch</item>
-        <item>Ελληνικά</item>
         <item>English</item>
         <item>English (India)</item>
         <item>Español</item>
+        <item>Ελληνικά</item>
         <item>Français</item>
         <item>Italiano</item>
         <item>Русский</item>
@@ -27,10 +27,10 @@
     <string-array name="pref_language_entry_values">
         <item />
         <item>de</item>
-        <item>el</item>
         <item>en</item>
         <item>en-in</item>
         <item>es</item>
+        <item>el</item>
         <item>fr</item>
         <item>it</item>
         <item>ru</item>
