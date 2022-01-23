@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="skill_name_calculator">Calculadora</string>
-    <string name="skill_weather_min_max_wind">"La temperatura mínima es:
-\n%1$.1f°C    La temperatura máxima es: %2$.1f°C   La velocidad del viento es: %3$.1fm/s"</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
+\nTemperatura máxima: %2$.1f°C
+\nVelocidad del viento: %3$.1fm/s</string>
     <string name="drawer_header_subtitle">¿En que puedo ayudarlo\?</string>
     <string name="drawer_open">Abrir caja de navegación</string>
     <string name="vosk_model_ready">Esta listo el modelo Vosk</string>

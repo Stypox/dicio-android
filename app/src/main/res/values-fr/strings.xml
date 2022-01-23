@@ -21,7 +21,7 @@
     <string name="skill_fallback_name_text">Message textuel</string>
     <string name="skill_sentence_example_calculator">Combien font cinq fois quatre moins un million \?</string>
     <string name="skill_name_calculator">Calculatrice</string>
-    <string name="skill_sentence_example_open">Ouvrir NewPipe</string>
+    <string name="skill_sentence_example_open">Ouvrer NewPipe</string>
     <string name="skill_name_open">Ouvreur d\'appli</string>
     <string name="skill_sentence_example_lyrics">Quelle est la chanson qui dit « we will we will rock you » \?</string>
     <string name="skill_name_lyrics">Paroles de chansons</string>
