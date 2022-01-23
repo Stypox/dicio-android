@@ -1,5 +1,6 @@
 calculator: medium
-calculadora|caculadora|(determina|halla (el? valor de)|(cuanto vale|fa))|(cuanto es|fa) .calculation.;
+calculadora|caculadora|determina|halla (el? valor de)|(cuanto vale|es|fa)? .calculation.;
+cuanto vale|es|fa .calculation.;
 
 calculator_operators: low
 [addition] más|(sumar|suma|sumando|suma|añade|agrega|añadiendo|añadir a?);
@@ -8,4 +9,3 @@ calculator_operators: low
 [division] (dividir|division|dividendo|dividi do|por?);
 [power] elevado? a la (potenciado por)?;
 [square_root] raiz cuadrada de?;
-

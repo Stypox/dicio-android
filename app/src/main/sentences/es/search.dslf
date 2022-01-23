@@ -1,4 +1,3 @@
 search: low
-(busca que es?)|(investiga que es?)|(revisa after|out?)|revisa|buscar|encuentra .que. online|(en la? internet|web)?;
-mira .que. subir;
-mirar .que. salir;
+busca|investiga|revisa|busca<r?>|encuentra (que es?)? .what. online|(en la? internet|web)?;
+mira<r?> .what. subir;
