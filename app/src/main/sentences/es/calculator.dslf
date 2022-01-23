@@ -3,7 +3,7 @@ calculadora|caculadora|(determina|halla (el? valor de)|(cuanto vale|fa))|(cuanto
 
 calculator_operators: low
 [addition] más|(sumar|suma|sumando|suma|añade|agrega|añadiendo|añadir a?);
-[subtraction] menos|(sustraer|restar|restando|sustraer?);
+[subtraction] menos|sustraer|restar|restando;
 [multiplication] por|(multiplicar|miltiplicando|multiplicando|moltiplicar por?);
 [division] (dividir|division|dividendo|dividi do|por?);
 [power] elevado? a la (potenciado por)?;
