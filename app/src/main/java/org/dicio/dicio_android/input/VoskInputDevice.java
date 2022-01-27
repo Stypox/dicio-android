@@ -63,7 +63,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         put("en-in", "https://alphacephei.com/vosk/models/vosk-model-small-en-in-0.4.zip");
         put("cn",    "https://alphacephei.com/vosk/models/vosk-model-small-cn-0.3.zip");
         put("ru",    "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.15.zip");
-        put("fr",    "https://alphacephei.com/vosk/models/vosk-model-small-fr-pguyot-0.3.zip");
+        put("fr",    "https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip");
         put("de",    "https://alphacephei.com/vosk/models/vosk-model-small-de-0.15.zip");
         put("es",    "https://alphacephei.com/vosk/models/vosk-model-small-es-0.3.zip");
         put("pt",    "https://alphacephei.com/vosk/models/vosk-model-small-pt-0.3.zip");
