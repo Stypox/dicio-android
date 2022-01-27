@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="copied_to_clipboard">Panoya kopyalandı</string>
+    <string name="drawer_close">Gezinme çekmecesini kapat</string>
+    <string name="drawer_header_subtitle">Size yardımcı olabilir miyim\?</string>
+    <string name="open_with">Şununla aç</string>
+    <string name="permission_denied">İzin reddedildi</string>
+    <string name="action_text_input">Metin girişi</string>
+    <string name="listening">Dinleniyor…</string>
+    <string name="vosk_model_notification_title">Vosk modeli</string>
+    <string name="vosk_model_notification_description">Dil: %1$s</string>
+    <string name="vosk_model_unsupported_language">Geçerli dil için Vosk modeli yok</string>
+    <string name="vosk_model_extraction_error">Vosk modeli Zip\'ten çıkarılamadı</string>
+    <string name="vosk_model_ready">Vosk modeli hazır</string>
+    <string name="android_tts_unsupported_language">Geçerli dil, Android sesli yanıt sistemi tarafından desteklenmiyor</string>
+    <string name="settings">Ayarlar</string>
+    <string name="pref_io">Giriş ve çıkış yöntemleri</string>
+    <string name="pref_appearance">Görünüm</string>
+    <string name="pref_skills">Yetenekler</string>
+    <string name="pref_theme">Tema</string>
+    <string name="pref_theme_light">Açık</string>
+    <string name="pref_theme_dark">Koyu</string>
+    <string name="pref_language">Dil</string>
+    <string name="drawer_open">Gezinme çekmecesini aç</string>
+    <string name="text_input_hint">Bana istediğini sor…</string>
+    <string name="share">Paylaş</string>
+    <string name="no_app_to_open_intent">Cihazınızdaki hiçbir uygulama bunu açamaz</string>
+    <string name="vosk_model_extracting">Vosk modeli ayıklanıyor…</string>
+    <string name="action_voice_input">Ses girişi</string>
+    <string name="microphone_error">Mikrofona erişilemiyor, muhtemelen zaten kullanılıyor veya ilgili izin reddedildi.</string>
+    <string name="here_is_what_i_can_do">İşte yapabileceklerim!</string>
+    <string name="vosk_model_downloading">Vosk modeli indiriliyor…</string>
+    <string name="vosk_model_download_error">Vosk modeli indirilemedi</string>
+    <string name="pref_theme_summary">Uygulama renk setini seçin - %1$s</string>
+</resources>
