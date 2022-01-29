@@ -166,19 +166,15 @@ public class SkillEvaluator implements CleanableUp {
 
         } else {
             // permissions were not granted, show a message
-            final String message;
-            if (skill.getSkillInfo() == null) {
-                message = activity.getString(
-                        R.string.eval_missing_permissions_unnamed_skill);
-            } else {
-                message = activity.getString(
-                        R.string.eval_missing_permissions_named_skill,
-                        activity.getString(skill.getSkillInfo().getNameResource()));
+            if (skill.getSkillInfo() != null) {
+                // skill info will always be non-null, but stay on the safe side and add a check
+                final String message = PermissionUtils.getMissingPermissionsMessage(
+                        activity, skill.getSkillInfo());
+                speechOutputDevice.speak(message);
+                graphicalOutputDevice.display(
+                        GraphicalOutputUtils.buildDescription(activity, message));
             }
 
-            speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildDescription(activity, message));
             graphicalOutputDevice.addDivider();
             finishedProcessingInput();
         }
