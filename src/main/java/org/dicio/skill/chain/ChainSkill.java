@@ -1,7 +1,10 @@
 package org.dicio.skill.chain;
 
+import androidx.annotation.Nullable;
+
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 
@@ -9,10 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class ChainSkill implements Skill {
+public class ChainSkill extends Skill {
 
     public static class Builder {
-        ChainSkill chainSkill = new ChainSkill();
+        final ChainSkill chainSkill;
+
+        /**
+         * @see Skill#Skill(SkillInfo)
+         */
+        public Builder(@Nullable final SkillInfo skillInfo) {
+            this.chainSkill = new ChainSkill(skillInfo);
+        }
 
         public Builder recognize(final InputRecognizer<?> inputRecognizer) {
             if (chainSkill.inputRecognizer != null) {
@@ -48,7 +58,8 @@ public class ChainSkill implements Skill {
     private OutputGenerator outputGenerator;
     private Object lastResult;
 
-    private ChainSkill() {
+    private ChainSkill(@Nullable final SkillInfo skillInfo) {
+        super(skillInfo);
         intermediateProcessors = new ArrayList<>();
     }
 
