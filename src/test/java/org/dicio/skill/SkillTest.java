@@ -25,7 +25,7 @@ public class SkillTest {
         final Skill skill = new Skill(skillInfo) {
             @Override public InputRecognizer.Specificity specificity() { return null; }
             @Override public void setInput(final String input, final List<String> inputWords,
-                final List<String> normalizedWordKeys) {}
+                    final List<String> normalizedWordKeys) {}
             @Override public float score() { return 0; }
             @Override public void processInput(final SkillContext context) {}
             @Override public void generateOutput(final SkillContext context,

@@ -25,11 +25,11 @@ public class FallbackSkillTest {
 
         final Skill skill = new FallbackSkill(skillInfo) {
             @Override public void setInput(final String input, final List<String> inputWords,
-                final List<String> normalizedWordKeys) {}
+                    final List<String> normalizedWordKeys) {}
             @Override public void processInput(final SkillContext context) {}
             @Override public void generateOutput(final SkillContext context,
-                final SpeechOutputDevice speechOutputDevice,
-                final GraphicalOutputDevice graphicalOutputDevice) {}
+                    final SpeechOutputDevice speechOutputDevice,
+                    final GraphicalOutputDevice graphicalOutputDevice) {}
             @Override public void cleanup() {}
         };
 
@@ -40,11 +40,11 @@ public class FallbackSkillTest {
     public void testScoreAndSpecificity() {
         final Skill skill = new FallbackSkill(null) {
             @Override public void setInput(final String input, final List<String> inputWords,
-                                           final List<String> normalizedWordKeys) {}
+                    final List<String> normalizedWordKeys) {}
             @Override public void processInput(final SkillContext context) {}
             @Override public void generateOutput(final SkillContext context,
-                                                 final SpeechOutputDevice speechOutputDevice,
-                                                 final GraphicalOutputDevice graphicalOutputDevice) {}
+                    final SpeechOutputDevice speechOutputDevice,
+                    final GraphicalOutputDevice graphicalOutputDevice) {}
             @Override public void cleanup() {}
         };
 
