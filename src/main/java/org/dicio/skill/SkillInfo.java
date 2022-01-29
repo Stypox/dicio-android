@@ -1,9 +1,13 @@
 package org.dicio.skill;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
+
+import java.util.Collections;
+import java.util.List;
 
 public abstract class SkillInfo {
 
@@ -106,4 +110,19 @@ public abstract class SkillInfo {
      */
     @Nullable
     public abstract Fragment getPreferenceFragment();
+
+    /**
+     * Provides all of the permissions this skill needs in order to run. For example, the telephone
+     * skill needs the {@code CALL_PHONE} and {@code READ_CONTACTS} permissions to run. The
+     * permissions expressed here will be requested to the user when the skill is first used, or
+     * via settings. A skill should therefore be able to be built with {@link #build(SkillContext)}
+     * without any permission, and a skill's input scoring (i.e. {@link Skill#score()} and the
+     * related methods) should also work without permissions.
+     * @return all of the special permissions this skill requires, or an empty list if no special
+     *         permissions are needed
+     */
+    @NonNull
+    public List<String> getNeededPermissions() {
+        return Collections.emptyList();
+    }
 }
