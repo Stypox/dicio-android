@@ -47,11 +47,13 @@
     <string name="pref_speech_output_method_snackbar">Snackbar (message at the bottom)</string>
     <string name="pref_speech_output_method_nothing">Nothing</string>
     <string name="pref_skill_not_available">This skill is not yet available for your language. Contributions are welcome!</string>
+    <string name="pref_skill_missing_permissions">Requires these permissions: %1$s</string>
+    <string name="pref_skill_grant_permissions">Grant</string>
     <string name="pref_search_engine">Search engine</string>
     <string name="pref_search_engine_duckduckgo" translatable="false">DuckDuckGo</string>
     <string name="pref_weather_default_city">Default city</string>
     <string name="pref_weather_default_city_using_ip_info">Set the city to use for weather when you do not explicitly say one. The current behaviour is to get the location from IP info.</string>
-    <string name="eval_missing_permissions_named_skill">The skill \"%1$s\" needs these permissions to work: %2$s</string>
+    <string name="eval_missing_permissions">The skill \"%1$s\" needs these permissions to work: %2$s</string>
     <string name="eval_fatal_error">Could not evaluate your request</string>
     <string name="eval_network_error">Network error</string>
     <string name="eval_network_error_description">Dicio could not reach the internet. Please check your connection and retry.</string>

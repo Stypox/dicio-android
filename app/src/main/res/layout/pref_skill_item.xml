@@ -26,46 +26,92 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/expandImageView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/skillIconImageView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Weather lorem ipsum" />
+        tools:text="Weather lorem ipsum dolor sit amet, consectetur adipisci elit" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/expandImageView"
-        android:layout_width="wrap_content"
+        android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/skillCheckBox"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/skillCheckBox"
         app:layout_constraintTop_toTopOf="@+id/skillCheckBox"
         app:srcCompat="?attr/iconExpandMore" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/permissionsNoticeImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/expandImageView"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/expandImageView"
+        app:layout_constraintTop_toTopOf="@+id/expandImageView"
+        app:srcCompat="@drawable/ic_circle_notice" />
 
     <TextView
         android:id="@+id/notAvailableTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:paddingBottom="12dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/pref_skill_not_available"
         android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skillCheckBox" />
+        app:layout_constraintTop_toBottomOf="@+id/skillCheckBox"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/permissionsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/grantPermissionsTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notAvailableTextView"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_goneMarginRight="16dp"
+        tools:text="Requires these permissions: lorem ipsum dolor sit amet, consectetur adipisci elit" />
+
+    <TextView
+        android:id="@+id/grantPermissionsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        android:text="@string/pref_skill_grant_permissions"
+        android:textAppearance="?android:attr/textAppearanceButton"
+        app:layout_constraintBottom_toBottomOf="@+id/permissionsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/permissionsTextView" />
 
     <FrameLayout
         android:id="@+id/fragmentHolder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:visibility="gone"
+        android:layout_marginHorizontal="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notAvailableTextView"
-        tools:layout_height="20dp"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/permissionsTextView"
+        tools:layout_height="60dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -166,10 +166,12 @@ public class SkillEvaluator implements CleanableUp {
 
         } else {
             // permissions were not granted, show a message
-            if (skill.getSkillInfo() != null) {
+            @Nullable final SkillInfo skillInfo = skill.getSkillInfo();
+            if (skillInfo != null) {
                 // skill info will always be non-null, but stay on the safe side and add a check
-                final String message = PermissionUtils.getMissingPermissionsMessage(
-                        activity, skill.getSkillInfo());
+                final String message = activity.getString(R.string.eval_missing_permissions,
+                        activity.getString(skillInfo.getNameResource()),
+                        PermissionUtils.getCommaJoinedPermissions(activity, skillInfo));
                 speechOutputDevice.speak(message);
                 graphicalOutputDevice.display(
                         GraphicalOutputUtils.buildDescription(activity, message));
@@ -405,7 +407,7 @@ public class SkillEvaluator implements CleanableUp {
             } else {
                 // request permissions; when done process input in onSkillRequestPermissionsResult
                 ActivityCompat.requestPermissions(activity, permissions,
-                        MainActivity.SKILL_PERMISSION_REQUEST_CODE);
+                        MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
                 skillNeedingPermissions = skill;
                 return null;
             }

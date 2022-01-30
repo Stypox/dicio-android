@@ -47,7 +47,8 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int MICROPHONE_PERMISSION_REQUEST_CODE = 13893;
-    public static final int SKILL_PERMISSION_REQUEST_CODE = 1928430;
+    public static final int SKILL_PERMISSIONS_REQUEST_CODE = 1928430;
+    public static final int SETTINGS_PERMISSIONS_REQUEST_CODE = 420938;
 
     private SharedPreferences preferences;
 
@@ -241,10 +242,11 @@ public class MainActivity extends BaseActivity
             skillEvaluator.getPrimaryInputDevice().load();
             skillEvaluator.getPrimaryInputDevice().tryToGetInput(false);
 
-        } else if (requestCode == SKILL_PERMISSION_REQUEST_CODE
+        } else if (requestCode == SKILL_PERMISSIONS_REQUEST_CODE
                 && skillEvaluator != null) {
             skillEvaluator.onSkillRequestPermissionsResult(grantResults);
         }
+        // SETTINGS_PERMISSIONS_REQUEST_CODE results are ignored
     }
 
 
