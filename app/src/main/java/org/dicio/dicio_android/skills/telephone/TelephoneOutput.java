@@ -1,9 +1,5 @@
 package org.dicio.dicio_android.skills.telephone;
 
-import static android.Manifest.permission.CALL_PHONE;
-import static android.Manifest.permission.READ_CONTACTS;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static org.dicio.dicio_android.Sentences_en.telephone;
 
 import android.content.ContentResolver;
@@ -18,7 +14,6 @@ import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.util.PermissionRequesterActivity;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.output.GraphicalOutputDevice;
@@ -33,36 +28,6 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                          final SkillContext context,
                          final SpeechOutputDevice speechOutputDevice,
                          final GraphicalOutputDevice graphicalOutputDevice) {
-
-        final Context androidContext = context.getAndroidContext();
-        if (checkSelfPermission(androidContext, READ_CONTACTS) == PERMISSION_GRANTED
-                && checkSelfPermission(androidContext, CALL_PHONE) == PERMISSION_GRANTED) {
-            onPermissionsGranted(data, context, speechOutputDevice, graphicalOutputDevice);
-
-        } else {
-            PermissionRequesterActivity.requestPermissions(androidContext,
-                    new String[]{READ_CONTACTS, CALL_PHONE}, granted -> {
-                if (granted) {
-                    onPermissionsGranted(data, context, speechOutputDevice, graphicalOutputDevice);
-                } else {
-                    final String message
-                            = androidContext.getString(R.string.skill_telephone_missing_permission);
-                    speechOutputDevice.speak(message);
-                    graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
-                            androidContext, message));
-                }
-            });
-        }
-    }
-
-    @Override
-    public void cleanup() {
-    }
-
-    private void onPermissionsGranted(final StandardResult data,
-                                      final SkillContext context,
-                                      final SpeechOutputDevice speechOutputDevice,
-                                      final GraphicalOutputDevice graphicalOutputDevice) {
         final String userContactName = data.getCapturingGroup(telephone.who).trim();
         final ContentResolver contentResolver = context.getAndroidContext().getContentResolver();
         final List<Contact> contacts = Contact.getSortedContacts(contentResolver, userContactName);
@@ -110,6 +75,10 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                     R.string.skill_telephone_found_contacts, contactCount));
             graphicalOutputDevice.display(output);
         }
+    }
+
+    @Override
+    public void cleanup() {
     }
 
     private static void call(final Context context, final String number) {

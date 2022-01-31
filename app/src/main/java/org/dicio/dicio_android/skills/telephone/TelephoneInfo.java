@@ -1,14 +1,14 @@
 package org.dicio.dicio_android.skills.telephone;
 
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.READ_CONTACTS;
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.Sections.isSectionAvailable;
 import static org.dicio.dicio_android.SectionsGenerated.telephone;
 
-import android.util.Log;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.skill.Skill;
@@ -16,6 +16,9 @@ import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.standard.StandardRecognizer;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TelephoneInfo extends SkillInfo {
 
@@ -31,7 +34,7 @@ public class TelephoneInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder()
+        return new ChainSkill.Builder(this)
                 .recognize(new StandardRecognizer(getSection(telephone)))
                 .output(new TelephoneOutput());
     }
@@ -42,4 +45,9 @@ public class TelephoneInfo extends SkillInfo {
         return null;
     }
 
+    @NonNull
+    @Override
+    public List<String> getNeededPermissions() {
+        return Arrays.asList(READ_CONTACTS, CALL_PHONE);
+    }
 }
