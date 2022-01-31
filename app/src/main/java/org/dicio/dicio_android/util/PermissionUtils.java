@@ -18,8 +18,11 @@ public class PermissionUtils {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     /**
+     * @param context the Android context
+     * @param permissions an array of permissions to check (can be empty)
      * @return true if ALL of the provided permissions are granted when checking with {@link
-     *         ActivityCompat#checkSelfPermission(Context, String)}, false otherwise
+     *         ActivityCompat#checkSelfPermission(Context, String)}, false otherwise. So returns
+     *         true if the provided permissions array is empty.
      */
     public static boolean checkPermissions(final Context context, final String... permissions) {
         for (final String permission : permissions) {
@@ -32,8 +35,10 @@ public class PermissionUtils {
     }
 
     /**
-     * @return true if ALL of the provided grant results are equal to
-     *         {@link PackageManager#PERMISSION_GRANTED}, false otherwise
+     * @param grantResults an array of permission grant results to check (can be empty)
+     * @return true if ALL of the provided grant results are equal to {@link
+     *         PackageManager#PERMISSION_GRANTED}, false otherwise. So returns true if the provided
+     *         grant results array is empty.
      */
     public static boolean areAllPermissionsGranted(final int... grantResults) {
         for (final int grantResult : grantResults) {
@@ -45,7 +50,9 @@ public class PermissionUtils {
     }
 
     /**
-     * @return an array of the permissions the provided skill info requires
+     * @param skillInfo the skill info from which to obtain the permissions it needs (can be null)
+     * @return an array of the permissions the provided skill info requires. If the provided skill
+     *         info is null, an empty array is returned.
      */
     public static String[] permissionsArrayFromSkillInfo(@Nullable final SkillInfo skillInfo) {
         if (skillInfo == null) {
@@ -55,7 +62,10 @@ public class PermissionUtils {
     }
 
     /**
-     * @return an array of the permissions the provided skill requires
+     * Calls {@link #permissionsArrayFromSkillInfo(SkillInfo)} on {@link Skill#getSkillInfo()}
+     * @param skill the skill from which to obtain the permissions it needs
+     * @return an array of the permissions the provided skill requires. If the provided skill has
+     *         {@link Skill#getSkillInfo()} equal to null, an empty array is returned.
      */
     public static String[] permissionsArrayFromSkill(final Skill skill) {
         return permissionsArrayFromSkillInfo(skill.getSkillInfo());
@@ -78,6 +88,12 @@ public class PermissionUtils {
         }
     }
 
+    /**
+     * @param context the Android context
+     * @param skillInfo the skill info for which to create the permissions string
+     * @return comma-separated list of the localized labels of all of the permissions the provided
+     *         skill info requires
+     */
     public static String getCommaJoinedPermissions(final Context context,
                                                    final SkillInfo skillInfo) {
         final PackageManager pm = context.getPackageManager();
