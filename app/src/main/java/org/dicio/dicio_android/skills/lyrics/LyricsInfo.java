@@ -28,7 +28,7 @@ public class LyricsInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder()
+        return new ChainSkill.Builder(this)
                 .recognize(new StandardRecognizer(getSection(lyrics)))
                 .process(new GeniusProcessor())
                 .output(new LyricsOutput());

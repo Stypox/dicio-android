@@ -40,12 +40,15 @@ import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
 import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.BaseActivity;
+import org.dicio.dicio_android.util.PermissionUtils;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int MICROPHONE_PERMISSION_REQUEST_CODE = 13893;
+    public static final int SKILL_PERMISSIONS_REQUEST_CODE = 1928430;
+    public static final int SETTINGS_PERMISSIONS_REQUEST_CODE = 420938;
 
     private SharedPreferences preferences;
 
@@ -166,8 +169,7 @@ public class MainActivity extends BaseActivity
         if (appJustOpened) {
             // now everything should have been initialized
             if (!(skillEvaluator.getPrimaryInputDevice() instanceof SpeechInputDevice)
-                    || ActivityCompat.checkSelfPermission(this, RECORD_AUDIO)
-                            == PERMISSION_GRANTED) {
+                    || PermissionUtils.checkPermissions(this, RECORD_AUDIO)) {
                 // if no voice permission start listening in onActivityResult
                 skillEvaluator.getPrimaryInputDevice().tryToGetInput(false);
             }
@@ -239,7 +241,12 @@ public class MainActivity extends BaseActivity
                 && skillEvaluator.getPrimaryInputDevice() instanceof SpeechInputDevice) {
             skillEvaluator.getPrimaryInputDevice().load();
             skillEvaluator.getPrimaryInputDevice().tryToGetInput(false);
+
+        } else if (requestCode == SKILL_PERMISSIONS_REQUEST_CODE
+                && skillEvaluator != null) {
+            skillEvaluator.onSkillRequestPermissionsResult(grantResults);
         }
+        // SETTINGS_PERMISSIONS_REQUEST_CODE results are ignored
     }
 
 
@@ -261,8 +268,7 @@ public class MainActivity extends BaseActivity
             secondaryInputDevice.load();
 
             if (primaryInputDevice instanceof SpeechInputDevice
-                    && ActivityCompat.checkSelfPermission(this, RECORD_AUDIO)
-                            != PERMISSION_GRANTED) {
+                    && !PermissionUtils.checkPermissions(this, RECORD_AUDIO)) {
                 ActivityCompat.requestPermissions(this, new String[]{RECORD_AUDIO},
                         MICROPHONE_PERMISSION_REQUEST_CODE);
             } else {

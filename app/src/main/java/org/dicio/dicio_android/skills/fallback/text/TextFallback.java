@@ -1,15 +1,22 @@
 package org.dicio.dicio_android.skills.fallback.text;
 
+import androidx.annotation.Nullable;
+
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.FallbackSkill;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.List;
 
-public class TextFallback implements FallbackSkill {
+public class TextFallback extends FallbackSkill {
+
+    public TextFallback(@Nullable final SkillInfo skillInfo) {
+        super(skillInfo);
+    }
 
     @Override
     public void setInput(final String input,

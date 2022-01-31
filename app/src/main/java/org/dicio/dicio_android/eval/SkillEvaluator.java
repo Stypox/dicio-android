@@ -1,5 +1,6 @@
 package org.dicio.dicio_android.eval;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,11 +9,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityCompat;
 
+import org.dicio.dicio_android.MainActivity;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice.UnableToAccessMicrophoneException;
@@ -20,6 +24,7 @@ import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.ExceptionUtils;
+import org.dicio.dicio_android.util.PermissionUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
@@ -32,6 +37,7 @@ import java.util.List;
 import java.util.Queue;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -43,13 +49,14 @@ public class SkillEvaluator implements CleanableUp {
     @Nullable private final ToolbarInputDevice secondaryInputDevice;
     private final SpeechOutputDevice speechOutputDevice;
     private final GraphicalOutputDevice graphicalOutputDevice;
-    private Context context;
+    private Activity activity;
 
     private boolean currentlyProcessingInput = false;
     private final Queue<String> queuedInputs = new LinkedList<>();
     @Nullable private View partialInputView = null;
     private boolean hasAddedPartialInputView = false;
     @Nullable private Disposable evaluationDisposable = null;
+    @Nullable private Skill skillNeedingPermissions = null;
 
 
     public SkillEvaluator(final SkillRanker skillRanker,
@@ -57,14 +64,14 @@ public class SkillEvaluator implements CleanableUp {
                           @Nullable final ToolbarInputDevice secondaryInputDevice,
                           final SpeechOutputDevice speechOutputDevice,
                           final GraphicalOutputDevice graphicalOutputDevice,
-                          final Context context) {
+                          final Activity activity) {
 
         this.skillRanker = skillRanker;
         this.primaryInputDevice = primaryInputDevice;
         this.secondaryInputDevice = secondaryInputDevice;
         this.speechOutputDevice = speechOutputDevice;
         this.graphicalOutputDevice = graphicalOutputDevice;
-        this.context = context;
+        this.activity = activity;
 
         setupInputDeviceListeners();
 
@@ -79,13 +86,13 @@ public class SkillEvaluator implements CleanableUp {
     ////////////////////
 
     public void showInitialScreen() {
-        final View initialScreen = GraphicalOutputUtils.inflate(context, R.layout.initial_screen);
+        final View initialScreen = GraphicalOutputUtils.inflate(activity, R.layout.initial_screen);
 
         final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
         for (final SkillInfo skillInfo
                 : SkillHandler.getRandomEnabledSkillInfoList(6)) {
             final View skillInfoItem
-                    = GraphicalOutputUtils.inflate(context, R.layout.initial_screen_skill_item);
+                    = GraphicalOutputUtils.inflate(activity, R.layout.initial_screen_skill_item);
 
             ((AppCompatImageView) skillInfoItem.findViewById(R.id.skillIconImageView))
                     .setImageResource(SkillHandler.getSkillIconResource(skillInfo));
@@ -111,11 +118,12 @@ public class SkillEvaluator implements CleanableUp {
         }
         speechOutputDevice.cleanup();
         graphicalOutputDevice.cleanup();
-        context = null;
+        activity = null;
 
         if (evaluationDisposable != null) {
             evaluationDisposable.dispose();
         }
+        skillNeedingPermissions = null;
         queuedInputs.clear();
         partialInputView = null;
     }
@@ -134,6 +142,44 @@ public class SkillEvaluator implements CleanableUp {
     @Nullable
     public ToolbarInputDevice getSecondaryInputDevice() {
         return secondaryInputDevice;
+    }
+
+    /**
+     * to be called from the main thread
+     */
+    public void onSkillRequestPermissionsResult(@NonNull final int[] grantResults) {
+        if (skillNeedingPermissions == null) {
+            return; // should be unreachable
+        }
+        final Skill skill = skillNeedingPermissions;
+        // make sure this skill is not reprocessed (also should never happen, but who knows)
+        skillNeedingPermissions = null;
+
+        if (PermissionUtils.areAllPermissionsGranted(grantResults)) {
+            evaluationDisposable = Single.fromCallable(() -> {
+                skill.processInput(SkillHandler.getSkillContext());
+                return skill;
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::generateOutput, this::onError);
+
+        } else {
+            // permissions were not granted, show a message
+            @Nullable final SkillInfo skillInfo = skill.getSkillInfo();
+            if (skillInfo != null) {
+                // skill info will always be non-null, but stay on the safe side and add a check
+                final String message = activity.getString(R.string.eval_missing_permissions,
+                        activity.getString(skillInfo.getNameResource()),
+                        PermissionUtils.getCommaJoinedPermissions(activity, skillInfo));
+                speechOutputDevice.speak(message);
+                graphicalOutputDevice.display(
+                        GraphicalOutputUtils.buildDescription(activity, message));
+            }
+
+            graphicalOutputDevice.addDivider();
+            finishedProcessingInput();
+        }
     }
 
 
@@ -211,7 +257,7 @@ public class SkillEvaluator implements CleanableUp {
     private void displayPartialUserInput(final String input) {
         hasAddedPartialInputView = true;
         if (partialInputView == null) {
-            partialInputView = GraphicalOutputUtils.inflate(context, R.layout.user_input_partial);
+            partialInputView = GraphicalOutputUtils.inflate(activity, R.layout.user_input_partial);
         }
         final TextView textView = partialInputView.findViewById(R.id.userInput);
         textView.setText(input);
@@ -259,7 +305,7 @@ public class SkillEvaluator implements CleanableUp {
 
     private void displayUserInput(final String input) {
         final View userInputView =
-                GraphicalOutputUtils.inflate(context, R.layout.user_input);
+                GraphicalOutputUtils.inflate(activity, R.layout.user_input);
         final AppCompatEditText inputEditText = userInputView.findViewById(R.id.userInput);
 
         inputEditText.setText(input);
@@ -331,7 +377,7 @@ public class SkillEvaluator implements CleanableUp {
 
             // open keyboard
             final InputMethodManager inputMethodManager =
-                    (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.showSoftInput(inputEditText, InputMethodManager.SHOW_FORCED);
         });
 
@@ -349,13 +395,22 @@ public class SkillEvaluator implements CleanableUp {
             evaluationDisposable.dispose();
         }
 
-        evaluationDisposable = Single.fromCallable(() -> {
+        evaluationDisposable = Maybe.fromCallable(() -> {
             final List<String> inputWords = WordExtractor.extractWords(input);
             final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
             final Skill skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
 
-            skill.processInput(SkillHandler.getSkillContext());
-            return skill;
+            final String[] permissions = PermissionUtils.permissionsArrayFromSkill(skill);
+            if (PermissionUtils.checkPermissions(activity, permissions)) {
+                skill.processInput(SkillHandler.getSkillContext());
+                return skill;
+            } else {
+                // request permissions; when done process input in onSkillRequestPermissionsResult
+                ActivityCompat.requestPermissions(activity, permissions,
+                        MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
+                skillNeedingPermissions = skill;
+                return null;
+            }
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -389,16 +444,17 @@ public class SkillEvaluator implements CleanableUp {
         t.printStackTrace();
 
         if (ExceptionUtils.hasAssignableCause(t, UnableToAccessMicrophoneException.class)) {
-            speechOutputDevice.speak(context.getString(R.string.microphone_error));
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildDescription(context,
-                    context.getString(R.string.microphone_error)));
+            final String message = activity.getString(R.string.microphone_error);
+            speechOutputDevice.speak(message);
+            graphicalOutputDevice.display(
+                    GraphicalOutputUtils.buildDescription(activity, message));
         } else if (ExceptionUtils.isNetworkError(t)) {
-            speechOutputDevice.speak(context.getString(R.string.eval_network_error_description));
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(context));
+            speechOutputDevice.speak(activity.getString(R.string.eval_network_error_description));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(activity));
         } else {
             skillRanker.removeAllBatches();
-            speechOutputDevice.speak(context.getString(R.string.eval_fatal_error));
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(context, t));
+            speechOutputDevice.speak(activity.getString(R.string.eval_fatal_error));
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(activity, t));
         }
         graphicalOutputDevice.addDivider();
 

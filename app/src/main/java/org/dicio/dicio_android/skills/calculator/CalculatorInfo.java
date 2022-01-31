@@ -28,7 +28,7 @@ public class CalculatorInfo extends SkillInfo {
 
     @Override
     public Skill build(SkillContext context) {
-        return new ChainSkill.Builder()
+        return new ChainSkill.Builder(this)
                 .recognize(new StandardRecognizer(Sections.getSection(calculator)))
                 .process(new CalculatorProcessor())
                 .output(new CalculatorOutput());

@@ -77,4 +77,5 @@
     <string name="permission_denied">Permesso negato</string>
     <string name="skill_search_what_question">Cosa vuoi cercare\?</string>
     <string name="skill_search_no_results">La ricerca non ha prodotto risultati, prova a dirmi di nuovo cosa vuoi cercare</string>
+    <string name="pref_skill_missing_permissions">Richiede questi permessi: %1$s</string>
 </resources>

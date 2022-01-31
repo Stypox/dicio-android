@@ -30,7 +30,7 @@ public class SearchInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        final ChainSkill.Builder builder = new ChainSkill.Builder()
+        final ChainSkill.Builder builder = new ChainSkill.Builder(this)
                 .recognize(new StandardRecognizer(getSection(search)));
 
         // Qwant was once available as a second search engine; restore this if adding a new engine
