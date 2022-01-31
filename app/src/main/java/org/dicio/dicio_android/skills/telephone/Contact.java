@@ -63,8 +63,8 @@ public class Contact {
         return numbers;
     }
 
-    public static List<Contact> getSortedContacts(final ContentResolver contentResolver,
-                                                  final String userContactName) {
+    public static List<Contact> getFilteredSortedContacts(final ContentResolver contentResolver,
+                                                          final String userContactName) {
         final List<Contact> contacts = new ArrayList<>();
         try (Cursor contactCursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null)) {
@@ -77,7 +77,9 @@ public class Contact {
                 final String id = contactCursor.getString(contactIdColumnIndex);
                 if (name != null) {
                     final int distance = StringUtils.customStringDistance(name, userContactName);
-                    contacts.add(new Contact(name, distance, id));
+                    if (distance < 6) {
+                        contacts.add(new Contact(name, distance, id));
+                    }
                 }
             }
         }

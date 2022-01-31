@@ -30,7 +30,7 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                          final GraphicalOutputDevice graphicalOutputDevice) {
         final String userContactName = data.getCapturingGroup(telephone.who).trim();
         final ContentResolver contentResolver = context.getAndroidContext().getContentResolver();
-        final List<Contact> contacts = Contact.getSortedContacts(contentResolver, userContactName);
+        final List<Contact> contacts = Contact.getFilteredSortedContacts(contentResolver, userContactName);
 
         LinearLayout output = null;
         int contactCount = 0;
@@ -39,7 +39,7 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                     ResourcesCompat.getDrawable(context.getAndroidContext().getResources(),
                             R.drawable.divider_items, null));
 
-            for (int i = 0; i < 5 && i < contacts.size(); ++i) {
+            for (int i = 0; contactCount < 5 && i < contacts.size(); ++i) {
                 final Contact contact = contacts.get(i);
                 final List<String> numbers = contact.getNumbers(contentResolver);
                 if (numbers.isEmpty()) {
