@@ -76,7 +76,7 @@ public class Contact {
                 final String name = contactCursor.getString(contactNameColumnIndex);
                 final String id = contactCursor.getString(contactIdColumnIndex);
                 if (name != null) {
-                    final int distance = StringUtils.levenshteinDistance(name, userContactName);
+                    final int distance = StringUtils.customStringDistance(name, userContactName);
                     contacts.add(new Contact(name, distance, id));
                 }
             }
