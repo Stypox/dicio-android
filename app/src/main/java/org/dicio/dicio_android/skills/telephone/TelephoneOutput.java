@@ -47,7 +47,7 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                 }
                 ++contactCount;
 
-                for (int j = 0; j < contacts.size(); ++j) {
+                for (int j = 0; j < numbers.size(); ++j) {
                     final View view;
                     if (j == 0) {
                         view = GraphicalOutputUtils.inflate(context.getAndroidContext(),
@@ -59,7 +59,7 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                                 R.layout.skill_telephone_contact_second_number);
                     }
 
-                    final String number = numbers.get(i);
+                    final String number = numbers.get(j);
                     ((TextView) view.findViewById(R.id.description)).setText(number);
                     view.setOnClickListener(v -> call(context.getAndroidContext(), number));
                     output.addView(view);
