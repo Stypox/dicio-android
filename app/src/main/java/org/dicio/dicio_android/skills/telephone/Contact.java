@@ -11,13 +11,17 @@ import org.dicio.dicio_android.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Contact {
 
     private static final String TAG = Contact.class.getSimpleName();
     private static final String NUMBERS_QUERY = ContactsContract.CommonDataKinds.Phone.NUMBER
             + " IS NOT NULL AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?";
+    private static final Pattern NUMBER_CLEANER = Pattern.compile("[^0-9]");
 
     private final String name;
     private final int distance;
@@ -40,12 +44,17 @@ public class Contact {
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 null, NUMBERS_QUERY, new String[]{ id }, null)) {
 
+            final Set<String> cleanedNumbers = new HashSet<>(); // used to check for duplication
             final int numberColumnIndex = phoneNumberCursor
                     .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             while (phoneNumberCursor.moveToNext()) {
                 final String number = phoneNumberCursor.getString(numberColumnIndex);
                 if (!StringUtils.isNullOrEmpty(number)) {
-                    numbers.add(number);
+                    final String cleanedNumber = NUMBER_CLEANER.matcher(number).replaceAll("");
+                    if (!cleanedNumbers.contains(cleanedNumber)) {
+                        numbers.add(number);
+                        cleanedNumbers.add(cleanedNumber); // prevent duplicated numbers
+                    }
                 }
             }
         } catch (final Exception e) {
