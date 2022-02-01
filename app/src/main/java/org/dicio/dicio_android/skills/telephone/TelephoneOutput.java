@@ -1,7 +1,7 @@
 package org.dicio.dicio_android.skills.telephone;
 
+import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.Sentences_en.telephone;
-import static org.dicio.dicio_android.Sentences_en.util_yes_no;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
+import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
@@ -82,7 +83,7 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
         } else {
             final String number = numberToCallAfterConfirmation;
             return Collections.singletonList(new ChainSkill.Builder(null)
-                    .recognize(new StandardRecognizer(util_yes_no))
+                    .recognize(new StandardRecognizer(getSection(SectionsGenerated.util_yes_no)))
                     .output(new OutputGenerator<StandardResult>() {
                         @Override
                         public void generate(final StandardResult data,
