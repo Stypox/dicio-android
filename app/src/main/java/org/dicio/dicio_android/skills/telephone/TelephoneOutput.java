@@ -51,16 +51,17 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
                     final View view;
                     if (j == 0) {
                         view = GraphicalOutputUtils.inflate(context.getAndroidContext(),
-                                R.layout.skill_telephone_contactlist);
-                        ((TextView) view.findViewById(R.id.title)).setText(contact.getName());
+                                R.layout.skill_telephone_contact);
+                        ((TextView) view.findViewById(R.id.contact_name))
+                                .setText(contact.getName());
                     } else {
                         // a contact can have multiple associated numbers
                         view = GraphicalOutputUtils.inflate(context.getAndroidContext(),
-                                R.layout.skill_telephone_contact_second_number);
+                                R.layout.skill_telephone_contact_secondary_number);
                     }
 
                     final String number = numbers.get(j);
-                    ((TextView) view.findViewById(R.id.description)).setText(number);
+                    ((TextView) view.findViewById(R.id.contact_number)).setText(number);
                     view.setOnClickListener(v -> call(context.getAndroidContext(), number));
                     output.addView(view);
                 }
