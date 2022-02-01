@@ -63,6 +63,8 @@ public class ChainSkillTest {
                 generatedOutput.append(speechOutput);
             }
             @Override public void stopSpeaking() {}
+            @Override public boolean isSpeaking() { return false; }
+            @Override public void runWhenFinishedSpeaking(Runnable runnable) {}
             @Override public void cleanup() {}
         }, null);
 
