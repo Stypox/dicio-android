@@ -37,6 +37,10 @@ public class Contact {
         return name;
     }
 
+    public int getDistance() {
+        return distance;
+    }
+
     @NonNull
     public List<String> getNumbers(final ContentResolver contentResolver) {
         final List<String> numbers = new ArrayList<>();

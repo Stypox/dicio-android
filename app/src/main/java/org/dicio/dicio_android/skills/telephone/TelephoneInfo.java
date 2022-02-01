@@ -5,6 +5,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.Sections.isSectionAvailable;
 import static org.dicio.dicio_android.SectionsGenerated.telephone;
+import static org.dicio.dicio_android.SectionsGenerated.util_yes_no;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +30,7 @@ public class TelephoneInfo extends SkillInfo {
 
     @Override
     public boolean isAvailable(final SkillContext context) {
-        return isSectionAvailable(telephone);
+        return isSectionAvailable(telephone) && isSectionAvailable(util_yes_no);
     }
 
     @Override
