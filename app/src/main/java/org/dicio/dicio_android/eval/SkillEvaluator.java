@@ -420,12 +420,12 @@ public class SkillEvaluator implements CleanableUp {
     private void generateOutput(final Skill skill) {
         skill.generateOutput(SkillHandler.getSkillContext(),
                 speechOutputDevice, graphicalOutputDevice);
-        graphicalOutputDevice.addDivider();
 
         final List<Skill> nextSkills = skill.nextSkills();
         if (nextSkills == null || nextSkills.isEmpty()) {
             // current conversation has ended, reset to the default batch of skills
             skillRanker.removeAllBatches();
+            graphicalOutputDevice.addDivider();
         } else {
             skillRanker.addBatchToTop(nextSkills);
             speechOutputDevice.runWhenFinishedSpeaking(
