@@ -70,4 +70,15 @@
     <string name="drawer_header_subtitle">Trenger du hjelp\?</string>
     <string name="drawer_close">Lukk navigasjonsskuff</string>
     <string name="drawer_open">Åpne navigasjonsskuff</string>
+    <string name="vosk_model_download_error">Kunne ikke laste ned Vosk-modell</string>
+    <string name="open_with">Åpne med</string>
+    <string name="no_app_to_open_intent">Ingen programmer på enheten din kan åpne ette</string>
+    <string name="permission_denied">Tilgang nektet</string>
+    <string name="pref_skill_not_available">Denne ferdigheten er ikke tilgjengngelig for ditt språk. Bidrag ønskes.</string>
+    <string name="pref_skill_grant_permissions">Innvilg</string>
+    <string name="skill_search_what_question">Hva vil du søke etter\?</string>
+    <string name="android_tts_error">Kunne ikke igangsette Android-talesyntese</string>
+    <string name="pref_skill_missing_permissions">Krever disse tilgangene: %1$s</string>
+    <string name="eval_missing_permissions">Ferdigheten «%1$s» trenger disse tilgangene for å virke: %2$s</string>
+    <string name="skill_search_no_results">Resultatløst søk. Prøv å fortelle meg igjen hva du søker etter</string>
 </resources>
