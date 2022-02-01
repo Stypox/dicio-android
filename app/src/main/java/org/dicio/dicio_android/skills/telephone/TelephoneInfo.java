@@ -25,7 +25,7 @@ public class TelephoneInfo extends SkillInfo {
 
     public TelephoneInfo() {
         super("open", R.string.skill_name_telephone, R.string.skill_sentence_example_telephone,
-                R.drawable.ic_open_in_new_white, false);
+                R.drawable.ic_call_white, false);
     }
 
     @Override
