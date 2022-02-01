@@ -428,7 +428,9 @@ public class SkillEvaluator implements CleanableUp {
             skillRanker.removeAllBatches();
         } else {
             skillRanker.addBatchToTop(nextSkills);
-            primaryInputDevice.tryToGetInput(false);
+            speechOutputDevice.runWhenFinishedSpeaking(
+                    () -> activity.runOnUiThread(
+                            () -> primaryInputDevice.tryToGetInput(false)));
         }
 
         skill.cleanup(); // cleanup the input that was set

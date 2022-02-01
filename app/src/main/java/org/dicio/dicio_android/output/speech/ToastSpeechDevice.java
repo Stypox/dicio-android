@@ -5,9 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import org.dicio.skill.output.SpeechOutputDevice;
-
-public class ToastSpeechDevice implements SpeechOutputDevice {
+public class ToastSpeechDevice extends InstantSpeechDevice {
     private Context context;
     private Toast currentToast = null;
 

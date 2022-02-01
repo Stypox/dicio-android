@@ -24,6 +24,7 @@
     <string name="vosk_model_extraction_error">Extracting Vosk model from Zip failed</string>
     <string name="vosk_model_ready">Vosk model ready</string>
     <string name="android_tts_unsupported_language">The current language is not supported by the Android text to speech engine</string>
+    <string name="android_tts_error">An error occurred while initializing the Android text to speech engine</string>
     <string name="settings">Settings</string>
     <!-- settings_header -->
     <string name="pref_io">Input and output methods</string>

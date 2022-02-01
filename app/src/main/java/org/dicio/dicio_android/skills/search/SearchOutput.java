@@ -50,7 +50,7 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             final String message = context.getAndroidContext().getString(data == null
                     ? R.string.skill_search_what_question : R.string.skill_search_no_results);
             speechOutputDevice.speak(message);
-            graphicalOutputDevice.displayTemporary(GraphicalOutputUtils.buildSubHeader(
+            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
                     context.getAndroidContext(), message));
 
             tryAgain = true;
