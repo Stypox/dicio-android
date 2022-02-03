@@ -103,7 +103,7 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
     }
 
     public void unbind(final Fragment fragment) {
-        itemView.setOnClickListener(null);
+        expandImageView.setOnClickListener(null);
         removeFragmentInHolderIfPresent(fragment);
         checkBox.setOnCheckedChangeListener(null);
         grantPermissionsTextView.setOnClickListener(null);
@@ -113,7 +113,7 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
     private void showExpandButton(final Fragment fragment, final SkillInfo skillInfo) {
         expandImageView.setRotation(0);
         expandImageView.setVisibility(View.VISIBLE);
-        itemView.setOnClickListener(v -> {
+        expandImageView.setOnClickListener(v -> {
             expanded = !expanded;
             if (expanded) {
                 fragmentHolder.setVisibility(View.VISIBLE);
