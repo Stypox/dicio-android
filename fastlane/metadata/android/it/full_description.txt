@@ -7,6 +7,7 @@ Dicio risponde a richieste di questi tipi:
 <li><b>testi di canzoni</b>: mostra testi di canzoni da <b>Genius</b> - <i>Qual è la canzone che fa il cielo è sempre più blu?</i></li>
 <li><b>apertura di app</b>: apre un'app sul tuo dispositivo - <i>Apri NewPipe</i></li>
 <li><b>calcolatrice</b>: calcola delle semplici espressioni matematiche - <i>Quanto fa quattromiladue per tre meno un milione diviso trecento?</i></li>
+<li><b>telefono</b>: visualizza e chiama i contatti - <i>Chiama Lorenzo</i></li>
 </ul>
 
 Dicio può ricevere input tramite una casella di testo o tramite il <i>riconoscimento vocale</i> <a href="https://github.com/alphacep/vosk-api/">Vosk</a>, e può parlare con messaggi pop-up o con il <i>motore di sintesi vocale</i> di Android. Le abilità generano anche dell'<b>output grafico interattivo</b> quando rispondono a una domanda.

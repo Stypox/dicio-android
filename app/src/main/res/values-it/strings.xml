@@ -79,4 +79,13 @@
     <string name="skill_search_no_results">La ricerca non ha prodotto risultati, prova a dirmi di nuovo cosa vuoi cercare</string>
     <string name="pref_skill_missing_permissions">Richiede questi permessi: %1$s</string>
     <string name="android_tts_error">Si è verificato un errore nell\'inizializzare il motore di sintesi vocale di Android</string>
+    <string name="pref_skill_grant_permissions">Concedi</string>
+    <string name="eval_missing_permissions">L\'abilità \"%1$s\" richiede questi permessi per funzionare: %2$s</string>
+    <string name="skill_name_telephone">Telefono</string>
+    <string name="skill_sentence_example_telephone">Chiama Lorenzo</string>
+    <string name="skill_telephone_unknown_contact">Nessun contatto trovato, riprova</string>
+    <string name="skill_telephone_found_contacts">Ho trovato %1$d contatti</string>
+    <string name="skill_telephone_confirm_call">Devo chiamare %1$s?</string>
+    <string name="skill_telephone_calling">Sto chiamando %1$s…</string>
+    <string name="skill_telephone_not_calling">Va bene, non chiamo nessuno</string>
 </resources>
