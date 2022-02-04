@@ -77,4 +77,15 @@
     <string name="skill_search_no_results">Sem resultados para a pesquisa, tente me dizer novamente o que você quer pesquisar</string>
     <string name="no_app_to_open_intent">Nenhum aplicativo do seu dispositivo pode abrir isso</string>
     <string name="pref_skill_not_available">Essa habilidade ainda não está disponível para o seu idioma. Contribuições são bem-vindas!</string>
+    <string name="android_tts_error">Ocorreu um erro ao inicializar o mecanismo de conversão de texto em fala do Android</string>
+    <string name="pref_skill_missing_permissions">Requer estas permissões: %1$s</string>
+    <string name="pref_skill_grant_permissions">Conceder</string>
+    <string name="eval_missing_permissions">A habilidade \"%1$s\" precisa dessas permissões para funcionar: %2$s</string>
+    <string name="skill_telephone_confirm_call">Devo ligar para %1$s\?</string>
+    <string name="skill_telephone_calling">Chamando %1$s…</string>
+    <string name="skill_telephone_not_calling">OK, eu não vou chamar ninguém</string>
+    <string name="skill_name_telephone">Telefone</string>
+    <string name="skill_sentence_example_telephone">Ligue para Tom</string>
+    <string name="skill_telephone_unknown_contact">Nenhum contato encontrado, tente novamente</string>
+    <string name="skill_telephone_found_contacts">Encontrei %1$d contatos</string>
 </resources>
