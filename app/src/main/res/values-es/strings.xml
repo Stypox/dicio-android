@@ -77,4 +77,15 @@
     <string name="no_app_to_open_intent">Ninguna aplicación de su dispositivo puede abrir esto</string>
     <string name="permission_denied">Permiso denegado</string>
     <string name="skill_search_no_results">La búsqueda no arrojó resultados, intenta decirme de nuevo lo que quieres buscar</string>
+    <string name="skill_telephone_found_contacts">He encontrado %1$d contactos</string>
+    <string name="skill_name_telephone">Teléfono</string>
+    <string name="skill_sentence_example_telephone">Llamar a Tom</string>
+    <string name="android_tts_error">Se ha producido un error al inicializar el motor de conversión de texto a voz de Android</string>
+    <string name="pref_skill_missing_permissions">Requiere estos permisos: %1$s</string>
+    <string name="pref_skill_grant_permissions">Conceder</string>
+    <string name="eval_missing_permissions">La habilidad \"%1$s\" necesita estos permisos para funcionar: %2$s</string>
+    <string name="skill_telephone_unknown_contact">No se ha encontrado ningún contacto, inténtelo de nuevo</string>
+    <string name="skill_telephone_confirm_call">¿Debería llamar a %1$s\?</string>
+    <string name="skill_telephone_calling">Llamando a %1$s…</string>
+    <string name="skill_telephone_not_calling">Vale, no voy a llamar a nadie</string>
 </resources>
