@@ -45,7 +45,7 @@ dependencies {
 
     // Dicio own libraries
     implementation 'com.github.Stypox:dicio-skill:91e61012598d0bb20e76b1a09d1c1c18c63fe49e'
-    implementation 'com.github.Stypox:dicio-numbers:fcf12cf98e54e0fe054ca26bdf38e3b99ffd9ca9'
+    implementation 'com.github.Stypox:dicio-numbers:51919643211e237ecef45ec434ff78db42a98fa0'
 
     // Vosk
     implementation 'net.java.dev.jna:jna:5.8.0@aar'
