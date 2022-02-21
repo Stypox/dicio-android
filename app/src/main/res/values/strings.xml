@@ -67,10 +67,12 @@
     <string name="skill_sentence_example_lyrics">What\'s the song that goes we will we will rock you?</string>
     <string name="skill_name_open">App opener</string>
     <string name="skill_sentence_example_open">Open NewPipe</string>
-    <string name="skill_name_telephone">Telephone</string>
-    <string name="skill_sentence_example_telephone">Call Tom</string>
     <string name="skill_name_calculator">Calculator</string>
     <string name="skill_sentence_example_calculator">What is five times four minus a million?</string>
+    <string name="skill_name_telephone">Telephone</string>
+    <string name="skill_sentence_example_telephone">Call Tom</string>
+    <string name="skill_name_timer">Timer</string>
+    <string name="skill_sentence_example_timer">Set a timer for five minutes</string>
     <string name="skill_fallback_name_text">Text message</string>
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>
     <string name="skill_search_no_results">The search returned no results, try telling me again what you want to search for</string>
@@ -89,4 +91,19 @@
     <string name="skill_telephone_confirm_call">Should I call %1$s?</string>
     <string name="skill_telephone_calling">Calling %1$s…</string>
     <string name="skill_telephone_not_calling">OK, I am not calling anyone</string>
+    <string name="skill_timer_how_much_time">How much time should the timer last?</string>
+    <string name="skill_timer_confirm_cancel">Are you sure you want to cancel all timers?</string>
+    <string name="skill_timer_expired">The timer has expired!</string>
+    <string name="skill_timer_expired_name">Timer %1$s has expired!</string>
+    <string name="skill_timer_set">OK, the timer will expire in %1$s</string>
+    <string name="skill_timer_set_name">OK, timer %1$s will expire in %2$s</string>
+    <string name="skill_timer_canceled">The timer was canceled</string>
+    <string name="skill_timer_all_canceled">All timers were canceled</string>
+    <string name="skill_timer_canceled_name">Timer %1$s was canceled</string>
+    <string name="skill_timer_no_active">There is no active timer</string>
+    <string name="skill_timer_no_active_name">There is no active timer named %1$s</string>
+    <string name="skill_timer_query">The timer expires in %1$s</string>
+    <string name="skill_timer_query_name">Timer %1$s expires in %2$s</string>
+    <string name="skill_timer_query_last">The last timer expires in %1$s</string>
+    <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
 </resources>
