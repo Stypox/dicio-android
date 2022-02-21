@@ -3,6 +3,9 @@ package org.dicio.dicio_android.skills.timer;
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.SectionsGenerated.util_yes_no;
 
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
@@ -161,7 +164,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
                 }
 
                 @Override
-                public void processInput(final SkillContext context) throws Exception {
+                public void processInput(final SkillContext context) {
                     Objects.requireNonNull(context.getNumberParserFormatter());
                     duration = context.getNumberParserFormatter().extractDuration(input).get();
                 }
@@ -243,10 +246,24 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
                     }
                 },
                 (theName) -> {
-                    // TODO play song
+                    // TODO improve how alarm is played, and allow stopping it
                     final String message = formatStringWithName(context, theName, null,
                             R.string.skill_timer_expired, R.string.skill_timer_expired_name);
-                    speechOutputDevice.speak(message);
+                    final Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
+                            context.getAndroidContext(), RingtoneManager.TYPE_ALARM);
+                    final Ringtone ringtone;
+                    if (ringtoneUri == null) {
+                        ringtone = null;
+                    } else {
+                        ringtone = RingtoneManager.getRingtone(context.getAndroidContext(),
+                                ringtoneUri);
+                    }
+
+                    if (ringtone == null) {
+                        speechOutputDevice.speak(message);
+                    } else {
+                        ringtone.play();
+                    }
                     textView.setText(message);
                 },
                 (theName) -> textView.setText(formatStringWithName(context, theName, null,
