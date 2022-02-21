@@ -229,8 +229,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
                           final GraphicalOutputDevice graphicalOutputDevice) {
         Objects.requireNonNull(context.getNumberParserFormatter());
 
-        speechOutputDevice.speak(formatStringWithName(context, name,
-                getFormattedDuration(context, duration.getSeconds(), true),
+        speechOutputDevice.speak(formatStringWithName(context, name, duration.getSeconds(),
                 R.string.skill_timer_set, R.string.skill_timer_set_name));
 
         final TextView textView = GraphicalOutputUtils.buildSubHeader(context.getAndroidContext(),
@@ -247,7 +246,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
                 },
                 (theName) -> {
                     // TODO improve how alarm is played, and allow stopping it
-                    final String message = formatStringWithName(context, theName, null,
+                    final String message = formatStringWithName(context, theName,
                             R.string.skill_timer_expired, R.string.skill_timer_expired_name);
                     final Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
                             context.getAndroidContext(), RingtoneManager.TYPE_ALARM);
@@ -266,7 +265,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
                     }
                     textView.setText(message);
                 },
-                (theName) -> textView.setText(formatStringWithName(context, theName, null,
+                (theName) -> textView.setText(formatStringWithName(context, theName,
                         R.string.skill_timer_canceled, R.string.skill_timer_canceled_name))));
     }
 
@@ -332,8 +331,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
             @StringRes final int noNameQueryString = setTimers.size() == 1
                     ? R.string.skill_timer_query : R.string.skill_timer_query_last;
 
-            message = formatStringWithName(context, lastTimer.name,
-                    getFormattedDuration(context, lastTimer.lastTickSeconds, true),
+            message = formatStringWithName(context, lastTimer.name, lastTimer.lastTickSeconds,
                     noNameQueryString, R.string.skill_timer_query_name);
 
         } else {
@@ -365,22 +363,25 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
 
     private String formatStringWithName(final SkillContext context,
                                         @Nullable final String name,
-                                        @Nullable final String duration,
                                         @StringRes final int stringWithoutName,
                                         @StringRes final int stringWithName) {
         if (name == null) {
-            if (duration == null) {
-                return context.getAndroidContext().getString(stringWithoutName);
-            } else {
-                return context.getAndroidContext().getString(stringWithoutName, duration);
-            }
+            return context.getAndroidContext().getString(stringWithoutName);
         } else {
-            if (duration == null) {
-                return context.getAndroidContext().getString(stringWithName, name);
-            } else {
-                return context.getAndroidContext().getString(stringWithName, name,
-                        duration);
-            }
+            return context.getAndroidContext().getString(stringWithName, name);
+        }
+    }
+
+    private String formatStringWithName(final SkillContext context,
+                                        @Nullable final String name,
+                                        final long seconds,
+                                        @StringRes final int stringWithoutName,
+                                        @StringRes final int stringWithName) {
+        final String duration = getFormattedDuration(context, seconds, true);
+        if (name == null) {
+            return context.getAndroidContext().getString(stringWithoutName, duration);
+        } else {
+            return context.getAndroidContext().getString(stringWithName, name, duration);
         }
     }
 
