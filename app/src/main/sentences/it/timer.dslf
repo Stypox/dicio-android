@@ -1,0 +1,5 @@
+timer: high
+[set] timer .duration.;
+[set] imposta|crea|mett<e|i>|(fa<mm?>i partire) un? jaime|time<r|s?>|temporizzatore|contaminuti|(conta minuti) (di|<t|f>ra|(che dur<a|i>)|(con durata di?)|(che suon<a|i> <t|f>ra) .duration.)? (chiamato|denominato|(con il nome) .name.)?;
+[cancel] spegn<e|i>|blocca|interromp<e|i>|arresta|annulla|ferma|(fa<mm?>i smettere) i|il? jaime|time<r|rs|s?>|temporizzator<e|i>|contaminuti|(conta minuti) (chiamat<o|i>|denominat<o|i>|(con il nome)? .name.)?;
+[query] quanto tempo? manca|resta|rimane|(e? restato)|(e? rimasto) su<i|l?>|(per i|il?)? jaime|time<r|rs|s?>|temporizzator<e|i>|contaminuti|(conta minuti) (chiamat<o|i>|denominat<o|i>|(con il nome)? .name.)?;

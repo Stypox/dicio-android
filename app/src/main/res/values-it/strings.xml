@@ -88,4 +88,21 @@
     <string name="skill_telephone_confirm_call">Devo chiamare %1$s?</string>
     <string name="skill_telephone_calling">Sto chiamando %1$s…</string>
     <string name="skill_telephone_not_calling">Va bene, non chiamo nessuno</string>
+    <string name="skill_name_timer">Contaminuti</string>
+    <string name="skill_sentence_example_timer">Metti un timer di cinque minuti</string>
+    <string name="skill_timer_how_much_time">Quanto deve durare il timer?</string>
+    <string name="skill_timer_confirm_cancel">Sei sicuro di voler annullare tutti i timer?</string>
+    <string name="skill_timer_expired">Il timer è scaduto!</string>
+    <string name="skill_timer_expired_name">Il timer %1$s è scaduto!</string>
+    <string name="skill_timer_set">OK, il timer scadrà fra %1$s</string>
+    <string name="skill_timer_set_name">OK, il timer %1$s scadrà fra %2$s</string>
+    <string name="skill_timer_canceled_name">Il timer %1$s è stato annullato</string>
+    <string name="skill_timer_no_active_name">Non c\'è nessun timer attivo chiamato %1$s</string>
+    <string name="skill_timer_no_active">Non c\'è nessun timer attivo</string>
+    <string name="skill_timer_canceled">Il timer è stato annullato</string>
+    <string name="skill_timer_all_canceled">Tutti i timer sono stati annullati</string>
+    <string name="skill_timer_query">Il timer scade fra %1$s</string>
+    <string name="skill_timer_query_name">Il timer %1$s scade fra %2$s</string>
+    <string name="skill_timer_query_last">L\'ultimo timer scade fra %1$s</string>
+    <string name="skill_timer_none_canceled">OK, nessun timer è stato annullato</string>
 </resources>

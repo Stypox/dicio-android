@@ -1,0 +1,6 @@
+timer: high
+[set] timer|(ping me in) .duration.;
+[set] (set up?)|setup|start|create a? (.duration.? timer)|(timer for|of .duration. (called|named|(with the name) .name.)?);
+[cancel] cancel|stop the? (.name.? timer<s?>)|(timer<s?> called|named|(with the name) .name.);
+[query] how long|(much time) is left? on the? (.name.? timer<s?>)|(timer<s?> called|named|(with the name) .name.);
+[query] when will|is the? (.name.? timer<s?>)|(timer<s?> called|named|(with the name) .name.) (going to)? expire;
