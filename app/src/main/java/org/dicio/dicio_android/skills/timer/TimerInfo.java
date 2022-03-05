@@ -3,13 +3,12 @@ package org.dicio.dicio_android.skills.timer;
 import static org.dicio.dicio_android.Sections.getSection;
 import static org.dicio.dicio_android.Sections.isSectionAvailable;
 import static org.dicio.dicio_android.SectionsGenerated.timer;
+import static org.dicio.dicio_android.SectionsGenerated.util_yes_no;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.search.DuckDuckGoProcessor;
-import org.dicio.dicio_android.skills.search.SearchOutput;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
@@ -25,7 +24,7 @@ public class TimerInfo extends SkillInfo {
 
     @Override
     public boolean isAvailable(final SkillContext context) {
-        return isSectionAvailable(timer);
+        return isSectionAvailable(timer) && isSectionAvailable(util_yes_no);
     }
 
     @Override
