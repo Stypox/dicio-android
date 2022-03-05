@@ -105,4 +105,5 @@
     <string name="skill_timer_query_name">Il timer %1$s scade fra %2$s</string>
     <string name="skill_timer_query_last">L\'ultimo timer scade fra %1$s</string>
     <string name="skill_timer_none_canceled">OK, nessun timer è stato annullato</string>
+    <string name="pref_skill_number_library_not_available">La libreria che legge e scrive numeri, <i>dicio-numbers</i>, non è ancora stata tradotta nella tua lingua. Ciò significa che tutte le abilità aventi a che fare con numeri, durate e date non sono disponibili. <b>Contribuisci</b> se puoi, cliccando qui!</string>
 </resources>
