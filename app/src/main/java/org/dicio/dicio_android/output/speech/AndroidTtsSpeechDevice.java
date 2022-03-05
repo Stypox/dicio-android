@@ -56,8 +56,11 @@ public class AndroidTtsSpeechDevice implements SpeechOutputDevice {
             } else {
                 Toast.makeText(context, R.string.android_tts_error, Toast.LENGTH_SHORT).show();
             }
-            textToSpeech.shutdown();
-            textToSpeech = null;
+
+            if (textToSpeech != null) {
+                textToSpeech.shutdown();
+                textToSpeech = null;
+            }
         });
     }
 
