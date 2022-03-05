@@ -1,7 +1,10 @@
 apply plugin: 'com.android.application'
 
+
+import org.dicio.sentences_compiler.compiler.CompilerBase
 import org.dicio.sentences_compiler.main.SentencesCompiler
 import org.dicio.sentences_compiler.compiler.CompilerToJava
+import org.dicio.sentences_compiler.util.CompilerError
 
 import java.nio.charset.StandardCharsets
 
@@ -74,16 +77,29 @@ task sentencesCompiler {
         Set<String> allSectionIds = new HashSet<>()
         for (String localeName :
                 baseInputDirectory.list({ dir, name -> new File(dir, name).isDirectory() })) {
-            locales.add(localeName)
-            File[] filesInDirectory = new File(baseInputDirectory, localeName).listFiles()
-            if (filesInDirectory.length == 0) {
-                continue
-            }
 
             List<String> inputFiles = new ArrayList<>()
-            for (File file : filesInDirectory) {
-                inputFiles.add("UTF-8:" + file.absolutePath)
+            for (File file : new File(baseInputDirectory, localeName).listFiles()) {
+                try {
+                    // first try to compile each file separately: if it fails, exclude it
+                    OutputStreamWriter unusedOutput = new OutputStreamWriter(
+                            new ByteArrayOutputStream(), StandardCharsets.UTF_8)
+                    String fileString = "UTF-8:${file.absolutePath}"
+                    SentencesCompiler.compile(Collections.singletonList(fileString),
+                            unusedOutput, unusedOutput, new CompilerBase() {})
+                    inputFiles.add(fileString)
+
+                } catch (CompilerError e) {
+                    System.err.println("[ERROR] Ignoring invalid ${localeName} sentences file: "
+                            + e.getMessage())
+                }
             }
+
+            if (inputFiles.isEmpty()) {
+                continue
+            }
+            // there is surely at least one file for this locale: we can add it
+            locales.add(localeName)
 
             OutputStream outputStream = new FileOutputStream(file("${outputDirectory}/Sentences_${localeName}.java"))
             ByteArrayOutputStream sectionIdsStream = new ByteArrayOutputStream()
