@@ -50,6 +50,7 @@
     <string name="pref_skill_not_available">This skill is not yet available for your language. Contributions are welcome!</string>
     <string name="pref_skill_missing_permissions">Requires these permissions: %1$s</string>
     <string name="pref_skill_grant_permissions">Grant</string>
+    <string name="pref_skill_number_library_not_available">The number parsing and formatting library <i>dicio-numbers</i> is not yet translated in your language, which means all of the skills related to numbers, durations and dates are not available. <b>Please contribute</b> if you can by tapping here!</string>
     <string name="pref_search_engine">Search engine</string>
     <string name="pref_search_engine_duckduckgo" translatable="false">DuckDuckGo</string>
     <string name="pref_weather_default_city">Default city</string>

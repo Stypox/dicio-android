@@ -70,6 +70,7 @@ public class SkillItemHolder extends RecyclerView.ViewHolder {
             checkBox.setChecked(false);
             notAvailableTextView.setVisibility(View.VISIBLE);
             expandImageView.setVisibility(View.GONE);
+            permissionsNoticeImageView.setVisibility(View.GONE);
             return; // this skill is not available, so it shouldn't be customizable
         }
 
