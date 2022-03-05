@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,8 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.skills.SkillHandler;
+import org.dicio.dicio_android.util.ShareUtils;
+import org.dicio.skill.SkillContext;
 
 public class SkillsFragment extends Fragment {
+
+    private static final String DICIO_NUMBERS_URL = "https://github.com/Stypox/dicio-numbers";
 
     @Nullable
     @Override
@@ -22,11 +27,23 @@ public class SkillsFragment extends Fragment {
                              @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.pref_skills, container, false);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        final RecyclerView skillRecyclerView = view.findViewById(R.id.skillRecyclerView);
+        final TextView numberLibraryTextView = view.findViewById(R.id.numberLibraryTextView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setAdapter(new SkillsAdapter(
+        skillRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        skillRecyclerView.setAdapter(new SkillsAdapter(
                 this, inflater, SkillHandler.getAllSkillInfoList()));
+
+        // the skill context should always already have been initialized
+        final SkillContext skillContext = SkillHandler.getSkillContext();
+        numberLibraryTextView.setVisibility(skillContext != null
+                && skillContext.getNumberParserFormatter() == null ? View.VISIBLE : View.GONE);
+        numberLibraryTextView.setOnClickListener(
+                v -> ShareUtils.openUrlInBrowser(requireContext(), DICIO_NUMBERS_URL));
+        numberLibraryTextView.setOnLongClickListener(v -> {
+            ShareUtils.copyToClipboard(requireContext(), DICIO_NUMBERS_URL);
+            return true;
+        });
 
         return view;
     }
