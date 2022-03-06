@@ -1,0 +1,13 @@
+New:
+- Add telephone skill: search and call contacts
+- Add timer skill: set, query and cancel timers (still not polished)
+- View the permissions a skill requires in skill settings
+- Add a notice in skill settings when dicio-numbers is unavailable
+
+Improved:
+- [Vosk] Update French and Spanish models
+- Improve small UI details in skill settings
+
+Fixed:
+- Fix skills that continue the conversation: input was being requested while speaking
+- Fix crash when initializing Android TTS on some devices

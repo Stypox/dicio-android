@@ -1,0 +1,12 @@
+Novità:
+- Abilità telefono: cerca e chiama i contatti
+- Abilità timer: imposta, interroga e annulla i timer (ancora da migliorare)
+- Vedi i permessi che un'abilità richiede nelle impostazioni
+
+Miglioramenti:
+- [Vosk] Aggiornati i modelli francese e spagnolo
+- Migliorati vari dettagli di UI nelle impostazioni delle abilità
+
+Correzioni:
+- Sistemate le abilità che conversano: veniva richiesto di rispondere prima di finire la domanda
+- Sistemato un crash dell'Android TTS su alcuni dispositivi
