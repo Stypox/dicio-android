@@ -89,8 +89,7 @@ public class SkillEvaluator implements CleanableUp {
         final View initialScreen = GraphicalOutputUtils.inflate(activity, R.layout.initial_screen);
 
         final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
-        for (final SkillInfo skillInfo
-                : SkillHandler.getRandomEnabledSkillInfoList(6)) {
+        for (final SkillInfo skillInfo : SkillHandler.getEnabledSkillInfoListShuffled()) {
             final View skillInfoItem
                     = GraphicalOutputUtils.inflate(activity, R.layout.initial_screen_skill_item);
 

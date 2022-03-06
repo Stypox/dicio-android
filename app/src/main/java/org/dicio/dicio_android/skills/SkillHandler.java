@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class SkillHandler {
 
@@ -147,25 +146,10 @@ public class SkillHandler {
         return result;
     }
 
-    public static List<SkillInfo> getRandomEnabledSkillInfoList(final int maxCount) {
-        final Random random = new Random();
+    public static List<SkillInfo> getEnabledSkillInfoListShuffled() {
         final List<SkillInfo> enabledSkillInfoList = getEnabledSkillInfoList();
-
-        if (enabledSkillInfoList.size() <= maxCount) {
-            Collections.shuffle(enabledSkillInfoList, random);
-            return enabledSkillInfoList;
-
-        } else {
-            final List<SkillInfo> result = new ArrayList<>();
-            while (result.size() < maxCount) {
-                final SkillInfo chosen = enabledSkillInfoList.get(
-                        random.nextInt(enabledSkillInfoList.size()));
-                if (!result.contains(chosen)) {
-                    result.add(chosen);
-                }
-            }
-            return result;
-        }
+        Collections.shuffle(enabledSkillInfoList);
+        return enabledSkillInfoList;
     }
 
 
