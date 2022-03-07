@@ -7,10 +7,10 @@ import org.dicio.skill.chain.InputRecognizer;
 public abstract class FallbackSkill extends Skill {
 
     /**
-     * @see Skill#Skill(SkillInfo)
+     * @see SkillComponent#SkillComponent(SkillContext, SkillInfo)
      */
-    public FallbackSkill(@Nullable final SkillInfo skillInfo) {
-        super(skillInfo);
+    public FallbackSkill(final SkillContext context, @Nullable final SkillInfo skillInfo) {
+        super(context, skillInfo);
     }
 
     @Override

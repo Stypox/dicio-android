@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +16,10 @@ public class ChainSkill extends Skill {
         final ChainSkill chainSkill;
 
         /**
-         * @see Skill#Skill(SkillInfo)
+         * @see Skill#Skill(SkillContext, SkillInfo)
          */
-        public Builder(@Nullable final SkillInfo skillInfo) {
-            this.chainSkill = new ChainSkill(skillInfo);
+        public Builder(final SkillContext context, @Nullable final SkillInfo skillInfo) {
+            this.chainSkill = new ChainSkill(context, skillInfo);
         }
 
         public Builder recognize(final InputRecognizer<?> inputRecognizer) {
@@ -58,8 +56,8 @@ public class ChainSkill extends Skill {
     private OutputGenerator outputGenerator;
     private Object lastResult;
 
-    private ChainSkill(@Nullable final SkillInfo skillInfo) {
-        super(skillInfo);
+    private ChainSkill(final SkillContext context, @Nullable final SkillInfo skillInfo) {
+        super(context, skillInfo);
         intermediateProcessors = new ArrayList<>();
     }
 
@@ -90,19 +88,17 @@ public class ChainSkill extends Skill {
 
 
     @Override
-    public void processInput(final SkillContext context)
+    public void processInput()
             throws Exception {
         lastResult = inputRecognizer.getResult();
         for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
-            lastResult = intermediateProcessor.process(lastResult, context);
+            lastResult = intermediateProcessor.process(lastResult);
         }
     }
 
     @Override
-    public void generateOutput(final SkillContext context,
-                               final SpeechOutputDevice speechOutputDevice,
-                               final GraphicalOutputDevice graphicalOutputDevice) {
-        outputGenerator.generate(lastResult, context, speechOutputDevice, graphicalOutputDevice);
+    public void generateOutput() {
+        outputGenerator.generate(lastResult);
     }
 
     /**

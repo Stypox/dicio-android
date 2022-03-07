@@ -1,8 +1,9 @@
 package org.dicio.skill.standard;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class PartialScoreResultTest {
     private static final float floatEqualsDelta = 0.0001f;

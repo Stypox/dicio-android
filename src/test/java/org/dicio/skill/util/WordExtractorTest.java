@@ -1,14 +1,13 @@
 package org.dicio.skill.util;
 
-import org.dicio.skill.standard.InputWordRange;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
+import org.dicio.skill.standard.InputWordRange;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 
 public class WordExtractorTest {
 

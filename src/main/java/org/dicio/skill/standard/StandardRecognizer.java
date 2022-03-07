@@ -1,11 +1,15 @@
 package org.dicio.skill.standard;
 
+import androidx.annotation.Nullable;
+
+import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.InputRecognizer;
 
 import java.util.Collections;
 import java.util.List;
 
-public class StandardRecognizer implements InputRecognizer<StandardResult> {
+public class StandardRecognizer extends InputRecognizer<StandardResult> {
     private final StandardRecognizerData data;
     private String input;
     private List<String> inputWords;
@@ -19,15 +23,20 @@ public class StandardRecognizer implements InputRecognizer<StandardResult> {
     // Constructor //
     /////////////////
 
-    public StandardRecognizer(final StandardRecognizerData data) {
+    public StandardRecognizer(final SkillContext context,
+                              @Nullable final SkillInfo skillInfo,
+                              final StandardRecognizerData data) {
+        super(context, skillInfo);
         this.data = data;
         this.inputWords = Collections.emptyList();
         this.normalizedInputWords = Collections.emptyList();
     }
 
-    public StandardRecognizer(final InputRecognizer.Specificity specificity,
+    public StandardRecognizer(final SkillContext context,
+                              @Nullable final SkillInfo skillInfo,
+                              final InputRecognizer.Specificity specificity,
                               final Sentence[] sentences) {
-        this(new StandardRecognizerData(specificity, sentences));
+        this(context, skillInfo, new StandardRecognizerData(specificity, sentences));
     }
 
 

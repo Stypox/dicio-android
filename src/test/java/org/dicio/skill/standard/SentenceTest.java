@@ -1,21 +1,20 @@
 package org.dicio.skill.standard;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.dicio.skill.standard.word.BaseWord;
 import org.dicio.skill.standard.word.CapturingGroup;
 import org.dicio.skill.standard.word.DiacriticsInsensitiveWord;
 import org.dicio.skill.standard.word.DiacriticsSensitiveWord;
 import org.dicio.skill.util.WordExtractor;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SentenceTest {
     // [1-3]p means [1-3] packs, that is, [0-2] capturing groups (e.g. test1p=testOnePack)

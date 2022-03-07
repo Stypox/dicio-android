@@ -1,6 +1,10 @@
 package org.dicio.skill.chain;
 
+import androidx.annotation.Nullable;
+
+import org.dicio.skill.SkillComponent;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.util.CleanableUp;
 
 /**
@@ -14,7 +18,14 @@ import org.dicio.skill.util.CleanableUp;
  * @param <FromType> the type of the data from the previous step of computation (i.e. the input)
  * @param <ResultType> the type of the processed and returned data (i.e. the output)
  */
-public interface IntermediateProcessor<FromType, ResultType> {
+public abstract class IntermediateProcessor<FromType, ResultType> extends SkillComponent {
+
+    /**
+     * @see SkillComponent#SkillComponent(SkillContext, SkillInfo)
+     */
+    public IntermediateProcessor(final SkillContext context, @Nullable final SkillInfo skillInfo) {
+        super(context, skillInfo);
+    }
 
     /**
      * Processes the data obtained from the previous step to produce a result to be passed to the
@@ -23,8 +34,7 @@ public interface IntermediateProcessor<FromType, ResultType> {
      * temporary data inside the object (that's why it does not extend {@link CleanableUp}).
      *
      * @param data the data to process, from the previous step
-     * @param context the skill context with useful resources, see {@link SkillContext}
      * @return the result of the data processing
      */
-    ResultType process(FromType data, SkillContext context) throws Exception;
+    public abstract ResultType process(FromType data) throws Exception;
 }

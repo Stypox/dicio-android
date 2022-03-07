@@ -5,33 +5,22 @@ import androidx.annotation.Nullable;
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.CleanableUp;
 
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Skill implements CleanableUp {
-
-    @Nullable
-    private final SkillInfo skillInfo;
-
-    /**
-     * @param skillInfo the {@link SkillInfo} object this {@link Skill} is being created with (using
-     *                  {@link SkillInfo#build(SkillContext)}), or {@code null} if this skill is
-     *                  not being built by a {@link SkillInfo}
-     */
-    public Skill(@Nullable final SkillInfo skillInfo) {
-        this.skillInfo = skillInfo;
-    }
+/**
+ * A skill is the component that scores input, processes it and finally generates output. Take a
+ * look at {@link org.dicio.skill.chain.ChainSkill} for a class that separates these three things.
+ */
+public abstract class Skill extends SkillComponent implements CleanableUp {
 
     /**
-     * @return the {@link SkillInfo} object passed to the constructor {@link #Skill(SkillInfo)}
+     * @see SkillComponent#SkillComponent(SkillContext, SkillInfo)
      */
-    @Nullable
-    public SkillInfo getSkillInfo() {
-        return skillInfo;
+    public Skill(final SkillContext context, @Nullable final SkillInfo skillInfo) {
+        super(context, skillInfo);
     }
 
 
@@ -55,22 +44,17 @@ public abstract class Skill implements CleanableUp {
     /**
      * This will be called if this skill was deemed as the best one which could provide output for
      * what the user requested and it should therefore process the input previously received with
-     * {@link #setInput(String, List, List)}, so that when {@link #generateOutput(SkillContext,
-     * SpeechOutputDevice, GraphicalOutputDevice)} is called everything
-     * is ready.
+     * {@link #setInput(String, List, List)}, so that when {@link #generateOutput()} is called
+     * everything is ready.
      *
-     * @see IntermediateProcessor#process(Object, SkillContext)
-     * @param context the skill context with useful resources, see {@link SkillContext}
+     * @see IntermediateProcessor#process(Object)
      */
-    public abstract void processInput(SkillContext context) throws Exception;
+    public abstract void processInput() throws Exception;
 
     /**
-     * @see OutputGenerator#generate(Object, SkillContext, SpeechOutputDevice,
-     * GraphicalOutputDevice)
+     * @see OutputGenerator#generate(Object)
      */
-    public abstract void generateOutput(SkillContext context,
-                                        SpeechOutputDevice speechOutputDevice,
-                                        GraphicalOutputDevice graphicalOutputDevice);
+    public abstract void generateOutput();
 
     /**
      * To prevent excessive memory usage, release all temporary resources and set to {@code null}

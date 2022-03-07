@@ -1,10 +1,10 @@
 package org.dicio.skill.standard.word;
 
-import org.dicio.skill.util.WordExtractor;
-import org.junit.Test;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.dicio.skill.util.WordExtractor;
+import org.junit.Test;
 
 public class DiacriticsInsensitiveWordTest {
 

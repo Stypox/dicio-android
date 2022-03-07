@@ -1,5 +1,10 @@
 package org.dicio.skill.chain;
 
+import androidx.annotation.Nullable;
+
+import org.dicio.skill.SkillComponent;
+import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.util.CleanableUp;
 
 import java.util.List;
@@ -12,11 +17,19 @@ import java.util.List;
  * not allow throwing exceptions.
  * @param <ResultType> the type of the data extracted from the input
  */
-public interface InputRecognizer<ResultType> extends CleanableUp {
-    enum Specificity {
+public abstract class InputRecognizer<ResultType> extends SkillComponent implements CleanableUp {
+
+    public enum Specificity {
         high,
         medium,
         low,
+    }
+
+    /**
+     * @see SkillComponent#SkillComponent(SkillContext, SkillInfo)
+     */
+    public InputRecognizer(final SkillContext context, final @Nullable SkillInfo skillInfo) {
+        super(context, skillInfo);
     }
 
     /**
@@ -26,7 +39,7 @@ public interface InputRecognizer<ResultType> extends CleanableUp {
      * numbers);<br>
      * {@link Specificity#low low} for broad things (e.g. omniscient API);<br>
      */
-    Specificity specificity();
+    public abstract Specificity specificity();
 
     /**
      * Sets the current input for the recognizer,
@@ -38,26 +51,28 @@ public interface InputRecognizer<ResultType> extends CleanableUp {
      *                               passing inputWords to
      *                               {@link org.dicio.skill.util.WordExtractor#normalizeWords(List)}
      */
-    void setInput(String input, List<String> inputWords, List<String> normalizedInputWords);
+    public abstract void setInput(String input,
+                                  List<String> inputWords,
+                                  List<String> normalizedInputWords);
 
     /**
      * The score of the input previously set with {@link #setInput(String, List, List) setInput()}
      * for this input recognizer
      * @return a number in range [0.0, 1.0]
      */
-    float score();
+    public abstract float score();
 
     /**
      * If this input recognizer has the highest score, this function is called to generate a result
      * based on the input previously set with {@link #setInput(String, List, List) setInput()}
      * @return a result useful for the next step of the computation
      */
-    ResultType getResult();
+    public abstract ResultType getResult();
 
     /**
      * To prevent excessive memory usage, release all temporary resources and set to {@code null}
      * all temporary variables used while calculating the score and getting the result.
      */
     @Override
-    void cleanup();
+    public abstract void cleanup();
 }

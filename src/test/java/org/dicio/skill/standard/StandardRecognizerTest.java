@@ -1,20 +1,19 @@
 package org.dicio.skill.standard;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.standard.word.CapturingGroup;
 import org.dicio.skill.standard.word.DiacriticsInsensitiveWord;
 import org.dicio.skill.standard.word.DiacriticsSensitiveWord;
 import org.dicio.skill.util.WordExtractor;
-
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class StandardRecognizerTest {
 
@@ -89,7 +88,7 @@ public class StandardRecognizerTest {
 
     @Test
     public void testSpecificity() {
-        final StandardRecognizer sr = new StandardRecognizer(
+        final StandardRecognizer sr = new StandardRecognizer(null, null,
                 new StandardRecognizerData(InputRecognizer.Specificity.high));
         assertEquals(InputRecognizer.Specificity.high, sr.specificity());
         sr.cleanup();
@@ -97,7 +96,7 @@ public class StandardRecognizerTest {
 
     @Test
     public void testCompilerReadmeMood() {
-        final StandardRecognizer sr = new StandardRecognizer(section_mood);
+        final StandardRecognizer sr = new StandardRecognizer(null, null, section_mood);
         assertEquals(InputRecognizer.Specificity.high, sr.specificity());
 
         assertRecognized(sr, "how are you",                "",          1.0f, 1.0f, Collections.emptyMap());
@@ -114,7 +113,7 @@ public class StandardRecognizerTest {
 
     @Test
     public void testCompilerReadmeNavigation() {
-        final StandardRecognizer sr = new StandardRecognizer(section_GPS_navigation);
+        final StandardRecognizer sr = new StandardRecognizer(null, null, section_GPS_navigation);
         assertEquals(InputRecognizer.Specificity.medium, sr.specificity());
 
         final Map<String, String> place = Collections.singletonMap("place", "a");
@@ -147,7 +146,7 @@ public class StandardRecognizerTest {
 
     @Test
     public void testSmallerCapturingGroupIsPreferred() {
-        final StandardRecognizer sr = new StandardRecognizer(section_hello);
+        final StandardRecognizer sr = new StandardRecognizer(null, null, section_hello);
         assertEquals(InputRecognizer.Specificity.low, sr.specificity());
 
         final Map<String, String> guys = Collections.singletonMap("hi", "guys");

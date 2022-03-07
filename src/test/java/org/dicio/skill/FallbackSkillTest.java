@@ -7,8 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.dicio.skill.chain.InputRecognizer;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,13 +21,11 @@ public class FallbackSkillTest {
             @Nullable @Override public Fragment getPreferenceFragment() { return null; }
         };
 
-        final Skill skill = new FallbackSkill(skillInfo) {
+        final Skill skill = new FallbackSkill(null, skillInfo) {
             @Override public void setInput(final String input, final List<String> inputWords,
                     final List<String> normalizedWordKeys) {}
-            @Override public void processInput(final SkillContext context) {}
-            @Override public void generateOutput(final SkillContext context,
-                    final SpeechOutputDevice speechOutputDevice,
-                    final GraphicalOutputDevice graphicalOutputDevice) {}
+            @Override public void processInput() {}
+            @Override public void generateOutput() {}
             @Override public void cleanup() {}
         };
 
@@ -38,13 +34,11 @@ public class FallbackSkillTest {
 
     @Test
     public void testScoreAndSpecificity() {
-        final Skill skill = new FallbackSkill(null) {
+        final Skill skill = new FallbackSkill(null, null) {
             @Override public void setInput(final String input, final List<String> inputWords,
                     final List<String> normalizedWordKeys) {}
-            @Override public void processInput(final SkillContext context) {}
-            @Override public void generateOutput(final SkillContext context,
-                    final SpeechOutputDevice speechOutputDevice,
-                    final GraphicalOutputDevice graphicalOutputDevice) {}
+            @Override public void processInput() {}
+            @Override public void generateOutput() {}
             @Override public void cleanup() {}
         };
 
