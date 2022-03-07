@@ -7,22 +7,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.dicio.numbers.NumberParserFormatter;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.Locale;
 import java.util.Objects;
 
 /**
- * A class that just wraps the Android context, the Android shared preferences and the user locale.
- * A skill is provided with this class whenever it is doing some calculations, so that it has the
- * resources it needs available. This class extends {@link Context}, so it can be used as an Android
- * context, but it also has some more methods, namely {@link #getPreferences()}, {@link
- * #getLocale()}, {@link #getNumberParserFormatter()} and {@link #requireNumberParserFormatter()}.
+ * A class that just wraps the Android context, the Android shared preferences, the user locale, the
+ * graphical output device and the speech output device. This class extends {@link Context}, so it
+ * can be used as an Android context, but it also has some more methods, namely {@link
+ * #getPreferences()}, {@link #getLocale()}, {@link #getNumberParserFormatter()}, {@link
+ * #requireNumberParserFormatter()}, {@link #getGraphicalOutputDevice()} and {@link
+ * #getSpeechOutputDevice()}. The setter methods should not be used by skills.
  */
 public final class SkillContext {
     Context androidContext;
     SharedPreferences preferences;
     Locale locale;
     @Nullable NumberParserFormatter numberParserFormatter;
+
+    GraphicalOutputDevice graphicalOutputDevice;
+    SpeechOutputDevice speechOutputDevice;
 
     /**
      * @return the Android context, useful for example to get resources, etc.
@@ -76,6 +82,23 @@ public final class SkillContext {
     }
 
     /**
+     * @return the {@link GraphicalOutputDevice} that should be used for skill graphical output
+     */
+    @NonNull
+    public GraphicalOutputDevice getGraphicalOutputDevice() {
+        return graphicalOutputDevice;
+    }
+
+    /**
+     * @return the {@link SpeechOutputDevice} that should be used for skill speech output
+     */
+    @NonNull
+    public SpeechOutputDevice getSpeechOutputDevice() {
+        return speechOutputDevice;
+    }
+
+
+    /**
      * @apiNote not intended for usage inside skills, but only for constructing and maintaining a
      *          skill context
      * @param androidContext the Android context, useful for example to get resources, etc.
@@ -117,5 +140,25 @@ public final class SkillContext {
     public void setNumberParserFormatter(
             @Nullable final NumberParserFormatter numberParserFormatter) {
         this.numberParserFormatter = numberParserFormatter;
+    }
+
+    /**
+     * @apiNote not intended for usage inside skills, but only for constructing and maintaining a
+     *          skill context
+     * @param graphicalOutputDevice the {@link GraphicalOutputDevice} that skills will use for
+     *                              graphical output
+     */
+    public void setGraphicalOutputDevice(GraphicalOutputDevice graphicalOutputDevice) {
+        this.graphicalOutputDevice = graphicalOutputDevice;
+    }
+
+    /**
+     * @apiNote not intended for usage inside skills, but only for constructing and maintaining a
+     *          skill context
+     * @param speechOutputDevice the {@link SpeechOutputDevice} that skills will use for speech
+     *                           output
+     */
+    public void setSpeechOutputDevice(SpeechOutputDevice speechOutputDevice) {
+        this.speechOutputDevice = speechOutputDevice;
     }
 }
