@@ -19,33 +19,33 @@ import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.skill.standard.StandardResult;
 
 import java.util.Collections;
 import java.util.List;
 
-public class TelephoneOutput implements OutputGenerator<StandardResult> {
+public class TelephoneOutput extends OutputGenerator<StandardResult> {
 
     @Nullable String numberToCallAfterConfirmation = null;
 
-    public void generate(final StandardResult data,
-                         final SkillContext skillContext,
-                         final SpeechOutputDevice speechOutputDevice,
-                         final GraphicalOutputDevice graphicalOutputDevice) {
-        final Context context = skillContext.getAndroidContext();
-        final ContentResolver contentResolver = context.getContentResolver();
+
+    public TelephoneOutput(final SkillContext context, @Nullable final SkillInfo skillInfo) {
+        super(context, skillInfo);
+    }
+
+    public void generate(final StandardResult data) {
+        final ContentResolver contentResolver = ctx().android().getContentResolver();
         final String userContactName = data.getCapturingGroup(telephone.who).trim();
         final List<Contact> contacts
                 = Contact.getFilteredSortedContacts(contentResolver, userContactName);
 
         int contactCount = 0;
-        final LinearLayout output = GraphicalOutputUtils.buildVerticalLinearLayout(context,
-                ResourcesCompat.getDrawable(skillContext.getAndroidContext().getResources(),
+        final LinearLayout output = GraphicalOutputUtils.buildVerticalLinearLayout(ctx().android(),
+                ResourcesCompat.getDrawable(ctx().android().getResources(),
                         R.drawable.divider_items, null));
 
         for (int i = 0; contactCount < 5 && i < contacts.size(); ++i) {
@@ -56,58 +56,54 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
             }
             if (contactCount == 0 && contact.getDistance() < 3 && numbers.size() == 1) {
                 // very close match with just one number: call it directly
-                callAfterConfirmation(contact.getName(), numbers.get(0), context,
-                        speechOutputDevice, graphicalOutputDevice);
+                callAfterConfirmation(contact.getName(), numbers.get(0));
                 return;
             }
             ++contactCount;
 
-            addNumbersToOutput(contact, numbers, output, context);
+            addNumbersToOutput(contact, numbers, output, ctx().android());
         }
 
         // this point will not be reached if a very close match was found
         if (contactCount == 0) {
-            speechOutputDevice.speak(skillContext.getAndroidContext().getString(
+            ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                     R.string.skill_telephone_unknown_contact));
         } else {
-            speechOutputDevice.speak(skillContext.getAndroidContext().getString(
+            ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                     R.string.skill_telephone_found_contacts, contactCount));
-            graphicalOutputDevice.display(output);
+            ctx().getGraphicalOutputDevice().display(output);
         }
     }
 
     @Override
     public List<Skill> nextSkills() {
         if (numberToCallAfterConfirmation == null) {
-            return OutputGenerator.super.nextSkills();
+            return super.nextSkills();
         } else {
             final String number = numberToCallAfterConfirmation;
-            return Collections.singletonList(new ChainSkill.Builder(null)
-                    .recognize(new StandardRecognizer(getSection(SectionsGenerated.util_yes_no)))
-                    .output(new OutputGenerator<StandardResult>() {
+            return Collections.singletonList(new ChainSkill.Builder(ctx(), null)
+                    .recognize(new StandardRecognizer(ctx(), null,
+                            getSection(SectionsGenerated.util_yes_no)))
+                    .output(new OutputGenerator<StandardResult>(ctx(), null) {
                         @Override
-                        public void generate(final StandardResult data,
-                                             final SkillContext skillContext,
-                                             final SpeechOutputDevice speechOutputDevice,
-                                             final GraphicalOutputDevice graphicalOutputDevice) {
-                            final Context context = skillContext.getAndroidContext();
+                        public void generate(final StandardResult data) {
                             final String message;
                             if (data.getSentenceId().equals("yes")) {
-                                call(context, number);
-                                message = context.getString(
-                                        R.string.skill_telephone_calling, number);
+                                call(ctx().android(), number);
+                                message = ctx().android()
+                                        .getString(R.string.skill_telephone_calling, number);
                                 // do not speak anything since a call has started
                             } else {
-                                message = context.getString(R.string.skill_telephone_not_calling);
-                                speechOutputDevice.speak(message);
+                                message = ctx().android()
+                                        .getString(R.string.skill_telephone_not_calling);
+                                ctx().getSpeechOutputDevice().speak(message);
                             }
-                            graphicalOutputDevice.display(
-                                    GraphicalOutputUtils.buildSubHeader(context, message));
+                            ctx().getGraphicalOutputDevice().display(
+                                    GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
                         }
 
                         @Override
-                        public void cleanup() {
-                        }
+                        public void cleanup() {}
                     }));
         }
     }
@@ -118,19 +114,17 @@ public class TelephoneOutput implements OutputGenerator<StandardResult> {
     }
 
     private void callAfterConfirmation(final String name,
-                                       final String number,
-                                       final Context context,
-                                       final SpeechOutputDevice speechOutputDevice,
-                                       final GraphicalOutputDevice graphicalOutputDevice) {
+                                       final String number) {
         numberToCallAfterConfirmation = number;
 
-        final String message = context.getString(R.string.skill_telephone_confirm_call, name);
-        speechOutputDevice.speak(message);
+        final String message = ctx().android().getString(R.string.skill_telephone_confirm_call, name);
+        ctx().getSpeechOutputDevice().speak(message);
 
-        final LinearLayout output = GraphicalOutputUtils.buildVerticalLinearLayout(context, null);
-        output.addView(GraphicalOutputUtils.buildSubHeader(context, message));
-        output.addView(GraphicalOutputUtils.buildDescription(context, number));
-        graphicalOutputDevice.display(output);
+        final LinearLayout output
+                = GraphicalOutputUtils.buildVerticalLinearLayout(ctx().android(), null);
+        output.addView(GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
+        output.addView(GraphicalOutputUtils.buildDescription(ctx().android(), number));
+        ctx().getGraphicalOutputDevice().display(output);
     }
 
     private void addNumbersToOutput(final Contact contact,

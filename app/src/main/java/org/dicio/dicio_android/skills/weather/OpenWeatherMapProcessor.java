@@ -3,10 +3,13 @@ package org.dicio.dicio_android.skills.weather;
 import static org.dicio.dicio_android.Sentences_en.weather;
 import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 
+import androidx.annotation.Nullable;
+
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.json.JSONObject;
@@ -14,7 +17,7 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 
 public class OpenWeatherMapProcessor
-        implements IntermediateProcessor<StandardResult, WeatherOutput.Data> {
+        extends IntermediateProcessor<StandardResult, WeatherOutput.Data> {
 
     private static final String ipInfoUrl = "https://ipinfo.io/json";
     private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
@@ -23,9 +26,13 @@ public class OpenWeatherMapProcessor
     private static final String iconFormat = "@2x.png";
 
 
+    public OpenWeatherMapProcessor(final SkillContext context,
+                                   @Nullable final SkillInfo skillInfo) {
+        super(context, skillInfo);
+    }
+
     @Override
-    public WeatherOutput.Data process(final StandardResult data, final SkillContext context)
-            throws Exception {
+    public WeatherOutput.Data process(final StandardResult data) throws Exception {
 
         final WeatherOutput.Data result = new WeatherOutput.Data();
         result.city = data.getCapturingGroup(weather.where);
@@ -34,7 +41,7 @@ public class OpenWeatherMapProcessor
         }
 
         if (isNullOrEmpty(result.city)) {
-            result.city = context.getPreferences().getString(context.getAndroidContext().getString(
+            result.city = ctx().getPreferences().getString(ctx().android().getString(
                     R.string.pref_key_weather_default_city), "");
             result.city = StringUtils.removePunctuation(result.city.trim());
         }
@@ -48,7 +55,7 @@ public class OpenWeatherMapProcessor
         try {
             weatherData = ConnectionUtils.getPageJson(weatherApiUrl
                     + "?APPID=" + apiKey
-                    + "&units=metric&lang=" + context.getLocale().getLanguage().toLowerCase()
+                    + "&units=metric&lang=" + ctx().getLocale().getLanguage().toLowerCase()
                     + "&q=" + ConnectionUtils.urlEncode(result.city));
         } catch (FileNotFoundException ignored) {
             result.failed = true;

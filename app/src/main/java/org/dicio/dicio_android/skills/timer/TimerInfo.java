@@ -29,10 +29,10 @@ public class TimerInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder(this)
-                .recognize(new StandardRecognizer(getSection(timer)))
-                .process(new TimerProcessor())
-                .output(new TimerOutput());
+        return new ChainSkill.Builder(context, this)
+                .recognize(new StandardRecognizer(context, this, getSection(timer)))
+                .process(new TimerProcessor(context, this))
+                .output(new TimerOutput(context, this));
     }
 
     @Nullable

@@ -28,10 +28,10 @@ public class LyricsInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder(this)
-                .recognize(new StandardRecognizer(getSection(lyrics)))
-                .process(new GeniusProcessor())
-                .output(new LyricsOutput());
+        return new ChainSkill.Builder(context, this)
+                .recognize(new StandardRecognizer(context, this, getSection(lyrics)))
+                .process(new GeniusProcessor(context, this))
+                .output(new LyricsOutput(context, this));
     }
 
     @Nullable

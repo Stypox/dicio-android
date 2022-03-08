@@ -2,12 +2,14 @@ package org.dicio.dicio_android.skills.search;
 
 import static org.dicio.dicio_android.Sentences_en.search;
 
+import androidx.annotation.Nullable;
 import androidx.core.os.LocaleListCompat;
 
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.LocaleUtils;
 import org.dicio.dicio_android.util.StringUtils;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.jsoup.Jsoup;
@@ -21,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DuckDuckGoProcessor
-        implements IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
+        extends IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
 
     private static final String duckDuckGoSearchUrl = "https://duckduckgo.com/html/?q=";
 
@@ -34,9 +36,14 @@ public class DuckDuckGoProcessor
             "za-en", "es-ca", "es-es", "se-sv", "ch-de", "ch-fr", "tw-tz", "th-en", "tr-tr",
             "us-en", "us-es", "ua-uk", "uk-en", "vn-en");
 
+
+    public DuckDuckGoProcessor(SkillContext context, @Nullable SkillInfo skillInfo) {
+        super(context, skillInfo);
+    }
+
     @SuppressWarnings("ConstantConditions") // NullPointerExceptions are handled
     @Override
-    public List<SearchOutput.Data> process(final StandardResult data, final SkillContext context)
+    public List<SearchOutput.Data> process(final StandardResult data)
             throws Exception {
         String queryToSearch = data.getCapturingGroup(search.what);
         if (queryToSearch != null) {
@@ -51,7 +58,7 @@ public class DuckDuckGoProcessor
         LocaleUtils.LocaleResolutionResult resolvedLocale = null;
         try {
             resolvedLocale = LocaleUtils.resolveSupportedLocale(
-                    LocaleListCompat.create(context.getLocale()), supportedLocales);
+                    LocaleListCompat.create(ctx().getLocale()), supportedLocales);
         } catch (final LocaleUtils.UnsupportedLocaleException ignored) {
         }
         final String locale = resolvedLocale == null ? "" : resolvedLocale.supportedLocaleString;

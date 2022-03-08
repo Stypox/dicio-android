@@ -3,17 +3,16 @@ package org.dicio.dicio_android.skills.lyrics;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 
-public class LyricsOutput
-        implements OutputGenerator<LyricsOutput.Data> {
+public class LyricsOutput extends OutputGenerator<LyricsOutput.Data> {
 
     public static class Data {
         public boolean failed = false;
@@ -21,41 +20,41 @@ public class LyricsOutput
     }
 
 
+    public LyricsOutput(SkillContext context, @Nullable SkillInfo skillInfo) {
+        super(context, skillInfo);
+    }
+
     @Override
-    public void generate(final Data data,
-                         final SkillContext context,
-                         final SpeechOutputDevice speechOutputDevice,
-                         final GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final Data data) {
 
         if (data.failed) {
-            final String message = context.getAndroidContext().getString(
+            final String message = ctx().android().getString(
                     R.string.skill_lyrics_song_not_found, data.title);
-            speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
-                    context.getAndroidContext(), message));
+            ctx().getSpeechOutputDevice().speak(message);
+            ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildSubHeader(
+                    ctx().android(), message));
 
         } else {
-            speechOutputDevice.speak(context.getAndroidContext().getString(
+            ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                     R.string.skill_lyrics_found_song_by_artist, data.title, data.artist));
 
             final TextView lyricsView = GraphicalOutputUtils.buildDescription(
-                    context.getAndroidContext(), data.lyrics);
+                    ctx().android(), data.lyrics);
             lyricsView.setGravity(Gravity.START);
             lyricsView.setPadding(8, 0, 0, 0);
 
-            graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildVerticalLinearLayout(context.getAndroidContext(),
-                            ResourcesCompat.getDrawable(context.getAndroidContext().getResources(),
+            ctx().getGraphicalOutputDevice().display(
+                    GraphicalOutputUtils.buildVerticalLinearLayout(ctx().android(),
+                            ResourcesCompat.getDrawable(ctx().android().getResources(),
                                     R.drawable.divider_items, null),
                             GraphicalOutputUtils.buildHeader(
-                                    context.getAndroidContext(), data.title),
+                                    ctx().android(), data.title),
                             GraphicalOutputUtils.buildSubHeader(
-                                    context.getAndroidContext(), data.artist),
+                                    ctx().android(), data.artist),
                             lyricsView));
         }
     }
 
     @Override
-    public void cleanup() {
-    }
+    public void cleanup() {}
 }

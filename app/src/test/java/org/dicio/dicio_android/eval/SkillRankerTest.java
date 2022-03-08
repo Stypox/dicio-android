@@ -58,8 +58,8 @@ public class SkillRankerTest {
         // useless for this test
         @Override public void processInput(final SkillContext context) {}
         @Override public void generateOutput(final SkillContext context,
-                                             final SpeechOutputDevice speechOutputDevice,
-                                             final GraphicalOutputDevice graphicalOutputDevice) {}
+                                             final SpeechOutputDevice getContext().getSpeechOutputDevice(),
+                                             final GraphicalOutputDevice getContext().getGraphicalOutputDevice()) {}
         @Override public void cleanup() {}
     }
 

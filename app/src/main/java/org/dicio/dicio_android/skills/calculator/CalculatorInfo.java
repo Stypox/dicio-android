@@ -28,10 +28,10 @@ public class CalculatorInfo extends SkillInfo {
 
     @Override
     public Skill build(SkillContext context) {
-        return new ChainSkill.Builder(this)
-                .recognize(new StandardRecognizer(Sections.getSection(calculator)))
-                .process(new CalculatorProcessor())
-                .output(new CalculatorOutput());
+        return new ChainSkill.Builder(context, this)
+                .recognize(new StandardRecognizer(context, this, Sections.getSection(calculator)))
+                .process(new CalculatorProcessor(context, this))
+                .output(new CalculatorOutput(context, this));
     }
 
     @Nullable

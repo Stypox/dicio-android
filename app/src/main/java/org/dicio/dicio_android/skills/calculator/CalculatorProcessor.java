@@ -1,11 +1,14 @@
 package org.dicio.dicio_android.skills.calculator;
 
+import androidx.annotation.Nullable;
+
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.numbers.util.Number;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.skill.standard.StandardResult;
@@ -17,7 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 public class CalculatorProcessor
-        implements IntermediateProcessor<StandardResult, CalculatorOutput.Data> {
+        extends IntermediateProcessor<StandardResult, CalculatorOutput.Data> {
+
+    public CalculatorProcessor(SkillContext context, @Nullable SkillInfo skillInfo) {
+        super(context, skillInfo);
+    }
 
     private String getOperation(final StandardRecognizer operatorRecognizer,
                                 final String text) {
@@ -33,11 +40,10 @@ public class CalculatorProcessor
     }
 
     @Override
-    public CalculatorOutput.Data process(final StandardResult data,
-                                         final SkillContext skillContext) {
+    public CalculatorOutput.Data process(final StandardResult data) {
         final CalculatorOutput.Data result = new CalculatorOutput.Data();
 
-        final List<Object> textWithNumbers = skillContext.getNumberParserFormatter()
+        final List<Object> textWithNumbers = ctx().requireNumberParserFormatter()
                 .extractNumbers(data.getCapturingGroup("calculation")).get();
         if (textWithNumbers.size() == 0
                 || (textWithNumbers.size() == 1 && !(textWithNumbers.get(0) instanceof Number))) {
@@ -45,7 +51,7 @@ public class CalculatorProcessor
             return result;
         }
 
-        final StandardRecognizer operatorRecognizer = new StandardRecognizer(
+        final StandardRecognizer operatorRecognizer = new StandardRecognizer(ctx(), null,
                 Sections.getSection(SectionsGenerated.calculator_operators));
 
         Number firstNumber;

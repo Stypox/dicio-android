@@ -1,25 +1,30 @@
 package org.dicio.dicio_android.skills.calculator;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.numbers.util.Number;
 import org.dicio.skill.SkillContext;
+import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
 
-public class CalculatorOutput implements OutputGenerator<CalculatorOutput.Data> {
+public class CalculatorOutput extends OutputGenerator<CalculatorOutput.Data> {
 
     public static class Data {
         boolean failed = false;
         List<Object> inputInterpretation;
         Number number;
+    }
+
+
+    public CalculatorOutput(SkillContext context, @Nullable SkillInfo skillInfo) {
+        super(context, skillInfo);
     }
 
     private String numberToString(final DecimalFormat decimalFormat, final Number number) {
@@ -31,20 +36,17 @@ public class CalculatorOutput implements OutputGenerator<CalculatorOutput.Data> 
     }
 
     @Override
-    public void generate(final Data data,
-                         final SkillContext context,
-                         final SpeechOutputDevice speechOutputDevice,
-                         final GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final Data data) {
         if (data.failed) {
-            final String message = context.getAndroidContext().getString(
+            final String message = ctx().android().getString(
                     R.string.skill_calculator_could_not_calculate);
-            speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildHeader(
-                    context.getAndroidContext(), message));
+            ctx().getSpeechOutputDevice().speak(message);
+            ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildHeader(
+                    ctx().android(), message));
 
         } else {
             final DecimalFormat decimalFormat
-                    = new DecimalFormat("#.##", new DecimalFormatSymbols(context.getLocale()));
+                    = new DecimalFormat("#.##", new DecimalFormatSymbols(ctx().getLocale()));
 
             final StringBuilder inputInterpretation = new StringBuilder();
             for (int i = 0; i < data.inputInterpretation.size(); ++i) {
@@ -58,18 +60,18 @@ public class CalculatorOutput implements OutputGenerator<CalculatorOutput.Data> 
             }
             inputInterpretation.append("=");
 
-            speechOutputDevice.speak(context.getNumberParserFormatter()
+            ctx().getSpeechOutputDevice().speak(ctx().requireNumberParserFormatter()
                     .niceNumber(data.number.isDecimal()
                             ? data.number.decimalValue() : data.number.integerValue())
                     .get());
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildVerticalLinearLayout(
-                    context.getAndroidContext(),
-                    ResourcesCompat.getDrawable(context.getAndroidContext().getResources(),
+            ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildVerticalLinearLayout(
+                    ctx().android(),
+                    ResourcesCompat.getDrawable(ctx().android().getResources(),
                             R.drawable.divider_items, null),
                     GraphicalOutputUtils.buildDescription(
-                            context.getAndroidContext(), inputInterpretation.toString()),
+                            ctx().android(), inputInterpretation.toString()),
                     GraphicalOutputUtils.buildHeader(
-                            context.getAndroidContext(),
+                            ctx().android(),
                             numberToString(decimalFormat, data.number))));
         }
     }
