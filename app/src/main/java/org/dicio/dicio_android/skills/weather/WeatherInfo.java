@@ -31,7 +31,7 @@ public class WeatherInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder(this)
+        return new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(weather)))
                 .process(new OpenWeatherMapProcessor())
                 .output(new WeatherOutput());

@@ -17,12 +17,9 @@ import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.util.StringUtils;
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.skill.standard.StandardResult;
 
@@ -31,12 +28,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 // TODO cleanup this skill and use a service to manage timers
-public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
+public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
 
     public enum Action {
         set, cancel, query
@@ -96,43 +92,39 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
     private Data askForDurationData = null;
     private boolean confirmCancelAll = false;
 
+
     @Override
-    public void generate(final Data data,
-                         final SkillContext context,
-                         final SpeechOutputDevice speechOutputDevice,
-                         final GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final Data data) {
         switch (data.action) {
             case set:
                 if (data.duration == null) {
-                    final String message = context.getAndroidContext()
-                            .getString(R.string.skill_timer_how_much_time);
-                    speechOutputDevice.speak(message);
-                    graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
-                            context.getAndroidContext(), message));
+                    final String message = ctx().android().getString(R.string.skill_timer_how_much_time);
+                    ctx().getSpeechOutputDevice().speak(message);
+                    ctx().getGraphicalOutputDevice().display(
+                            GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
 
                     askForDurationData = data;
                     return;
                 }
-                setTimer(data.duration, data.name, context, speechOutputDevice,
-                        graphicalOutputDevice);
+                setTimer(data.duration, data.name);
                 break;
 
             case cancel:
                 if (data.name == null && setTimers.size() > 1) {
-                    final String message = context.getAndroidContext()
+                    final String message = ctx().android()
                             .getString(R.string.skill_timer_confirm_cancel);
-                    speechOutputDevice.speak(message);
-                    graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
-                            context.getAndroidContext(), message));
+                    ctx().getSpeechOutputDevice().speak(message);
+                    ctx().getGraphicalOutputDevice().display(
+                            GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
 
                     confirmCancelAll = true;
                     return;
                 }
-                cancelTimer(data.name, context, speechOutputDevice, graphicalOutputDevice);
+                cancelTimer(data.name);
                 break;
 
             case query:
-                queryTimer(data.name, context, speechOutputDevice, graphicalOutputDevice);
+                queryTimer(data.name);
                 break;
         }
     }
@@ -142,7 +134,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
         if (askForDurationData != null) {
             // use local variable, otherwise cleaned up by cleanup()
             final String askForDurationDataName = askForDurationData.name;
-            return Collections.singletonList(new Skill(null) {
+            return Collections.singletonList(new Skill() {
                 private String input;
                 private Duration duration;
 
@@ -160,22 +152,19 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
 
                 @Override
                 public float score() {
-                    return 1.0f; // TODO score based on whether a duration was found or not (!)
+                    duration = ctx().requireNumberParserFormatter()
+                            .extractDuration(input).get();
+                    return duration == null ? 0.0f : 1.0f;
                 }
 
                 @Override
-                public void processInput(final SkillContext context) {
-                    Objects.requireNonNull(context.getNumberParserFormatter());
-                    duration = context.getNumberParserFormatter().extractDuration(input).get();
+                public void processInput() {
                 }
 
                 @Override
-                public void generateOutput(final SkillContext context,
-                                           final SpeechOutputDevice speechOutputDevice,
-                                           final GraphicalOutputDevice graphicalOutputDevice) {
+                public void generateOutput() {
                     if (duration != null) {
-                        setTimer(duration, askForDurationDataName, context, speechOutputDevice,
-                                graphicalOutputDevice);
+                        setTimer(duration, askForDurationDataName);
                     }
                 }
 
@@ -187,23 +176,19 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
             });
 
         } else if (confirmCancelAll) {
-            return Collections.singletonList(new ChainSkill.Builder(null)
+            return Collections.singletonList(new ChainSkill.Builder()
                     .recognize(new StandardRecognizer(getSection(util_yes_no)))
                     .output(new OutputGenerator<StandardResult>() {
                         @Override
-                        public void generate(final StandardResult data,
-                                             final SkillContext skillContext,
-                                             final SpeechOutputDevice speechOutputDevice,
-                                             final GraphicalOutputDevice graphicalOutputDevice) {
+                        public void generate(final StandardResult data) {
                             if ("yes".equals(data.getSentenceId())) {
-                                cancelTimer(null, skillContext, speechOutputDevice,
-                                        graphicalOutputDevice);
+                                cancelTimer(null);
                             } else {
-                                final String message = skillContext.getAndroidContext()
+                                final String message = ctx().android()
                                         .getString(R.string.skill_timer_none_canceled);
-                                speechOutputDevice.speak(message);
-                                graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
-                                        skillContext.getAndroidContext(), message));
+                                ctx().getSpeechOutputDevice().speak(message);
+                                ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils
+                                        .buildSubHeader(ctx().android(), message));
                             }
                         }
 
@@ -212,7 +197,7 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
                     }));
 
         } else {
-            return OutputGenerator.super.nextSkills();
+            return super.nextSkills();
         }
     }
 
@@ -223,71 +208,63 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
     }
 
     private void setTimer(@NonNull final Duration duration,
-                          @Nullable final String name,
-                          final SkillContext context,
-                          final SpeechOutputDevice speechOutputDevice,
-                          final GraphicalOutputDevice graphicalOutputDevice) {
-        Objects.requireNonNull(context.getNumberParserFormatter());
-
-        speechOutputDevice.speak(formatStringWithName(context, name, duration.getSeconds(),
+                          @Nullable final String name) {
+        ctx().getSpeechOutputDevice().speak(formatStringWithName(name, duration.getSeconds(),
                 R.string.skill_timer_set, R.string.skill_timer_set_name));
 
-        final TextView textView = GraphicalOutputUtils.buildSubHeader(context.getAndroidContext(),
-                getFormattedDuration(context, duration.getSeconds(), false));
-        graphicalOutputDevice.display(textView);
+        final TextView textView = GraphicalOutputUtils.buildSubHeader(ctx().android(),
+                getFormattedDuration(duration.getSeconds(), false));
+        ctx().getGraphicalOutputDevice().display(textView);
 
         setTimers.add(new SetTimer(duration, name,
                 (theName, seconds) -> {
-                    textView.setText(getFormattedDuration(context, seconds, false));
+                    textView.setText(getFormattedDuration(seconds, false));
                     if (seconds <= 5) {
-                        speechOutputDevice.speak(context.getNumberParserFormatter()
-                                .pronounceNumber(seconds).get());
+                        ctx().getSpeechOutputDevice().speak(ctx()
+                                .requireNumberParserFormatter().pronounceNumber(seconds).get());
                     }
                 },
                 (theName) -> {
                     // TODO improve how alarm is played, and allow stopping it
-                    final String message = formatStringWithName(context, theName,
+                    final String message = formatStringWithName(theName,
                             R.string.skill_timer_expired, R.string.skill_timer_expired_name);
                     final Uri ringtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
-                            context.getAndroidContext(), RingtoneManager.TYPE_ALARM);
+                            ctx().android(), RingtoneManager.TYPE_ALARM);
                     final Ringtone ringtone;
                     if (ringtoneUri == null) {
                         ringtone = null;
                     } else {
-                        ringtone = RingtoneManager.getRingtone(context.getAndroidContext(),
+                        ringtone = RingtoneManager.getRingtone(ctx().android(),
                                 ringtoneUri);
                     }
 
                     if (ringtone == null) {
-                        speechOutputDevice.speak(message);
+                        ctx().getSpeechOutputDevice().speak(message);
                     } else {
                         ringtone.play();
                     }
                     textView.setText(message);
                 },
-                (theName) -> textView.setText(formatStringWithName(context, theName,
+                (theName) -> textView.setText(formatStringWithName(theName,
                         R.string.skill_timer_canceled, R.string.skill_timer_canceled_name))));
     }
 
-    private void cancelTimer(@Nullable final String name,
-                             final SkillContext context,
-                             final SpeechOutputDevice speechOutputDevice,
-                             final GraphicalOutputDevice graphicalOutputDevice) {
+    private void cancelTimer(@Nullable final String name) {
         final String message;
         if (setTimers.isEmpty()) {
-            message = context.getAndroidContext()
+            message = ctx().android()
                     .getString(R.string.skill_timer_no_active);
 
         } else if (name == null) {
             if (setTimers.size() == 1) {
                 if (setTimers.get(0).name == null) {
-                    message = context.getAndroidContext().getString(R.string.skill_timer_canceled);
+                    message = ctx().android().getString(R.string.skill_timer_canceled);
                 } else {
-                    message = context.getAndroidContext()
+                    message = ctx().android()
                             .getString(R.string.skill_timer_canceled_name, setTimers.get(0).name);
                 }
             } else {
-                message = context.getAndroidContext().getString(R.string.skill_timer_all_canceled);
+                message = ctx().android().getString(R.string.skill_timer_all_canceled);
             }
 
             // cancel all
@@ -299,11 +276,11 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
         } else {
             final SetTimer setTimer = getSetTimerWithSimilarName(name);
             if (setTimer == null) {
-                message = context.getAndroidContext()
+                message = ctx().android()
                         .getString(R.string.skill_timer_no_active_name, name);
 
             } else {
-                message = context.getAndroidContext()
+                message = ctx().android()
                         .getString(R.string.skill_timer_canceled_name, setTimer.name);
 
                 setTimer.cancel();
@@ -311,18 +288,15 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
             }
         }
 
-        speechOutputDevice.speak(message);
-        graphicalOutputDevice.display(
-                GraphicalOutputUtils.buildSubHeader(context.getAndroidContext(), message));
+        ctx().getSpeechOutputDevice().speak(message);
+        ctx().getGraphicalOutputDevice().display(
+                GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
     }
 
-    private void queryTimer(@Nullable final String name,
-                            final SkillContext context,
-                            final SpeechOutputDevice speechOutputDevice,
-                            final GraphicalOutputDevice graphicalOutputDevice) {
+    private void queryTimer(@Nullable final String name) {
         final String message;
         if (setTimers.isEmpty()) {
-            message = context.getAndroidContext()
+            message = ctx().android()
                     .getString(R.string.skill_timer_no_active);
 
         } else if (name == null) {
@@ -331,57 +305,51 @@ public class TimerOutput implements OutputGenerator<TimerOutput.Data> {
             @StringRes final int noNameQueryString = setTimers.size() == 1
                     ? R.string.skill_timer_query : R.string.skill_timer_query_last;
 
-            message = formatStringWithName(context, lastTimer.name, lastTimer.lastTickSeconds,
+            message = formatStringWithName(lastTimer.name, lastTimer.lastTickSeconds,
                     noNameQueryString, R.string.skill_timer_query_name);
 
         } else {
             final SetTimer setTimer = getSetTimerWithSimilarName(name);
             if (setTimer == null) {
-                message = context.getAndroidContext()
-                        .getString(R.string.skill_timer_no_active_name, name);
+                message = ctx().android().getString(R.string.skill_timer_no_active_name, name);
             } else {
-                message = context.getAndroidContext()
-                        .getString(R.string.skill_timer_query_name, setTimer.name,
-                                getFormattedDuration(context, setTimer.lastTickSeconds, true));
+                message = ctx().android().getString(R.string.skill_timer_query_name, setTimer.name,
+                                getFormattedDuration(setTimer.lastTickSeconds, true));
             }
         }
 
-        speechOutputDevice.speak(message);
-        graphicalOutputDevice.display(
-                GraphicalOutputUtils.buildSubHeader(context.getAndroidContext(), message));
+        ctx().getSpeechOutputDevice().speak(message);
+        ctx().getGraphicalOutputDevice().display(
+                GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
     }
 
-    private String getFormattedDuration(final SkillContext context,
-                                        final long seconds,
+    private String getFormattedDuration(final long seconds,
                                         final boolean speech) {
-        Objects.requireNonNull(context.getNumberParserFormatter());
-        return context.getNumberParserFormatter()
+        return ctx().requireNumberParserFormatter()
                 .niceDuration(Duration.ofSeconds(seconds))
                 .speech(speech)
                 .get();
     }
 
-    private String formatStringWithName(final SkillContext context,
-                                        @Nullable final String name,
+    private String formatStringWithName(@Nullable final String name,
                                         @StringRes final int stringWithoutName,
                                         @StringRes final int stringWithName) {
         if (name == null) {
-            return context.getAndroidContext().getString(stringWithoutName);
+            return ctx().android().getString(stringWithoutName);
         } else {
-            return context.getAndroidContext().getString(stringWithName, name);
+            return ctx().android().getString(stringWithName, name);
         }
     }
 
-    private String formatStringWithName(final SkillContext context,
-                                        @Nullable final String name,
+    private String formatStringWithName(@Nullable final String name,
                                         final long seconds,
                                         @StringRes final int stringWithoutName,
                                         @StringRes final int stringWithName) {
-        final String duration = getFormattedDuration(context, seconds, true);
+        final String duration = getFormattedDuration(seconds, true);
         if (name == null) {
-            return context.getAndroidContext().getString(stringWithoutName, duration);
+            return ctx().android().getString(stringWithoutName, duration);
         } else {
-            return context.getAndroidContext().getString(stringWithName, name, duration);
+            return ctx().android().getString(stringWithName, name, duration);
         }
     }
 

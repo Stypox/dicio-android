@@ -30,13 +30,13 @@ public class SearchInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        final ChainSkill.Builder builder = new ChainSkill.Builder(this)
+        final ChainSkill.Builder builder = new ChainSkill.Builder()
                 .recognize(new StandardRecognizer(getSection(search)));
 
         // Qwant was once available as a second search engine; restore this if adding a new engine
         /*final String searchEngine = context.getPreferences().getString(
-                context.getAndroidContext().getString(R.string.pref_key_search_engine), "");
-        if (searchEngine.equals(context.getAndroidContext()
+                ctx().android().getString(R.string.pref_key_search_engine), "");
+        if (searchEngine.equals(ctx()
                 .getString(R.string.pref_val_search_engine_duckduckgo))) {
         }*/
 

@@ -22,6 +22,8 @@ import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,15 +48,17 @@ public class SkillHandler {
     }};
 
     @SuppressLint("StaticFieldLeak") // releaseSkillContext() is called in MainActivity.onDestroy()
-    @Nullable private static SkillContext context = null;
+    private static final SkillContext context = new SkillContext();
 
 
     /**
-     * Sets up the static skill context used throughout the app. Requires the sections locale to
-     * be ready. Has to be called before working with skills or skill infos.
+     * Sets the provided Android context, the preferences obtained from it, the current sections
+     * locale and the number parser formatter in the static skill context used throughout the app.
+     * Requires the sections locale to be ready. Has to be called before working with skills or
+     * skill infos.
      * @param androidContext the android context to use in the skill context
      */
-    public static void setupSkillContext(final Context androidContext) {
+    public static void setSkillContextAndroidAndLocale(final Context androidContext) {
         if (Sections.getCurrentLocale() == null) {
             throw new RuntimeException(
                     "setupSkillContext() requires the Sections locale to be initialized");
@@ -67,25 +71,33 @@ public class SkillHandler {
             // current locale is not supported by dicio-numbers
         }
 
-        context = new SkillContext(androidContext,
-                PreferenceManager.getDefaultSharedPreferences(androidContext),
-                Sections.getCurrentLocale(),
-                numberParserFormatter);
+        context.setAndroidContext(androidContext);
+        context.setPreferences(PreferenceManager.getDefaultSharedPreferences(androidContext));
+        context.setLocale(Sections.getCurrentLocale());
+        context.setNumberParserFormatter(numberParserFormatter);
     }
 
+    /**
+     * Sets the provided devices in the static skill context used throughout the app. Has to be
+     * called before requesting any skill output.
+     * @param speechOutputDevice the speech output device to use in the skill context
+     * @param graphicalOutputDevice the graphical output device to use in the skill context
+     */
+    public static void setSkillContextDevices(final SpeechOutputDevice speechOutputDevice,
+                                              final GraphicalOutputDevice graphicalOutputDevice) {
+        context.setSpeechOutputDevice(speechOutputDevice);
+        context.setGraphicalOutputDevice(graphicalOutputDevice);
+    }
+
+
+    @SuppressWarnings("ConstantConditions") // we want to release resources, so we set to null
     public static void releaseSkillContext() {
-        context = null;
+        context.setAndroidContext(null);
+        context.setPreferences(null);
     }
 
-    @Nullable
     public static SkillContext getSkillContext() {
         return context;
-    }
-
-    private static void assertSkillContextNotNull() {
-        if (context == null) {
-            throw new RuntimeException("Skill context is null");
-        }
     }
 
 
@@ -95,18 +107,19 @@ public class SkillHandler {
 
 
     public static List<Skill> getStandardSkillBatch() {
-        assertSkillContextNotNull();
         final List<Skill> result = new ArrayList<>();
 
         for (final SkillInfo skillInfo : getEnabledSkillInfoList()) {
-            result.add(skillInfo.build(context));
+            final Skill skill = skillInfo.build(context);
+            skill.setContext(context);
+            skill.setSkillInfo(skillInfo);
+            result.add(skill);
         }
 
         return result;
     }
 
     public static Skill getFallbackSkill() {
-        assertSkillContextNotNull();
         return Objects.requireNonNull(fallbackSkillInfoList.get(0)).build(context);
     }
 
@@ -116,7 +129,6 @@ public class SkillHandler {
     }
 
     public static List<SkillInfo> getAvailableSkillInfoList() {
-        assertSkillContextNotNull();
         final List<SkillInfo> result = new ArrayList<>();
 
         for (final SkillInfo skillInfo : skillInfoList) {
@@ -129,10 +141,8 @@ public class SkillHandler {
     }
 
     public static List<SkillInfo> getEnabledSkillInfoList() {
-        assertSkillContextNotNull();
-        //noinspection ConstantConditions (context is not null, asserted just above here)
         final SharedPreferences prefs
-                = PreferenceManager.getDefaultSharedPreferences(context.getAndroidContext());
+                = PreferenceManager.getDefaultSharedPreferences(context.android());
         final List<SkillInfo> result = new ArrayList<>();
 
         for (final SkillInfo skillInfo : skillInfoList) {

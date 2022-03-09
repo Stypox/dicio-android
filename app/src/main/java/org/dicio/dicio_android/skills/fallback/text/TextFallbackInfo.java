@@ -21,7 +21,7 @@ public class TextFallbackInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new TextFallback(this);
+        return new TextFallback();
     }
 
     @Nullable

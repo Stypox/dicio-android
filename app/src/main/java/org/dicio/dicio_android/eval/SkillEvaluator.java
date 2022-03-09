@@ -74,10 +74,7 @@ public class SkillEvaluator implements CleanableUp {
         this.activity = activity;
 
         setupInputDeviceListeners();
-
-        // this adds a divider only if there are already some output views (can happen when
-        // reloading the skill evaluator)
-        graphicalOutputDevice.addDivider();
+        setupOutputDevices();
     }
 
 
@@ -156,7 +153,7 @@ public class SkillEvaluator implements CleanableUp {
 
         if (PermissionUtils.areAllPermissionsGranted(grantResults)) {
             evaluationDisposable = Single.fromCallable(() -> {
-                skill.processInput(SkillHandler.getSkillContext());
+                skill.processInput();
                 return skill;
             })
             .subscribeOn(Schedulers.io())
@@ -246,6 +243,12 @@ public class SkillEvaluator implements CleanableUp {
                 }
             });
         }
+    }
+
+    private void setupOutputDevices() {
+        // this adds a divider only if there are already some output views (can happen when
+        // reloading the skill evaluator)
+        graphicalOutputDevice.addDivider();
     }
 
 
@@ -401,7 +404,7 @@ public class SkillEvaluator implements CleanableUp {
 
             final String[] permissions = PermissionUtils.permissionsArrayFromSkill(skill);
             if (PermissionUtils.checkPermissions(activity, permissions)) {
-                skill.processInput(SkillHandler.getSkillContext());
+                skill.processInput();
                 return skill;
             } else {
                 // request permissions; when done process input in onSkillRequestPermissionsResult
@@ -417,8 +420,7 @@ public class SkillEvaluator implements CleanableUp {
     }
 
     private void generateOutput(final Skill skill) {
-        skill.generateOutput(SkillHandler.getSkillContext(),
-                speechOutputDevice, graphicalOutputDevice);
+        skill.generateOutput();
 
         final List<Skill> nextSkills = skill.nextSkills();
         if (nextSkills == null || nextSkills.isEmpty()) {

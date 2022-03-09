@@ -4,7 +4,6 @@ import static org.dicio.dicio_android.Sentences_en.lyrics;
 
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.RegexUtils;
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.json.JSONArray;
@@ -17,8 +16,7 @@ import org.unbescape.json.JsonEscape;
 
 import java.util.regex.Pattern;
 
-public class GeniusProcessor
-        implements IntermediateProcessor<StandardResult, LyricsOutput.Data> {
+public class GeniusProcessor extends IntermediateProcessor<StandardResult, LyricsOutput.Data> {
 
     // replace "songs" with "multi" to get all kinds of results and not just songs
     private static final String geniusSearchUrl = "https://genius.com/api/search/songs?q=";
@@ -28,9 +26,9 @@ public class GeniusProcessor
     private static final Pattern newlinePattern =
             Pattern.compile("\\s*(\\\\n)?\\s*\\{#%\\)\\s*");
 
+
     @Override
-    public LyricsOutput.Data process(final StandardResult data, final SkillContext context)
-            throws Exception {
+    public LyricsOutput.Data process(final StandardResult data) throws Exception {
 
         final String songName = data.getCapturingGroup(lyrics.song).trim();
         final JSONObject search = ConnectionUtils.getPageJson(

@@ -41,6 +41,7 @@ import org.dicio.dicio_android.settings.SettingsActivity;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.util.BaseActivity;
 import org.dicio.dicio_android.util.PermissionUtils;
+import org.dicio.skill.output.GraphicalOutputDevice;
 import org.dicio.skill.output.SpeechOutputDevice;
 
 public class MainActivity extends BaseActivity
@@ -277,6 +278,10 @@ public class MainActivity extends BaseActivity
         }
 
         final SpeechOutputDevice speechOutputDevice = buildSpeechOutputDevice();
+        final GraphicalOutputDevice graphicalOutputDevice = new MainScreenGraphicalDevice(
+                findViewById(R.id.outputScrollView), findViewById(R.id.outputLayout));
+
+        SkillHandler.setSkillContextDevices(speechOutputDevice, graphicalOutputDevice);
 
         skillEvaluator = new SkillEvaluator(
                 new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
@@ -285,8 +290,7 @@ public class MainActivity extends BaseActivity
                 primaryInputDevice,
                 secondaryInputDevice,
                 speechOutputDevice,
-                new MainScreenGraphicalDevice(
-                        findViewById(R.id.outputScrollView), findViewById(R.id.outputLayout)),
+                graphicalOutputDevice,
                 this);
         skillEvaluator.showInitialScreen();
     }

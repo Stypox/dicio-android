@@ -65,7 +65,7 @@ public abstract class LocaleAwareActivity extends AppCompatActivity {
         currentLanguage = getLocaleFromPreferences();
         setLocale();
         // setup each time the activity is (re)created, but only clear in MainActivity.onDestroy()
-        SkillHandler.setupSkillContext(this);
+        SkillHandler.setSkillContextAndroidAndLocale(this);
         super.onCreate(savedInstanceState);
     }
 

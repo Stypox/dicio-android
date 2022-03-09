@@ -3,6 +3,7 @@ package org.dicio.dicio_android.eval;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.skill.Skill;
 import org.dicio.skill.util.CleanableUp;
 
@@ -161,6 +162,10 @@ public class SkillRanker implements CleanableUp {
     }
 
     public void addBatchToTop(final List<Skill> skillBatch) {
+        for (final Skill skill : skillBatch) {
+            // set the context to the enqueued skills
+            skill.setContext(SkillHandler.getSkillContext());
+        }
         batches.push(new SkillBatch(skillBatch));
     }
 

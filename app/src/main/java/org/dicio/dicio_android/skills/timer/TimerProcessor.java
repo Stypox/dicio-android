@@ -2,18 +2,13 @@ package org.dicio.dicio_android.skills.timer;
 
 import androidx.annotation.Nullable;
 
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 
-import java.util.Objects;
-
-public class TimerProcessor
-        implements IntermediateProcessor<StandardResult, TimerOutput.Data> {
+public class TimerProcessor extends IntermediateProcessor<StandardResult, TimerOutput.Data> {
 
     @Override
-    public TimerOutput.Data process(final StandardResult data,
-                                    final SkillContext context) throws Exception {
+    public TimerOutput.Data process(final StandardResult data) throws Exception {
         final TimerOutput.Data result = new TimerOutput.Data();
 
         switch (data.getSentenceId()) {
@@ -30,7 +25,7 @@ public class TimerProcessor
 
         @Nullable final String durationString = data.getCapturingGroup("duration");
         if (durationString != null) {
-            result.duration = Objects.requireNonNull(context.getNumberParserFormatter())
+            result.duration = ctx().requireNumberParserFormatter()
                     .extractDuration(durationString).get();
         }
 

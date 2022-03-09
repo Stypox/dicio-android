@@ -17,12 +17,9 @@ import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.skill.standard.StandardResult;
 
@@ -30,28 +27,25 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
+public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
 
     public static class Data {
         public String title, thumbnailUrl, url, description;
     }
 
-
     private boolean tryAgain = false;
 
+
     @Override
-    public void generate(final List<Data> data,
-                         final SkillContext context,
-                         final SpeechOutputDevice speechOutputDevice,
-                         final GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final List<Data> data) {
         if (data == null || data.isEmpty()) {
             // empty capturing group, e.g. "search for" without anything else
 
-            final String message = context.getAndroidContext().getString(data == null
+            final String message = ctx().android().getString(data == null
                     ? R.string.skill_search_what_question : R.string.skill_search_no_results);
-            speechOutputDevice.speak(message);
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildSubHeader(
-                    context.getAndroidContext(), message));
+            ctx().getSpeechOutputDevice().speak(message);
+            ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildSubHeader(
+                    ctx().android(), message));
 
             tryAgain = true;
             return;
@@ -59,11 +53,11 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
         tryAgain = false;
 
         final LinearLayout output
-                = GraphicalOutputUtils.buildVerticalLinearLayout(context.getAndroidContext(),
-                ResourcesCompat.getDrawable(context.getAndroidContext().getResources(),
+                = GraphicalOutputUtils.buildVerticalLinearLayout(ctx().android(),
+                ResourcesCompat.getDrawable(ctx().android().getResources(),
                         R.drawable.divider_items, null));
         for (final Data item : data) {
-            final View view = GraphicalOutputUtils.inflate(context.getAndroidContext(),
+            final View view = GraphicalOutputUtils.inflate(ctx().android(),
                     R.layout.skill_search_result);
 
             ((TextView) view.findViewById(R.id.title))
@@ -73,13 +67,13 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
             ((TextView) view.findViewById(R.id.description))
                     .setText(Html.fromHtml(item.description));
 
-            view.setOnClickListener(v -> openUrlInBrowser(context.getAndroidContext(), item.url));
+            view.setOnClickListener(v -> openUrlInBrowser(ctx().android(), item.url));
             output.addView(view);
         }
 
-        speechOutputDevice.speak(context.getAndroidContext().getString(
+        ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                 R.string.skill_search_here_is_what_i_found));
-        graphicalOutputDevice.display(output);
+        ctx().getGraphicalOutputDevice().display(output);
     }
 
     @Override
@@ -89,11 +83,11 @@ public class SearchOutput implements OutputGenerator<List<SearchOutput.Data>> {
         }
 
         return Arrays.asList(
-                new ChainSkill.Builder(null)
+                new ChainSkill.Builder()
                         .recognize(new StandardRecognizer(getSection(SectionsGenerated.search)))
                         .process(new DuckDuckGoProcessor())
                         .output(new SearchOutput()),
-                new ChainSkill.Builder(null)
+                new ChainSkill.Builder()
                         .recognize(new InputRecognizer<StandardResult>() {
                             private String input;
 

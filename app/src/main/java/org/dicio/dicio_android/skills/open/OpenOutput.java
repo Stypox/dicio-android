@@ -12,32 +12,26 @@ import androidx.annotation.Nullable;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.StringUtils;
-import org.dicio.skill.SkillContext;
 import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.standard.StandardResult;
 
 import java.util.List;
 
-public class OpenOutput implements OutputGenerator<StandardResult> {
+public class OpenOutput extends OutputGenerator<StandardResult> {
 
     @Override
-    public void generate(final StandardResult data,
-                         final SkillContext context,
-                         final SpeechOutputDevice speechOutputDevice,
-                         final GraphicalOutputDevice graphicalOutputDevice) {
+    public void generate(final StandardResult data) {
 
         final String userAppName = data.getCapturingGroup(open.what).trim();
-        final PackageManager packageManager = context.getAndroidContext().getPackageManager();
+        final PackageManager packageManager = ctx().android().getPackageManager();
         final ApplicationInfo applicationInfo = getMostSimilarApp(packageManager, userAppName);
 
         if (applicationInfo == null) {
-            speechOutputDevice.speak(context.getAndroidContext().getString(
+            ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                     R.string.skill_open_unknown_app, userAppName));
 
         } else {
-            speechOutputDevice.speak(context.getAndroidContext().getString(
+            ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                     R.string.skill_open_opening,
                     packageManager.getApplicationLabel(applicationInfo)));
 
@@ -46,7 +40,7 @@ public class OpenOutput implements OutputGenerator<StandardResult> {
             launchIntent.setAction(Intent.ACTION_MAIN);
             launchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.getAndroidContext().startActivity(launchIntent);
+            ctx().android().startActivity(launchIntent);
         }
     }
 
