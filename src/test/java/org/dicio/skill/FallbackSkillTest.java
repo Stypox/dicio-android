@@ -14,27 +14,19 @@ import java.util.List;
 public class FallbackSkillTest {
 
     @Test
-    public void testConstructorAndGetSkillInfo() {
-        final SkillInfo skillInfo = new SkillInfo("id", 0, 0, 0, false) {
-            @Override public boolean isAvailable(final SkillContext context) { return false; }
-            @Override public Skill build(final SkillContext context) { return null; }
-            @Nullable @Override public Fragment getPreferenceFragment() { return null; }
-        };
-
-        final Skill skill = new FallbackSkill(null, skillInfo) {
+    public void testConstructor() {
+        new FallbackSkill() {
             @Override public void setInput(final String input, final List<String> inputWords,
                     final List<String> normalizedWordKeys) {}
             @Override public void processInput() {}
             @Override public void generateOutput() {}
             @Override public void cleanup() {}
         };
-
-        assertSame(skillInfo, skill.getSkillInfo());
     }
 
     @Test
     public void testScoreAndSpecificity() {
-        final Skill skill = new FallbackSkill(null, null) {
+        final Skill skill = new FallbackSkill() {
             @Override public void setInput(final String input, final List<String> inputWords,
                     final List<String> normalizedWordKeys) {}
             @Override public void processInput() {}

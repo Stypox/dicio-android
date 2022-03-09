@@ -13,14 +13,7 @@ import java.util.List;
 public class ChainSkill extends Skill {
 
     public static class Builder {
-        final ChainSkill chainSkill;
-
-        /**
-         * @see Skill#Skill(SkillContext, SkillInfo)
-         */
-        public Builder(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-            this.chainSkill = new ChainSkill(context, skillInfo);
-        }
+        final ChainSkill chainSkill = new ChainSkill();
 
         public Builder recognize(final InputRecognizer<?> inputRecognizer) {
             if (chainSkill.inputRecognizer != null) {
@@ -52,14 +45,9 @@ public class ChainSkill extends Skill {
 
 
     private InputRecognizer inputRecognizer;
-    private final List<IntermediateProcessor> intermediateProcessors;
+    private final List<IntermediateProcessor> intermediateProcessors = new ArrayList<>();
     private OutputGenerator outputGenerator;
     private Object lastResult;
-
-    private ChainSkill(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-        intermediateProcessors = new ArrayList<>();
-    }
 
 
     @Override
@@ -107,5 +95,35 @@ public class ChainSkill extends Skill {
     @Override
     public List<Skill> nextSkills() {
         return outputGenerator.nextSkills();
+    }
+
+    /**
+     * Also sets the context to all of this chain skill sub-components
+     * @param context the {@link SkillContext} object this {@link Skill} is being created with
+     */
+    @Override
+    public void setContext(final SkillContext context) {
+        super.setContext(context);
+        inputRecognizer.setContext(context);
+        for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
+            intermediateProcessor.setContext(context);
+        }
+        outputGenerator.setContext(context);
+    }
+
+    /**
+     * Also sets the skill info to all of this chain skill sub-components
+     * @param skillInfo the {@link SkillInfo} object this {@link Skill} is being created with (using
+     *                  {@link SkillInfo#build(SkillContext)}), or {@code null} if this skill is
+     *                  not being built by a {@link SkillInfo}
+     */
+    @Override
+    public void setSkillInfo(@Nullable final SkillInfo skillInfo) {
+        super.setSkillInfo(skillInfo);
+        inputRecognizer.setSkillInfo(skillInfo);
+        for (final IntermediateProcessor intermediateProcessor : intermediateProcessors) {
+            intermediateProcessor.setSkillInfo(skillInfo);
+        }
+        outputGenerator.setSkillInfo(skillInfo);
     }
 }

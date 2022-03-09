@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import org.dicio.skill.Skill;
+import org.dicio.skill.SkillComponent;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class ChainSkillTest {
 
     // the type parameters used here are just random: the chain skill does not check if they match
 
-    private static final InputRecognizer<Integer> ir = new InputRecognizer<Integer>(null, null) {
+    private static final InputRecognizer<Integer> ir = new InputRecognizer<Integer>() {
         @Override public Specificity specificity() { return Specificity.high; }
         @Override public void setInput(final String input, final List<String> inputWords,
                 final List<String> normalizedInputWords) {}
@@ -34,18 +35,18 @@ public class ChainSkillTest {
     };
 
     private static final IntermediateProcessor<Integer, Double> ip1
-            = new IntermediateProcessor<Integer, Double>(null, null) {
+            = new IntermediateProcessor<Integer, Double>() {
         @Override public Double process(final Integer data) { return data / 3.0; }
     };
 
     private static final IntermediateProcessor<Double, Float> ip2
-            = new IntermediateProcessor<Double, Float>(null, null) {
+            = new IntermediateProcessor<Double, Float>() {
         @Override public Float process(final Double data) { return (float)(2 * data); }
     };
 
     private static final StringBuilder generatedOutput = new StringBuilder();
     private static final OutputGenerator<Object> og
-            = new OutputGenerator<Object>(null, null) {
+            = new OutputGenerator<Object>() {
         @Override
         public void generate(final Object data) {
             assertNotNull(data);
@@ -63,52 +64,69 @@ public class ChainSkillTest {
         assertEquals(expected, generatedOutput.toString());
     }
 
+    private static void assertSetSkillInfo(final Skill skill, final SkillComponent... skillComponents) {
+        skill.setSkillInfo(null);
+        for (final SkillComponent skillComponent : skillComponents) {
+            skillComponent.setSkillInfo(null);
+        }
+
+        skill.setSkillInfo(skillInfo);
+
+        assertSame(skillInfo, skill.getSkillInfo());
+        for (final SkillComponent skillComponent : skillComponents) {
+            assertSame(skillInfo, skillComponent.getSkillInfo());
+        }
+    }
+
 
     @Test
     public void testBuildNoIntermediateProcessors() throws Exception {
-        final Skill skill = new ChainSkill.Builder(null, skillInfo)
+        final Skill skill = new ChainSkill.Builder()
                 .recognize(ir)
                 .output(og);
-        assertSame(skillInfo, skill.getSkillInfo());
+
+        assertSetSkillInfo(skill, ir, og);
         assertEquals(ir.specificity(), skill.specificity());
         assertGeneratedOutput(Integer.class + "-" + 8, skill);
     }
 
     @Test
     public void testBuildOneIntermediateProcessor() throws Exception {
-        final Skill skill = new ChainSkill.Builder(null, skillInfo)
+        final Skill skill = new ChainSkill.Builder()
                 .recognize(ir)
                 .process(ip1)
                 .output(og);
-        assertSame(skillInfo, skill.getSkillInfo());
+
+        assertSetSkillInfo(skill, ir, ip1, og);
         assertEquals(ir.specificity(), skill.specificity());
         assertGeneratedOutput(Double.class + "-" + (8 / 3.0), skill);
     }
 
     @Test
     public void testBuildTwoIntermediateProcessors() throws Exception {
-        final Skill skill = new ChainSkill.Builder(null, skillInfo)
+        final Skill skill = new ChainSkill.Builder()
                 .recognize(ir)
                 .process(ip1)
                 .process(ip2)
                 .output(og);
-        assertSame(skillInfo, skill.getSkillInfo());
+
+        assertSetSkillInfo(skill, ir, ip1, ip2, og);
         assertEquals(ir.specificity(), skill.specificity());
         assertGeneratedOutput(Float.class + "-" + (float)(2 * (8 / 3.0)), skill);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNoInputRecognizerProcess() {
-        new ChainSkill.Builder(null, skillInfo).process(ip1);
+        new ChainSkill.Builder().process(ip1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNoInputRecognizerOutput() {
-        new ChainSkill.Builder(null, skillInfo).output(og);
+        new ChainSkill.Builder().output(og);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testTwoInputRecognizers() {
-        new ChainSkill.Builder(null, skillInfo).recognize(ir).recognize(ir);
+        new ChainSkill.Builder().recognize(ir).recognize(ir);
     }
 }

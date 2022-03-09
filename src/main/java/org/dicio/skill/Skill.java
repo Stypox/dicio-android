@@ -1,7 +1,5 @@
 package org.dicio.skill;
 
-import androidx.annotation.Nullable;
-
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.chain.OutputGenerator;
@@ -15,14 +13,6 @@ import java.util.List;
  * look at {@link org.dicio.skill.chain.ChainSkill} for a class that separates these three things.
  */
 public abstract class Skill extends SkillComponent implements CleanableUp {
-
-    /**
-     * @see SkillComponent#SkillComponent(SkillContext, SkillInfo)
-     */
-    public Skill(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
-
 
     /**
      * @see InputRecognizer#specificity()

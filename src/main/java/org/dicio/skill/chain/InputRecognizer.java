@@ -1,10 +1,6 @@
 package org.dicio.skill.chain;
 
-import androidx.annotation.Nullable;
-
 import org.dicio.skill.SkillComponent;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.util.CleanableUp;
 
 import java.util.List;
@@ -23,13 +19,6 @@ public abstract class InputRecognizer<ResultType> extends SkillComponent impleme
         high,
         medium,
         low,
-    }
-
-    /**
-     * @see SkillComponent#SkillComponent(SkillContext, SkillInfo)
-     */
-    public InputRecognizer(final SkillContext context, final @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
     }
 
     /**
