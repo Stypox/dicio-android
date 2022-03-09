@@ -30,8 +30,8 @@ public class SearchInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        final ChainSkill.Builder builder = new ChainSkill.Builder(context, this)
-                .recognize(new StandardRecognizer(context, this, getSection(search)));
+        final ChainSkill.Builder builder = new ChainSkill.Builder()
+                .recognize(new StandardRecognizer(getSection(search)));
 
         // Qwant was once available as a second search engine; restore this if adding a new engine
         /*final String searchEngine = context.getPreferences().getString(
@@ -40,9 +40,9 @@ public class SearchInfo extends SkillInfo {
                 .getString(R.string.pref_val_search_engine_duckduckgo))) {
         }*/
 
-        builder.process(new DuckDuckGoProcessor(context, this));
+        builder.process(new DuckDuckGoProcessor());
 
-        return builder.output(new SearchOutput(context, this));
+        return builder.output(new SearchOutput());
     }
 
     @Nullable

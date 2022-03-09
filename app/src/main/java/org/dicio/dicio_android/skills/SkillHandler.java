@@ -110,7 +110,10 @@ public class SkillHandler {
         final List<Skill> result = new ArrayList<>();
 
         for (final SkillInfo skillInfo : getEnabledSkillInfoList()) {
-            result.add(skillInfo.build(context));
+            final Skill skill = skillInfo.build(context);
+            skill.setContext(context);
+            skill.setSkillInfo(skillInfo);
+            result.add(skill);
         }
 
         return result;

@@ -1,14 +1,10 @@
 package org.dicio.dicio_android.skills.calculator;
 
-import androidx.annotation.Nullable;
-
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.numbers.util.Number;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.skill.standard.StandardResult;
@@ -21,10 +17,6 @@ import java.util.Map;
 
 public class CalculatorProcessor
         extends IntermediateProcessor<StandardResult, CalculatorOutput.Data> {
-
-    public CalculatorProcessor(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     private String getOperation(final StandardRecognizer operatorRecognizer,
                                 final String text) {
@@ -51,7 +43,7 @@ public class CalculatorProcessor
             return result;
         }
 
-        final StandardRecognizer operatorRecognizer = new StandardRecognizer(ctx(), null,
+        final StandardRecognizer operatorRecognizer = new StandardRecognizer(
                 Sections.getSection(SectionsGenerated.calculator_operators));
 
         Number firstNumber;

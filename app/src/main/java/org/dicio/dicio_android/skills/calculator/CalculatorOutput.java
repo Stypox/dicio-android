@@ -1,13 +1,10 @@
 package org.dicio.dicio_android.skills.calculator;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.numbers.util.Number;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.OutputGenerator;
 
 import java.text.DecimalFormat;
@@ -22,10 +19,6 @@ public class CalculatorOutput extends OutputGenerator<CalculatorOutput.Data> {
         Number number;
     }
 
-
-    public CalculatorOutput(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     private String numberToString(final DecimalFormat decimalFormat, final Number number) {
         if (number.isDecimal()) {

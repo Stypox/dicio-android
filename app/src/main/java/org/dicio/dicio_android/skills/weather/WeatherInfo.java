@@ -31,10 +31,10 @@ public class WeatherInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder(context, this)
-                .recognize(new StandardRecognizer(context, this, getSection(weather)))
-                .process(new OpenWeatherMapProcessor(context, this))
-                .output(new WeatherOutput(context, this));
+        return new ChainSkill.Builder()
+                .recognize(new StandardRecognizer(getSection(weather)))
+                .process(new OpenWeatherMapProcessor())
+                .output(new WeatherOutput());
     }
 
     @Nullable

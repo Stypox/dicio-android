@@ -12,18 +12,12 @@ import androidx.annotation.Nullable;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.StringUtils;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.standard.StandardResult;
 
 import java.util.List;
 
 public class OpenOutput extends OutputGenerator<StandardResult> {
-
-    public OpenOutput(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public void generate(final StandardResult data) {

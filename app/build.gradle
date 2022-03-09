@@ -53,7 +53,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
     // Dicio own libraries
-    implementation 'com.github.Stypox:dicio-skill:a956ae5e08e68c6d71518320adecdd16fc0b4a52'
+    implementation 'com.github.Stypox:dicio-skill:d3740105a68b66689ce7f4bbb3b4cffbbdd6fbdf'
     implementation 'com.github.Stypox:dicio-numbers:51919643211e237ecef45ec434ff78db42a98fa0'
 
     // Vosk

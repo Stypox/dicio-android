@@ -2,16 +2,10 @@ package org.dicio.dicio_android.skills.timer;
 
 import androidx.annotation.Nullable;
 
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 
 public class TimerProcessor extends IntermediateProcessor<StandardResult, TimerOutput.Data> {
-
-    public TimerProcessor(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public TimerOutput.Data process(final StandardResult data) throws Exception {

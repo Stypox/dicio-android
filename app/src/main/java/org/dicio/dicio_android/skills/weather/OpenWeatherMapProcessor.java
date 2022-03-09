@@ -3,13 +3,9 @@ package org.dicio.dicio_android.skills.weather;
 import static org.dicio.dicio_android.Sentences_en.weather;
 import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 
-import androidx.annotation.Nullable;
-
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.StringUtils;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.json.JSONObject;
@@ -25,11 +21,6 @@ public class OpenWeatherMapProcessor
     private static final String iconBaseUrl = "https://openweathermap.org/img/wn/";
     private static final String iconFormat = "@2x.png";
 
-
-    public OpenWeatherMapProcessor(final SkillContext context,
-                                   @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public WeatherOutput.Data process(final StandardResult data) throws Exception {

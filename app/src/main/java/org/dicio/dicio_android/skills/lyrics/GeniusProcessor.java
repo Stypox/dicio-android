@@ -2,12 +2,8 @@ package org.dicio.dicio_android.skills.lyrics;
 
 import static org.dicio.dicio_android.Sentences_en.lyrics;
 
-import androidx.annotation.Nullable;
-
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.RegexUtils;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.json.JSONArray;
@@ -30,10 +26,6 @@ public class GeniusProcessor extends IntermediateProcessor<StandardResult, Lyric
     private static final Pattern newlinePattern =
             Pattern.compile("\\s*(\\\\n)?\\s*\\{#%\\)\\s*");
 
-
-    public GeniusProcessor(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public LyricsOutput.Data process(final StandardResult data) throws Exception {

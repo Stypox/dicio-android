@@ -35,9 +35,9 @@ public class TelephoneInfo extends SkillInfo {
 
     @Override
     public Skill build(final SkillContext context) {
-        return new ChainSkill.Builder(context, this)
-                .recognize(new StandardRecognizer(context, this, getSection(telephone)))
-                .output(new TelephoneOutput(context, this));
+        return new ChainSkill.Builder()
+                .recognize(new StandardRecognizer(getSection(telephone)))
+                .output(new TelephoneOutput());
     }
 
     @Nullable

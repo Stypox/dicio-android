@@ -1,17 +1,5 @@
 package org.dicio.dicio_android.eval;
 
-import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.chain.InputRecognizer;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
-import org.dicio.skill.util.WordExtractor;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import static org.dicio.skill.chain.InputRecognizer.Specificity.high;
 import static org.dicio.skill.chain.InputRecognizer.Specificity.low;
 import static org.dicio.skill.chain.InputRecognizer.Specificity.medium;
@@ -19,13 +7,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import org.dicio.skill.Skill;
+import org.dicio.skill.chain.InputRecognizer;
+import org.dicio.skill.util.WordExtractor;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class SkillRankerTest {
 
     static final String input = "hi";
     static final List<String> inputWords = WordExtractor.extractWords(input);
     static final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
 
-    private static final class TestSkill implements Skill {
+    private static final class TestSkill extends Skill {
         final InputRecognizer.Specificity specificity;
         final float score;
         String input;
@@ -56,10 +53,8 @@ public class SkillRankerTest {
         }
 
         // useless for this test
-        @Override public void processInput(final SkillContext context) {}
-        @Override public void generateOutput(final SkillContext context,
-                                             final SpeechOutputDevice getContext().getSpeechOutputDevice(),
-                                             final GraphicalOutputDevice getContext().getGraphicalOutputDevice()) {}
+        @Override public void processInput() {}
+        @Override public void generateOutput() {}
         @Override public void cleanup() {}
     }
 

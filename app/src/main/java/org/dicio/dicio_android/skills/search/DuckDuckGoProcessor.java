@@ -2,14 +2,11 @@ package org.dicio.dicio_android.skills.search;
 
 import static org.dicio.dicio_android.Sentences_en.search;
 
-import androidx.annotation.Nullable;
 import androidx.core.os.LocaleListCompat;
 
 import org.dicio.dicio_android.util.ConnectionUtils;
 import org.dicio.dicio_android.util.LocaleUtils;
 import org.dicio.dicio_android.util.StringUtils;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.standard.StandardResult;
 import org.jsoup.Jsoup;
@@ -36,10 +33,6 @@ public class DuckDuckGoProcessor
             "za-en", "es-ca", "es-es", "se-sv", "ch-de", "ch-fr", "tw-tz", "th-en", "tr-tr",
             "us-en", "us-es", "ua-uk", "uk-en", "vn-en");
 
-
-    public DuckDuckGoProcessor(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @SuppressWarnings("ConstantConditions") // NullPointerExceptions are handled
     @Override

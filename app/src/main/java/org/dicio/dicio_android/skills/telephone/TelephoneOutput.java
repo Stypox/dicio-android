@@ -18,8 +18,6 @@ import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.standard.StandardRecognizer;
@@ -32,10 +30,6 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
 
     @Nullable String numberToCallAfterConfirmation = null;
 
-
-    public TelephoneOutput(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     public void generate(final StandardResult data) {
         final ContentResolver contentResolver = ctx().android().getContentResolver();
@@ -81,10 +75,9 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
             return super.nextSkills();
         } else {
             final String number = numberToCallAfterConfirmation;
-            return Collections.singletonList(new ChainSkill.Builder(ctx(), null)
-                    .recognize(new StandardRecognizer(ctx(), null,
-                            getSection(SectionsGenerated.util_yes_no)))
-                    .output(new OutputGenerator<StandardResult>(ctx(), null) {
+            return Collections.singletonList(new ChainSkill.Builder()
+                    .recognize(new StandardRecognizer(getSection(SectionsGenerated.util_yes_no)))
+                    .output(new OutputGenerator<StandardResult>() {
                         @Override
                         public void generate(final StandardResult data) {
                             final String message;

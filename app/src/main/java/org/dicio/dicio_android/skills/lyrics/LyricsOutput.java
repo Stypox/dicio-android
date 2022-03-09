@@ -3,13 +3,10 @@ package org.dicio.dicio_android.skills.lyrics;
 import android.view.Gravity;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.OutputGenerator;
 
 public class LyricsOutput extends OutputGenerator<LyricsOutput.Data> {
@@ -19,10 +16,6 @@ public class LyricsOutput extends OutputGenerator<LyricsOutput.Data> {
         public String artist, title, lyrics;
     }
 
-
-    public LyricsOutput(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public void generate(final Data data) {

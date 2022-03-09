@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
@@ -18,8 +17,6 @@ import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.SectionsGenerated;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.OutputGenerator;
@@ -38,10 +35,6 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
 
     private boolean tryAgain = false;
 
-
-    public SearchOutput(SkillContext context, @Nullable SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public void generate(final List<Data> data) {
@@ -90,13 +83,12 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
         }
 
         return Arrays.asList(
-                new ChainSkill.Builder(ctx(), null)
-                        .recognize(new StandardRecognizer(ctx(), null,
-                                getSection(SectionsGenerated.search)))
-                        .process(new DuckDuckGoProcessor(ctx(), null))
-                        .output(new SearchOutput(ctx(), null)),
-                new ChainSkill.Builder(ctx(), null)
-                        .recognize(new InputRecognizer<StandardResult>(ctx(), null) {
+                new ChainSkill.Builder()
+                        .recognize(new StandardRecognizer(getSection(SectionsGenerated.search)))
+                        .process(new DuckDuckGoProcessor())
+                        .output(new SearchOutput()),
+                new ChainSkill.Builder()
+                        .recognize(new InputRecognizer<StandardResult>() {
                             private String input;
 
                             @Override
@@ -130,8 +122,8 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
                             public void cleanup() {
                             }
                         })
-                        .process(new DuckDuckGoProcessor(ctx(), null))
-                        .output(new SearchOutput(ctx(), null)));
+                        .process(new DuckDuckGoProcessor())
+                        .output(new SearchOutput()));
     }
 
     @Override

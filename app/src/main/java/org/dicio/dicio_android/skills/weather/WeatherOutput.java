@@ -4,14 +4,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.squareup.picasso.Picasso;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.OutputGenerator;
 
 public class WeatherOutput extends OutputGenerator<WeatherOutput.Data> {
@@ -22,10 +18,6 @@ public class WeatherOutput extends OutputGenerator<WeatherOutput.Data> {
         public double temp, tempMin, tempMax, windSpeed;
     }
 
-
-    public WeatherOutput(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
 
     @Override
     public void generate(final Data data) {

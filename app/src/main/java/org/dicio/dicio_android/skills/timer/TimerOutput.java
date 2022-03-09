@@ -17,8 +17,6 @@ import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.util.StringUtils;
 import org.dicio.skill.Skill;
-import org.dicio.skill.SkillContext;
-import org.dicio.skill.SkillInfo;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.OutputGenerator;
@@ -95,10 +93,6 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
     private boolean confirmCancelAll = false;
 
 
-    public TimerOutput(final SkillContext context, @Nullable final SkillInfo skillInfo) {
-        super(context, skillInfo);
-    }
-
     @Override
     public void generate(final Data data) {
         switch (data.action) {
@@ -140,7 +134,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
         if (askForDurationData != null) {
             // use local variable, otherwise cleaned up by cleanup()
             final String askForDurationDataName = askForDurationData.name;
-            return Collections.singletonList(new Skill(null, null) {
+            return Collections.singletonList(new Skill() {
                 private String input;
                 private Duration duration;
 
@@ -182,9 +176,9 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
             });
 
         } else if (confirmCancelAll) {
-            return Collections.singletonList(new ChainSkill.Builder(ctx(), null)
-                    .recognize(new StandardRecognizer(ctx(), null, getSection(util_yes_no)))
-                    .output(new OutputGenerator<StandardResult>(ctx(), null) {
+            return Collections.singletonList(new ChainSkill.Builder()
+                    .recognize(new StandardRecognizer(getSection(util_yes_no)))
+                    .output(new OutputGenerator<StandardResult>() {
                         @Override
                         public void generate(final StandardResult data) {
                             if ("yes".equals(data.getSentenceId())) {
