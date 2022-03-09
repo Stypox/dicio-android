@@ -95,7 +95,9 @@ public abstract class SkillInfo {
     public abstract boolean isAvailable(SkillContext context);
 
     /**
-     * Builds an instance of the {@link Skill} this {@link SkillInfo} object represents
+     * Builds an instance of the {@link Skill} this {@link SkillInfo} object represents. There is no
+     * need to call {@link Skill#setContext(SkillContext)} and {@link Skill#setSkillInfo(SkillInfo)}
+     * on the built skill, as that has to be done by the caller.
      * @param context the skill context with useful resources, see {@link SkillContext}
      * @return a skill
      */

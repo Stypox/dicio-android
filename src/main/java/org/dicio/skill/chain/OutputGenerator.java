@@ -29,7 +29,10 @@ public abstract class OutputGenerator<FromType> extends SkillComponent implement
      *         stateful interaction with a set of skills. If the list is empty, and it is by
      *         default, the current stateful conversation is interrupted. This function will be
      *         called after {@link #generate(Object)}, so that the calculated data can be used to
-     *         choose what to do.
+     *         choose what to do. There is no need to call {@link
+     *         Skill#setContext(org.dicio.skill.SkillContext)} and {@link
+     *         Skill#setSkillInfo(org.dicio.skill.SkillInfo)} on the returned skills, as that has to
+     *         be done by the caller.
      */
     public List<Skill> nextSkills() {
         // no next skills by default
