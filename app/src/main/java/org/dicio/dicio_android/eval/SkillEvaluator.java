@@ -344,6 +344,7 @@ public class SkillEvaluator implements CleanableUp {
                         if (!s.toString().trim().equals(input.trim())) {
                             processInput(Collections.singletonList(s.toString()));
                             inputEditText.setText(input); // restore original input
+                            inputEditText.clearFocus(); // prevent focus problems
                         }
                     }
                 } else {
