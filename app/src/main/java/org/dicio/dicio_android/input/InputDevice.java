@@ -8,6 +8,9 @@ import androidx.annotation.Nullable;
 import org.dicio.dicio_android.BuildConfig;
 import org.dicio.skill.util.CleanableUp;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class InputDevice implements CleanableUp {
 
     /**
@@ -28,10 +31,17 @@ public abstract class InputDevice implements CleanableUp {
         void onPartialInputReceived(String input);
 
         /**
-         * Called when some input was received from the user
-         * @param input the received input
+         * Called when some input was received from the user. Sometimes input devices can return
+         * multiple alternative outputs with different confidences. The alternatives should be
+         * sorted by confidence, since they will be tried in order and the first one that matches a
+         * skill will be kept.
+         *
+         * @param input the list of alternative (raw) inputs, sorted by confidence (the most
+         *              confident item is the first one). Use {@link
+         *              Collections#singletonList(Object)} if there's only one input.
          */
-        void onInputReceived(String input);
+        void onInputReceived(List<String> input);
+
 
         /**
          * Called when no input was received from the user after he seemed to want to provide some
@@ -126,6 +136,27 @@ public abstract class InputDevice implements CleanableUp {
     protected void notifyInputReceived(final String input) {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "Input from user: " + input);
+        }
+
+        if (inputDeviceListener != null) {
+            inputDeviceListener.onInputReceived(Collections.singletonList(input));
+        }
+    }
+    /**
+     * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when some input
+     * from the user is received. Should be called only once, when stopping to get input. Should not
+     * be called if {@link #notifyNoInputReceived()} is called instead. Sometimes input devices can
+     * return multiple alternative outputs with different confidences. The alternatives should be
+     * sorted by confidence, since they will be tried in order and the first one that matches a
+     * skill will be kept.
+     *
+     * @param input the list of alternative (raw) inputs, sorted by confidence (the most confident
+     *              item is the first one). Use {@link Collections#singletonList(Object)} if there's
+     *              only one input.
+     */
+    protected void notifyInputReceived(final List<String> input) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "Input from user: " + input.toString());
         }
 
         if (inputDeviceListener != null) {

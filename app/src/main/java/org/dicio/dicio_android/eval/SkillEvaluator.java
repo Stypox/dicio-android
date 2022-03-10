@@ -32,12 +32,13 @@ import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.CleanableUp;
 import org.dicio.skill.util.WordExtractor;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Supplier;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -52,7 +53,7 @@ public class SkillEvaluator implements CleanableUp {
     private Activity activity;
 
     private boolean currentlyProcessingInput = false;
-    private final Queue<String> queuedInputs = new LinkedList<>();
+    private final Queue<List<String>> queuedInputs = new LinkedList<>();
     @Nullable private View partialInputView = null;
     private boolean hasAddedPartialInputView = false;
     @Nullable private Disposable evaluationDisposable = null;
@@ -199,7 +200,7 @@ public class SkillEvaluator implements CleanableUp {
             }
 
             @Override
-            public void onInputReceived(final String input) {
+            public void onInputReceived(final List<String> input) {
                 processInput(input);
             }
 
@@ -228,9 +229,10 @@ public class SkillEvaluator implements CleanableUp {
                 }
 
                 @Override
-                public void onInputReceived(final String input) {
+                public void onInputReceived(final List<String> input) {
                     processInput(input);
                 }
+
 
                 @Override
                 public void onNoInputReceived() {
@@ -280,7 +282,7 @@ public class SkillEvaluator implements CleanableUp {
     // Input processing //
     //////////////////////
 
-    private void processInput(final String input) {
+    private void processInput(final List<String> input) {
         hasAddedPartialInputView = false;
         queuedInputs.add(input);
         tryToProcessQueuedInput();
@@ -293,16 +295,12 @@ public class SkillEvaluator implements CleanableUp {
     }
 
     private void tryToProcessQueuedInput() {
-        if (currentlyProcessingInput) {
+        if (currentlyProcessingInput || queuedInputs.isEmpty()) {
             return;
         }
 
-        final String input = queuedInputs.peek();
-        if (input != null) {
-            currentlyProcessingInput = true;
-            displayUserInput(input.replace('\n', ' '));
-            evaluateMatchingSkill(input);
-        }
+        currentlyProcessingInput = true;
+        evaluateMatchingSkill(queuedInputs.peek());
     }
 
     private void displayUserInput(final String input) {
@@ -344,8 +342,9 @@ public class SkillEvaluator implements CleanableUp {
                     if (s.length() > startIndex && s.charAt(startIndex) == '\n') {
                         s.delete(startIndex, startIndex + 1);
                         if (!s.toString().trim().equals(input.trim())) {
-                            processInput(s.toString());
+                            processInput(Collections.singletonList(s.toString()));
                             inputEditText.setText(input); // restore original input
+                            inputEditText.clearFocus(); // prevent focus problems
                         }
                     }
                 } else {
@@ -392,31 +391,69 @@ public class SkillEvaluator implements CleanableUp {
     // Skill evaluation //
     //////////////////////
 
-    private void evaluateMatchingSkill(final String input) {
+    private static class InputSkillPair {
+        final String input;
+        final Skill skill;
+        String[] permissionsToRequest = null;
+
+        InputSkillPair(final String input, final Skill skill) {
+            this.input = input;
+            this.skill = skill;
+        }
+    }
+
+    private void evaluateMatchingSkill(final List<String> inputs) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
             evaluationDisposable.dispose();
         }
 
-        evaluationDisposable = Maybe.fromCallable(() -> {
-            final List<String> inputWords = WordExtractor.extractWords(input);
-            final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
-            final Skill skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
+        evaluationDisposable = Single.fromCallable(() -> {
+            final InputSkillPair chosen = inputs.stream()
+                    .map(input -> {
+                        final List<String> inputWords = WordExtractor.extractWords(input);
+                        final List<String> normalizedWords
+                                = WordExtractor.normalizeWords(inputWords);
+                        return new InputSkillPair(input,
+                                skillRanker.getBest(input, inputWords, normalizedWords));
+                    })
+                    .filter(inputSkillPair -> inputSkillPair.skill != null)
+                    .findFirst()
+                    .orElseGet((Supplier<InputSkillPair>) (() -> {
+                        final List<String> inputWords = WordExtractor.extractWords(inputs.get(0));
+                        final List<String> normalizedWords
+                                = WordExtractor.normalizeWords(inputWords);
+                        return new InputSkillPair(inputs.get(0), skillRanker.getFallbackSkill(
+                                inputs.get(0), inputWords, normalizedWords));
+                    }));
 
-            final String[] permissions = PermissionUtils.permissionsArrayFromSkill(skill);
+            final String[] permissions = PermissionUtils.permissionsArrayFromSkill(chosen.skill);
             if (PermissionUtils.checkPermissions(activity, permissions)) {
-                skill.processInput();
-                return skill;
+                // skill's output will be generated below, so process input now
+                chosen.skill.processInput();
             } else {
-                // request permissions; when done process input in onSkillRequestPermissionsResult
-                ActivityCompat.requestPermissions(activity, permissions,
-                        MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
-                skillNeedingPermissions = skill;
-                return null;
+                // before executing this skill needs some permissions, don't process input now
+                chosen.permissionsToRequest = permissions;
             }
+
+            return chosen;
         })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(this::generateOutput, this::onError);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onChosenSkill, this::onError);
+    }
+
+    private void onChosenSkill(final InputSkillPair chosen) {
+        displayUserInput(chosen.input);
+
+        if (chosen.permissionsToRequest == null) {
+            generateOutput(chosen.skill);
+        } else {
+            // request permissions; when done process input in onSkillRequestPermissionsResult
+            // note: need to do this here on main thread
+            ActivityCompat.requestPermissions(activity, chosen.permissionsToRequest,
+                    MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
+            skillNeedingPermissions = chosen.skill;
+        }
     }
 
     private void generateOutput(final Skill skill) {

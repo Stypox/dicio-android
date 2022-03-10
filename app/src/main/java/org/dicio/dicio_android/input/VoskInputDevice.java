@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -217,6 +218,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         super.tryToGetInput(manual);
 
         Log.d(TAG, "starting recognizer");
+
         recognizer.startListening(new RecognitionListener() {
 
             @Override
@@ -247,14 +249,22 @@ public class VoskInputDevice extends SpeechInputDevice {
 
                 stopRecognizer();
 
-                String input = null;
+                ArrayList<String> input=new ArrayList<>();
+                ArrayList<Double> confidence=new ArrayList<>();
                 try {
-                    input = new JSONObject(s).getString("text");
+                    JSONObject jsonobj=new JSONObject(s);
+                    int size=jsonobj.getJSONArray("alternatives").length();
+                    String text;
+                    for(int i=0;i<size;i++)
+                        if(!(text = jsonobj.getJSONArray("alternatives").getJSONObject(i).getString("text")).equals("")) {
+                            input.add(text);
+                            confidence.add(Double.parseDouble(jsonobj.getJSONArray("alternatives").getJSONObject(i).getString("confidence")));
+                        }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                if (StringUtils.isNullOrEmpty(input)) {
+                if (input.isEmpty()) {
                     notifyNoInputReceived();
                 } else {
                     notifyInputReceived(input);
@@ -327,7 +337,10 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
         final Model model = new Model(getModelDirectory().getAbsolutePath());
-        recognizer = new SpeechService(new Recognizer(model, SAMPLE_RATE), SAMPLE_RATE);
+        Recognizer rcg=new Recognizer(model,SAMPLE_RATE);
+        rcg.setMaxAlternatives(5);
+        recognizer = new SpeechService(rcg, SAMPLE_RATE);
+
     }
 
     private void stopRecognizer() {
