@@ -2,9 +2,9 @@ package org.dicio.dicio_android.skills;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SkillHandler {
 
@@ -107,20 +108,20 @@ public class SkillHandler {
 
 
     public static List<Skill> getStandardSkillBatch() {
-        final List<Skill> result = new ArrayList<>();
-
-        for (final SkillInfo skillInfo : getEnabledSkillInfoList()) {
-            final Skill skill = skillInfo.build(context);
-            skill.setContext(context);
-            skill.setSkillInfo(skillInfo);
-            result.add(skill);
-        }
-
-        return result;
+        return getEnabledSkillInfoList().stream()
+                .map(SkillHandler::buildSkillFromInfo)
+                .collect(Collectors.toList());
     }
 
     public static Skill getFallbackSkill() {
-        return Objects.requireNonNull(fallbackSkillInfoList.get(0)).build(context);
+        return buildSkillFromInfo(Objects.requireNonNull(fallbackSkillInfoList.get(0)));
+    }
+
+    private static Skill buildSkillFromInfo(@NonNull final SkillInfo skillInfo) {
+        final Skill skill = skillInfo.build(context);
+        skill.setContext(context);
+        skill.setSkillInfo(skillInfo);
+        return skill;
     }
 
 
@@ -129,31 +130,16 @@ public class SkillHandler {
     }
 
     public static List<SkillInfo> getAvailableSkillInfoList() {
-        final List<SkillInfo> result = new ArrayList<>();
-
-        for (final SkillInfo skillInfo : skillInfoList) {
-            if (skillInfo.isAvailable(context)) {
-                result.add(skillInfo);
-            }
-        }
-
-        return result;
+        return skillInfoList.stream()
+                .filter(skillInfo -> skillInfo.isAvailable(context))
+                .collect(Collectors.toList());
     }
 
     public static List<SkillInfo> getEnabledSkillInfoList() {
-        final SharedPreferences prefs
-                = PreferenceManager.getDefaultSharedPreferences(context.android());
-        final List<SkillInfo> result = new ArrayList<>();
-
-        for (final SkillInfo skillInfo : skillInfoList) {
-            // check both if available and enabled
-            if (skillInfo.isAvailable(context)
-                    && prefs.getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true)) {
-                result.add(skillInfo);
-            }
-        }
-
-        return result;
+        return skillInfoList.stream()
+                .filter(skillInfo -> skillInfo.isAvailable(context) && context.getPreferences()
+                        .getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true))
+                .collect(Collectors.toList());
     }
 
     public static List<SkillInfo> getEnabledSkillInfoListShuffled() {

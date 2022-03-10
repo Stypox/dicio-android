@@ -80,7 +80,7 @@ public class SkillRanker implements CleanableUp {
             float bestScoreSoFar = Float.MIN_VALUE;
             Skill bestSkillSoFar = null;
 
-            for (Skill skill : skills) {
+            for (final Skill skill : skills) {
                 skill.setInput(input, inputWords, normalizedWordKeys);
                 float score = skill.score();
 
@@ -184,17 +184,19 @@ public class SkillRanker implements CleanableUp {
             final Skill skillFromBatch
                     = batches.get(i).getBest(input, inputWords, normalizedWordKeys);
             if (skillFromBatch != null) {
+                // found a matching skill: remove all skills in batch above it
+                for (int j = i + 1; j < batches.size(); ++j) {
+                    removeTopBatch();
+                }
                 return skillFromBatch;
             }
         }
 
-        final Skill skillFromDefault
-                = defaultBatch.getBest(input, inputWords, normalizedWordKeys);
-        return skillFromDefault;
+        return defaultBatch.getBest(input, inputWords, normalizedWordKeys);
     }
     public Skill getFallbackSkill(final String input,
-                     final List<String> inputWords,
-                     final List<String> normalizedWordKeys) {
+                                  final List<String> inputWords,
+                                  final List<String> normalizedWordKeys) {
         fallbackSkill.setInput(input, inputWords, normalizedWordKeys);
         return fallbackSkill;
     }

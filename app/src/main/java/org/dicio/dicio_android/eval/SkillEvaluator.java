@@ -23,7 +23,6 @@ import org.dicio.dicio_android.input.SpeechInputDevice.UnableToAccessMicrophoneE
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.skills.SkillHandler;
-import org.dicio.dicio_android.skills.fallback.text.TextFallback;
 import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.dicio_android.util.PermissionUtils;
 import org.dicio.skill.Skill;
@@ -33,11 +32,11 @@ import org.dicio.skill.output.SpeechOutputDevice;
 import org.dicio.skill.util.CleanableUp;
 import org.dicio.skill.util.WordExtractor;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Supplier;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
@@ -296,15 +295,12 @@ public class SkillEvaluator implements CleanableUp {
     }
 
     private void tryToProcessQueuedInput() {
-        if (currentlyProcessingInput) {
+        if (currentlyProcessingInput || queuedInputs.isEmpty()) {
             return;
         }
 
-
-        List<String> input=queuedInputs.peek();
         currentlyProcessingInput = true;
-        evaluateMatchingSkill(input);
-
+        evaluateMatchingSkill(queuedInputs.peek());
     }
 
     private void displayUserInput(final String input) {
@@ -400,38 +396,45 @@ public class SkillEvaluator implements CleanableUp {
         }
 
         evaluationDisposable = Single.fromCallable(() -> {
-            Skill skill=null;
-            String input="";
-            for(int i=0;i<inputs.size();i++){
-                input=inputs.get(i);
-                final List<String> inputWords = WordExtractor.extractWords(input);
-                final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
-                skill = skillRanker.getBest(input, inputWords, normalizedWordKeys);
-                if (skill != null) {
-                    break;
+            class InputSkillPair {
+                final String input;
+                final Skill skill;
+
+                InputSkillPair(final String input, final Skill skill) {
+                    this.input = input;
+                    this.skill = skill;
                 }
             }
-            if(skill == null) {
-                input=inputs.get(0);
-                final List<String> inputWords = WordExtractor.extractWords(input);
-                final List<String> normalizedWordKeys = WordExtractor.normalizeWords(inputWords);
-                skill = skillRanker.getFallbackSkill(input,inputWords,normalizedWordKeys );
-            }
-            displayUserInput(input);
 
-            if (skill == null) {
-                return null;
-            }
+            final InputSkillPair chosen = inputs.stream()
+                    .map(input -> {
+                        final List<String> inputWords = WordExtractor.extractWords(input);
+                        final List<String> normalizedWords
+                                = WordExtractor.normalizeWords(inputWords);
+                        return new InputSkillPair(input,
+                                skillRanker.getBest(input, inputWords, normalizedWords));
+                    })
+                    .filter(inputSkillPair -> inputSkillPair.skill != null)
+                    .findFirst()
+                    .orElseGet((Supplier<InputSkillPair>)(() -> {
+                        final List<String> inputWords = WordExtractor.extractWords(inputs.get(0));
+                        final List<String> normalizedWords
+                                = WordExtractor.normalizeWords(inputWords);
+                        return new InputSkillPair(inputs.get(0), skillRanker.getFallbackSkill(
+                                inputs.get(0), inputWords, normalizedWords));
+                    }));
 
-            final String[] permissions = PermissionUtils.permissionsArrayFromSkill(skill);
+            displayUserInput(chosen.input);
+
+            final String[] permissions = PermissionUtils.permissionsArrayFromSkill(chosen.skill);
             if (PermissionUtils.checkPermissions(activity, permissions)) {
-                skill.processInput();
-                return skill;
+                chosen.skill.processInput();
+                return chosen.skill;
             } else {
                 // request permissions; when done process input in onSkillRequestPermissionsResult
                 ActivityCompat.requestPermissions(activity, permissions,
                         MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
-                skillNeedingPermissions = skill;
+                skillNeedingPermissions = chosen.skill;
                 return null;
             }
         })
