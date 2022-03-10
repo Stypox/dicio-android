@@ -121,13 +121,19 @@ public class SkillRankerTest {
     }
 
     @Test
-    public void testFallback() {
+    public void testNoMatch() {
         final TestSkill fallback = new TestSkill(low, 0.0f);
-
-        SkillRanker cr = getRanker(fallback, new TestSkill(low, 0.8f));
+        final SkillRanker cr = getRanker(fallback, new TestSkill(low, 0.8f));
         final TestSkill result = (TestSkill) cr.getBest(input, inputWords, normalizedWordKeys);
+        assertNull(result); // make sure the fallback is not returned (this was once the case)
+    }
 
-        assertSame("Fallback skill not returned by getBest", result, fallback);
-        assertEquals(input, result.getInput());
+    @Test
+    public void testGetFallbackSkill() {
+        final TestSkill fallback = new TestSkill(low, 0.0f);
+        final SkillRanker cr = getRanker(fallback, new TestSkill(low, 0.8f));
+        final Skill gotFallback = cr.getFallbackSkill(input, inputWords, normalizedWordKeys);
+        assertSame(fallback, gotFallback);
+        assertEquals(input, ((TestSkill) gotFallback).getInput());
     }
 }
