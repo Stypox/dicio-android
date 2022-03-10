@@ -31,9 +31,14 @@ public abstract class InputDevice implements CleanableUp {
         void onPartialInputReceived(String input);
 
         /**
-         * Called when some input was received from the user
-         * Sometimes input devices can return multiple alternative outputs with different confidences. If the first input in the List doesn't fit to any skill the next input will be tried.
-         * @param input the list of alternative (raw) inputs, sorted by confidence (the most confident item is the first one). Use Collections.singletonlist() if there's only one input.
+         * Called when some input was received from the user. Sometimes input devices can return
+         * multiple alternative outputs with different confidences. The alternatives should be
+         * sorted by confidence, since they will be tried in order and the first one that matches a
+         * skill will be kept.
+         *
+         * @param input the list of alternative (raw) inputs, sorted by confidence (the most
+         *              confident item is the first one). Use {@link
+         *              Collections#singletonList(Object)} if there's only one input.
          */
         void onInputReceived(List<String> input);
 
@@ -140,9 +145,14 @@ public abstract class InputDevice implements CleanableUp {
     /**
      * This has to be called by functions overriding {@link #tryToGetInput(boolean)} when some input
      * from the user is received. Should be called only once, when stopping to get input. Should not
-     * be called if {@link #notifyNoInputReceived()} is called instead.
-     * Sometimes input devices can return multiple alternative inputs with different confidences. If the first input doesn't fit to any skill the next input will be tried.
-     * @param input sorted list of (raw) inputs, the most confident input must be the first item in the list.
+     * be called if {@link #notifyNoInputReceived()} is called instead. Sometimes input devices can
+     * return multiple alternative outputs with different confidences. The alternatives should be
+     * sorted by confidence, since they will be tried in order and the first one that matches a
+     * skill will be kept.
+     *
+     * @param input the list of alternative (raw) inputs, sorted by confidence (the most confident
+     *              item is the first one). Use {@link Collections#singletonList(Object)} if there's
+     *              only one input.
      */
     protected void notifyInputReceived(final List<String> input) {
         if (BuildConfig.DEBUG) {
