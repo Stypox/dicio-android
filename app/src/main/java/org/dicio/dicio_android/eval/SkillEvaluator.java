@@ -390,22 +390,23 @@ public class SkillEvaluator implements CleanableUp {
     // Skill evaluation //
     //////////////////////
 
+    private static class InputSkillPair {
+        final String input;
+        final Skill skill;
+        String[] permissionsToRequest = null;
+
+        InputSkillPair(final String input, final Skill skill) {
+            this.input = input;
+            this.skill = skill;
+        }
+    }
+
     private void evaluateMatchingSkill(final List<String> inputs) {
         if (evaluationDisposable != null && !evaluationDisposable.isDisposed()) {
             evaluationDisposable.dispose();
         }
 
         evaluationDisposable = Single.fromCallable(() -> {
-            class InputSkillPair {
-                final String input;
-                final Skill skill;
-
-                InputSkillPair(final String input, final Skill skill) {
-                    this.input = input;
-                    this.skill = skill;
-                }
-            }
-
             final InputSkillPair chosen = inputs.stream()
                     .map(input -> {
                         final List<String> inputWords = WordExtractor.extractWords(input);
@@ -416,7 +417,7 @@ public class SkillEvaluator implements CleanableUp {
                     })
                     .filter(inputSkillPair -> inputSkillPair.skill != null)
                     .findFirst()
-                    .orElseGet((Supplier<InputSkillPair>)(() -> {
+                    .orElseGet((Supplier<InputSkillPair>) (() -> {
                         final List<String> inputWords = WordExtractor.extractWords(inputs.get(0));
                         final List<String> normalizedWords
                                 = WordExtractor.normalizeWords(inputWords);
@@ -424,23 +425,34 @@ public class SkillEvaluator implements CleanableUp {
                                 inputs.get(0), inputWords, normalizedWords));
                     }));
 
-            displayUserInput(chosen.input);
-
             final String[] permissions = PermissionUtils.permissionsArrayFromSkill(chosen.skill);
             if (PermissionUtils.checkPermissions(activity, permissions)) {
+                // skill's output will be generated below, so process input now
                 chosen.skill.processInput();
-                return chosen.skill;
             } else {
-                // request permissions; when done process input in onSkillRequestPermissionsResult
-                ActivityCompat.requestPermissions(activity, permissions,
-                        MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
-                skillNeedingPermissions = chosen.skill;
-                return null;
+                // before executing this skill needs some permissions, don't process input now
+                chosen.permissionsToRequest = permissions;
             }
+
+            return chosen;
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::generateOutput, this::onError);
+                .subscribe(this::onChosenSkill, this::onError);
+    }
+
+    private void onChosenSkill(final InputSkillPair chosen) {
+        displayUserInput(chosen.input);
+
+        if (chosen.permissionsToRequest == null) {
+            generateOutput(chosen.skill);
+        } else {
+            // request permissions; when done process input in onSkillRequestPermissionsResult
+            // note: need to do this here on main thread
+            ActivityCompat.requestPermissions(activity, chosen.permissionsToRequest,
+                    MainActivity.SKILL_PERMISSIONS_REQUEST_CODE);
+            skillNeedingPermissions = chosen.skill;
+        }
     }
 
     private void generateOutput(final Skill skill) {
