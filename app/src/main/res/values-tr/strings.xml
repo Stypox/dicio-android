@@ -88,4 +88,22 @@
     <string name="skill_telephone_confirm_call">%1$s kişisini arayayım mı\?</string>
     <string name="skill_telephone_calling">%1$s aranıyor…</string>
     <string name="skill_telephone_not_calling">Tamam, kimseyi aramıyorum</string>
+    <string name="pref_skill_number_library_not_available">Sayı ayrıştırma ve biçimlendirme kütüphanesi <i>dicio-numbers</i> henüz sizin dilinize çevrilmedi; bundan dolayı sayılar, süreler ve tarihlerle ilgili tüm beceriler kullanılabilir değildir. <b>Lütfen buraya dokunarak katkıda bulunun</b>!</string>
+    <string name="skill_name_timer">Zamanlayıcı</string>
+    <string name="skill_sentence_example_timer">Beş dakika için bir zamanlayıcı ayarla</string>
+    <string name="skill_timer_how_much_time">Zamanlayıcı ne kadar sürmeli\?</string>
+    <string name="skill_timer_confirm_cancel">Tüm zamanlayıcıları iptal etmek istediğinizden emin misiniz\?</string>
+    <string name="skill_timer_expired">Zamanlayıcının süresi doldu!</string>
+    <string name="skill_timer_expired_name">Zamanlayıcı %1$s sona erdi!</string>
+    <string name="skill_timer_set">Tamam, zamanlayıcı %1$s içinde sona erecek</string>
+    <string name="skill_timer_set_name">Tamam, zamanlayıcı %1$s, %2$s içinde sona erecek</string>
+    <string name="skill_timer_canceled">Zamanlayıcı iptal edildi</string>
+    <string name="skill_timer_all_canceled">Tüm zamanlayıcılar iptal edildi</string>
+    <string name="skill_timer_canceled_name">Zamanlayıcı %1$s iptal edildi</string>
+    <string name="skill_timer_no_active">Etkin zamanlayıcı yok</string>
+    <string name="skill_timer_no_active_name">%1$s adında etkin zamanlayıcı yok</string>
+    <string name="skill_timer_query">Zamanlayıcı %1$s içinde sona eriyor</string>
+    <string name="skill_timer_query_name">Zamanlayıcı %1$s, %2$s içinde sona eriyor</string>
+    <string name="skill_timer_query_last">Son zamanlayıcı %1$s içinde sona eriyor</string>
+    <string name="skill_timer_none_canceled">Tamam, hiçbir zamanlayıcı iptal edilmedi</string>
 </resources>
