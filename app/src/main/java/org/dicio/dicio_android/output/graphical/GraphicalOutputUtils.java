@@ -20,7 +20,10 @@ import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.util.ExceptionUtils;
 import org.dicio.dicio_android.util.ThemeUtils;
 
-public class GraphicalOutputUtils {
+public final class GraphicalOutputUtils {
+
+    private GraphicalOutputUtils() {
+    }
 
     /**
      * Inflates the provided layout using {@code null} as root view.
@@ -164,7 +167,8 @@ public class GraphicalOutputUtils {
         return buildVerticalLinearLayout(context,
                 AppCompatResources.getDrawable(context, R.drawable.divider_items),
                 buildHeader(context, context.getString(R.string.eval_network_error)),
-                buildDescription(context, context.getString(R.string.eval_network_error_description)));
+                buildDescription(context,
+                        context.getString(R.string.eval_network_error_description)));
     }
 
     /**

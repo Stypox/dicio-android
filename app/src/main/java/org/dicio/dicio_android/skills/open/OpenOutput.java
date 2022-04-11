@@ -66,7 +66,7 @@ public class OpenOutput extends OutputGenerator<StandardResult> {
                     bestDistance = currentDistance;
                     bestApplicationInfo = currentApplicationInfo;
                 }
-            } catch (PackageManager.NameNotFoundException ignored) {
+            } catch (final PackageManager.NameNotFoundException ignored) {
             }
         }
 

@@ -12,7 +12,7 @@ import org.dicio.dicio_android.R;
 import java.util.Collection;
 import java.util.Locale;
 
-public class LocaleUtils {
+public final class LocaleUtils {
 
     public static class UnsupportedLocaleException extends Exception {
         public UnsupportedLocaleException(final Locale locale) {
@@ -33,6 +33,9 @@ public class LocaleUtils {
             this.availableLocale = availableLocale;
             this.supportedLocaleString = supportedLocaleString;
         }
+    }
+
+    private LocaleUtils() {
     }
 
     /**

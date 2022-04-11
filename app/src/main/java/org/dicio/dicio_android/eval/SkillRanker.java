@@ -14,16 +14,15 @@ import java.util.Stack;
 public class SkillRanker implements CleanableUp {
 
     // various thresholds for different specificity categories (high, medium and low)
-    private static final float
-            // first round
-            highThreshold1   = 0.85f,
-            // second round
-            mediumThreshold2 = 0.90f,
-            highThreshold2   = 0.80f,
-            // third round
-            lowThreshold3    = 0.90f,
-            mediumThreshold3 = 0.80f,
-            highThreshold3   = 0.70f;
+    // first round
+    private static final float HIGH_THRESHOLD_1   = 0.85f;
+    // second round
+    private static final float MEDIUM_THRESHOLD_2 = 0.90f;
+    private static final float HIGH_THRESHOLD_2   = 0.80f;
+    // third round
+    private static final float LOW_THRESHOLD_3    = 0.90f;
+    private static final float MEDIUM_THRESHOLD_3 = 0.80f;
+    private static final float HIGH_THRESHOLD_3   = 0.70f;
 
 
     private static class SkillScoreResult implements CleanableUp {
@@ -82,7 +81,7 @@ public class SkillRanker implements CleanableUp {
 
             for (final Skill skill : skills) {
                 skill.setInput(input, inputWords, normalizedWordKeys);
-                float score = skill.score();
+                final float score = skill.score();
 
                 if (score > bestScoreSoFar) {
                     if (bestSkillSoFar != null) {
@@ -108,34 +107,34 @@ public class SkillRanker implements CleanableUp {
                       final List<String> normalizedWordKeys) {
             // first round: considering only high-priority skills
             final SkillScoreResult bestHigh = getFirstAboveThresholdOrBest(
-                    highSkills, input, inputWords, normalizedWordKeys, highThreshold1);
-            if (bestHigh.score > highThreshold1) {
+                    highSkills, input, inputWords, normalizedWordKeys, HIGH_THRESHOLD_1);
+            if (bestHigh.score > HIGH_THRESHOLD_1) {
                 return bestHigh.skill;
             }
 
             // second round: considering both medium- and high-priority skills
             final SkillScoreResult bestMedium = getFirstAboveThresholdOrBest(
-                    mediumSkills, input, inputWords, normalizedWordKeys, mediumThreshold2);
-            if (bestMedium.score > mediumThreshold2) {
+                    mediumSkills, input, inputWords, normalizedWordKeys, MEDIUM_THRESHOLD_2);
+            if (bestMedium.score > MEDIUM_THRESHOLD_2) {
                 bestHigh.cleanup();
                 return bestMedium.skill;
-            } else if (bestHigh.score > highThreshold2) {
+            } else if (bestHigh.score > HIGH_THRESHOLD_2) {
                 bestMedium.cleanup();
                 return bestHigh.skill;
             }
 
             // third round: all skills are considered
             final SkillScoreResult bestLow = getFirstAboveThresholdOrBest(
-                    lowSkills, input, inputWords, normalizedWordKeys, lowThreshold3);
-            if (bestLow.score > lowThreshold3) {
+                    lowSkills, input, inputWords, normalizedWordKeys, LOW_THRESHOLD_3);
+            if (bestLow.score > LOW_THRESHOLD_3) {
                 bestHigh.cleanup();
                 bestMedium.cleanup();
                 return bestLow.skill;
-            } else if (bestMedium.score > mediumThreshold3) {
+            } else if (bestMedium.score > MEDIUM_THRESHOLD_3) {
                 bestHigh.cleanup();
                 bestLow.cleanup();
                 return bestMedium.skill;
-            } else if (bestHigh.score > highThreshold3) {
+            } else if (bestHigh.score > HIGH_THRESHOLD_3) {
                 bestMedium.cleanup();
                 bestLow.cleanup();
                 return bestHigh.skill;
@@ -180,7 +179,7 @@ public class SkillRanker implements CleanableUp {
     public Skill getBest(final String input,
                          final List<String> inputWords,
                          final List<String> normalizedWordKeys) {
-        for(int i = batches.size() - 1; i >= 0; --i) {
+        for (int i = batches.size() - 1; i >= 0; --i) {
             final Skill skillFromBatch
                     = batches.get(i).getBest(input, inputWords, normalizedWordKeys);
             if (skillFromBatch != null) {

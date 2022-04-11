@@ -27,7 +27,7 @@ public class Contact {
     private final int distance;
     private final String id;
 
-    public Contact(final String name, final int distance, final String id){
+    public Contact(final String name, final int distance, final String id) {
         this.name = name;
         this.distance = distance;
         this.id = id;
@@ -46,7 +46,7 @@ public class Contact {
         final List<String> numbers = new ArrayList<>();
         try (Cursor phoneNumberCursor = contentResolver.query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null, NUMBERS_QUERY, new String[]{ id }, null)) {
+                null, NUMBERS_QUERY, new String[] {id}, null)) {
 
             final Set<String> cleanedNumbers = new HashSet<>(); // used to check for duplication
             final int numberColumnIndex = phoneNumberCursor

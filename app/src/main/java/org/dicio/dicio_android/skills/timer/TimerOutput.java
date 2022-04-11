@@ -50,7 +50,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
         final Consumer<String> onCancelCallback;
         long lastTickSeconds;
 
-        public SetTimer(@NonNull final Duration duration,
+        SetTimer(@NonNull final Duration duration,
                         @Nullable final String name,
                         final BiConsumer<String, Long> onTickCallback,
                         final Consumer<String> onFinishCallback,
@@ -65,7 +65,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
             lastTickSeconds = duration.getSeconds();
             this.countDownTimer = new CountDownTimer(duration.toMillis(), 1000) {
                 @Override
-                public void onTick(long millisUntilFinished) {
+                public void onTick(final long millisUntilFinished) {
                     lastTickSeconds = millisUntilFinished / 1000;
                     onTickCallback.accept(name, lastTickSeconds);
                 }
@@ -74,7 +74,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                 public void onFinish() {
                     onFinishCallback.accept(name);
                     // removed from setTimers list automatically here
-                    setTimers.removeIf(setTimer -> setTimer.countDownTimer == this);
+                    SET_TIMERS.removeIf(setTimer -> setTimer.countDownTimer == this);
                 }
             };
             this.countDownTimer.start();
@@ -87,7 +87,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
         }
     }
 
-    private static final List<SetTimer> setTimers = new ArrayList<>();
+    private static final List<SetTimer> SET_TIMERS = new ArrayList<>();
 
     private Data askForDurationData = null;
     private boolean confirmCancelAll = false;
@@ -98,7 +98,8 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
         switch (data.action) {
             case set:
                 if (data.duration == null) {
-                    final String message = ctx().android().getString(R.string.skill_timer_how_much_time);
+                    final String message = ctx().android()
+                            .getString(R.string.skill_timer_how_much_time);
                     ctx().getSpeechOutputDevice().speak(message);
                     ctx().getGraphicalOutputDevice().display(
                             GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
@@ -110,7 +111,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                 break;
 
             case cancel:
-                if (data.name == null && setTimers.size() > 1) {
+                if (data.name == null && SET_TIMERS.size() > 1) {
                     final String message = ctx().android()
                             .getString(R.string.skill_timer_confirm_cancel);
                     ctx().getSpeechOutputDevice().speak(message);
@@ -193,7 +194,8 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                         }
 
                         @Override
-                        public void cleanup() {}
+                        public void cleanup() {
+                        }
                     }));
 
         } else {
@@ -216,7 +218,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                 getFormattedDuration(duration.getSeconds(), false));
         ctx().getGraphicalOutputDevice().display(textView);
 
-        setTimers.add(new SetTimer(duration, name,
+        SET_TIMERS.add(new SetTimer(duration, name,
                 (theName, seconds) -> {
                     textView.setText(getFormattedDuration(seconds, false));
                     if (seconds <= 5) {
@@ -251,27 +253,27 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
 
     private void cancelTimer(@Nullable final String name) {
         final String message;
-        if (setTimers.isEmpty()) {
+        if (SET_TIMERS.isEmpty()) {
             message = ctx().android()
                     .getString(R.string.skill_timer_no_active);
 
         } else if (name == null) {
-            if (setTimers.size() == 1) {
-                if (setTimers.get(0).name == null) {
+            if (SET_TIMERS.size() == 1) {
+                if (SET_TIMERS.get(0).name == null) {
                     message = ctx().android().getString(R.string.skill_timer_canceled);
                 } else {
                     message = ctx().android()
-                            .getString(R.string.skill_timer_canceled_name, setTimers.get(0).name);
+                            .getString(R.string.skill_timer_canceled_name, SET_TIMERS.get(0).name);
                 }
             } else {
                 message = ctx().android().getString(R.string.skill_timer_all_canceled);
             }
 
             // cancel all
-            for (final SetTimer setTimer : setTimers) {
+            for (final SetTimer setTimer : SET_TIMERS) {
                 setTimer.cancel();
             }
-            setTimers.clear();
+            SET_TIMERS.clear();
 
         } else {
             final SetTimer setTimer = getSetTimerWithSimilarName(name);
@@ -284,7 +286,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                         .getString(R.string.skill_timer_canceled_name, setTimer.name);
 
                 setTimer.cancel();
-                setTimers.remove(setTimer);
+                SET_TIMERS.remove(setTimer);
             }
         }
 
@@ -295,14 +297,14 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
 
     private void queryTimer(@Nullable final String name) {
         final String message;
-        if (setTimers.isEmpty()) {
+        if (SET_TIMERS.isEmpty()) {
             message = ctx().android()
                     .getString(R.string.skill_timer_no_active);
 
         } else if (name == null) {
             // no name provided by the user: query the last timer, but adapt the message if only one
-            final SetTimer lastTimer = setTimers.get(setTimers.size() - 1);
-            @StringRes final int noNameQueryString = setTimers.size() == 1
+            final SetTimer lastTimer = SET_TIMERS.get(SET_TIMERS.size() - 1);
+            @StringRes final int noNameQueryString = SET_TIMERS.size() == 1
                     ? R.string.skill_timer_query : R.string.skill_timer_query_last;
 
             message = formatStringWithName(lastTimer.name, lastTimer.lastTickSeconds,
@@ -364,7 +366,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
             }
         }
 
-        return setTimers.stream()
+        return SET_TIMERS.stream()
                 .filter(setTimer -> setTimer.name != null)
                 .map(setTimer -> new Pair(setTimer,
                         StringUtils.customStringDistance(name, setTimer.name)))

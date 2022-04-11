@@ -96,7 +96,8 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
                         }
 
                         @Override
-                        public void cleanup() {}
+                        public void cleanup() {
+                        }
                     }));
         }
     }
@@ -110,7 +111,8 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
                                        final String number) {
         numberToCallAfterConfirmation = number;
 
-        final String message = ctx().android().getString(R.string.skill_telephone_confirm_call, name);
+        final String message = ctx().android()
+                .getString(R.string.skill_telephone_confirm_call, name);
         ctx().getSpeechOutputDevice().speak(message);
 
         final LinearLayout output

@@ -68,7 +68,7 @@ public class ToolbarInputDevice extends InputDevice {
     }
 
     @Override
-    public void tryToGetInput(boolean manual) {
+    public void tryToGetInput(final boolean manual) {
         if (textInputItem != null) {
             super.tryToGetInput(manual);
             textInputItem.expandActionView();

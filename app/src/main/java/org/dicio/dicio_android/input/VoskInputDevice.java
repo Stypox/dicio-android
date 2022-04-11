@@ -3,6 +3,7 @@ package org.dicio.dicio_android.input;
 import static org.dicio.dicio_android.util.LocaleUtils.LocaleResolutionResult;
 import static org.dicio.dicio_android.util.LocaleUtils.UnsupportedLocaleException;
 import static org.dicio.dicio_android.util.LocaleUtils.resolveSupportedLocale;
+import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
 
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -23,7 +24,6 @@ import androidx.preference.PreferenceManager;
 import org.dicio.dicio_android.BuildConfig;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.Sections;
-import org.dicio.dicio_android.util.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.vosk.LibVosk;
@@ -59,6 +59,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     /**
      * All small models from <a href="https://alphacephei.com/vosk/models">Vosk</a>
      */
+    @SuppressWarnings("LineLength")
     public static final Map<String, String> MODEL_URLS = new HashMap<String, String>() {{
         put("en",    "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip");
         put("en-in", "https://alphacephei.com/vosk/models/vosk-model-small-en-in-0.4.zip");
@@ -84,7 +85,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private final CompositeDisposable disposables = new CompositeDisposable();
     @Nullable private BroadcastReceiver downloadingBroadcastReceiver = null;
     private Long currentModelDownloadId = null;
-    @Nullable private SpeechService recognizer = null;
+    @Nullable private SpeechService speechService = null;
 
     private boolean currentlyInitializingRecognizer = false;
     private boolean startListeningOnLoaded = false;
@@ -109,7 +110,7 @@ public class VoskInputDevice extends SpeechInputDevice {
      *               downloading it. See {@link #tryToGetInput(boolean)}.
      */
     private void load(final boolean manual) {
-        if (recognizer == null && !currentlyInitializingRecognizer) {
+        if (speechService == null && !currentlyInitializingRecognizer) {
             if (new File(getModelDirectory(), "ivector").exists()) {
                 // one directory is in the correct place, so everything should be ok
                 Log.d(TAG, "Vosk model in place");
@@ -157,7 +158,7 @@ public class VoskInputDevice extends SpeechInputDevice {
                                     LocaleListCompat.create(Sections.getCurrentLocale()),
                                     MODEL_URLS.keySet());
                             startDownloadingModel(downloadManager, result.supportedLocaleString);
-                        } catch (UnsupportedLocaleException e) {
+                        } catch (final UnsupportedLocaleException e) {
                             asyncMakeToast(R.string.vosk_model_unsupported_language);
                             e.printStackTrace();
                             onRequiresDownload();
@@ -181,9 +182,9 @@ public class VoskInputDevice extends SpeechInputDevice {
     public void cleanup() {
         super.cleanup();
         disposables.clear();
-        if (recognizer != null) {
-             recognizer.shutdown();
-             recognizer = null;
+        if (speechService != null) {
+             speechService.shutdown();
+             speechService = null;
         }
 
         if (currentModelDownloadId != null) {
@@ -201,11 +202,11 @@ public class VoskInputDevice extends SpeechInputDevice {
     }
 
     @Override
-    public synchronized void tryToGetInput(boolean manual) {
+    public synchronized void tryToGetInput(final boolean manual) {
         if (currentlyInitializingRecognizer) {
             startListeningOnLoaded = true;
             return;
-        } else if (recognizer == null) {
+        } else if (speechService == null) {
             startListeningOnLoaded = true;
             load(manual); // not loaded before, retry
             return; // recognizer not ready
@@ -219,7 +220,7 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         Log.d(TAG, "starting recognizer");
 
-        recognizer.startListening(new RecognitionListener() {
+        speechService.startListening(new RecognitionListener() {
 
             @Override
             public void onPartialResult(final String s) {
@@ -231,11 +232,11 @@ public class VoskInputDevice extends SpeechInputDevice {
                 String partialInput = null;
                 try {
                     partialInput = new JSONObject(s).getString("partial");
-                } catch (JSONException e) {
+                } catch (final JSONException e) {
                     e.printStackTrace();
                 }
 
-                if (!StringUtils.isNullOrEmpty(partialInput)) {
+                if (!isNullOrEmpty(partialInput)) {
                     notifyPartialInputReceived(partialInput);
                 }
             }
@@ -249,25 +250,25 @@ public class VoskInputDevice extends SpeechInputDevice {
 
                 stopRecognizer();
 
-                ArrayList<String> input=new ArrayList<>();
-                ArrayList<Double> confidence=new ArrayList<>();
+                final ArrayList<String> inputs = new ArrayList<>();
                 try {
-                    JSONObject jsonobj=new JSONObject(s);
-                    int size=jsonobj.getJSONArray("alternatives").length();
-                    String text;
-                    for(int i=0;i<size;i++)
-                        if(!(text = jsonobj.getJSONArray("alternatives").getJSONObject(i).getString("text")).equals("")) {
-                            input.add(text);
-                            confidence.add(Double.parseDouble(jsonobj.getJSONArray("alternatives").getJSONObject(i).getString("confidence")));
+                    final JSONObject jsonResult = new JSONObject(s);
+                    final int size = jsonResult.getJSONArray("alternatives").length();
+                    for (int i = 0; i < size; i++) {
+                        final String text = jsonResult.getJSONArray("alternatives")
+                                .getJSONObject(i).getString("text");
+                        if (!isNullOrEmpty(text)) {
+                            inputs.add(text);
                         }
-                } catch (JSONException e) {
+                    }
+                } catch (final JSONException e) {
                     e.printStackTrace();
                 }
 
-                if (input.isEmpty()) {
+                if (inputs.isEmpty()) {
                     notifyNoInputReceived();
                 } else {
-                    notifyInputReceived(input);
+                    notifyInputReceived(inputs);
                 }
             }
 
@@ -297,8 +298,8 @@ public class VoskInputDevice extends SpeechInputDevice {
     @Override
     public void cancelGettingInput() {
         if (currentlyListening) {
-            if (recognizer != null) {
-                recognizer.stop();
+            if (speechService != null) {
+                speechService.stop();
             }
             notifyNoInputReceived();
 
@@ -337,17 +338,16 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
         final Model model = new Model(getModelDirectory().getAbsolutePath());
-        Recognizer rcg=new Recognizer(model,SAMPLE_RATE);
-        rcg.setMaxAlternatives(5);
-        recognizer = new SpeechService(rcg, SAMPLE_RATE);
-
+        final Recognizer recognizer = new Recognizer(model, SAMPLE_RATE);
+        recognizer.setMaxAlternatives(5);
+        this.speechService = new SpeechService(recognizer, SAMPLE_RATE);
     }
 
     private void stopRecognizer() {
         currentlyListening = false;
 
-        if (recognizer != null) {
-            recognizer.stop();
+        if (speechService != null) {
+            speechService.stop();
         }
 
         onInactive();
@@ -441,7 +441,7 @@ public class VoskInputDevice extends SpeechInputDevice {
     private void extractModelZip() throws IOException {
         asyncMakeToast(R.string.vosk_model_extracting);
 
-        try (final ZipInputStream zipInputStream =
+        try (ZipInputStream zipInputStream =
                      new ZipInputStream(new FileInputStream(getModelZipFile()))) {
             ZipEntry entry; // cycles through all entries
             while ((entry = zipInputStream.getNextEntry()) != null) {
@@ -455,9 +455,9 @@ public class VoskInputDevice extends SpeechInputDevice {
 
                 } else {
                     // copy file
-                    try (final BufferedOutputStream outputStream = new BufferedOutputStream(
+                    try (BufferedOutputStream outputStream = new BufferedOutputStream(
                             new FileOutputStream(destinationFile))) {
-                        byte[] buffer = new byte[1024];
+                        final byte[] buffer = new byte[1024];
                         int length;
                         while ((length = zipInputStream.read(buffer)) > 0) {
                             outputStream.write(buffer, 0, length);
@@ -483,8 +483,8 @@ public class VoskInputDevice extends SpeechInputDevice {
 
         // protect from Zip Slip vulnerability (!)
         final File destinationFile = new File(destinationDirectory, filePath);
-        if (!destinationDirectory.getCanonicalPath().equals(destinationFile.getCanonicalPath()) &&
-                !destinationFile.getCanonicalPath().startsWith(
+        if (!destinationDirectory.getCanonicalPath().equals(destinationFile.getCanonicalPath())
+                && !destinationFile.getCanonicalPath().startsWith(
                         destinationDirectory.getCanonicalPath() + File.separator)) {
             throw new IOException("Entry is outside of the target dir: " + entryName);
         }
@@ -505,7 +505,7 @@ public class VoskInputDevice extends SpeechInputDevice {
         final File[] subFiles = file.listFiles();
         if (subFiles != null) {
             for (final File subFile : subFiles) {
-                if(subFile.isDirectory()) {
+                if (subFile.isDirectory()) {
                     deleteFolder(subFile);
                 } else {
                     subFile.delete();

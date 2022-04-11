@@ -24,8 +24,8 @@ public class OutputContainerView extends CardView {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         setCardElevation(dp(3));
-        float dp10 = dp(10);
-        int dp10int = (int)dp10;
+        final float dp10 = dp(10);
+        final int dp10int = (int) dp10;
 
         setContentPadding(dp10int, dp10int, dp10int, dp10int);
         setUseCompatPadding(true);
@@ -33,7 +33,7 @@ public class OutputContainerView extends CardView {
         setCardBackgroundColor(ThemeUtils.resolveColorFromAttr(context, R.attr.cardForeground));
         setPreventCornerOverlap(true);
     }
-    
+
     public void setContent(final View view) {
         view.setLayoutParams(new LinearLayoutCompat.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

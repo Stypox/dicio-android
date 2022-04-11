@@ -3,7 +3,10 @@ package org.dicio.dicio_android.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexUtils {
+public final class RegexUtils {
+
+    private RegexUtils() {
+    }
 
     // taken from NewPipeExtractor, file utils/Parser.java, created by @theScrabi
     public static String matchGroup1(final Pattern pattern, final String string) {

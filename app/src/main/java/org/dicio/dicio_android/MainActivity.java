@@ -284,8 +284,8 @@ public class MainActivity extends BaseActivity
         SkillHandler.setSkillContextDevices(speechOutputDevice, graphicalOutputDevice);
 
         skillEvaluator = new SkillEvaluator(
-                new SkillRanker( // Sections language is initialized in BaseActivity.setLocale
-                        SkillHandler.getStandardSkillBatch(),
+                // Sections language is initialized in BaseActivity.setLocale
+                new SkillRanker(SkillHandler.getStandardSkillBatch(),
                         SkillHandler.getFallbackSkill()),
                 primaryInputDevice,
                 secondaryInputDevice,

@@ -22,9 +22,9 @@ import java.util.List;
 public class DuckDuckGoProcessor
         extends IntermediateProcessor<StandardResult, List<SearchOutput.Data>> {
 
-    private static final String duckDuckGoSearchUrl = "https://duckduckgo.com/html/?q=";
+    private static final String DUCK_DUCK_GO_SEARCH_URL = "https://duckduckgo.com/html/?q=";
 
-    private static final List<String> supportedLocales = Arrays.asList("ar-es", "au-en", "at-de",
+    private static final List<String> SUPPORTED_LOCALES = Arrays.asList("ar-es", "au-en", "at-de",
             "be-fr", "be-nl", "br-pt", "bg-bg", "ca-en", "ca-fr", "ct-ca", "cl-es", "cn-zh",
             "co-es", "hr-hr", "cz-cs", "dk-da", "ee-et", "fi-fi", "fr-fr", "de-de", "gr-el",
             "hk-tz", "hu-hu", "in-en", "id-en", "ie-en", "il-en", "it-it", "jp-jp", "kr-kr",
@@ -51,14 +51,14 @@ public class DuckDuckGoProcessor
         LocaleUtils.LocaleResolutionResult resolvedLocale = null;
         try {
             resolvedLocale = LocaleUtils.resolveSupportedLocale(
-                    LocaleListCompat.create(ctx().getLocale()), supportedLocales);
+                    LocaleListCompat.create(ctx().getLocale()), SUPPORTED_LOCALES);
         } catch (final LocaleUtils.UnsupportedLocaleException ignored) {
         }
         final String locale = resolvedLocale == null ? "" : resolvedLocale.supportedLocaleString;
 
         // make request using headers
         final String html = ConnectionUtils.getPage(
-                duckDuckGoSearchUrl + ConnectionUtils.urlEncode(queryToSearch),
+                DUCK_DUCK_GO_SEARCH_URL + ConnectionUtils.urlEncode(queryToSearch),
                 new HashMap<String, String>() {{
                     put("User-Agent",
                             "Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0");

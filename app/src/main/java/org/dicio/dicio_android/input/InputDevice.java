@@ -82,7 +82,7 @@ public abstract class InputDevice implements CleanableUp {
      *               trigger the input device.
      */
     @CallSuper
-    public void tryToGetInput(boolean manual) {
+    public void tryToGetInput(final boolean manual) {
         if (inputDeviceListener != null) {
             inputDeviceListener.onTryingToGetInput();
         }

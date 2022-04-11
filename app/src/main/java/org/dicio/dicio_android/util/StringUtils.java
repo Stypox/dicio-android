@@ -7,9 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class StringUtils {
-    private static final Pattern punctuationPattern = Pattern.compile("\\p{Punct}");
-    private static final Pattern wordDelimitersPattern = Pattern.compile("[^\\p{L}0-9]");
+public final class StringUtils {
+    private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("\\p{Punct}");
+    private static final Pattern WORD_DELIMITERS_PATTERN = Pattern.compile("[^\\p{L}0-9]");
 
     private StringUtils() {
     }
@@ -50,7 +50,7 @@ public class StringUtils {
      * @return e.g. for "hello, how are you? " returns "hello how are you "
      */
     public static String removePunctuation(final String string) {
-        return RegexUtils.replaceAll(punctuationPattern, string, "");
+        return RegexUtils.replaceAll(PUNCTUATION_PATTERN, string, "");
     }
 
     public static boolean isNullOrEmpty(final String string) {
@@ -58,7 +58,7 @@ public class StringUtils {
     }
 
     private static String cleanStringForDistance(final String s) {
-        return wordDelimitersPattern.matcher(WordExtractor.nfkdNormalizeWord(s.toLowerCase()))
+        return WORD_DELIMITERS_PATTERN.matcher(WordExtractor.nfkdNormalizeWord(s.toLowerCase()))
                 .replaceAll("");
     }
 
@@ -86,7 +86,9 @@ public class StringUtils {
             for (int j = 0; j < b.length(); ++j) {
                 final int substitutionCost = Character.toLowerCase(a.codePointAt(i))
                         == Character.toLowerCase(b.codePointAt(j)) ? 0 : 1;
-                memory[i+1][j+1] = Math.min(Math.min(memory[i][j+1] + 1, memory[i+1][j] + 1),
+                memory[i + 1][j + 1] = Math.min(Math.min(
+                        memory[i][j + 1] + 1,
+                        memory[i + 1][j] + 1),
                         memory[i][j] + substitutionCost);
             }
         }
@@ -107,13 +109,14 @@ public class StringUtils {
             final String a, final String b, final int[][] memory) {
         // follow the path from bottom right (score==distance) to top left (where score==0)
         final List<LevenshteinMemoryPos> positions = new ArrayList<>();
-        int i = a.length() - 1, j = b.length() - 1;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
         while (i >= 0 && j >= 0) {
             positions.add(new LevenshteinMemoryPos(i, j));
-            if (memory[i+1][j+1] == memory[i][j+1] + 1) {
+            if (memory[i + 1][j + 1] == memory[i][j + 1] + 1) {
                 // the path goes up
                 --i;
-            } else if (memory[i+1][j+1] == memory[i+1][j] + 1) {
+            } else if (memory[i + 1][j + 1] == memory[i + 1][j] + 1) {
                 // the path goes left
                 --j;
             } else  {
@@ -134,14 +137,14 @@ public class StringUtils {
      * #cleanStringForDistance(String)} before calculating the distance. Use {@link
      * #customStringDistance(String, String)} for better results when e.g. comparing app names.
      * @see #customStringDistance(String, String)
-     * @param a the first string
-     * @param b the second string
+     * @param aNotCleaned the first string
+     * @param bNotCleaned the second string
      * @return the Levenshtein distance between the two cleaned strings, lower is better, values are
      *         always greater than or equal to 0
      */
-    public static int levenshteinDistance(String a, String b) {
-        a = cleanStringForDistance(a);
-        b = cleanStringForDistance(b);
+    public static int levenshteinDistance(final String aNotCleaned, final String bNotCleaned) {
+        final String a = cleanStringForDistance(aNotCleaned);
+        final String b = cleanStringForDistance(bNotCleaned);
         return levenshteinDistanceMemory(a, b)[a.length()][b.length()];
     }
 
@@ -154,15 +157,15 @@ public class StringUtils {
      * matched. The result is a combination of the latter statistics and the actual Levenshtein
      * distance. The two strings will be cleaned with {@link #cleanStringForDistance(String)} before
      * calculating the distance.
-     * @param a the first string
-     * @param b the second string
+     * @param aNotCleaned the first string
+     * @param bNotCleaned the second string
      * @return the custom string distance between the two cleaned strings as described above, lower
      *         is better, values can be lower than 0, values are always less than or equal to the
      *         {@link #levenshteinDistance(String, String)} between the two strings
      */
-    public static int customStringDistance(String a, String b) {
-        a = cleanStringForDistance(a);
-        b = cleanStringForDistance(b);
+    public static int customStringDistance(final String aNotCleaned, final String bNotCleaned) {
+        final String a = cleanStringForDistance(aNotCleaned);
+        final String b = cleanStringForDistance(bNotCleaned);
         final int[][] memory = levenshteinDistanceMemory(a, b);
 
         int matchingCharCount = 0;

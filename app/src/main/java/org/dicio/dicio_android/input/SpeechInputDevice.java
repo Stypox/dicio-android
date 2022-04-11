@@ -36,23 +36,23 @@ public abstract class SpeechInputDevice extends InputDevice {
      * Attach this {@link SpeechInputDevice} to the {@link ExtendedFloatingActionButton} it should
      * use to show loading, inactive and listening states. Provide a {@code null} fab to detach the
      * current one.
-     * @param voiceFab the fab, which should an empty string set as text so that the first time it
-     *                 is extended everything is handled correctly.
+     * @param voiceFabToSet the fab, which should have an empty string set as text so that the first
+     *                      time it is extended everything is handled correctly.
      */
-    public final void setVoiceViews(@Nullable final ExtendedFloatingActionButton voiceFab,
-                                    @Nullable final ProgressBar voiceLoading) {
+    public final void setVoiceViews(@Nullable final ExtendedFloatingActionButton voiceFabToSet,
+                                    @Nullable final ProgressBar voiceLoadingToSet) {
         if (this.voiceFab != null) {
             // release previous on click listener to allow garbage collection to kick in
             this.voiceFab.setOnClickListener(null);
         }
 
-        this.voiceFab = voiceFab;
-        this.voiceLoading = voiceLoading;
+        this.voiceFab = voiceFabToSet;
+        this.voiceLoading = voiceLoadingToSet;
 
-        if (voiceFab != null) {
-            voiceFab.setText(voiceFab.getContext().getString(R.string.listening));
+        if (voiceFabToSet != null) {
+            voiceFabToSet.setText(voiceFabToSet.getContext().getString(R.string.listening));
             showState(currentShownState);
-            voiceFab.setOnClickListener(view -> {
+            voiceFabToSet.setOnClickListener(view -> {
                 if (currentShownState == ShownState.LISTENING) {
                     // already listening, so stop listening
                     cancelGettingInput();
@@ -97,7 +97,7 @@ public abstract class SpeechInputDevice extends InputDevice {
      *               trigger the input device.
      */
     @Override
-    public void tryToGetInput(boolean manual) {
+    public void tryToGetInput(final boolean manual) {
         super.tryToGetInput(manual); // overridden just to provide a more detailed documentation ^
     }
 

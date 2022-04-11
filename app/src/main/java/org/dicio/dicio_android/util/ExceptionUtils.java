@@ -8,9 +8,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.SocketException;
 
-public class ExceptionUtils {
+public final class ExceptionUtils {
 
-    public static boolean isNetworkError(Throwable throwable) {
+    private ExceptionUtils() {
+    }
+
+    public static boolean isNetworkError(final Throwable throwable) {
         return hasAssignableCause(throwable,
                 // network api cancellation
                 IOException.class, SocketException.class,
@@ -19,19 +22,20 @@ public class ExceptionUtils {
     }
 
     // taken from NewPipe, file util/ExceptionUtils.kt, created by @mauriciocolli
-    public static boolean hasAssignableCause(Throwable throwable, Class<?>... causesToCheck) {
+    public static boolean hasAssignableCause(final Throwable throwable,
+                                             final Class<?>... causesToCheck) {
         if (throwable == null) {
             return false;
         }
 
         // Check if throwable is a subtype of any of the causes to check
-        for (Class<?> causeClass : causesToCheck) {
+        for (final Class<?> causeClass : causesToCheck) {
             if (causeClass.isAssignableFrom(throwable.getClass())) {
                 return true;
             }
         }
 
-        @Nullable Throwable currentCause = throwable.getCause();
+        @Nullable final Throwable currentCause = throwable.getCause();
         // Check if cause is not pointing to the same instance, to avoid infinite loops.
         if (throwable != currentCause) {
             return hasAssignableCause(currentCause, causesToCheck);
@@ -45,8 +49,8 @@ public class ExceptionUtils {
      * @param throwable the exception
      * @return the stack trace of {@param throwable} as a string
      */
-    public static String getStackTraceString(Throwable throwable) {
-        StringWriter stringWriter = new StringWriter();
+    public static String getStackTraceString(final Throwable throwable) {
+        final StringWriter stringWriter = new StringWriter();
         throwable.printStackTrace(new PrintWriter(stringWriter));
         return stringWriter.toString();
     }

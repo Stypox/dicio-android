@@ -31,10 +31,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SkillHandler {
+public final class SkillHandler {
+
+    private SkillHandler() {
+    }
 
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
-    private static final List<SkillInfo> skillInfoList = new ArrayList<SkillInfo>() {{
+    private static final List<SkillInfo> SKILL_INFO_LIST = new ArrayList<SkillInfo>() {{
         add(new WeatherInfo());
         add(new SearchInfo());
         add(new LyricsInfo());
@@ -44,12 +47,12 @@ public class SkillHandler {
         add(new TimerInfo());
     }};
 
-    private static final List<SkillInfo> fallbackSkillInfoList = new ArrayList<SkillInfo>() {{
+    private static final List<SkillInfo> FALLBACK_SKILL_INFO_LIST = new ArrayList<>() {{
         add(new TextFallbackInfo());
     }};
 
     @SuppressLint("StaticFieldLeak") // releaseSkillContext() is called in MainActivity.onDestroy()
-    private static final SkillContext context = new SkillContext();
+    private static final SkillContext CONTEXT = new SkillContext();
 
 
     /**
@@ -72,10 +75,10 @@ public class SkillHandler {
             // current locale is not supported by dicio-numbers
         }
 
-        context.setAndroidContext(androidContext);
-        context.setPreferences(PreferenceManager.getDefaultSharedPreferences(androidContext));
-        context.setLocale(Sections.getCurrentLocale());
-        context.setNumberParserFormatter(numberParserFormatter);
+        CONTEXT.setAndroidContext(androidContext);
+        CONTEXT.setPreferences(PreferenceManager.getDefaultSharedPreferences(androidContext));
+        CONTEXT.setLocale(Sections.getCurrentLocale());
+        CONTEXT.setNumberParserFormatter(numberParserFormatter);
     }
 
     /**
@@ -86,19 +89,19 @@ public class SkillHandler {
      */
     public static void setSkillContextDevices(final SpeechOutputDevice speechOutputDevice,
                                               final GraphicalOutputDevice graphicalOutputDevice) {
-        context.setSpeechOutputDevice(speechOutputDevice);
-        context.setGraphicalOutputDevice(graphicalOutputDevice);
+        CONTEXT.setSpeechOutputDevice(speechOutputDevice);
+        CONTEXT.setGraphicalOutputDevice(graphicalOutputDevice);
     }
 
 
     @SuppressWarnings("ConstantConditions") // we want to release resources, so we set to null
     public static void releaseSkillContext() {
-        context.setAndroidContext(null);
-        context.setPreferences(null);
+        CONTEXT.setAndroidContext(null);
+        CONTEXT.setPreferences(null);
     }
 
     public static SkillContext getSkillContext() {
-        return context;
+        return CONTEXT;
     }
 
 
@@ -114,30 +117,30 @@ public class SkillHandler {
     }
 
     public static Skill getFallbackSkill() {
-        return buildSkillFromInfo(Objects.requireNonNull(fallbackSkillInfoList.get(0)));
+        return buildSkillFromInfo(Objects.requireNonNull(FALLBACK_SKILL_INFO_LIST.get(0)));
     }
 
     private static Skill buildSkillFromInfo(@NonNull final SkillInfo skillInfo) {
-        final Skill skill = skillInfo.build(context);
-        skill.setContext(context);
+        final Skill skill = skillInfo.build(CONTEXT);
+        skill.setContext(CONTEXT);
         skill.setSkillInfo(skillInfo);
         return skill;
     }
 
 
     public static List<SkillInfo> getAllSkillInfoList() {
-        return skillInfoList;
+        return SKILL_INFO_LIST;
     }
 
     public static List<SkillInfo> getAvailableSkillInfoList() {
-        return skillInfoList.stream()
-                .filter(skillInfo -> skillInfo.isAvailable(context))
+        return SKILL_INFO_LIST.stream()
+                .filter(skillInfo -> skillInfo.isAvailable(CONTEXT))
                 .collect(Collectors.toList());
     }
 
     public static List<SkillInfo> getEnabledSkillInfoList() {
-        return skillInfoList.stream()
-                .filter(skillInfo -> skillInfo.isAvailable(context) && context.getPreferences()
+        return SKILL_INFO_LIST.stream()
+                .filter(skillInfo -> skillInfo.isAvailable(CONTEXT) && CONTEXT.getPreferences()
                         .getBoolean(getIsEnabledPreferenceKey(skillInfo.getId()), true))
                 .collect(Collectors.toList());
     }

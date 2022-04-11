@@ -14,8 +14,13 @@ public class WeatherOutput extends OutputGenerator<WeatherOutput.Data> {
 
     public static class Data {
         public boolean failed = false;
-        public String city, description, iconUrl;
-        public double temp, tempMin, tempMax, windSpeed;
+        public String city;
+        public String description;
+        public String iconUrl;
+        public double temp;
+        public double tempMin;
+        public double tempMax;
+        public double windSpeed;
     }
 
 
@@ -51,5 +56,6 @@ public class WeatherOutput extends OutputGenerator<WeatherOutput.Data> {
     }
 
     @Override
-    public void cleanup() {}
+    public void cleanup() {
+    }
 }

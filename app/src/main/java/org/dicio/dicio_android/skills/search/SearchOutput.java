@@ -30,7 +30,10 @@ import java.util.List;
 public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
 
     public static class Data {
-        public String title, thumbnailUrl, url, description;
+        public String title;
+        public String thumbnailUrl;
+        public String url;
+        public String description;
     }
 
     private boolean tryAgain = false;

@@ -13,7 +13,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Scanner;
 
-public class ConnectionUtils {
+public final class ConnectionUtils {
+
+    private ConnectionUtils() {
+    }
 
     public static String getPage(final String url,
                                  final Map<String, String> headers) throws IOException {

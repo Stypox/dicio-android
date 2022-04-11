@@ -312,11 +312,14 @@ public class SkillEvaluator implements CleanableUp {
 
         inputEditText.addTextChangedListener(new TextWatcher() {
             // `count` characters beginning at `start` replaced old text that had length `before`
-            int startIndex = 0, countBefore = 0, countAfter = 0;
+            int startIndex = 0;
+            int countBefore = 0;
+            int countAfter = 0;
             boolean ignore = false;
 
             @Override public void beforeTextChanged(final CharSequence s, final int start,
-                                                    final int count, final int after) {}
+                                                    final int count, final int after) {
+            }
 
             @Override public void onTextChanged(final CharSequence s, final int start,
                                                 final int before, final int count) {

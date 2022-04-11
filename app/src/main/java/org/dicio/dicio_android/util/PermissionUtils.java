@@ -12,10 +12,13 @@ import androidx.core.app.ActivityCompat;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillInfo;
 
-public class PermissionUtils {
+public final class PermissionUtils {
 
     private static final String TAG = PermissionUtils.class.getSimpleName();
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    private PermissionUtils() {
+    }
 
     /**
      * @param context the Android context

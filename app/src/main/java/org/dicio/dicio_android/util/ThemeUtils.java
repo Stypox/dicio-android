@@ -7,7 +7,10 @@ import android.util.TypedValue;
 import androidx.annotation.AttrRes;
 import androidx.core.content.ContextCompat;
 
-public class ThemeUtils {
+public final class ThemeUtils {
+
+    private ThemeUtils() {
+    }
 
     /**
      * Get a resource id from a resource styled according to the context's theme.
@@ -19,8 +22,8 @@ public class ThemeUtils {
      * @return resource ID
      */
     public static int resolveResourceIdFromAttr(final Context context, @AttrRes final int attr) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr});
-        int attributeResourceId = a.getResourceId(0, 0);
+        final TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr});
+        final int attributeResourceId = a.getResourceId(0, 0);
         a.recycle();
         return attributeResourceId;
     }

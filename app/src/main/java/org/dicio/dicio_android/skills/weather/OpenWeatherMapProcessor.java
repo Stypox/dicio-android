@@ -15,11 +15,11 @@ import java.io.FileNotFoundException;
 public class OpenWeatherMapProcessor
         extends IntermediateProcessor<StandardResult, WeatherOutput.Data> {
 
-    private static final String ipInfoUrl = "https://ipinfo.io/json";
-    private static final String weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
-    private static final String apiKey = "061f24cf3cde2f60644a8240302983f2";
-    private static final String iconBaseUrl = "https://openweathermap.org/img/wn/";
-    private static final String iconFormat = "@2x.png";
+    private static final String IP_INFO_URL = "https://ipinfo.io/json";
+    private static final String WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
+    private static final String API_KEY = "061f24cf3cde2f60644a8240302983f2";
+    private static final String ICON_BASE_URL = "https://openweathermap.org/img/wn/";
+    private static final String ICON_FORMAT = "@2x.png";
 
 
     @Override
@@ -38,17 +38,17 @@ public class OpenWeatherMapProcessor
         }
 
         if (result.city.isEmpty()) {
-            final JSONObject ipInfo = ConnectionUtils.getPageJson(ipInfoUrl);
+            final JSONObject ipInfo = ConnectionUtils.getPageJson(IP_INFO_URL);
             result.city = ipInfo.getString("city");
         }
 
         final JSONObject weatherData;
         try {
-            weatherData = ConnectionUtils.getPageJson(weatherApiUrl
-                    + "?APPID=" + apiKey
+            weatherData = ConnectionUtils.getPageJson(WEATHER_API_URL
+                    + "?APPID=" + API_KEY
                     + "&units=metric&lang=" + ctx().getLocale().getLanguage().toLowerCase()
                     + "&q=" + ConnectionUtils.urlEncode(result.city));
-        } catch (FileNotFoundException ignored) {
+        } catch (final FileNotFoundException ignored) {
             result.failed = true;
             return result;
         }
@@ -59,14 +59,14 @@ public class OpenWeatherMapProcessor
 
         result.city = weatherData.getString("name");
         result.description = weatherObject.getString("description");
-        result.iconUrl = iconBaseUrl + weatherObject.getString("icon") + iconFormat;
+        result.iconUrl = ICON_BASE_URL + weatherObject.getString("icon") + ICON_FORMAT;
         result.temp = mainObject.getDouble("temp");
         result.tempMin = mainObject.getDouble("temp_min");
         result.tempMax = mainObject.getDouble("temp_max");
         result.windSpeed = windObject.getDouble("speed");
 
-        result.description = Character.toUpperCase(result.description.charAt(0)) +
-                result.description.substring(1);
+        result.description = Character.toUpperCase(result.description.charAt(0))
+                + result.description.substring(1);
         return result;
     }
 }

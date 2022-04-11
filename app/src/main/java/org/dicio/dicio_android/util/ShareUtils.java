@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat;
 import org.dicio.dicio_android.R;
 
 /**
- * @implNote Most, if not all, of this class was taken from NewPipe, file util/ShareUtils.java
+ * Most, if not all, of this class was taken from NewPipe, file util/ShareUtils.java
  */
 public final class ShareUtils {
     private ShareUtils() {

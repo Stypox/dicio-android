@@ -11,7 +11,7 @@ import org.dicio.dicio_android.R;
  * A base for all of the activities that automatically recreates itself when the theme or the
  * language (locale) change
  */
-abstract public class BaseActivity extends LocaleAwareActivity {
+public abstract class BaseActivity extends LocaleAwareActivity {
 
     private int currentTheme;
     private boolean isRecreating = false;

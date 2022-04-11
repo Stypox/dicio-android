@@ -13,7 +13,9 @@ public class LyricsOutput extends OutputGenerator<LyricsOutput.Data> {
 
     public static class Data {
         public boolean failed = false;
-        public String artist, title, lyrics;
+        public String artist;
+        public String title;
+        public String lyrics;
     }
 
 
@@ -49,5 +51,6 @@ public class LyricsOutput extends OutputGenerator<LyricsOutput.Data> {
     }
 
     @Override
-    public void cleanup() {}
+    public void cleanup() {
+    }
 }
