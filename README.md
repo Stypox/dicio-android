@@ -40,6 +40,11 @@ Dicio's code is **not only here**! The repository with the *compiler for sentenc
 
 When contributing keep in mind that other people may have **needs** and **views different** than yours, so please *respect* them. For any question feel free to contact the project team at [@Stypox](https://github.com/Stypox).
 
+### IRC/Matrix room for communication
+
+- The **#dicio** channel on *Libera Chat* (`ircs://irc.libera.chat:6697/dicio`) is available to get in touch with the developers. [Click here for webchat](https://web.libera.chat/#dicio)!
+- You can also use a *Matrix* account to join the Dicio channel at [#dicio:libera.chat](https://matrix.to/#/#dicio:libera.chat). Some convenient clients, available both for phone and desktop, are listed at that link.
+
 ### Translating
 
 If you want to translate Dicio to a new language you have to follow these **steps**:
