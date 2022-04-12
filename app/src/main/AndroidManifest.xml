@@ -6,27 +6,28 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" /> <!-- the open skill needs to query all apps -->
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- the telephone skill needs to query all contacts -->
     <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- the telephone skill needs to call contacts -->
 
     <application
+        android:name=".App"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:fullBackupContent="true">
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateUnspecified|adjustResize"
+            android:exported="true"
             android:theme="@style/SplashScreenTheme"
-            android:exported="true">
+            android:windowSoftInputMode="stateUnspecified|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -44,6 +45,10 @@
 
         <activity
             android:name=".settings.SettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".error.ErrorActivity"
             android:exported="false" />
 
     </application>

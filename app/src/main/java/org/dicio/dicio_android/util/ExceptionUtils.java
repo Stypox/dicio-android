@@ -21,7 +21,9 @@ public final class ExceptionUtils {
                 InterruptedException.class, InterruptedIOException.class);
     }
 
-    // taken from NewPipe, file util/ExceptionUtils.kt, created by @mauriciocolli
+    /**
+     * @implNote taken from NewPipe, file util/ExceptionUtils.kt, created by @mauriciocolli
+     */
     public static boolean hasAssignableCause(final Throwable throwable,
                                              final Class<?>... causesToCheck) {
         if (throwable == null) {

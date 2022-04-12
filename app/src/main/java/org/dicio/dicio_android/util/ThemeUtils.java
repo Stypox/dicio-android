@@ -14,12 +14,11 @@ public final class ThemeUtils {
 
     /**
      * Get a resource id from a resource styled according to the context's theme.
-     * <p>
-     * Taken from NewPipe, file util/ThemeHelper.java, created by @mauriciocolli
      *
      * @param context Android app context
      * @param attr    attribute reference of the resource
      * @return resource ID
+     * @implNote Taken from NewPipe, file util/ThemeHelper.java, created by @mauriciocolli
      */
     public static int resolveResourceIdFromAttr(final Context context, @AttrRes final int attr) {
         final TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr});
@@ -30,12 +29,11 @@ public final class ThemeUtils {
 
     /**
      * Get a color from an attr styled according to the context's theme.
-     * <p>
-     * Taken from NewPipe, file util/ThemeHelper.java, created by @mauriciocolli
      *
      * @param context   Android app context
      * @param attrColor attribute reference of the resource
      * @return the color
+     * @implNote Taken from NewPipe, file util/ThemeHelper.java, created by @mauriciocolli
      */
     public static int resolveColorFromAttr(final Context context, @AttrRes final int attrColor) {
         final TypedValue value = new TypedValue();

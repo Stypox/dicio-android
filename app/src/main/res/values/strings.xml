@@ -26,6 +26,20 @@
     <string name="android_tts_unsupported_language">The current language is not supported by the Android text to speech engine</string>
     <string name="android_tts_error">An error occurred while initializing the Android text to speech engine</string>
     <string name="settings">Settings</string>
+    <string name="error_title">Error report</string>
+    <string name="error_subtitle">Sorry, an error occurred</string>
+    <string name="error_details_headline">Details:</string>
+    <string name="error_details_labels">Action:\nLocale:\nGMT Time:\nPackage:\nVersion:\nOS version:</string>
+    <string name="error_crash_log_headline">Crash log:</string>
+    <string name="error_github_notice">Please check whether an issue discussing your crash already exists. When creating duplicate tickets, you take time from us which we could spend with fixing the actual bug.</string>
+    <string name="error_copy_formatted">Copy formatted report</string>
+    <string name="error_report_github">Report on GitHub</string>
+    <string name="error_snackbar_message">Sorry, something went wrong</string>
+    <string name="error_snackbar_action">Report</string>
+    <string name="error_report_notification_title">Dicio encountered an error, tap to report</string>
+    <string name="error_report_notification_toast">An error occurred, see the notification</string>
+    <string name="error_report_channel_name">Error report notification</string>
+    <string name="error_report_channel_description">Notifications to report errors</string>
     <!-- settings_header -->
     <string name="pref_io">Input and output methods</string>
     <string name="pref_appearance">Appearance</string>
