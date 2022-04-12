@@ -29,10 +29,10 @@ import org.dicio.dicio_android.R;
  * happens in an open activity (since the workflow would be interrupted anyway in that case).
  * @implNote Taken with some modifications from NewPipe, file error/ErrorUtil.kt
  */
-public final class ErrorUtil {
+public final class ErrorUtils {
     private static final int ERROR_REPORT_NOTIFICATION_ID = 5340681;
 
-    private ErrorUtil() {
+    private ErrorUtils() {
     }
 
     /**

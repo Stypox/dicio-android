@@ -1,6 +1,6 @@
 package org.dicio.dicio_android.error;
 
-import static org.dicio.dicio_android.util.ExceptionUtils.getStackTraceString;
+import static org.dicio.dicio_android.error.ExceptionUtils.getStackTraceString;
 
 import android.os.Parcel;
 import android.os.Parcelable;

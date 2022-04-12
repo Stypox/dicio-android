@@ -23,7 +23,7 @@ import org.dicio.dicio_android.input.SpeechInputDevice.UnableToAccessMicrophoneE
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.skills.SkillHandler;
-import org.dicio.dicio_android.util.ExceptionUtils;
+import org.dicio.dicio_android.error.ExceptionUtils;
 import org.dicio.dicio_android.util.PermissionUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillInfo;

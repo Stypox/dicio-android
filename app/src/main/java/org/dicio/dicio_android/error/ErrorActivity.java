@@ -27,7 +27,7 @@ import kotlin.text.Charsets;
 
 /**
  * This activity is used to show error details and allow reporting them in various ways. Use {@link
- * ErrorUtil#openActivity(Context, ErrorInfo)} to correctly open this activity.
+ * ErrorUtils#openActivity(Context, ErrorInfo)} to correctly open this activity.
  * @implNote Taken with some modifications from NewPipe, file error/ErrorActivity.java
  */
 public class ErrorActivity extends BaseActivity {

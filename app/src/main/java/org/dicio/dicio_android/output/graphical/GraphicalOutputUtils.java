@@ -22,7 +22,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.error.ErrorInfo;
-import org.dicio.dicio_android.error.ErrorUtil;
+import org.dicio.dicio_android.error.ErrorUtils;
 import org.dicio.dicio_android.util.ThemeUtils;
 
 public final class GraphicalOutputUtils {
@@ -179,7 +179,7 @@ public final class GraphicalOutputUtils {
     /**
      * Builds a view explaining that an error has occoured, containing the {@code throwable}'s
      * message as title and a button that allows reporting it by opening the error activity with
-     * {@link ErrorUtil#openActivity(Context, ErrorInfo)}
+     * {@link ErrorUtils#openActivity(Context, ErrorInfo)}
      * @see #buildNetworkErrorMessage(Context)
      *
      * @param context the Android context to use to initialize the view
@@ -199,8 +199,8 @@ public final class GraphicalOutputUtils {
         }
         ((TextView) view.findViewById(R.id.descriptionTextView)).setText(description);
 
-        ((TextView) view.findViewById(R.id.reportTextView)).setOnClickListener(v ->
-                ErrorUtil.openActivity(context, new ErrorInfo(throwable, SKILL_EVALUATION)));
+        view.findViewById(R.id.reportTextView).setOnClickListener(v ->
+                ErrorUtils.openActivity(context, new ErrorInfo(throwable, SKILL_EVALUATION)));
 
         return view;
     }

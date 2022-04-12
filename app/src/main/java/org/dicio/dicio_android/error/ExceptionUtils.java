@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.util;
+package org.dicio.dicio_android.error;
 
 import androidx.annotation.Nullable;
 
