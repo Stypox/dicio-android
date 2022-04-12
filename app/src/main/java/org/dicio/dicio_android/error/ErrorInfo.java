@@ -1,14 +1,12 @@
 package org.dicio.dicio_android.error;
 
+import static org.dicio.dicio_android.util.ExceptionUtils.getStackTraceString;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * @implNote Taken with some modifications from NewPipe, file error/ErrorInfo.kt
@@ -62,17 +60,5 @@ public class ErrorInfo implements Parcelable {
     public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(stackTrace);
         dest.writeParcelable(userAction, flags);
-    }
-
-
-    @NonNull
-    private static String getStackTraceString(final Throwable throwable) {
-        try (StringWriter stringWriter = new StringWriter();
-             PrintWriter printWriter = new PrintWriter(stringWriter, true)) {
-            throwable.printStackTrace(printWriter);
-            return stringWriter.getBuffer().toString().trim();
-        } catch (final IOException e) {
-            return "";
-        }
     }
 }
