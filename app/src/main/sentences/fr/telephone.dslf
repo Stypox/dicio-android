@@ -1,0 +1,3 @@
+telephone: high
+(appele<r?)|(sonne<r)|téléphone<r|z?>|compose<r|z?>|contacte<r|z?> .who.;
+appel|sonne .who. up;
