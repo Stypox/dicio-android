@@ -7,7 +7,7 @@ Dicio is a *free and open source* **voice assistant** running on Android. It sup
         <img height="80" alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
     </a>
     <a href="https://github.com/Stypox/dicio-android/releases">
-        <img height="80" alt="Get it on GitHub" src="./get-it-on-github.png">
+        <img height="80" alt="Get it on GitHub" src="./meta/get-it-on-github.png">
     </a>
 </p>
 
