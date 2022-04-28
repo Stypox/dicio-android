@@ -81,4 +81,8 @@
     <string name="skill_sentence_example_telephone">Rufe Tom an</string>
     <string name="skill_telephone_unknown_contact">Es wurde kein passender Kontakt gefunden</string>
     <string name="skill_telephone_found_contacts">Es wurden %1$d Kontakte gefunden</string>
+    <string name="eval_missing_permissions">Die Fähigkeit \"%1$s\" benötigt zum Funktionieren diese Genehmigungen: %2$s</string>
+    <string name="android_tts_error">Während des Starts des Android TTS engine ist ein Fehler aufgetreten</string>
+    <string name="pref_skill_missing_permissions">Folgende Genehmigungen werden benötigt: %1$s</string>
+    <string name="pref_skill_grant_permissions">Zulassen</string>
 </resources>

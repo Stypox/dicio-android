@@ -88,4 +88,22 @@
     <string name="skill_telephone_confirm_call">¿Debería llamar a %1$s\?</string>
     <string name="skill_telephone_calling">Llamando a %1$s…</string>
     <string name="skill_telephone_not_calling">Vale, no voy a llamar a nadie</string>
+    <string name="skill_timer_canceled">El temporizador ha sido cancelado</string>
+    <string name="skill_timer_expired">¡El temporizador ha finalizado!</string>
+    <string name="skill_timer_expired_name">¡El temporizador %1$s ha finalizado!</string>
+    <string name="skill_timer_no_active_name">No hay ningún temporizador activo llamado %1$s</string>
+    <string name="skill_timer_how_much_time">¿Cuánto tiempo debe durar el temporizador\?</string>
+    <string name="skill_timer_confirm_cancel">¿Está seguro de que desea cancelar todos los temporizadores\?</string>
+    <string name="pref_skill_number_library_not_available">La biblioteca de formato y análisis de números <i>dicio-numbers</i> aún no está traducida a su idioma, lo que significa que todas las habilidades relacionadas con números, duraciones y fechas no están disponibles. <b>¡Por favor, contribuya</b> si le es posible tocando aquí!</string>
+    <string name="skill_timer_set">Vale, el temporizador finalizará en %1$s</string>
+    <string name="skill_name_timer">Temporizador</string>
+    <string name="skill_sentence_example_timer">Configura un temporizador de cinco minutos</string>
+    <string name="skill_timer_query_last">El último temporizador finalizará en %1$s</string>
+    <string name="skill_timer_none_canceled">Vale, ningún temporizador fue cancelado</string>
+    <string name="skill_timer_set_name">Vale, el temporizador %1$s finalizará en %2$s</string>
+    <string name="skill_timer_all_canceled">Todos los temporizadores han sido cancelados</string>
+    <string name="skill_timer_canceled_name">El temporizador %1$s ha sido cancelado</string>
+    <string name="skill_timer_query">El temporizador finalizará en %1$s</string>
+    <string name="skill_timer_query_name">El temporizador %1$s finalizará en %2$s</string>
+    <string name="skill_timer_no_active">No hay ningún temporizador activo</string>
 </resources>
