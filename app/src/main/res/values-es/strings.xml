@@ -106,4 +106,17 @@
     <string name="skill_timer_query">El temporizador finalizará en %1$s</string>
     <string name="skill_timer_query_name">El temporizador %1$s finalizará en %2$s</string>
     <string name="skill_timer_no_active">No hay ningún temporizador activo</string>
+    <string name="error_crash_log_headline">Registro de fallos:</string>
+    <string name="error_details_headline">Detalles:</string>
+    <string name="error_title">Informe de errores</string>
+    <string name="error_details_labels">Acción:
+\nConf. regional:
+\nHora GMT:
+\nPaquete:
+\nVersión:
+\nVersión del SO:</string>
+    <string name="error_github_notice">Compruebe si ya existe un problema relacionado con su crasheo. Al crear tickets duplicados, nos toma tiempo que podríamos dedicar a corregir el error real.</string>
+    <string name="error_copy_formatted">Copiar informe con formato</string>
+    <string name="error_report_github">Reportar en Github</string>
+    <string name="error_report_notification_toast">Se ha producido un error, consulte la notificación</string>
 </resources>

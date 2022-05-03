@@ -106,4 +106,22 @@
     <string name="skill_timer_query_name">Zamanlayıcı %1$s, %2$s içinde sona eriyor</string>
     <string name="skill_timer_query_last">Son zamanlayıcı %1$s içinde sona eriyor</string>
     <string name="skill_timer_none_canceled">Tamam, hiçbir zamanlayıcı iptal edilmedi</string>
+    <string name="error_crash_log_headline">Çökme günlüğü:</string>
+    <string name="error_github_notice">Lütfen yaşadığınız hatayı tartışan bir bildirimin daha önce oluşturulup oluşturulmadığını gözden geçirin. Yineleyen hata bildirimi oluşturarak, gerçek hatayı gidermekte harcadığımız zamanı uzatırsınız.</string>
+    <string name="error_copy_formatted">Biçimlendirilmiş raporu kopyala</string>
+    <string name="error_report_channel_name">Hata raporu bildirimi</string>
+    <string name="error_title">Hata bildirimi</string>
+    <string name="error_details_labels">İşlem:
+\nYerel ayar:
+\nGMT saati:
+\nPaket:
+\nSürüm:
+\nİS sürümü:</string>
+    <string name="error_details_headline">Ayrıntılar:</string>
+    <string name="error_report_notification_toast">Bir hata oluştu, bildirime bakın</string>
+    <string name="error_report_github">GitHub\'da bildir</string>
+    <string name="error_report_notification_title">Dicio bir hatayla karşılaştı, bildirmek için dokunun</string>
+    <string name="error_report_channel_description">Hataları bildirmek için bildirimler</string>
+    <string name="error_report">Bildir</string>
+    <string name="error_sorry">Üzgünüz, bir hata oluştu</string>
 </resources>

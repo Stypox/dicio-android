@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_weather_default_city">Standard Stadt</string>
+    <string name="pref_weather_default_city">Voreinstellung Stadt</string>
     <string name="pref_input_method_summary">Waehle den Dienst, der verwendet werden soll, um mit Dicio zu kommunizieren - %1$s</string>
     <string name="vosk_model_extraction_error">Vosk Modells konnte aus dem Zip-Archiv nicht entpackt werden</string>
     <string name="vosk_model_downloading">Lade Vosk Modell herunter…</string>
@@ -57,7 +57,7 @@
     <string name="settings">Einstellungen</string>
     <string name="android_tts_unsupported_language">Die aktuell ausgewaehlte Sprache, wird von der Android Spracherkennung nicht unterstuetzt</string>
     <string name="vosk_model_ready">Vosk Modell bereit</string>
-    <string name="vosk_model_extracting">Vosk Modell wird Entpackt…</string>
+    <string name="vosk_model_extracting">Vosk Modell wird entpackt…</string>
     <string name="vosk_model_unsupported_language">Fuer die ausgewaehlte Srache, steht kein Vosk Modell zur Verfuegung</string>
     <string name="vosk_model_notification_description">Sprache: %1$s</string>
     <string name="vosk_model_notification_title">Vosk Modell</string>
@@ -85,4 +85,41 @@
     <string name="android_tts_error">Während des Starts des Android TTS engine ist ein Fehler aufgetreten</string>
     <string name="pref_skill_missing_permissions">Folgende Genehmigungen werden benötigt: %1$s</string>
     <string name="pref_skill_grant_permissions">Zulassen</string>
+    <string name="skill_timer_query">Der Timer läuft ab in %1$s</string>
+    <string name="error_crash_log_headline">Absturzbericht:</string>
+    <string name="skill_timer_set_name">OK, Timer %1$s wird in %2$s ablaufen</string>
+    <string name="skill_timer_query_last">Der letzte Timer läuft ab in %1$s</string>
+    <string name="error_report_channel_description">Benachrichtigungen zur Meldung von Fehlern</string>
+    <string name="skill_sentence_example_timer">Stelle einen Timer für fünf Minuten ein</string>
+    <string name="skill_timer_set">OK, der Timer wird in %1$s ablaufen</string>
+    <string name="skill_timer_canceled">Der Timer wurde gestoppt</string>
+    <string name="skill_timer_canceled_name">Timer %1$s wurde gestoppt</string>
+    <string name="skill_timer_no_active">Es gibt keinen aktiven Timer</string>
+    <string name="skill_timer_none_canceled">OK, kein Timer wurde gestoppt</string>
+    <string name="error_title">Fehlerbericht</string>
+    <string name="error_details_headline">Details:</string>
+    <string name="error_report_github">Bericht auf GitHub</string>
+    <string name="error_details_labels">Aktion:
+\nLokalisierung:
+\nGMT Zeit:
+\nPaket:
+\nVersion:
+\nOS Version:</string>
+    <string name="skill_name_timer">Timer</string>
+    <string name="skill_telephone_calling">Anrufen %1$s…</string>
+    <string name="skill_timer_how_much_time">Wie lange soll der Timer laufen\?</string>
+    <string name="skill_timer_no_active_name">Es gibt keinen aktiven Timer mit dem Namen %1$s</string>
+    <string name="skill_timer_query_name">Timer %1$s läuft ab in %2$s</string>
+    <string name="skill_telephone_confirm_call">Sollte ich %1$s anrufen\?</string>
+    <string name="skill_telephone_not_calling">OK, ich rufe niemanden mehr an</string>
+    <string name="skill_timer_confirm_cancel">Bist du sicher das alle Timer gelöscht werden sollen\?</string>
+    <string name="skill_timer_all_canceled">Alle Timer wurden gestoppt</string>
+    <string name="skill_timer_expired">Der Timer ist abgelaufen!</string>
+    <string name="skill_timer_expired_name">Timer %1$s ist abgelaufen!</string>
+    <string name="error_github_notice">Bitte prüfe ob nicht bereits ein Ticket existiert, das deinen Absturz behandelt. Wenn du doppelte Tickets erstellst, kostet uns das Zeit, die wir mit der Behebung des eigentlichen Fehlers verbringen könnten.</string>
+    <string name="error_report_notification_toast">Es ist ein Fehler aufgetreten, siehe die Meldung</string>
+    <string name="error_report_channel_name">Benachrichtigung über Fehlerbericht</string>
+    <string name="pref_skill_number_library_not_available">Die Bibliothek <i>dicio-numbers</i> zum Formatieren und Umwandeln von Zahlen ist bisher noch nicht in deiner Sprache verfügbar. Dies bedeutet, dass alle Fähigkeiten in Verbindung mit Zahlen, Zeitspannen und Datumsangaben nicht verfügbar sind. Wenn du kannst, <b>bitte beteilige dich</b> indem du hier tippst!</string>
+    <string name="error_copy_formatted">Kopiere formatierten Bericht</string>
+    <string name="error_report_notification_title">Dicio ist auf einen Fehler gestoßen, drücken um zu berichten</string>
 </resources>

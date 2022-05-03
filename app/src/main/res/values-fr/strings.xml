@@ -106,4 +106,20 @@
     <string name="skill_timer_canceled">Le minuteur a été annulé</string>
     <string name="skill_timer_query_last">Le dernier minuteur expire dans %1$s</string>
     <string name="skill_timer_canceled_name">Le minuteur %1$s a été annulée</string>
+    <string name="error_title">Rapport d\'erreur</string>
+    <string name="error_report_channel_name">Notification de rapport d\'erreur</string>
+    <string name="error_details_headline">Détails :</string>
+    <string name="error_crash_log_headline">Journal du crash :</string>
+    <string name="error_copy_formatted">Copie du rapport formaté</string>
+    <string name="error_report_notification_toast">Une erreur s\'est produite, voir la notification</string>
+    <string name="error_github_notice">Veuillez vérifier si une issue concernant votre problème n\'existe pas déjà. Lorsque vous créez des tickets en double, vous nous faites perdre du temps que nous pourrions consacrer à la correction du bogue réel.</string>
+    <string name="error_report_notification_title">Dicio a rencontré une erreur, appuyez pour rapporter</string>
+    <string name="error_details_labels">Action :
+\nLocale :
+\nGMT Heure :
+\nPaquet :
+\nVersion :
+\nVersion du système d\'exploitation :</string>
+    <string name="error_report_github">Rapport sur GitHub</string>
+    <string name="error_report_channel_description">Notifications pour signaler les erreurs</string>
 </resources>
