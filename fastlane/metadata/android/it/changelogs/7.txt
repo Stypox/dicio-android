@@ -1,0 +1,10 @@
+Dicio ora ha un canale IRC/Matrix: #dicio:libera.chat
+
+Miglioramenti:
+- [Vosk] Ora vengono fornite più interpretazioni per ciò che ha detto l'utente e l'app usa la prima che capisce
+- [Telefono] Tradotto in Spagnolo
+- Aggiunta una schermata, simile a quella di NewPipe, per segnalare errori (anche nelle abilità)
+
+Correzioni:
+- Ora le caselle di modifica input non sono più focalizzata anche dopo aver inviato
+- [Timer] Ora è correttamente nascosto per le lingue non supportate da dicio-numbers
