@@ -24,7 +24,8 @@ public class TimerInfo extends SkillInfo {
 
     @Override
     public boolean isAvailable(final SkillContext context) {
-        return isSectionAvailable(timer) && isSectionAvailable(util_yes_no);
+        return isSectionAvailable(timer) && isSectionAvailable(util_yes_no)
+                && context.getNumberParserFormatter() != null;
     }
 
     @Override
