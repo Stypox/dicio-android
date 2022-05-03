@@ -17,7 +17,7 @@
     <string name="pref_input_method_summary">Scegli il servizio da usare per parlare a Dicio - %1$s</string>
     <string name="pref_speech_output_method">Modalità di output vocale</string>
     <string name="pref_speech_output_method_summary">Scegli il servizio che Dicio userà per parlarti - %1$s</string>
-    <string name="eval_fatal_error">Ho riscontrato un problema mentre esaminavo la tua richiesta, mi dispiace</string>
+    <string name="eval_fatal_error">Errore nell\'esaminare la richiesta</string>
     <string name="eval_network_error">Errore di connessione</string>
     <string name="eval_network_error_description">Dicio non è riuscito a raggiungere internet. Per favore controlla la connessione e riprova.</string>
     <string name="eval_no_match">Non ho capito, potresti ripetere?</string>
@@ -106,4 +106,17 @@
     <string name="skill_timer_query_last">L\'ultimo timer scade fra %1$s</string>
     <string name="skill_timer_none_canceled">OK, nessun timer è stato annullato</string>
     <string name="pref_skill_number_library_not_available">La libreria che legge e scrive numeri, <i>dicio-numbers</i>, non è ancora stata tradotta nella tua lingua. Ciò significa che tutte le abilità aventi a che fare con numeri, durate e date non sono disponibili. <b>Contribuisci</b> se puoi, cliccando qui!</string>
+    <string name="error_report">Segnala</string>
+    <string name="error_title">Segnalazione di errore</string>
+    <string name="error_details_headline">Dettagli:</string>
+    <string name="error_details_labels">Azione:\nLocale:\nData GMT:\nPacchetto:\nVersione:\nVersione OS:</string>
+    <string name="error_crash_log_headline">Log dell\'errore:</string>
+    <string name="error_github_notice">Prima di segnalare un problema, verifica che non sia già stato riportato da qualcun altro. Il tempo che gli sviluppatori utilizzerebbero per gestire un ticket duplicato, potrebbe invece essere impiegato per correggere il problema stesso.</string>
+    <string name="error_copy_formatted">Copia segnalazione formattata</string>
+    <string name="error_report_github">Segnala su GitHub</string>
+    <string name="error_report_notification_title">Dicio ha riscontrato un errore, tocca per segnalare</string>
+    <string name="error_report_notification_toast">Si è verificato un errore, vedi la notifica</string>
+    <string name="error_report_channel_name">Notifica segnalazione errore</string>
+    <string name="error_report_channel_description">Notifiche per seglanare errori</string>
+    <string name="error_sorry">Si è verificato un errore</string>
 </resources>
