@@ -76,7 +76,7 @@
             <property name="allowMissingParamTags" value="true"/>
             <property name="allowMissingReturnTag" value="true"/>
         </module>
-        <module name="JavadocType"/>
+        <!--<module name="JavadocType"/> TODO readd this once support for implNote is added-->
         <!--<module name="JavadocVariable"/>-->
         <module name="JavadocStyle">
             <property name="checkFirstSentence" value="false"/>
