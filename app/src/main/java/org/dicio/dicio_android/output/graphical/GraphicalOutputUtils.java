@@ -1,7 +1,11 @@
 package org.dicio.dicio_android.output.graphical;
 
+import static org.dicio.dicio_android.error.UserAction.SKILL_EVALUATION;
+import static org.dicio.dicio_android.util.StringUtils.isNullOrEmpty;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +21,8 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.util.ExceptionUtils;
+import org.dicio.dicio_android.error.ErrorInfo;
+import org.dicio.dicio_android.error.ErrorUtil;
 import org.dicio.dicio_android.util.ThemeUtils;
 
 public final class GraphicalOutputUtils {
@@ -173,17 +178,30 @@ public final class GraphicalOutputUtils {
 
     /**
      * Builds a view explaining that an error has occoured, containing the {@code throwable}'s
-     * message as title and the {@code throwable}'s stack trace as description.
+     * message as title and a button that allows reporting it by opening the error activity with
+     * {@link ErrorUtil#openActivity(Context, ErrorInfo)}
      * @see #buildNetworkErrorMessage(Context)
      *
      * @param context the Android context to use to initialize the view
-     * @param throwable the exception to show information about
+     * @param throwable the exception to show information about and possibly report
      * @return the built view
      */
     public static View buildErrorMessage(final Context context, final Throwable throwable) {
-        return buildVerticalLinearLayout(context,
-                AppCompatResources.getDrawable(context, R.drawable.divider_items),
-                buildHeader(context, throwable.getMessage()),
-                buildDescription(context, ExceptionUtils.getStackTraceString(throwable)));
+        final View view = inflate(context, R.layout.error_screen);
+
+        String description = throwable.getLocalizedMessage();
+        if (isNullOrEmpty(description)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                description = throwable.getClass().getTypeName();
+            } else {
+                description = throwable.getClass().getSimpleName();
+            }
+        }
+        ((TextView) view.findViewById(R.id.descriptionTextView)).setText(description);
+
+        ((TextView) view.findViewById(R.id.reportTextView)).setOnClickListener(v ->
+                ErrorUtil.openActivity(context, new ErrorInfo(throwable, SKILL_EVALUATION)));
+
+        return view;
     }
 }
