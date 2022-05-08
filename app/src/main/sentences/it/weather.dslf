@@ -2,4 +2,5 @@ weather: high
 che? tempo|temperatura|meteo|(condizioni metereologiche?) fa|(c<i?> è)|(ci sono)? fuori|(all aperto|esterno)? (<a|su><l|lla|llo|lle|gli?>|in? .where.)?;
 (com<e?> è|(si sta))|(si sta bene) fuori|(all aperto|esterno);
 è freddo|fresco|caldo|soleggiato|piovoso|nevoso fuori|(all aperto|esterno)|(<a|su><l|lla|llo|lle|gli?>|in .where.)?;
-piove|nevica|grandina|(sta piovendo|nevicando|grandinando)|(com|come è il tempo) (a|in .where.)?;
+piove|nevica|grandina|(sta piovendo|nevicando|grandinando)|(com|come è il tempo) (<a|su><l|lla|llo|lle|gli?>|in .where.)?;
+(quali|come sono)|(che? cosa? dicono) le? previsioni (del? tempo)? (<a|su><l|lla|llo|lle|gli?>|in .where.)?;
