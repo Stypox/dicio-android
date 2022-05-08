@@ -292,7 +292,7 @@ public class MainActivity extends BaseActivity
                 speechOutputDevice,
                 graphicalOutputDevice,
                 this);
-        skillEvaluator.showInitialScreen();
+        skillEvaluator.showInitialPanel();
     }
 
     private InputDevice buildPrimaryInputDevice() {

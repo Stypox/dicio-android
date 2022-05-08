@@ -83,10 +83,10 @@ public class SkillEvaluator implements CleanableUp {
     // Public methods //
     ////////////////////
 
-    public void showInitialScreen() {
-        final View initialScreen = GraphicalOutputUtils.inflate(activity, R.layout.initial_panel);
+    public void showInitialPanel() {
+        final View initialPanel = GraphicalOutputUtils.inflate(activity, R.layout.initial_panel);
 
-        final LinearLayout skillItemsLayout = initialScreen.findViewById(R.id.skillItemsLayout);
+        final LinearLayout skillItemsLayout = initialPanel.findViewById(R.id.skillItemsLayout);
         for (final SkillInfo skillInfo : SkillHandler.getEnabledSkillInfoListShuffled()) {
             final View skillInfoItem
                     = GraphicalOutputUtils.inflate(activity, R.layout.initial_panel_skill_item);
@@ -101,7 +101,7 @@ public class SkillEvaluator implements CleanableUp {
             skillItemsLayout.addView(skillInfoItem);
         }
 
-        graphicalOutputDevice.displayTemporary(initialScreen);
+        graphicalOutputDevice.displayTemporary(initialPanel);
     }
 
     @Override

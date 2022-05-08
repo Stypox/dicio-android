@@ -187,7 +187,7 @@ public final class GraphicalOutputUtils {
      * @return the built view
      */
     public static View buildErrorMessage(final Context context, final Throwable throwable) {
-        final View view = inflate(context, R.layout.error_screen);
+        final View view = inflate(context, R.layout.error_panel);
 
         String description = throwable.getLocalizedMessage();
         if (isNullOrEmpty(description)) {
