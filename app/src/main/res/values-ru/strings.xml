@@ -99,11 +99,14 @@
     <string name="skill_timer_none_canceled">ОК, ни один секундомер не сброшен</string>
     <string name="pref_skill_grant_permissions">Разрешить</string>
     <string name="eval_missing_permissions">Умению \"%1$s\" требуются следующие разрешения, что работать: %2$s</string>
-    <string name="android_tts_error">Произошла ошибка при запуске движка Android TTS</string>
+    <string name="android_tts_error">"Произошла ошибка при запуске  движка Android TTS"</string>
     <string name="pref_skill_missing_permissions">Требуются следующие разрешения%1$s</string>
     <string name="skill_timer_confirm_cancel">Вы уверены, что вы хотите остановить все секундомеры\?</string>
     <string name="skill_timer_expired_name">Секундомер %1$s завершил настроенное время!</string>
     <string name="skill_timer_set_name">ОК, секундомер %1$s завершит настроенное время через %2$s</string>
     <string name="skill_timer_set">ОК, секундомер завершит настроенное время через %1$s</string>
     <string name="pref_skill_number_library_not_available">Библиотека анализирующая и форматирующая числа &lt;i&gt;dicio-numbers&lt;/i&gt; пока непереведенна на твой язык, что значит, все умения связанные с числами, длительностью и датами не доступны. Помоги, если можешь нажав сюда b&gt;Please contribute&lt;/b&gt;!</string>
+    <string name="error_report">Сообщить</string>
+    <string name="error_sorry">К сожалению, произошла ошибка</string>
+    <string name="error_title">Сообщение об ошибке</string>
 </resources>

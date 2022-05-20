@@ -57,7 +57,7 @@
     <string name="vosk_model_extracting">Extraction du modèle Vosk…</string>
     <string name="vosk_model_downloading">Téléchargement du modèle Vosk…</string>
     <string name="vosk_model_unsupported_language">Aucun modèle Vosk disponible pour la langue actuelle</string>
-    <string name="vosk_model_notification_description">Langue : %1$s</string>
+    <string name="vosk_model_notification_description">Langue: %1$s</string>
     <string name="vosk_model_notification_title">Modèle de Vosk</string>
     <string name="microphone_error">Impossible d\'accéder au microphone, il est probablement déjà utilisé ou l\'autorisation correspondante a été refusée.</string>
     <string name="listening">À l\'écoute…</string>
@@ -122,4 +122,6 @@
 \nVersion du système d\'exploitation :</string>
     <string name="error_report_github">Rapport sur GitHub</string>
     <string name="error_report_channel_description">Notifications pour signaler les erreurs</string>
+    <string name="error_sorry">Désolé, une erreur s\'est produite</string>
+    <string name="error_report">Rapport</string>
 </resources>

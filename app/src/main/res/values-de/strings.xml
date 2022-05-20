@@ -122,4 +122,6 @@
     <string name="pref_skill_number_library_not_available">Die Bibliothek <i>dicio-numbers</i> zum Formatieren und Umwandeln von Zahlen ist bisher noch nicht in deiner Sprache verfügbar. Dies bedeutet, dass alle Fähigkeiten in Verbindung mit Zahlen, Zeitspannen und Datumsangaben nicht verfügbar sind. Wenn du kannst, <b>bitte beteilige dich</b> indem du hier tippst!</string>
     <string name="error_copy_formatted">Kopiere formatierten Bericht</string>
     <string name="error_report_notification_title">Dicio ist auf einen Fehler gestoßen, drücken um zu berichten</string>
+    <string name="error_report">Melden</string>
+    <string name="error_sorry">Entschuldigung, ein Fehler ist aufgetreten</string>
 </resources>

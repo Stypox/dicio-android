@@ -71,4 +71,57 @@
     <string name="skill_open_unknown_app">L\'aplicació %1$s és desconeguda</string>
     <string name="pref_weather_default_city_using_ip_info">Definiu la ciutat que s\'usarà per al clima si no n\'expliciteu cap. El comportament actual és obtenir la ubicació a partir de la informació de la IP.</string>
     <string name="skill_weather_in_city_there_is_description">Ara mateix, a %1$s hi ha %2$s</string>
+    <string name="no_app_to_open_intent">Cap aplicació del vostre dispositiu pot obrir-lo</string>
+    <string name="skill_name_telephone">Telèfon</string>
+    <string name="open_with">Obre amb</string>
+    <string name="permission_denied">S\'ha denegat el permís</string>
+    <string name="error_title">Informe d\'error</string>
+    <string name="error_copy_formatted">Copia l\'informe amb format</string>
+    <string name="error_report">Informe</string>
+    <string name="error_sorry">S\'ha produït un error</string>
+    <string name="error_details_headline">Detalls:</string>
+    <string name="error_details_labels">Acció:
+\nLocalització:
+\nHora GMT:
+\nPaquet:
+\nVersió:
+\nVersió del sistema operatiu:</string>
+    <string name="error_crash_log_headline">Registre d\'errors:</string>
+    <string name="error_github_notice">Comproveu si ja existeix un problema que discuteixi la fallada. Quan creeu entrades duplicades, us preneu el temps que podríem passar amb la correcció de l\'error real.</string>
+    <string name="error_report_github">Informe a GitHub</string>
+    <string name="error_report_channel_name">Notificació d\'informe d\'error</string>
+    <string name="error_report_channel_description">Notificacions per a informar d\'errors</string>
+    <string name="pref_skill_not_available">Aquesta habilitat encara no està disponible per al vostre idioma. Les contribucions són benvingudes!</string>
+    <string name="pref_skill_number_library_not_available">La biblioteca d\'anàlisi i format de números <i>dicio-numbers</i> encara no està traduïda al vostre idioma, cosa que significa que totes les habilitats relacionades amb números, durades i dates no estan disponibles. <b> Si us plau, contribuïu</b> si podeu tocant aquí!</string>
+    <string name="eval_missing_permissions">L\'habilitat \"%1$s\" necessita aquests permisos per a treballar: %2$s</string>
+    <string name="skill_sentence_example_telephone">Truca a Tom</string>
+    <string name="skill_name_timer">Temporitzador</string>
+    <string name="skill_sentence_example_timer">Establir un temporitzador durant cinc minuts</string>
+    <string name="skill_search_what_question">Què voleu cercar\?</string>
+    <string name="skill_telephone_found_contacts">He trobat %1$d contactes</string>
+    <string name="skill_telephone_confirm_call">He de trucar a %1$s\?</string>
+    <string name="skill_timer_how_much_time">Quant de temps ha de durar el temporitzador\?</string>
+    <string name="skill_timer_expired">El temporitzador ha expirat!</string>
+    <string name="skill_timer_set">D\'acord, el temporitzador caducarà en %1$s</string>
+    <string name="skill_timer_set_name">D\'acord, el temporitzador %1$s caducarà en %2$s</string>
+    <string name="skill_timer_canceled">S\'ha cancel·lat el temporitzador</string>
+    <string name="skill_timer_all_canceled">S\'han cancel·lat tots els temporitzadors</string>
+    <string name="skill_timer_canceled_name">El temporitzador %1$s s\'ha cancel·lat</string>
+    <string name="skill_timer_no_active">No hi ha cap temporitzador actiu</string>
+    <string name="skill_timer_no_active_name">No hi ha cap temporitzador actiu anomenat %1$s</string>
+    <string name="skill_timer_query">El temporitzador caduca en %1$s</string>
+    <string name="skill_timer_none_canceled">D\'acord, no s\'ha cancel·lat cap temporitzador</string>
+    <string name="error_report_notification_title">Dicio ha trobat un error, toca per a informar</string>
+    <string name="error_report_notification_toast">S\'ha produït un error, vegeu la notificació</string>
+    <string name="android_tts_error">S\'ha produït un error en inicialitzar el motor de text a veu d\'Android</string>
+    <string name="pref_skill_missing_permissions">Requereix aquests permisos: %1$s</string>
+    <string name="pref_skill_grant_permissions">Concedir</string>
+    <string name="skill_search_no_results">La cerca no ha retornat resultats, proveu de tornar-me a dir què voleu cercar</string>
+    <string name="skill_timer_confirm_cancel">Esteu segur que voleu cancel·lar tots els temporitzadors\?</string>
+    <string name="skill_timer_expired_name">El temporitzador %1$s ha caducat!</string>
+    <string name="skill_telephone_calling">S\'està trucant a %1$s…</string>
+    <string name="skill_telephone_unknown_contact">No s\'ha trobat cap contacte, torneu-ho a provar</string>
+    <string name="skill_timer_query_last">L\'últim temporitzador caduca en %1$s</string>
+    <string name="skill_telephone_not_calling">D\'acord, no estic trucant a ningú</string>
+    <string name="skill_timer_query_name">El temporitzador %1$s caduca en %2$s</string>
 </resources>
