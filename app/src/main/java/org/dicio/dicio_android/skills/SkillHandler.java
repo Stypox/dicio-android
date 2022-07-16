@@ -18,6 +18,7 @@ import org.dicio.dicio_android.skills.search.SearchInfo;
 import org.dicio.dicio_android.skills.telephone.TelephoneInfo;
 import org.dicio.dicio_android.skills.timer.TimerInfo;
 import org.dicio.dicio_android.skills.weather.WeatherInfo;
+import org.dicio.dicio_android.skills.current_time.CurrentTimeInfo;
 import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
@@ -45,6 +46,7 @@ public final class SkillHandler {
         add(new CalculatorInfo());
         add(new TelephoneInfo());
         add(new TimerInfo());
+        add(new CurrentTimeInfo());
     }};
 
     private static final List<SkillInfo> FALLBACK_SKILL_INFO_LIST = new ArrayList<>() {{
