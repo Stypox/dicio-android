@@ -105,6 +105,9 @@ Create a class named `SKILL_IDInfo` (e.g. `WeatherInfo`) overriding `SkillInfo`:
 	4. At the end add `.output
 4. _\[Optional\]_ If your skill wants to present some preferences to the user, it has to do so by overriding `getPreferenceFragment()` (return `null` otherwise). Create a subclass of `SKILL_IDInfo` named `Preferences` extending `PreferenceFragmentCompat` (Android requires you not to use anonymous classes) and override the `onCreatePreferences()` as you would do normally. `getPreferenceFragment()` should then `return new Preferences()`. Make sure the `hasPreferences` parameter you use in the constructor (see [5.1](https://github.com/Stypox/dicio-android#5-skill-info)) reflects whether there are preferences or not. 
 
+#### 6. **List skill for SkillHandler**
+Under `org.dicio.dicio_android.Skills.SkillHandler`, update the `SKILL_INFO_LIST` by adding `add(new SKILL_IDInfo())`; this will make your skill visible to Dicio.   
+
 #### **Notes**
 - `skillContext` is provided in many places and can be used to **access resources and services**, similarly to Andorid's `context`.
 - If your input recognizer, processor or output generator use some resources that need to be cleaned up in order **not to create memory leaks**, make sure to override the `cleanup()` method.
