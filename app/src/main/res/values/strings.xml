@@ -87,7 +87,7 @@
     <string name="skill_sentence_example_telephone">Call Tom</string>
     <string name="skill_name_timer">Timer</string>
     <string name="skill_sentence_example_timer">Set a timer for five minutes</string>
-    <string name="skill_name_current_time">Current Time</string>
+    <string name="skill_name_current_time">Current time</string>
     <string name="skill_sentence_example_current_time">What time is it?</string>
     <string name="skill_fallback_name_text">Text message</string>
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>

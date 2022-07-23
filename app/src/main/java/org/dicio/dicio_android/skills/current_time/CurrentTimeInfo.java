@@ -15,17 +15,15 @@ import org.dicio.skill.standard.StandardRecognizer;
 
 public class CurrentTimeInfo extends SkillInfo {
 
-    // todo make a resource icon
     public CurrentTimeInfo() {
         super("current_time",
             R.string.skill_name_current_time,
             R.string.skill_sentence_example_current_time,
-            R.drawable.ic_timer_white, false);
+            R.drawable.baseline_watch_24, false);
     }
 
     @Override
     public boolean isAvailable(final SkillContext context) {
-        assert Sections.isSectionAvailable(current_time);
         return Sections.isSectionAvailable(current_time);
     }
 
@@ -35,7 +33,6 @@ public class CurrentTimeInfo extends SkillInfo {
                 .recognize(new StandardRecognizer(Sections.getSection(current_time)))
                 .process(new CurrentTimeStringProcessor())
                 .output(new CurrentTimeOutput());
-        //.recognize(new StandardRecognizer(current_time))
     }
 
     @Nullable
