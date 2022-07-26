@@ -119,4 +119,5 @@
     <string name="error_report_channel_name">Notifica segnalazione errore</string>
     <string name="error_report_channel_description">Notifiche per seglanare errori</string>
     <string name="error_sorry">Si è verificato un errore</string>
+    <string name="skill_time_current_time">Al momento sono le %1$s</string>
 </resources>
