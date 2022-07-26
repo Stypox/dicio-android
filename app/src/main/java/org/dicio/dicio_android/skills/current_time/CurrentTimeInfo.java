@@ -16,10 +16,8 @@ import org.dicio.skill.standard.StandardRecognizer;
 public class CurrentTimeInfo extends SkillInfo {
 
     public CurrentTimeInfo() {
-        super("current_time",
-            R.string.skill_name_current_time,
-            R.string.skill_sentence_example_current_time,
-            R.drawable.baseline_watch_24, false);
+        super("current_time", R.string.skill_name_current_time,
+            R.string.skill_sentence_example_current_time, R.drawable.ic_watch_white, false);
     }
 
     @Override
