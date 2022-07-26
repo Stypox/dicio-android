@@ -87,6 +87,8 @@
     <string name="skill_sentence_example_telephone">Call Tom</string>
     <string name="skill_name_timer">Timer</string>
     <string name="skill_sentence_example_timer">Set a timer for five minutes</string>
+    <string name="skill_name_current_time">Current time</string>
+    <string name="skill_sentence_example_current_time">What time is it?</string>
     <string name="skill_fallback_name_text">Text message</string>
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>
     <string name="skill_search_no_results">The search returned no results, try telling me again what you want to search for</string>
@@ -105,6 +107,7 @@
     <string name="skill_telephone_confirm_call">Should I call %1$s?</string>
     <string name="skill_telephone_calling">Calling %1$s…</string>
     <string name="skill_telephone_not_calling">OK, I am not calling anyone</string>
+    <string name="skill_time_current_time">Right now, it is %1$s</string>
     <string name="skill_timer_how_much_time">How much time should the timer last?</string>
     <string name="skill_timer_confirm_cancel">Are you sure you want to cancel all timers?</string>
     <string name="skill_timer_expired">The timer has expired!</string>
