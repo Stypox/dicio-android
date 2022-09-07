@@ -66,7 +66,7 @@ public final class StringUtils {
      * Returns the dynamic programming memory obtained when calculating the Levenshtein distance.
      * The solution lies at {@code memory[a.length()][b.length()]}. This memory can be used to find
      * the set of actions (insertion, deletion or substitution) to be done on the two strings to
-     * turn one into the other.
+     * turn one into the other. TODO this can be optimized to work with O(n) memory.
      * @param a the first string, maybe cleaned with {@link #cleanStringForDistance(String)}
      * @param b the second string, maybe cleaned with {@link #cleanStringForDistance(String)}
      * @return the memory of size {@code (a.length()+1) x (b.length()+1)}
