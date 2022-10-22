@@ -2,6 +2,9 @@ package org.dicio.dicio_android.input;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -172,6 +175,11 @@ public abstract class SpeechInputDevice extends InputDevice {
                     voiceLoading.setVisibility(View.GONE);
                     break;
                 case LISTENING:
+                    final Uri notification = RingtoneManager.getDefaultUri(
+                            RingtoneManager.TYPE_NOTIFICATION);
+                    final Ringtone r = RingtoneManager.getRingtone(voiceFab.getContext(),
+                            notification);
+                    r.play();
                     voiceFab.setIcon(AppCompatResources.getDrawable(voiceFab.getContext(),
                             R.drawable.ic_mic_white));
                     voiceFab.extend();
