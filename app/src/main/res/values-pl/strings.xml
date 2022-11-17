@@ -77,4 +77,32 @@
     <string name="permission_denied">Zezwolenie odrzucone</string>
     <string name="microphone_error">Brak dostępu do mikrofonu. Prawdopodobnie jest w użyciu przez inny program lub zezwolenie zostało odrzucone.</string>
     <string name="listening">Słuchanie…</string>
+    <string name="error_title">Zgłoszenie błędu</string>
+    <string name="error_report">Zgłoś</string>
+    <string name="error_sorry">Przepraszamy, wystąpił błąd</string>
+    <string name="error_report_github">Zgłoś przez GitHub</string>
+    <string name="error_report_notification_title">Napotkano błąd, stuknij, by zgłosić</string>
+    <string name="error_report_notification_toast">Wystąpił błąd, spójrz na notyfikacje</string>
+    <string name="error_details_headline">Szczegóły:</string>
+    <string name="skill_name_current_time">Aktualny czas</string>
+    <string name="skill_sentence_example_current_time">Która jest godzina\?</string>
+    <string name="skill_telephone_unknown_contact">Nie znaleziono kontaktu, spróbuj ponownie</string>
+    <string name="skill_telephone_found_contacts">Znaleziono %1$d kontaktów</string>
+    <string name="skill_telephone_confirm_call">Czy zadzwonić do %1$s\?</string>
+    <string name="skill_telephone_calling">Dzwonienie do %1$s…</string>
+    <string name="skill_telephone_not_calling">W porządku, nie dzwonię do nikogo</string>
+    <string name="skill_time_current_time">Aktualnie jest %1$s</string>
+    <string name="error_copy_formatted">Skopiuj sformatowany raport</string>
+    <string name="pref_skill_grant_permissions">Zezwól</string>
+    <string name="error_details_labels">Akcja:
+\nJęzyk:
+\nCzas GMT:
+\nPakiet:
+\nWersja:
+\nWersja systemu:</string>
+    <string name="skill_name_telephone">Telefon</string>
+    <string name="eval_missing_permissions">Umiejętność „%1$s” wymaga następujących uprawnień: %2$s</string>
+    <string name="pref_skill_missing_permissions">Wymaga następujących uprawnień: %1$s</string>
+    <string name="skill_sentence_example_telephone">Zadzwoń do Tomasza</string>
+    <string name="android_tts_error">Wystąpił błąd przy inicjalizacii silnika zamiany tekstu na mowę Androida</string>
 </resources>

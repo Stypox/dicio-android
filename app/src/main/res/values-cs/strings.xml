@@ -124,4 +124,7 @@
     <string name="skill_weather_min_max_wind">Minimální teplota: %1$.1f°C
 \nMaximální teplota: %2$.1f°C
 \nRychlost větru: %3$.1fm/s</string>
+    <string name="skill_sentence_example_current_time">Kolik je hodin\?</string>
+    <string name="skill_name_current_time">Aktuální čas</string>
+    <string name="skill_time_current_time">Právě teď je %1$s</string>
 </resources>
