@@ -38,6 +38,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+            </intent-filter>
+
             <meta-data
                 android:name="com.android.systemui.action_assist_icon"
                 android:resource="@mipmap/ic_launcher" />

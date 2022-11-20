@@ -1,17 +1,43 @@
 package org.dicio.dicio_android;
 
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import org.dicio.dicio_android.eval.SkillEvaluator;
+import org.dicio.dicio_android.eval.SkillRanker;
+import org.dicio.dicio_android.input.InputDevice;
+import org.dicio.dicio_android.input.SpeechInputDevice;
+import org.dicio.dicio_android.input.ToolbarInputDevice;
+import org.dicio.dicio_android.input.VoskInputDevice;
+import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
+import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
+import org.dicio.dicio_android.output.speech.AndroidTtsSpeechDevice;
+import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
+import org.dicio.dicio_android.output.speech.SnackbarSpeechDevice;
+import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
+import org.dicio.dicio_android.settings.SettingsActivity;
+import org.dicio.dicio_android.skills.SkillHandler;
+import org.dicio.dicio_android.skills.stt_service.SttServiceInfo;
+import org.dicio.dicio_android.util.BaseActivity;
+import org.dicio.dicio_android.util.PermissionUtils;
+import org.dicio.skill.Skill;
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,26 +49,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-
-import org.dicio.dicio_android.eval.SkillEvaluator;
-import org.dicio.dicio_android.eval.SkillRanker;
-import org.dicio.dicio_android.input.InputDevice;
-import org.dicio.dicio_android.input.SpeechInputDevice;
-import org.dicio.dicio_android.input.ToolbarInputDevice;
-import org.dicio.dicio_android.input.VoskInputDevice;
-import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
-import org.dicio.dicio_android.output.speech.AndroidTtsSpeechDevice;
-import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
-import org.dicio.dicio_android.output.speech.SnackbarSpeechDevice;
-import org.dicio.dicio_android.output.speech.ToastSpeechDevice;
-import org.dicio.dicio_android.settings.SettingsActivity;
-import org.dicio.dicio_android.skills.SkillHandler;
-import org.dicio.dicio_android.util.BaseActivity;
-import org.dicio.dicio_android.util.PermissionUtils;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,7 +68,8 @@ public class MainActivity extends BaseActivity
     private boolean appJustOpened = false;
     private boolean resumingFromSettings = false;
     private boolean textInputItemFocusJustChanged = false;
-
+    private boolean startedForSpeechResult = false;
+    private String sstServicePrompt;
 
     ////////////////////////
     // Activity lifecycle //
@@ -93,6 +102,19 @@ public class MainActivity extends BaseActivity
                         scrollView.scrollBy(0, oldBottom - bottom + top - oldTop), 10);
             }
         });
+
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Bundle extras = intent.getExtras();
+
+        if (action.equals(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)) {
+            startedForSpeechResult = true;
+            sstServicePrompt = extras.getString(RecognizerIntent.EXTRA_PROMPT);
+        }else{
+            startedForSpeechResult = false;
+        }
+
 
         appJustOpened = true; // determines whether to show initial panel and start listening
         initializeSkillEvaluator();
@@ -283,16 +305,39 @@ public class MainActivity extends BaseActivity
 
         SkillHandler.setSkillContextDevices(speechOutputDevice, graphicalOutputDevice);
 
-        skillEvaluator = new SkillEvaluator(
-                // Sections language is initialized in BaseActivity.setLocale
+
+        if (startedForSpeechResult){
+
+            List<Skill> sstServiceSkillOnly = new ArrayList<>();
+            sstServiceSkillOnly.add(SkillHandler.getSkill(new SttServiceInfo()));
+
+            skillEvaluator = new SkillEvaluator(
+                    new SkillRanker(sstServiceSkillOnly,
+                            SkillHandler.getFallbackSkill()),
+                    primaryInputDevice,
+                    secondaryInputDevice,
+                    speechOutputDevice,
+                    graphicalOutputDevice,
+                    this);
+            //Show prompt or default value
+            final View initialPanel = GraphicalOutputUtils.inflate(this, R.layout.initial_panel_stt_service);
+            if (sstServicePrompt != null && !sstServicePrompt.isEmpty()){
+                ((TextView)initialPanel.findViewById(R.id.prompt)).setText(sstServicePrompt);
+            }
+            graphicalOutputDevice.displayTemporary(initialPanel);
+
+        }else {
+            skillEvaluator = new SkillEvaluator(
+                    // Sections language is initialized in BaseActivity.setLocale
                 new SkillRanker(SkillHandler.getStandardSkillBatch(),
                         SkillHandler.getFallbackSkill()),
-                primaryInputDevice,
-                secondaryInputDevice,
-                speechOutputDevice,
-                graphicalOutputDevice,
-                this);
-        skillEvaluator.showInitialPanel();
+                    primaryInputDevice,
+                    secondaryInputDevice,
+                    speechOutputDevice,
+                    graphicalOutputDevice,
+                    this);
+            skillEvaluator.showInitialPanel();
+        }
     }
 
     private InputDevice buildPrimaryInputDevice() {

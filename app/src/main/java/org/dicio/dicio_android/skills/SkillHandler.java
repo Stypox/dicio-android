@@ -3,14 +3,10 @@ package org.dicio.dicio_android.skills;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
-
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.skills.calculator.CalculatorInfo;
+import org.dicio.dicio_android.skills.current_time.CurrentTimeInfo;
 import org.dicio.dicio_android.skills.fallback.text.TextFallbackInfo;
 import org.dicio.dicio_android.skills.lyrics.LyricsInfo;
 import org.dicio.dicio_android.skills.open.OpenInfo;
@@ -18,7 +14,6 @@ import org.dicio.dicio_android.skills.search.SearchInfo;
 import org.dicio.dicio_android.skills.telephone.TelephoneInfo;
 import org.dicio.dicio_android.skills.timer.TimerInfo;
 import org.dicio.dicio_android.skills.weather.WeatherInfo;
-import org.dicio.dicio_android.skills.current_time.CurrentTimeInfo;
 import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
@@ -32,13 +27,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
+
 public final class SkillHandler {
 
     private SkillHandler() {
     }
 
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
-    private static final List<SkillInfo> SKILL_INFO_LIST = new ArrayList<SkillInfo>() {{
+    private static final List<SkillInfo> SKILL_INFO_LIST = new ArrayList<>() {{
         add(new WeatherInfo());
         add(new SearchInfo());
         add(new LyricsInfo());
@@ -120,6 +120,9 @@ public final class SkillHandler {
 
     public static Skill getFallbackSkill() {
         return buildSkillFromInfo(Objects.requireNonNull(FALLBACK_SKILL_INFO_LIST.get(0)));
+    }
+    public static Skill getSkill(SkillInfo skillInfo) {
+        return buildSkillFromInfo(skillInfo);
     }
 
     private static Skill buildSkillFromInfo(@NonNull final SkillInfo skillInfo) {
