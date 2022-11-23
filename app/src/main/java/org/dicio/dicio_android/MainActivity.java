@@ -1,10 +1,12 @@
 package org.dicio.dicio_android;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,7 +71,7 @@ public class MainActivity extends BaseActivity
     private boolean resumingFromSettings = false;
     private boolean textInputItemFocusJustChanged = false;
     private boolean startedForSpeechResult = false;
-    private String sstServicePrompt;
+    private Bundle sstIntentExtras;
 
     ////////////////////////
     // Activity lifecycle //
@@ -106,11 +108,14 @@ public class MainActivity extends BaseActivity
 
         Intent intent = getIntent();
         String action = intent.getAction();
-        Bundle extras = intent.getExtras();
 
         if (action.equals(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)) {
             startedForSpeechResult = true;
-            sstServicePrompt = extras.getString(RecognizerIntent.EXTRA_PROMPT);
+            sstIntentExtras = intent.getExtras();
+            if (sstIntentExtras == null){
+                //To avoid NullPointChecks / NullPointerExceptions later on
+                sstIntentExtras = new Bundle();
+            }
         }else{
             startedForSpeechResult = false;
         }
@@ -272,6 +277,21 @@ public class MainActivity extends BaseActivity
         // SETTINGS_PERMISSIONS_REQUEST_CODE results are ignored
     }
 
+    public void setSstResult(int resultCode, Intent data){
+        setResult(resultCode, data);
+        if (sstIntentExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT)){
+            if (sstIntentExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE)){
+                data.getExtras().putAll(sstIntentExtras.getBundle(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE));
+            }
+            PendingIntent resultIntent = sstIntentExtras.getParcelable(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT);
+            try {
+                resultIntent.send(this, RESULT_OK, data, null, null);
+            } catch (PendingIntent.CanceledException e) {
+                Log.e("SST service", e.toString());
+            }
+        }
+    }
+
 
     /////////////////////
     // Skill functions //
@@ -321,6 +341,7 @@ public class MainActivity extends BaseActivity
                     this);
             //Show prompt or default value
             final View initialPanel = GraphicalOutputUtils.inflate(this, R.layout.initial_panel_stt_service);
+            String sstServicePrompt = sstIntentExtras.getString(RecognizerIntent.EXTRA_PROMPT);
             if (sstServicePrompt != null && !sstServicePrompt.isEmpty()){
                 ((TextView)initialPanel.findViewById(R.id.prompt)).setText(sstServicePrompt);
             }

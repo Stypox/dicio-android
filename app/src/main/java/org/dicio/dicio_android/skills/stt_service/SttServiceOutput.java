@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.view.View;
 
+import org.dicio.dicio_android.MainActivity;
 import org.dicio.dicio_android.R;
 import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.util.BaseActivity;
 import org.dicio.skill.chain.OutputGenerator;
 
 import java.util.ArrayList;
@@ -23,18 +23,15 @@ public class SttServiceOutput extends OutputGenerator<SttServiceOutput.Data> {
 
         final View sttServiceView = GraphicalOutputUtils.inflate(ctx().android(),
                 R.layout.skill_stt_service);
-        sttServiceView.findViewById(R.id.button_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<String> foundTexts = new ArrayList<>();
-                foundTexts.add(data.text);
+        sttServiceView.findViewById(R.id.button_submit).setOnClickListener(view -> {
+            ArrayList<String> foundTexts = new ArrayList<>();
+            foundTexts.add(data.text);
 
-                BaseActivity mainActivity = ((BaseActivity)ctx().android());
-                Intent result = new Intent();
-                result.putExtra(RecognizerIntent.EXTRA_RESULTS, foundTexts);
-                mainActivity.setResult(Activity.RESULT_OK, result);
-                mainActivity.onBackPressed();
-            }
+            MainActivity mainActivity = ((MainActivity)ctx().android());
+            Intent result = new Intent();
+            result.putExtra(RecognizerIntent.EXTRA_RESULTS, foundTexts);
+            mainActivity.setSstResult(Activity.RESULT_OK, result);
+            mainActivity.onBackPressed();
         });
         ctx().getGraphicalOutputDevice().display(sttServiceView);
     }
