@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity
     private boolean resumingFromSettings = false;
     private boolean textInputItemFocusJustChanged = false;
     private boolean startedForSpeechResult = false;
-    private Bundle sstIntentExtras;
+    private Bundle sttIntentExtras;
 
     ////////////////////////
     // Activity lifecycle //
@@ -106,17 +106,17 @@ public class MainActivity extends BaseActivity
         });
 
 
-        Intent intent = getIntent();
-        String action = intent.getAction();
+        final Intent intent = getIntent();
+        final String action = intent.getAction();
 
         if (action.equals(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)) {
             startedForSpeechResult = true;
-            sstIntentExtras = intent.getExtras();
-            if (sstIntentExtras == null){
+            sttIntentExtras = intent.getExtras();
+            if (sttIntentExtras == null) {
                 //To avoid NullPointChecks / NullPointerExceptions later on
-                sstIntentExtras = new Bundle();
+                sttIntentExtras = new Bundle();
             }
-        }else{
+        } else {
             startedForSpeechResult = false;
         }
 
@@ -277,16 +277,21 @@ public class MainActivity extends BaseActivity
         // SETTINGS_PERMISSIONS_REQUEST_CODE results are ignored
     }
 
-    public void setSstResult(int resultCode, Intent data){
+    public void setSttResult(final int resultCode, final Intent data) {
         setResult(resultCode, data);
-        if (sstIntentExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT)){
-            if (sstIntentExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE)){
-                data.getExtras().putAll(sstIntentExtras.getBundle(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE));
+        if (sttIntentExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT)) {
+            if (sttIntentExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE)) {
+                data.getExtras().putAll(sttIntentExtras.getBundle(
+                        RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE
+                ));
             }
-            PendingIntent resultIntent = sstIntentExtras.getParcelable(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT);
+            final PendingIntent resultIntent = sttIntentExtras.getParcelable(
+                    RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT
+            );
             try {
-                resultIntent.send(this, RESULT_OK, data, null, null);
-            } catch (PendingIntent.CanceledException e) {
+                resultIntent.send(this, RESULT_OK, data);
+//                resultIntent.send(this, RESULT_OK, data, null, null);
+            } catch (final PendingIntent.CanceledException e) {
                 Log.e("SST service", e.toString());
             }
         }
@@ -326,9 +331,11 @@ public class MainActivity extends BaseActivity
         SkillHandler.setSkillContextDevices(speechOutputDevice, graphicalOutputDevice);
 
 
-        if (startedForSpeechResult){
-
-            List<Skill> sstServiceSkillOnly = new ArrayList<>();
+        if (startedForSpeechResult) {
+            //TODO Extras which may be also useful for speech recognition, sorted by priority:
+            // EXTRA_LANGUAGE_MODEL (abel with vosk?), EXTRA_BIASING_STRINGS, EXTRA_LANGUAGE,
+            // EXTRA_AUDIO_SOURCE, DETAILS_META_DATA(?)
+            final List<Skill> sstServiceSkillOnly = new ArrayList<>();
             sstServiceSkillOnly.add(SkillHandler.getSkill(new SttServiceInfo()));
 
             skillEvaluator = new SkillEvaluator(
@@ -340,14 +347,17 @@ public class MainActivity extends BaseActivity
                     graphicalOutputDevice,
                     this);
             //Show prompt or default value
-            final View initialPanel = GraphicalOutputUtils.inflate(this, R.layout.initial_panel_stt_service);
-            String sstServicePrompt = sstIntentExtras.getString(RecognizerIntent.EXTRA_PROMPT);
-            if (sstServicePrompt != null && !sstServicePrompt.isEmpty()){
-                ((TextView)initialPanel.findViewById(R.id.prompt)).setText(sstServicePrompt);
+            final View initialPanel = GraphicalOutputUtils.inflate(
+                    this, R.layout.initial_panel_stt_service
+            );
+            final String sttServicePrompt = sttIntentExtras.getString(
+                    RecognizerIntent.EXTRA_PROMPT);
+            if (sttServicePrompt != null && !sttServicePrompt.isEmpty()) {
+                ((TextView) initialPanel.findViewById(R.id.prompt)).setText(sttServicePrompt);
             }
             graphicalOutputDevice.displayTemporary(initialPanel);
 
-        }else {
+        } else {
             skillEvaluator = new SkillEvaluator(
                     // Sections language is initialized in BaseActivity.setLocale
                 new SkillRanker(SkillHandler.getStandardSkillBatch(),

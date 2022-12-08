@@ -11,16 +11,17 @@ import androidx.fragment.app.Fragment;
 
 public class SttServiceInfo  extends SkillInfo {
     public SttServiceInfo() {
-        super("stt_service", R.string.skill_stt_service, R.string.skill_sentence_example_stt_service, R.drawable.ic_timer_white, false);
+        super("stt_service", R.string.skill_stt_service, R.string.skill_sentence_example_stt_service,
+                R.drawable.ic_timer_white, false);
     }
 
     @Override
-    public boolean isAvailable(SkillContext context) {
+    public boolean isAvailable(final SkillContext context) {
         return true;
     }
 
     @Override
-    public Skill build(SkillContext context) {
+    public Skill build(final SkillContext context) {
         return new ChainSkill.Builder()
                 .recognize(new SimpleForwardRecognizer())
                 .process(new SttServiceProcessor())

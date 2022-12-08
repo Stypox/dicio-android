@@ -9,7 +9,7 @@ import java.util.List;
  * This Recognizer just forwards the speech input completely
  */
 public class SimpleForwardRecognizer  extends InputRecognizer<SimpleForwardRecognizer.Result> {
-    public class Result{
+    public class Result {
         public String input;
         public List<String> inputWords;
         public List<String> normalizedInputWords;
@@ -31,7 +31,8 @@ public class SimpleForwardRecognizer  extends InputRecognizer<SimpleForwardRecog
     }
 
     @Override
-    public void setInput(String input, List<String> inputWords, List<String> normalizedInputWords) {
+    public void setInput(final String input, final List<String> inputWords,
+                         final List<String> normalizedInputWords) {
         this.input = input;
         this.inputWords = inputWords;
         this.normalizedInputWords = normalizedInputWords;
@@ -44,7 +45,7 @@ public class SimpleForwardRecognizer  extends InputRecognizer<SimpleForwardRecog
 
     @Override
     public SimpleForwardRecognizer.Result getResult() {
-        Result r = new Result();
+        final Result r = new Result();
         r.input = input;
         r.inputWords = inputWords;
         r.normalizedInputWords = normalizedInputWords;

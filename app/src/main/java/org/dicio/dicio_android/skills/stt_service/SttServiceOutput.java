@@ -1,6 +1,7 @@
 package org.dicio.dicio_android.skills.stt_service;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.view.View;
@@ -19,18 +20,28 @@ public class SttServiceOutput extends OutputGenerator<SttServiceOutput.Data> {
     }
 
     @Override
-    public void generate(Data data) {
+    public void generate(final Data data) {
 
         final View sttServiceView = GraphicalOutputUtils.inflate(ctx().android(),
                 R.layout.skill_stt_service);
         sttServiceView.findViewById(R.id.button_submit).setOnClickListener(view -> {
-            ArrayList<String> foundTexts = new ArrayList<>();
+            //get results from recognizer and prepare for reporting
+            final ArrayList<String> foundTexts = new ArrayList<>();
             foundTexts.add(data.text);
-
-            MainActivity mainActivity = ((MainActivity)ctx().android());
-            Intent result = new Intent();
+            final ArrayList<Float> confidenceScore = new ArrayList<>();
+            //Because there is currently just one result, it gets 1.0 TODO check how to get more
+            // results + confidence from vosk. When extending number of results,
+            // implement EXTRA_MAX_RESULTS
+            confidenceScore.add(1.0f);
+            //Prepare Result Intent with Extras
+            final MainActivity mainActivity = ((MainActivity) ctx().android());
+            final Intent result = new Intent();
             result.putExtra(RecognizerIntent.EXTRA_RESULTS, foundTexts);
-            mainActivity.setSstResult(Activity.RESULT_OK, result);
+            result.putExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES, confidenceScore);
+            //This is for some apps, who use the Android SearchManager (e.g. ebay)
+            //(in my eyes probably wrong implemented by them, however without it's not working...)
+            result.putExtra(SearchManager.QUERY, data.text);
+            mainActivity.setSttResult(Activity.RESULT_OK, result);
             mainActivity.onBackPressed();
         });
         ctx().getGraphicalOutputDevice().display(sttServiceView);
