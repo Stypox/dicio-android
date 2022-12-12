@@ -3,7 +3,7 @@ package org.dicio.dicio_android.util;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
+import androidx.annotation.StyleRes;
 
 import org.dicio.dicio_android.R;
 
@@ -16,15 +16,16 @@ public abstract class BaseActivity extends LocaleAwareActivity {
     private int currentTheme;
     private boolean isRecreating = false;
 
-    private int getThemeFromPreferences() {
-        final String preference = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.pref_key_theme), "");
-
-        if (preference.equals(getString(R.string.pref_val_theme_dark))) {
-            return R.style.DarkAppTheme;
-        } else {
-            return R.style.LightAppTheme;
-        }
+    /**
+     * Override this if extending activity needs some specific light/dark themes (different than the
+     * default {@code R.style.Light/DarkAppTheme}).
+     *
+     * @return the id of the style resource to use as theme based on preferences
+     */
+    @StyleRes
+    protected int getThemeFromPreferences() {
+        return ThemeUtils.chooseThemeBasedOnPreferences(this,
+                R.style.LightAppTheme, R.style.DarkAppTheme);
     }
 
 

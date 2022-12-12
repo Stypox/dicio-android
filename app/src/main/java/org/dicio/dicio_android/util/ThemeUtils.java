@@ -5,7 +5,11 @@ import android.content.res.TypedArray;
 import android.util.TypedValue;
 
 import androidx.annotation.AttrRes;
+import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
+
+import org.dicio.dicio_android.R;
 
 public final class ThemeUtils {
 
@@ -44,5 +48,19 @@ public final class ThemeUtils {
         }
 
         return value.data;
+    }
+
+    @StyleRes
+    public static int chooseThemeBasedOnPreferences(final Context context,
+                                                    @StyleRes final int light,
+                                                    @StyleRes final int dark) {
+        final String preference = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.pref_key_theme), "");
+
+        if (preference.equals(context.getString(R.string.pref_val_theme_dark))) {
+            return dark;
+        } else {
+            return light;
+        }
     }
 }
