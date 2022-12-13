@@ -1,8 +1,5 @@
 package org.dicio.dicio_android.input.stt_service;
 
-import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT;
-import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE;
-
 import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
@@ -12,9 +9,6 @@ import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -32,6 +26,12 @@ import org.dicio.dicio_android.util.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+
+import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT;
+import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE;
 
 public class SttServiceActivity extends BaseActivity {
     private static final String TAG = SttServiceActivity.class.getSimpleName();
@@ -69,6 +69,9 @@ public class SttServiceActivity extends BaseActivity {
                         R.style.LightAppTheme, R.style.DarkAppTheme));
         final LayoutInflater layoutInflater = LayoutInflater.from(wrappedContext);
         binding = DialogSttServiceBinding.inflate(layoutInflater);
+        final String prompt = speechExtras.getString(
+                RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
+        binding.userInput.setHint(prompt);
 
         dialog = new BottomSheetDialog(wrappedContext);
         dialog.setCancelable(true);
@@ -104,7 +107,9 @@ public class SttServiceActivity extends BaseActivity {
         speechInputDevice.setInputDeviceListener(new InputDevice.InputDeviceListener() {
             @Override
             public void onTryingToGetInput() {
-                binding.userInput.setHint(R.string.stt_say_something);
+                final String prompt = speechExtras.getString(
+                        RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
+                binding.userInput.setHint(prompt);
                 binding.userInput.setEnabled(false);
             }
 
