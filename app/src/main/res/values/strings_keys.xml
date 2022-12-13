@@ -23,4 +23,6 @@
     <string name="pref_val_search_engine_duckduckgo" translatable="false">duckduckgo</string>
 
     <string name="pref_key_weather_default_city" translatable="false">weather_default_city</string>
+
+    <string name="pref_key_stt_auto_finish" translatable="false">stt_auto_finish</string>
 </resources>

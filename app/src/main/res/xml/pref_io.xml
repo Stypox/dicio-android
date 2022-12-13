@@ -27,4 +27,13 @@
         android:key="@string/pref_key_speech_output_method"
         android:summary="@string/pref_speech_output_method_summary"
         android:title="@string/pref_speech_output_method" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/pref_key_stt_auto_finish"
+        android:title="@string/pref_stt_auto_finish_title"
+        android:summaryOn="@string/pref_stt_auto_finish_summary_on"
+        android:summaryOff="@string/pref_stt_auto_finish_summary_off"
+        android:icon="?attr/iconRecordVoiceOver"
+        />
 </PreferenceScreen>
