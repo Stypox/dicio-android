@@ -32,6 +32,7 @@ import org.dicio.dicio_android.input.InputDevice;
 import org.dicio.dicio_android.input.SpeechInputDevice;
 import org.dicio.dicio_android.input.ToolbarInputDevice;
 import org.dicio.dicio_android.input.VoskInputDevice;
+import org.dicio.dicio_android.input.stt_service.SttServiceActivity;
 import org.dicio.dicio_android.output.graphical.MainScreenGraphicalDevice;
 import org.dicio.dicio_android.output.speech.AndroidTtsSpeechDevice;
 import org.dicio.dicio_android.output.speech.NothingSpeechDevice;
@@ -215,6 +216,9 @@ public class MainActivity extends BaseActivity
             startActivity(intent);
             drawer.closeDrawer(GravityCompat.START);
             resumingFromSettings = true;
+        } else if (item.getItemId() == R.id.action_stt_service) {
+            startActivity(new Intent(this, SttServiceActivity.class));
+            drawer.closeDrawer(GravityCompat.START);
         }
         return true;
     }

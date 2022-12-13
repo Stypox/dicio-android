@@ -8,4 +8,9 @@
         android:id="@+id/action_settings"
         android:icon="?attr/iconSettings"
         android:title="@string/settings" />
+
+    <item
+        android:id="@+id/action_stt_service"
+        android:icon="?attr/iconRecordVoiceOver"
+        android:title="@string/stt_service" />
 </menu>

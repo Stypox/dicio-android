@@ -73,6 +73,9 @@
     <string name="eval_network_error">Network error</string>
     <string name="eval_network_error_description">Dicio could not reach the internet. Please check your connection and retry.</string>
     <string name="eval_no_match">I did not understand, could you repeat?</string>
+    <string name="stt_say_something">Say something…</string>
+    <string name="stt_did_not_understand">I could not understand, try again</string>
+    <string name="stt_service">Speech to text service</string>
     <string name="skill_name_search">Search</string>
     <string name="skill_sentence_example_search">Search how to feed a cat</string>
     <string name="skill_name_weather">Weather</string>

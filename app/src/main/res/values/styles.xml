@@ -5,6 +5,7 @@
         <!-- status bar will have the same color as the app bar -->
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
 
         <item name="cardBackground">@color/cardBackgroundDark</item>
         <item name="cardForeground">@color/cardForegroundDark</item>
@@ -24,6 +25,19 @@
         <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_white</item>
         <item name="iconExpandMore">@drawable/ic_expand_more_white</item>
         <item name="iconExtension">@drawable/ic_extension_white</item>
+        <item name="iconDone">@drawable/ic_done_white</item>
+        <item name="iconContentCopy">@drawable/ic_content_copy_white</item>
+        <item name="iconShare">@drawable/ic_share_white</item>
+        <item name="iconRecordVoiceOver">@drawable/ic_record_voice_over_white</item>
+    </style>
+
+    <style name="SttServiceDarkAppTheme" parent="DarkAppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 
@@ -32,6 +46,7 @@
         <!-- status bar will have the same color as the app bar -->
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccentLight</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
 
         <item name="cardBackground">@color/cardBackgroundLight</item>
         <item name="cardForeground">@color/cardForegroundLight</item>
@@ -51,12 +66,26 @@
         <item name="iconSpeakerPhone">@drawable/ic_speaker_phone_black</item>
         <item name="iconExpandMore">@drawable/ic_expand_more_black</item>
         <item name="iconExtension">@drawable/ic_extension_black</item>
+        <item name="iconDone">@drawable/ic_done_black</item>
+        <item name="iconContentCopy">@drawable/ic_content_copy_black</item>
+        <item name="iconShare">@drawable/ic_share_black</item>
+        <item name="iconRecordVoiceOver">@drawable/ic_record_voice_over_black</item>
+    </style>
+
+    <style name="SttServiceLightAppTheme" parent="LightAppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 
     <style name="SplashScreenTheme" parent="LightAppTheme">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
 
     <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -71,6 +100,16 @@
         <!-- status bar will have the same color as the app bar -->
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/white</item>
+    </style>
+
+
+    <style name="BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyleWrapper</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="BottomSheetStyleWrapper" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:backgroundTint">@android:color/transparent</item>
     </style>
 
 </resources>
