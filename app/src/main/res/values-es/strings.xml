@@ -109,19 +109,22 @@
     <string name="error_crash_log_headline">Registro de fallos:</string>
     <string name="error_details_headline">Detalles:</string>
     <string name="error_title">Informe de errores</string>
-    <string name="error_details_labels">Acción:
-\nConf. regional:
+    <string name="error_details_labels">Ación:
+\nUbicación:
 \nHora GMT:
 \nPaquete:
 \nVersión:
-\nVersión del SO:</string>
+\nOS versión:</string>
     <string name="error_github_notice">Compruebe si ya existe un problema relacionado con su crasheo. Al crear tickets duplicados, nos toma tiempo que podríamos dedicar a corregir el error real.</string>
     <string name="error_copy_formatted">Copiar informe con formato</string>
     <string name="error_report_github">Reportar en Github</string>
     <string name="error_report_notification_toast">Se ha producido un error, consulte la notificación</string>
-    <string name="error_report_channel_name">Notificación de informe de error</string>
+    <string name="error_report_channel_name">Notificar los errores</string>
     <string name="error_report_channel_description">Notificaciones para informar de errores</string>
     <string name="error_report_notification_title">Dicio encontró un error, toque para informar</string>
     <string name="error_report">Informar</string>
     <string name="error_sorry">Lo sentimos, se ha producido un error</string>
+    <string name="skill_name_current_time">Hora actual</string>
+    <string name="skill_sentence_example_current_time">¿Qué hora es\?</string>
+    <string name="skill_time_current_time">En este momento, es %1$s</string>
 </resources>

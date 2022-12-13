@@ -106,4 +106,25 @@
     <string name="drawer_open">Deschideți sertarul de navigare</string>
     <string name="drawer_close">Inchideti sertarul de navigare</string>
     <string name="pref_skill_number_library_not_available">Biblioteca de analiză și formatare a numerelor <i>dicio-numbers</i> nu este încă tradusă în limba dvs., ceea ce înseamnă că toate abilitățile legate de numere, durate și date nu sunt disponibile. <b>Vă rugăm să contribuiți</b> dacă puteți atingând aici!</string>
+    <string name="error_details_headline">Detalii:</string>
+    <string name="error_report_channel_description">Notificatie pentru raport de eroare</string>
+    <string name="error_report">Raporteaza</string>
+    <string name="error_title">Raportare de eroare</string>
+    <string name="error_sorry">Scuze, s-a intamplat o eroare</string>
+    <string name="error_details_labels">Actiune:
+\nSetari regionale:
+\nTimp GMT:
+\nPachet:
+\nVersiune:
+\nVersiunea sistemului de operare:</string>
+    <string name="error_crash_log_headline">Jurnal de caderi:</string>
+    <string name="error_github_notice">Te rog sa verifici daca o problema care discuta caderea ta exista deja. Cand creezi tickete duplicate, tu iei timp de la noi in care am fi putut sa ne petrecem timpul fixand eroarea.</string>
+    <string name="error_copy_formatted">Copiaza raportul formatat</string>
+    <string name="error_report_github">Raporteaza pe Github</string>
+    <string name="error_report_notification_title">Dicio a avut o eroare, apasa-ma ca sa o raportezi</string>
+    <string name="error_report_notification_toast">O eroare s-a intamplat, uita-te la notificatie</string>
+    <string name="error_report_channel_name">Notificatie de raport pentru eroare</string>
+    <string name="skill_name_current_time">Timpul actual</string>
+    <string name="skill_sentence_example_current_time">Cat este ora\?</string>
+    <string name="skill_time_current_time">Acum, este %1$s</string>
 </resources>

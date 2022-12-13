@@ -106,4 +106,25 @@
     <string name="skill_timer_no_active_name">Não há nenhum temporizador ativo chamado %1$s</string>
     <string name="skill_timer_no_active">Não há nenhum temporizador ativo</string>
     <string name="skill_timer_query_name">O temporizador %1$s expira em %2$s</string>
+    <string name="error_details_headline">Detalhes:</string>
+    <string name="error_report_github">Relatar no GitHub</string>
+    <string name="error_report">Relatar</string>
+    <string name="error_details_labels">Ação:
+\nLocal:
+\nHora GMT:
+\nPacote:
+\nVersão:
+\nVersão do SO:</string>
+    <string name="error_report_notification_title">O Dicio encontrou um erro, toque para reportar</string>
+    <string name="error_github_notice">Por favor, verifique se uma questão relacionada ao seu problema já existe. Ao reservar uma reclamação duplicada nós acabamos dedicando à ela o tempo que poderia ser utilizado para consertar o próprio bug.</string>
+    <string name="error_sorry">Sinto muito, ocorreu um erro</string>
+    <string name="error_copy_formatted">Copiar o relatório formatado</string>
+    <string name="error_report_notification_toast">Ocorreu um erro, veja a notificação</string>
+    <string name="error_title">Relatório de erro</string>
+    <string name="error_crash_log_headline">Registro de falha:</string>
+    <string name="error_report_channel_name">Notificação de relatório de erro</string>
+    <string name="error_report_channel_description">Notificações para relatórios de erro</string>
+    <string name="skill_name_current_time">Hora atual</string>
+    <string name="skill_sentence_example_current_time">Que horas são\?</string>
+    <string name="skill_time_current_time">Agora são %1$s</string>
 </resources>
