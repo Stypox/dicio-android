@@ -124,4 +124,7 @@
     <string name="error_report_channel_description">Notifications pour signaler les erreurs</string>
     <string name="error_sorry">Désolé, une erreur s\'est produite</string>
     <string name="error_report">Rapport</string>
+    <string name="skill_time_current_time">En ce moment, c\'est %1$s</string>
+    <string name="skill_name_current_time">Heure actuelle</string>
+    <string name="skill_sentence_example_current_time">Quelle heure est-il \?</string>
 </resources>

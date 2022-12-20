@@ -124,4 +124,7 @@
     <string name="pref_speech_output_method_snackbar">Snackbar (mesaĝo malsupre)</string>
     <string name="skill_search_what_question">Kion vi volas serĉi\?</string>
     <string name="skill_calculator_could_not_calculate">Mi ne povis kalkuli vian peton</string>
+    <string name="skill_name_current_time">Nuna tempo</string>
+    <string name="skill_sentence_example_current_time">Kioma horo estas\?</string>
+    <string name="skill_time_current_time">Nun estas %1$s</string>
 </resources>
