@@ -1,20 +1,15 @@
 package org.dicio.dicio_android.input.stt_service;
 
-import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT;
-import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE;
-
 import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -33,12 +28,21 @@ import org.dicio.dicio_android.util.ThemeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.preference.PreferenceManager;
+
+import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT;
+import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE;
+
 public class SttServiceActivity extends BaseActivity {
     private static final String TAG = SttServiceActivity.class.getSimpleName();
 
     AppCompatDialog dialog;
     SpeechInputDevice speechInputDevice;
     DialogSttServiceBinding binding;
+
+    private SharedPreferences preferences;
 
     boolean startedForSpeechResult = false;
     private Bundle speechExtras;
@@ -52,6 +56,8 @@ public class SttServiceActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         final Intent intent = getIntent();
         if (intent != null && RecognizerIntent.ACTION_RECOGNIZE_SPEECH.equals(intent.getAction())) {
@@ -69,6 +75,9 @@ public class SttServiceActivity extends BaseActivity {
                         R.style.LightAppTheme, R.style.DarkAppTheme));
         final LayoutInflater layoutInflater = LayoutInflater.from(wrappedContext);
         binding = DialogSttServiceBinding.inflate(layoutInflater);
+        final String prompt = speechExtras.getString(
+                RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
+        binding.userInput.setHint(prompt);
 
         dialog = new BottomSheetDialog(wrappedContext);
         dialog.setCancelable(true);
@@ -98,13 +107,18 @@ public class SttServiceActivity extends BaseActivity {
 
 
     private void setupSpeechInputDevice() {
+        //TODO Extras which may be also useful for speech recognition, sorted by priority:
+        // EXTRA_LANGUAGE_MODEL (abel with vosk?), EXTRA_BIASING_STRINGS, EXTRA_LANGUAGE,
+        // EXTRA_AUDIO_SOURCE, DETAILS_META_DATA(?)
         speechInputDevice = new VoskInputDevice(this);
         speechInputDevice.setVoiceViews(binding.voiceFab, binding.voiceLoading);
         speechInputDevice.tryToGetInput(false);
         speechInputDevice.setInputDeviceListener(new InputDevice.InputDeviceListener() {
             @Override
             public void onTryingToGetInput() {
-                binding.userInput.setHint(R.string.stt_say_something);
+                final String prompt = speechExtras.getString(
+                        RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
+                binding.userInput.setHint(prompt);
                 binding.userInput.setEnabled(false);
             }
 
@@ -117,7 +131,9 @@ public class SttServiceActivity extends BaseActivity {
             public void onInputReceived(final List<String> input) {
                 showUserInput(input.get(0));
                 binding.userInput.setEnabled(true);
-                if (startedForSpeechResult) {
+                final boolean autoFinish = preferences
+                        .getBoolean(getString(R.string.pref_key_stt_auto_finish), false);
+                if (startedForSpeechResult && autoFinish) {
                     sendSpeechResult();
                     dialog.dismiss();
                 }
