@@ -1,0 +1,10 @@
+Entra nella discussione sul nuovo logo: https://github.com/Stypox/dicio-android/issues/74
+
+Novità:
+- Riconoscimento vocale Vosk ora usabile per dettare, anche su altre app quando ad es. si preme il bottone del microfono
+- Abilità tempo corrente
+- Traduzione in francese e russo del telefono
+  - anche del timer, ma `dicio-numbers` non supporta tali lingue
+
+Correzioni:
+- [Vosk] Sistemato un crash nel download del modello su versioni di Android vecchie: mancava il permesso di accedere alla memoria
