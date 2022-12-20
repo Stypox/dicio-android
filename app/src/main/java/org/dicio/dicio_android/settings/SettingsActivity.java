@@ -9,12 +9,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.util.LocaleAwareActivity;
+import org.dicio.dicio_android.util.BaseActivity;
 
-public class SettingsActivity extends LocaleAwareActivity
+public class SettingsActivity extends BaseActivity
         implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     private final String toolbarTitleKey = "toolbarTitle";
 
@@ -22,20 +21,8 @@ public class SettingsActivity extends LocaleAwareActivity
     Toolbar toolbar;
     String toolbarTitle;
 
-    private void setThemeFromPreferences() {
-        final String preference = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.pref_key_theme), "");
-
-        if (preference.equals(getString(R.string.pref_val_theme_dark))) {
-            setTheme(R.style.SettingsDarkAppTheme);
-        } else {
-            setTheme(R.style.SettingsLightAppTheme);
-        }
-    }
-
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
-        setThemeFromPreferences();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 

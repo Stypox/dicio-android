@@ -15,4 +15,8 @@
     <attr name="iconSpeakerPhone" format="reference" />
     <attr name="iconExpandMore" format="reference" />
     <attr name="iconExtension" format="reference" />
+    <attr name="iconDone" format="reference" />
+    <attr name="iconContentCopy" format="reference" />
+    <attr name="iconShare" format="reference" />
+    <attr name="iconRecordVoiceOver" format="reference" />
 </resources>

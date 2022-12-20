@@ -60,7 +60,7 @@ public class VoskInputDevice extends SpeechInputDevice {
      * All small models from <a href="https://alphacephei.com/vosk/models">Vosk</a>
      */
     @SuppressWarnings("LineLength")
-    public static final Map<String, String> MODEL_URLS = new HashMap<String, String>() {{
+    public static final Map<String, String> MODEL_URLS = new HashMap<>() {{
         put("en",    "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip");
         put("en-in", "https://alphacephei.com/vosk/models/vosk-model-small-en-in-0.4.zip");
         put("cn",    "https://alphacephei.com/vosk/models/vosk-model-small-cn-0.3.zip");
@@ -183,8 +183,9 @@ public class VoskInputDevice extends SpeechInputDevice {
         super.cleanup();
         disposables.clear();
         if (speechService != null) {
-             speechService.shutdown();
-             speechService = null;
+            speechService.stop();
+            speechService.shutdown();
+            speechService = null;
         }
 
         if (currentModelDownloadId != null) {

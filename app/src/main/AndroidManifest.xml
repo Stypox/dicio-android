@@ -51,5 +51,19 @@
             android:name=".error.ErrorActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".input.stt_service.SttServiceActivity"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/SttServiceDarkAppTheme"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+            </intent-filter>
+        </activity>
+
     </application>
 </manifest>

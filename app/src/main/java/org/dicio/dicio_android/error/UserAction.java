@@ -8,6 +8,7 @@ import android.os.Parcelable;
  * @implNote Taken with some modifications from NewPipe, file error/UserAction.java
  */
 public enum UserAction implements Parcelable {
+    STT_SERVICE_SPEECH_TO_TEXT("Stt service speech to text"),
     SKILL_EVALUATION("Skill evaluation");
 
 
