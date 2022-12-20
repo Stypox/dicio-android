@@ -73,8 +73,8 @@
     <string name="skill_weather_in_city_there_is_description">Ara mateix, a %1$s hi ha %2$s</string>
     <string name="no_app_to_open_intent">Cap aplicació del vostre dispositiu pot obrir-lo</string>
     <string name="skill_name_telephone">Telèfon</string>
-    <string name="open_with">Obre amb</string>
-    <string name="permission_denied">S\'ha denegat el permís</string>
+    <string name="open_with">Obrir amb</string>
+    <string name="permission_denied">Permís denegat</string>
     <string name="error_title">Informe d\'error</string>
     <string name="error_copy_formatted">Copia l\'informe amb format</string>
     <string name="error_report">Informe</string>
@@ -124,4 +124,7 @@
     <string name="skill_timer_query_last">L\'últim temporitzador caduca en %1$s</string>
     <string name="skill_telephone_not_calling">D\'acord, no estic trucant a ningú</string>
     <string name="skill_timer_query_name">El temporitzador %1$s caduca en %2$s</string>
+    <string name="skill_time_current_time">Ara son les %1$s</string>
+    <string name="skill_name_current_time">Hora actual</string>
+    <string name="skill_sentence_example_current_time">Quina hora es\?</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_text_input">Textinmatning</string>
+    <string name="drawer_header_subtitle">Kan jag hjälpa dig\?</string>
+    <string name="share">Dela</string>
+    <string name="open_with">Öppna med</string>
+    <string name="no_app_to_open_intent">Ingen app på din enhet kan öppna det här</string>
+    <string name="copied_to_clipboard">Kopierades till ditt klippbord</string>
+    <string name="permission_denied">Åtkomst nekades</string>
+    <string name="text_input_hint">Fråga mig om någonting…</string>
+    <string name="here_is_what_i_can_do">Det här är vad jag kan göra!</string>
+    <string name="action_voice_input">Röstinmatning</string>
+    <string name="listening">Lyssnar…</string>
+    <string name="vosk_model_notification_title">Vosk-modell</string>
+    <string name="vosk_model_notification_description">Språk: %1$s</string>
+    <string name="vosk_model_downloading">Laddar ner Vosk-modellen…</string>
+    <string name="vosk_model_extracting">Extraherar Vosk-modellen…</string>
+    <string name="vosk_model_extraction_error">Extraheringen av Vosk-modellen från Zip misslyckades</string>
+    <string name="vosk_model_unsupported_language">Det finns ingen Vosk-modell tillgänglig för det nuvarande språket</string>
+</resources>

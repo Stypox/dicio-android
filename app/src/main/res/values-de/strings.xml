@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_weather_default_city">Voreinstellung Stadt</string>
-    <string name="pref_input_method_summary">Waehle den Dienst, der verwendet werden soll, um mit Dicio zu kommunizieren - %1$s</string>
+    <string name="pref_input_method_summary">Wähle den Dienst, der verwendet werden soll, um mit Dicio zu kommunizieren - %1$s</string>
     <string name="vosk_model_extraction_error">Vosk Modells konnte aus dem Zip-Archiv nicht entpackt werden</string>
     <string name="vosk_model_downloading">Lade Vosk Modell herunter…</string>
     <string name="text_input_hint">Frag mich irgendetwas…</string>
@@ -38,7 +38,7 @@
     <string name="pref_speech_output_method_snackbar">Benachrichtigungsfeld unten</string>
     <string name="pref_speech_output_method_toast">Benachrichtigung</string>
     <string name="pref_speech_output_method_android">Android Text zu Sprache Maschine</string>
-    <string name="pref_speech_output_method_summary">Waehle den Dienst den Dicio verwenden soll, um zu dir zu sprechen - %1$s</string>
+    <string name="pref_speech_output_method_summary">Wähle den Dienst den Dicio verwenden soll, um zu dir zu sprechen - %1$s</string>
     <string name="pref_speech_output_method">Sprachausgabemethode</string>
     <string name="pref_input_method_vosk">Vosk offline spracherkennung</string>
     <string name="pref_input_method_text">Text Feld</string>
@@ -48,17 +48,17 @@
     <string name="pref_language">Sprache</string>
     <string name="pref_theme_dark">Dunkel</string>
     <string name="pref_theme_light">Hell</string>
-    <string name="pref_theme_summary">Waehle den anwendungs Farbensatz - %1$s</string>
+    <string name="pref_theme_summary">Wähle das Farbthema - %1$s</string>
     <string name="microphone_error">Bekomme keinen Zugriff auf das Mikrofon, entweder wird es bereits von etwas Anderem verwendet oder der entsprechende Zugriff wurde verweigert.</string>
     <string name="pref_theme">Thema</string>
-    <string name="pref_skills">Faehigkeiten</string>
+    <string name="pref_skills">Fähigkeiten</string>
     <string name="pref_appearance">Darstellung</string>
     <string name="pref_io">Ein und Ausgabe methoden</string>
     <string name="settings">Einstellungen</string>
-    <string name="android_tts_unsupported_language">Die aktuell ausgewaehlte Sprache, wird von der Android Spracherkennung nicht unterstuetzt</string>
+    <string name="android_tts_unsupported_language">Die aktuell ausgewählte Sprache, wird von der Android Spracherkennung leider nicht unterstützt</string>
     <string name="vosk_model_ready">Vosk Modell bereit</string>
     <string name="vosk_model_extracting">Vosk Modell wird entpackt…</string>
-    <string name="vosk_model_unsupported_language">Fuer die ausgewaehlte Srache, steht kein Vosk Modell zur Verfuegung</string>
+    <string name="vosk_model_unsupported_language">Für die ausgewählte Sprache, steht kein Vosk Modell zur Verfügung</string>
     <string name="vosk_model_notification_description">Sprache: %1$s</string>
     <string name="vosk_model_notification_title">Vosk Modell</string>
     <string name="listening">lausche…</string>
@@ -124,4 +124,7 @@
     <string name="error_report_notification_title">Dicio ist auf einen Fehler gestoßen, drücken um zu berichten</string>
     <string name="error_report">Melden</string>
     <string name="error_sorry">Entschuldigung, ein Fehler ist aufgetreten</string>
+    <string name="skill_name_current_time">Aktuelle Zeit</string>
+    <string name="skill_sentence_example_current_time">Wie viel Uhr ist es\?</string>
+    <string name="skill_time_current_time">Es ist %1$s</string>
 </resources>
