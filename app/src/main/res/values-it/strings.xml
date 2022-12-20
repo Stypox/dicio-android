@@ -120,4 +120,12 @@
     <string name="error_report_channel_description">Notifiche per seglanare errori</string>
     <string name="error_sorry">Si è verificato un errore</string>
     <string name="skill_time_current_time">Al momento sono le %1$s</string>
+    <string name="pref_stt_auto_finish_title">Invia direttamente il risultato del servizio di riconoscimento vocale</string>
+    <string name="pref_stt_auto_finish_summary_on">Quando finisci di parlare il testo riconosciuto sarà inviato automaticamente all\'app richiedente</string>
+    <string name="pref_stt_auto_finish_summary_off">Verrà attesa la conferma manuale prima di inviare il testo riconosciuto all\'app richiedente</string>
+    <string name="stt_say_something">Dì qualcosa…</string>
+    <string name="stt_did_not_understand">Non ho capito, riprova</string>
+    <string name="stt_service">Servizio di riconoscimento vocale</string>
+    <string name="skill_name_current_time">Ora corrente</string>
+    <string name="skill_sentence_example_current_time">Che ora è?</string>
 </resources>
