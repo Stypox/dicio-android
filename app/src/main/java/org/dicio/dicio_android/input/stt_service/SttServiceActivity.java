@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -35,17 +34,16 @@ import androidx.preference.PreferenceManager;
 import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT;
 import static android.speech.RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE;
 
-public class SttServiceActivity extends BaseActivity {
+public final class SttServiceActivity extends BaseActivity {
     private static final String TAG = SttServiceActivity.class.getSimpleName();
 
-    AppCompatDialog dialog;
-    SpeechInputDevice speechInputDevice;
-    DialogSttServiceBinding binding;
+    private AppCompatDialog dialog;
+    private SpeechInputDevice speechInputDevice;
+    private DialogSttServiceBinding binding;
 
-    private SharedPreferences preferences;
-
-    boolean startedForSpeechResult = false;
-    private Bundle speechExtras;
+    private boolean startedForSpeechResult = false;
+    @Nullable private Bundle speechExtras = null;
+    private String userInputHint;
 
     @Override
     protected int getThemeFromPreferences() {
@@ -57,12 +55,18 @@ public class SttServiceActivity extends BaseActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         final Intent intent = getIntent();
         if (intent != null && RecognizerIntent.ACTION_RECOGNIZE_SPEECH.equals(intent.getAction())) {
             startedForSpeechResult = true;
             speechExtras = intent.getExtras();
+            if (speechExtras != null) {
+                userInputHint = speechExtras.getString(
+                        RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
+            }
+        }
+
+        if (userInputHint == null) {
+            userInputHint = getString(R.string.stt_say_something);
         }
     }
 
@@ -75,9 +79,7 @@ public class SttServiceActivity extends BaseActivity {
                         R.style.LightAppTheme, R.style.DarkAppTheme));
         final LayoutInflater layoutInflater = LayoutInflater.from(wrappedContext);
         binding = DialogSttServiceBinding.inflate(layoutInflater);
-        final String prompt = speechExtras.getString(
-                RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
-        binding.userInput.setHint(prompt);
+        binding.userInput.setHint(userInputHint);
 
         dialog = new BottomSheetDialog(wrappedContext);
         dialog.setCancelable(true);
@@ -116,9 +118,7 @@ public class SttServiceActivity extends BaseActivity {
         speechInputDevice.setInputDeviceListener(new InputDevice.InputDeviceListener() {
             @Override
             public void onTryingToGetInput() {
-                final String prompt = speechExtras.getString(
-                        RecognizerIntent.EXTRA_PROMPT, getString(R.string.stt_say_something));
-                binding.userInput.setHint(prompt);
+                binding.userInput.setHint(userInputHint);
                 binding.userInput.setEnabled(false);
             }
 
@@ -131,9 +131,10 @@ public class SttServiceActivity extends BaseActivity {
             public void onInputReceived(final List<String> input) {
                 showUserInput(input.get(0));
                 binding.userInput.setEnabled(true);
-                final boolean autoFinish = preferences
-                        .getBoolean(getString(R.string.pref_key_stt_auto_finish), false);
-                if (startedForSpeechResult && autoFinish) {
+                if (startedForSpeechResult && PreferenceManager
+                        .getDefaultSharedPreferences(SttServiceActivity.this)
+                        .getBoolean(getString(R.string.pref_key_stt_auto_finish), false)) {
+                    // only send the speech result directly if the user allows it
                     sendSpeechResult();
                     dialog.dismiss();
                 }
@@ -197,7 +198,7 @@ public class SttServiceActivity extends BaseActivity {
         final ArrayList<String> foundTexts = new ArrayList<>();
         foundTexts.add(getUserInput());
 
-        // Because there is currently just one result, it gets 1.0 TODO check how to get more
+        // Because there is currently just one result, it gets 1.0 TODO it is possible to get more
         // results + confidence from vosk. When extending number of results,
         // implement EXTRA_MAX_RESULTS
 
