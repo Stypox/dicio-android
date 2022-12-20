@@ -133,7 +133,7 @@ public final class SttServiceActivity extends BaseActivity {
                 binding.userInput.setEnabled(true);
                 if (startedForSpeechResult && PreferenceManager
                         .getDefaultSharedPreferences(SttServiceActivity.this)
-                        .getBoolean(getString(R.string.pref_key_stt_auto_finish), false)) {
+                        .getBoolean(getString(R.string.pref_key_stt_auto_finish), true)) {
                     // only send the speech result directly if the user allows it
                     sendSpeechResult();
                     dialog.dismiss();
