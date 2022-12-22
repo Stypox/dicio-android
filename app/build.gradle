@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets
 
 android {
     compileSdkVersion 31
+    namespace 'org.stypox.dicio'
 
     defaultConfig {
         applicationId "org.stypox.dicio"
