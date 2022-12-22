@@ -4,9 +4,21 @@ This folder contains files related to the dicio-android repository that do not r
 
 ## The colors used for the logo
 
-- #006800 dark green foreground
-- #daec21 light green background
+- `#006800` dark green foreground
+- `#daec21` light green background
 
 ## Generating the launcher icon
 
-The launcher icon can be generated using https://icon.kitchen
+The launcher icon can be generated using [IconKitchen](https://icon.kitchen). These are the parameters that were used. Things that are different from defaults were highlighted.
+- **Icon: Image**, then drop `logo_old.png` on the area that appears or select it from the filesystem
+- Scaling: Center
+- Mask: none
+- **Effect: Cast shadow**
+- **Padding: 18%**
+- Background type: Color
+- **Bakcground color: `#daec21`** from above
+- Texture: None
+- Badge: none
+- Filename: none (defaults to `ic_launcher`)
+- **Shape: Squircle**
+- Themed: no
