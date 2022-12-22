@@ -14,7 +14,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "org.dicio.dicio_android"
+        applicationId "org.stypox.dicio"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 8
@@ -154,7 +154,7 @@ task sentencesCompiler {
                     inputFiles,
                     new OutputStreamWriter(outputStream, StandardCharsets.UTF_8),
                     new OutputStreamWriter(sectionIdsStream, StandardCharsets.UTF_8),
-                    new CompilerToJava("", "org.dicio.dicio_android", "Sentences_${localeName}", "sections"))
+                    new CompilerToJava("", "org.stypox.dicio", "Sentences_${localeName}", "sections"))
             outputStream.close()
             sectionIdsStream.close()
 
@@ -170,7 +170,7 @@ task sentencesCompiler {
                 + " * DO NOT MODIFY THIS FILE, AS EDITS WILL BE OVERWRITTEN.\n"
                 + " */\n"
                 + "\n"
-                + "package org.dicio.dicio_android;\n"
+                + "package org.stypox.dicio;\n"
                 + "import org.dicio.skill.standard.StandardRecognizerData;\n"
                 + "import java.util.HashMap;\n"
                 + "import java.util.Map;\n")

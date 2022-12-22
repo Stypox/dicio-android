@@ -6,15 +6,15 @@
     <Preference
         android:icon="?attr/iconBrush"
         android:title="@string/pref_appearance"
-        android:fragment="org.dicio.dicio_android.settings.AppearanceFragment" />
+        android:fragment="org.stypox.dicio.settings.AppearanceFragment" />
 
     <Preference
         android:icon="?attr/iconQuestionAnswer"
         android:title="@string/pref_io"
-        android:fragment="org.dicio.dicio_android.settings.IOFragment" />
+        android:fragment="org.stypox.dicio.settings.IOFragment" />
 
     <Preference
         android:icon="?attr/iconExtension"
         android:title="@string/pref_skills"
-        android:fragment="org.dicio.dicio_android.settings.skill.SkillsFragment" />
+        android:fragment="org.stypox.dicio.settings.skill.SkillsFragment" />
 </PreferenceScreen>

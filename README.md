@@ -3,7 +3,7 @@
 Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English, French, German, Greek, Italian, Russian and Spanish. Open to contributions :-D
 
 <p align="center">
-    <a href="https://f-droid.org/packages/org.dicio.dicio_android">
+    <a href="https://f-droid.org/packages/org.stypox.dicio">
         <img height="80" alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
     </a>
     <a href="https://github.com/Stypox/dicio-android/releases">
@@ -80,7 +80,7 @@ Create a file named `SKILL_ID.dslf` (e.g. `weather.dslf`) under `app/src/main/se
 5. Try to *build* the app: if it succeeds you did everything right, otherwise you will get errors pointing to syntax errors in the `.dslf` file.
 
 #### 2. **Subpackage**
-Create a **subpackage** that will contain all of the classes you are about to add: `org.dicio.dicio_android.skills.SKILLID` (e.g. `org.dicio.dicio_android.skills.weather`).
+Create a **subpackage** that will contain all of the classes you are about to add: `org.stypox.dicio.skills.SKILLID` (e.g. `org.stypox.dicio.skills.weather`).
 
 #### 3. **Output generator**
 Create a class named `SKILL_IDOutput` (e.g. `WeatherOutput`): it will contain the code that **talks, displays information or does actions**. It will **not** contain code that fetches data from the internet or does calculations.
@@ -106,7 +106,7 @@ Create a class named `SKILL_IDInfo` (e.g. `WeatherInfo`) overriding `SkillInfo`:
 4. _\[Optional\]_ If your skill wants to present some preferences to the user, it has to do so by overriding `getPreferenceFragment()` (return `null` otherwise). Create a subclass of `SKILL_IDInfo` named `Preferences` extending `PreferenceFragmentCompat` (Android requires you not to use anonymous classes) and override the `onCreatePreferences()` as you would do normally. `getPreferenceFragment()` should then `return new Preferences()`. Make sure the `hasPreferences` parameter you use in the constructor (see [5.1](https://github.com/Stypox/dicio-android#5-skill-info)) reflects whether there are preferences or not. 
 
 #### 6. **List skill for SkillHandler**
-Under `org.dicio.dicio_android.Skills.SkillHandler`, update the `SKILL_INFO_LIST` by adding `add(new SKILL_IDInfo())`; this will make your skill visible to Dicio.   
+Under `org.stypox.dicio.Skills.SkillHandler`, update the `SKILL_INFO_LIST` by adding `add(new SKILL_IDInfo())`; this will make your skill visible to Dicio.   
 
 #### **Notes**
 - `skillContext` is provided in many places and can be used to **access resources and services**, similarly to Andorid's `context`.
