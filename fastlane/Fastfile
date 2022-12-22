@@ -1,0 +1,40 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a new version to the Google Play Store"
+  lane :deploy do |options|
+    gradle(
+      task: "clean bundleRelease",
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => options[:signing_store_file],
+        "android.injected.signing.store.password" => options[:signing_store_password],
+        "android.injected.signing.key.alias" => options[:signing_key_alias],
+        "android.injected.signing.key.password" => options[:signing_key_password],
+      }
+    )
+    upload_to_play_store(
+      release_status: 'draft',
+      json_key: options[:play_store_json_key],
+      # just upload the changelog
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end

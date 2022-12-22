@@ -8,3 +8,10 @@
 .externalNativeBuild
 /models
 /aars/build
+
+# Fastlane
+fastlane/report.xml
+fastlane/README.md
+Gemfile
+Gemfile.lock
+fastlane_config.txt
