@@ -13,6 +13,7 @@ import org.dicio.dicio_android.Sections;
 import org.dicio.dicio_android.skills.calculator.CalculatorInfo;
 import org.dicio.dicio_android.skills.fallback.text.TextFallbackInfo;
 import org.dicio.dicio_android.skills.lyrics.LyricsInfo;
+import org.dicio.dicio_android.skills.navigate.NavigateInfo;
 import org.dicio.dicio_android.skills.open.OpenInfo;
 import org.dicio.dicio_android.skills.search.SearchInfo;
 import org.dicio.dicio_android.skills.telephone.TelephoneInfo;
@@ -44,6 +45,7 @@ public final class SkillHandler {
         add(new LyricsInfo());
         add(new OpenInfo());
         add(new CalculatorInfo());
+        add(new NavigateInfo());
         add(new TelephoneInfo());
         add(new TimerInfo());
         add(new CurrentTimeInfo());
