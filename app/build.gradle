@@ -81,7 +81,7 @@ dependencies {
     // Desugaring
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
-/** Checkstyle **/
+    // Checkstyle
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
 
     // Android
@@ -95,8 +95,8 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
     // Dicio own libraries
-    implementation 'com.github.Stypox:dicio-skill:1626235b2351519899abf2ca45d090ec446c65cf'
-    implementation 'com.github.Stypox:dicio-numbers:51919643211e237ecef45ec434ff78db42a98fa0'
+    implementation 'com.github.Stypox:dicio-skill:86d596f937ce1a3c670fa7562e688ffe753f8880'
+    implementation 'com.github.Stypox:dicio-numbers:03e71abbe0259e1782ef5e7f5d00f7ac8cf2cc1e'
 
     // Vosk
     implementation 'net.java.dev.jna:jna:5.8.0@aar'
