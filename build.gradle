@@ -29,6 +29,6 @@ afterEvaluate {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.github.Stypox:dicio-numbers:c23d59bbcbfc4687ef618d1f66773f6dfeae0974'
+    implementation 'com.github.Stypox:dicio-numbers:dummy-SNAPSHOT'
     testImplementation 'junit:junit:4.13.2'
 }
