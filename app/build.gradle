@@ -17,8 +17,8 @@ android {
         applicationId "org.dicio.dicio_android"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 8
-        versionName "0.8"
+        versionCode 9
+        versionName "Placeholder"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
