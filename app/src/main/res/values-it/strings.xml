@@ -128,4 +128,5 @@
     <string name="stt_service">Servizio di riconoscimento vocale</string>
     <string name="skill_name_current_time">Ora corrente</string>
     <string name="skill_sentence_example_current_time">Che ora è?</string>
+    <string name="dicio_moved"><b>ATTENZIONE!</b> Questa versione di Dicio non riceverà più aggiornamenti da F-Droid. Il nome del pacchetto è stato cambiato da <i>org.dicio.dicio_android</i> a <i>org.stypox.dicio</i> a causa di conflitti di nome su altri store. Per favore clicca qui per <b>riscaricare Dicio dalla <a href="https://f-droid.org/en/packages/org.stypox.dicio/">nuova pagina di F-Droid</a></b> per continuare a ricevere aggiornamenti!</string>
 </resources>

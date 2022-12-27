@@ -2,6 +2,7 @@
 <resources>
     <attr name="cardBackground" format="reference|color" />
     <attr name="cardForeground" format="reference|color" />
+    <attr name="warningColor" format="reference|color" />
 
     <attr name="iconsTint" format="reference" />
     <attr name="iconBrush" format="reference" />

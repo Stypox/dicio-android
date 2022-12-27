@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -79,6 +80,16 @@ public final class SttServiceActivity extends BaseActivity {
                         R.style.LightAppTheme, R.style.DarkAppTheme));
         final LayoutInflater layoutInflater = LayoutInflater.from(wrappedContext);
         binding = DialogSttServiceBinding.inflate(layoutInflater);
+        binding.warningText.setOnClickListener(view ->
+                ShareUtils.openIntentInApp(
+                        SttServiceActivity.this,
+                        new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://f-droid.org/en/packages/org.stypox.dicio/")
+                        ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        true
+                )
+        );
         binding.userInput.setHint(userInputHint);
 
         dialog = new BottomSheetDialog(wrappedContext);

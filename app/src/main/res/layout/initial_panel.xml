@@ -5,16 +5,30 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/warningText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dicio_moved"
+        android:textAlignment="center"
+        android:textColor="?warningColor"
+        android:textSize="20sp"
+        android:background="?android:selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/here_is_what_i_can_do"
         android:textAlignment="center"
         android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/outputHeaderTextSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/warningText" />
 
     <LinearLayout
         android:id="@+id/skillItemsLayout"

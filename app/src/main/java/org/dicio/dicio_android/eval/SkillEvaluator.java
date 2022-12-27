@@ -2,6 +2,8 @@ package org.dicio.dicio_android.eval;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -25,6 +27,7 @@ import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
 import org.dicio.dicio_android.skills.SkillHandler;
 import org.dicio.dicio_android.error.ExceptionUtils;
 import org.dicio.dicio_android.util.PermissionUtils;
+import org.dicio.dicio_android.util.ShareUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillInfo;
 import org.dicio.skill.output.GraphicalOutputDevice;
@@ -85,6 +88,16 @@ public class SkillEvaluator implements CleanableUp {
 
     public void showInitialPanel() {
         final View initialPanel = GraphicalOutputUtils.inflate(activity, R.layout.initial_panel);
+        initialPanel.findViewById(R.id.warningText).setOnClickListener(view ->
+            ShareUtils.openIntentInApp(
+                    activity,
+                    new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://f-droid.org/en/packages/org.stypox.dicio/")
+                    ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    true
+            )
+        );
 
         final LinearLayout skillItemsLayout = initialPanel.findViewById(R.id.skillItemsLayout);
         for (final SkillInfo skillInfo : SkillHandler.getEnabledSkillInfoListShuffled()) {

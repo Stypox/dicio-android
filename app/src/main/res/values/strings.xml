@@ -129,4 +129,5 @@
     <string name="skill_timer_query_name">Timer %1$s expires in %2$s</string>
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
+    <string name="dicio_moved"><b>WARNING!</b> This version of Dicio will not receive updates from F-Droid anymore. The package name had to be changed from <i>org.dicio.dicio_android</i> to <i>org.stypox.dicio</i> because of package name conflicts on other stores. Please click here to <b>download Dicio again from <a href="https://f-droid.org/en/packages/org.stypox.dicio/">the new F-Droid listing</a></b> in order to continue receiving updates!</string>
 </resources>
