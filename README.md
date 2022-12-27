@@ -1,3 +1,6 @@
+> **Warning**
+> This version of Dicio will not receive updates from F-Droid anymore. The package name had to be changed from <i>org.dicio.dicio_android</i> to <i>org.stypox.dicio</i> because of package name conflicts on other stores. Please <b><a href="https://f-droid.org/en/packages/org.stypox.dicio/">click here to download Dicio again from the new F-Droid listing</a></b> in order to continue receiving updates!
+
 # Dicio assistant
 
 Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English, French, German, Greek, Italian, Russian and Spanish. Open to contributions :-D

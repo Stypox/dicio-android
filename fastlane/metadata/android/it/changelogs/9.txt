@@ -1,0 +1,3 @@
+ATTENZIONE! Questa versione di Dicio non riceverà più aggiornamenti da F-Droid. Il nome del pacchetto è stato cambiato da org.dicio.dicio_android a org.stypox.dicio a causa di conflitti di nome su altri store. Per favore riscarica Dicio dalla nuova pagina di F-Droid per continuare a ricevere aggiornamenti!
+
+https://f-droid.org/en/packages/org.stypox.dicio/

@@ -1,0 +1,3 @@
+WARNING! This version of Dicio will not receive updates from F-Droid anymore. The package name had to be changed from org.dicio.dicio_android to org.stypox.dicio because of package name conflicts on other stores. Please download Dicio again from the new F-Droid listing in order to continue receiving updates!
+
+https://f-droid.org/en/packages/org.stypox.dicio/
