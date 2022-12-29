@@ -1,3 +1,3 @@
 util_yes_no: high
-[yes] oui|(pour sûr)|certainement|ok|okay|(Vas y)|affirmatif|procéder|continue|absolument|(fais le)|confirmation;
+[yes] oui|(pour sûr)|certainement|(bien sûr|entendu)|ok|okay|(Vas y)|affirmatif|procéder|continue|absolument|(fais le)|je? confirm<e|ation>;
 [no] non|stop|nope|arrête|ça suffit|assez|négatif|(ne le fais pas)|arrêt|retour;
