@@ -40,15 +40,15 @@ public class NavigateProcessor extends IntermediateProcessor<StandardResult, Nav
         // Here we will remove the spaces from between the numbers, so we will end up with
         // "954619 avenue". This is not ideal, but it seems slightly better than before.
         // Can we detect addresses better?
-        placeToNavigate = "";
+        final StringBuilder placeToNavigateSB = new StringBuilder();
         int i = 0;
         while (i < textWithNumbers.size()) {
             final Object currentItem = textWithNumbers.get(i);
             if (!currentItem.toString().equals(" ")) {
                 if (i == 0 || isInteger(currentItem.toString())) {
-                    placeToNavigate += currentItem.toString().trim();
+                    placeToNavigateSB.append(currentItem.toString().trim());
                 } else {
-                    placeToNavigate += " " + currentItem + " ";
+                    placeToNavigateSB.append(" ").append(currentItem).append(" ");
                 }
             }
 
@@ -56,7 +56,7 @@ public class NavigateProcessor extends IntermediateProcessor<StandardResult, Nav
         }
 
         result.failed = false;
-        result.address = placeToNavigate;
+        result.address = placeToNavigateSB.toString();
         return result;
     }
 
