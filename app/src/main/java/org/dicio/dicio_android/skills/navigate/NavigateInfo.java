@@ -22,7 +22,7 @@ public class NavigateInfo extends SkillInfo {
 
     @Override
     public boolean isAvailable(final SkillContext context) {
-        return true;
+        return Sections.isSectionAvailable(navigate);
     }
 
     @Override
