@@ -91,6 +91,8 @@
     <string name="skill_sentence_example_calculator">What is five times four minus a million?</string>
     <string name="skill_name_navigate">Navigate</string>
     <string name="skill_sentence_example_navigate">Navigate to Vancouver international airport</string>
+    <string name="skill_navigate_specify_where">Specify where you want to navigate to</string>
+    <string name="skill_navigate_navigating_to">Navigating to %1$s</string>
     <string name="skill_name_telephone">Telephone</string>
     <string name="skill_sentence_example_telephone">Call Tom</string>
     <string name="skill_name_timer">Timer</string>

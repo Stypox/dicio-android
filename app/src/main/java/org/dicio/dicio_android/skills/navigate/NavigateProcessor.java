@@ -33,7 +33,7 @@ public class NavigateProcessor extends IntermediateProcessor<StandardResult, Nav
         }
 
         final List<Object> textWithNumbers = ctx().requireNumberParserFormatter()
-                .extractNumbers(data.getCapturingGroup("where")).get();
+                .extractNumbers(data.getCapturingGroup(navigate.where)).get();
 
         // It seems that we detect each digit of the numerical portion of an address as a separate
         // string, resulting in "9 5 4 6 1 9 avenue" when the speech was actually "9546 19 avenue".
