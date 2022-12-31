@@ -10,11 +10,11 @@ This folder contains files related to the dicio-android repository that do not r
 ## Generating the launcher icon
 
 The launcher icon can be generated using [IconKitchen](https://icon.kitchen). These are the parameters that were used. Things that are different from defaults were highlighted.
-- **Icon: Image**, then drop `logo_old.png` on the area that appears or select it from the filesystem
+- **Icon: Image**, then drop `logo.png` on the area that appears or select it from the filesystem
 - Scaling: Center
 - Mask: none
-- **Effect: Cast shadow**
-- **Padding: 18%**
+- **Effect: Drop shadow**
+- **Padding: 17%**
 - Background type: Color
 - **Bakcground color: `#daec21`** from above
 - Texture: None
