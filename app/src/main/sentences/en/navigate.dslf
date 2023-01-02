@@ -1,2 +1,3 @@
 navigate: high
-(navigate to?)|(take me to)|(directions to?)|(where s|is) .where.;
+(navigate to?)|(take|bring me to)|(directions to?)|(where s|is) .where.;
+((give me?)? directions|direction to?) .where.;
