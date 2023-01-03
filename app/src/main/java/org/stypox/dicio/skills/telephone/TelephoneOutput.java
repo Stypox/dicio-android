@@ -48,8 +48,13 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
             if (numbers.isEmpty()) {
                 continue;
             }
-            if (contactCount == 0 && contact.getDistance() < 3 && numbers.size() == 1) {
-                // very close match with just one number: call it directly
+            if (contactCount == 0 // the first (i.e. lowest-distance) valid contact
+                    && contact.getDistance() < 3 // a low enough distance
+                    && numbers.size() == 1 // it has just one number
+                    && (contacts.size() <= i + 1 // the next contact (if any) has a higher distance
+                    || contacts.get(i + 1).getDistance() > contact.getDistance())
+            ) {
+                // very close match with just one number and without distance ties: call it directly
                 callAfterConfirmation(contact.getName(), numbers.get(0));
                 return;
             }
