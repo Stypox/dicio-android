@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto"> <!-- Allow installing also on external storage -->
-
+    android:installLocation="auto">
+    <!-- Allow installing also on external storage -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <!-- required by the download manager for APIs < Q -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- required by the download manager for APIs < Q -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
-
-    <!-- the open skill needs to query all apps -->
+        android:maxSdkVersion="28" /> <!-- the open skill needs to query all apps -->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" />
-
-    <!-- the telephone skill needs to query contacts and call them -->
+        tools:ignore="QueryAllPackagesPermission" /> <!-- the telephone skill needs to query contacts and call them -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -30,48 +24,52 @@
         android:supportsRtl="true"
         android:theme="@style/DarkAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/SplashScreenTheme"
             android:windowSoftInputMode="stateUnspecified|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.ASSIST" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
 
             <meta-data
                 android:name="com.android.systemui.action_assist_icon"
                 android:resource="@mipmap/ic_launcher" />
         </activity>
-
         <activity
             android:name=".settings.SettingsActivity"
             android:exported="false" />
-
         <activity
             android:name=".error.ErrorActivity"
             android:exported="false" />
-
         <activity
             android:name=".input.stt_service.SttServiceActivity"
-            android:taskAffinity=""
             android:excludeFromRecents="true"
             android:exported="true"
+            android:taskAffinity=""
             android:theme="@style/SttServiceDarkAppTheme"
             android:windowSoftInputMode="adjustResize">
-
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
             </intent-filter>
         </activity>
-
     </application>
+
 </manifest>

@@ -109,7 +109,7 @@ dependencies {
 
     // Used by skills
     implementation 'net.objecthunter:exp4j:0.4.8'
-
+    implementation 'com.airbnb.android:lottie:5.2.0'
     // Testing
     testImplementation 'junit:junit:4.13.2'
 }
