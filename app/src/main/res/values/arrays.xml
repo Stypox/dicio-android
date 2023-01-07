@@ -15,10 +15,10 @@
         <item>Deutsch</item>
         <item>English</item>
         <item>English (India)</item>
-        <item>Hindi</item>
         <item>Español</item>
         <item>Ελληνικά</item>
         <item>Français</item>
+        <item>Hindi</item>
         <item>Italiano</item>
         <item>Русский</item>
     </string-array>
@@ -30,10 +30,10 @@
         <item>de</item>
         <item>en</item>
         <item>en-in</item>
-        <item>hi</item>
         <item>es</item>
         <item>el</item>
         <item>fr</item>
+        <item>hi</item>
         <item>it</item>
         <item>ru</item>
     </string-array>
