@@ -84,7 +84,7 @@
     <string name="skill_name_telephone">Telefono</string>
     <string name="skill_sentence_example_telephone">Chiama Lorenzo</string>
     <string name="skill_telephone_unknown_contact">Nessun contatto trovato, riprova</string>
-    <string name="skill_telephone_found_contacts">Ho trovato %1$d contatti</string>
+    <string name="skill_telephone_found_contacts">Ho trovato %1$d contatti, quale devo chiamare?</string>
     <string name="skill_telephone_confirm_call">Devo chiamare %1$s?</string>
     <string name="skill_telephone_calling">Sto chiamando %1$s…</string>
     <string name="skill_telephone_not_calling">Va bene, non chiamo nessuno</string>
