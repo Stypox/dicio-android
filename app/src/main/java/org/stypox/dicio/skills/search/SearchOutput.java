@@ -13,15 +13,14 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
 
+import org.dicio.skill.Skill;
+import org.dicio.skill.chain.CaptureEverythingRecognizer;
+import org.dicio.skill.chain.ChainSkill;
+import org.dicio.skill.chain.OutputGenerator;
+import org.dicio.skill.standard.StandardRecognizer;
 import org.stypox.dicio.R;
 import org.stypox.dicio.SectionsGenerated;
 import org.stypox.dicio.output.graphical.GraphicalOutputUtils;
-import org.dicio.skill.Skill;
-import org.dicio.skill.chain.ChainSkill;
-import org.dicio.skill.chain.InputRecognizer;
-import org.dicio.skill.chain.OutputGenerator;
-import org.dicio.skill.standard.StandardRecognizer;
-import org.dicio.skill.standard.StandardResult;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,40 +90,7 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
                         .process(new DuckDuckGoProcessor())
                         .output(new SearchOutput()),
                 new ChainSkill.Builder()
-                        .recognize(new InputRecognizer<StandardResult>() {
-                            private String input;
-
-                            @Override
-                            public Specificity specificity() {
-                                return Specificity.low;
-                            }
-
-                            @Override
-                            public void setInput(final String input,
-                                                 final List<String> inputWords,
-                                                 final List<String> normalizedInputWords) {
-                                this.input = input;
-                            }
-
-                            @Override
-                            public float score() {
-                                return 1.0f;
-                            }
-
-                            @Override
-                            public StandardResult getResult() {
-                                return new StandardResult("", input, null) {
-                                    @Override
-                                    public String getCapturingGroup(final String name) {
-                                        return input;
-                                    }
-                                };
-                            }
-
-                            @Override
-                            public void cleanup() {
-                            }
-                        })
+                        .recognize(new CaptureEverythingRecognizer())
                         .process(new DuckDuckGoProcessor())
                         .output(new SearchOutput()));
     }
