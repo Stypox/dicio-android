@@ -1,9 +1,12 @@
 package org.dicio.skill;
 
+import androidx.annotation.CallSuper;
+
 import org.dicio.skill.chain.InputRecognizer;
 import org.dicio.skill.chain.IntermediateProcessor;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.util.CleanableUp;
+import org.dicio.skill.util.NextSkills;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +15,10 @@ import java.util.List;
  * A skill is the component that scores input, processes it and finally generates output. Take a
  * look at {@link org.dicio.skill.chain.ChainSkill} for a class that separates these three things.
  */
-public abstract class Skill extends SkillComponent implements CleanableUp {
+public abstract class Skill extends SkillComponent implements NextSkills, CleanableUp {
+
+    // no next skills by default
+    private List<Skill> nextSkills = Collections.emptyList();
 
     /**
      * @see InputRecognizer#specificity()
@@ -47,17 +53,31 @@ public abstract class Skill extends SkillComponent implements CleanableUp {
     public abstract void generateOutput();
 
     /**
-     * To prevent excessive memory usage, release all temporary resources and set to {@code null}
-     * all temporary variables used while calculating the score, getting the result or generating
-     * output.
+     * @see NextSkills#nextSkills()
      */
     @Override
-    public abstract void cleanup();
+    public List<Skill> nextSkills() {
+        final List<Skill> skills = nextSkills;
+        nextSkills = Collections.emptyList();
+        return skills;
+    }
 
     /**
-     * @see OutputGenerator#nextSkills()
+     * @see NextSkills#setNextSkills(List)
      */
-    public List<Skill> nextSkills() {
-        return Collections.emptyList();
+    @Override
+    public final void setNextSkills(final List<Skill> skills) {
+        nextSkills = skills;
+    }
+
+    /**
+     * Resets the last list of next skills passed to {@link #setNextSkills(List)} to an empty list.
+     * Remember to call super if you override.
+     * @see CleanableUp#cleanup()
+     */
+    @Override
+    @CallSuper
+    public void cleanup() {
+        nextSkills = Collections.emptyList();
     }
 }
