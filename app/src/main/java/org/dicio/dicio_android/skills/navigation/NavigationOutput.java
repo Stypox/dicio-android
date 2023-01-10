@@ -1,4 +1,4 @@
-package org.dicio.dicio_android.skills.navigate;
+package org.dicio.dicio_android.skills.navigation;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,7 @@ import org.dicio.skill.chain.OutputGenerator;
 
 import java.util.Locale;
 
-public class NavigateOutput extends OutputGenerator<NavigateOutput.Data> {
+public class NavigationOutput extends OutputGenerator<NavigationOutput.Data> {
 
     public static class Data {
         public boolean failed = false;
@@ -19,14 +19,14 @@ public class NavigateOutput extends OutputGenerator<NavigateOutput.Data> {
     @Override
     public void generate(final Data data) {
         if (data.failed) {
-            final String message = ctx().android().getString(R.string.skill_navigate_specify_where);
-            ctx().getSpeechOutputDevice().speak(message);
+            final String msg = ctx().android().getString(R.string.skill_navigation_specify_where);
+            ctx().getSpeechOutputDevice().speak(msg);
             ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildSubHeader(
-                    ctx().android(), message));
+                    ctx().android(), msg));
             return;
         }
 
-        final String message = ctx().android().getString(R.string.skill_navigate_navigating_to,
+        final String message = ctx().android().getString(R.string.skill_navigation_navigating_to,
                 data.address);
 
         ctx().getSpeechOutputDevice().speak(message);

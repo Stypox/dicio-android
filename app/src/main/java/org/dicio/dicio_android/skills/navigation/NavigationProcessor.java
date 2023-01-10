@@ -1,6 +1,6 @@
-package org.dicio.dicio_android.skills.navigate;
+package org.dicio.dicio_android.skills.navigation;
 
-import static org.dicio.dicio_android.Sentences_en.navigate;
+import static org.dicio.dicio_android.Sentences_en.navigation;
 
 import org.dicio.dicio_android.util.StringUtils;
 import org.dicio.skill.chain.IntermediateProcessor;
@@ -8,17 +8,18 @@ import org.dicio.skill.standard.StandardResult;
 
 import java.util.List;
 
-public class NavigateProcessor extends IntermediateProcessor<StandardResult, NavigateOutput.Data> {
+public class NavigationProcessor
+        extends IntermediateProcessor<StandardResult, NavigationOutput.Data> {
     @Override
-    public NavigateOutput.Data process(final StandardResult data) throws Exception {
-        final NavigateOutput.Data result = new NavigateOutput.Data();
+    public NavigationOutput.Data process(final StandardResult data) throws Exception {
+        final NavigationOutput.Data result = new NavigationOutput.Data();
 
         if (data == null) {
             result.failed = true;
             return result;
         }
 
-        String placeToNavigate = data.getCapturingGroup(navigate.where);
+        String placeToNavigate = data.getCapturingGroup(navigation.where);
 
         if (placeToNavigate == null) {
             result.failed = true;
@@ -33,7 +34,7 @@ public class NavigateProcessor extends IntermediateProcessor<StandardResult, Nav
         }
 
         final List<Object> textWithNumbers = ctx().requireNumberParserFormatter()
-                .extractNumbers(data.getCapturingGroup(navigate.where)).get();
+                .extractNumbers(data.getCapturingGroup(navigation.where)).get();
 
         // Given an address of "9546 19 avenue", the building number is 9546 and the street number
         // is 19.

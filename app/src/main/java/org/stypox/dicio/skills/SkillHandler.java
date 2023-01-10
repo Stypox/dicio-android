@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.navigate.NavigateInfo;
+import org.dicio.dicio_android.skills.navigation.NavigationInfo;
 import org.stypox.dicio.Sections;
 import org.stypox.dicio.skills.calculator.CalculatorInfo;
 import org.stypox.dicio.skills.fallback.text.TextFallbackInfo;
@@ -45,7 +45,7 @@ public final class SkillHandler {
         add(new LyricsInfo());
         add(new OpenInfo());
         add(new CalculatorInfo());
-        add(new NavigateInfo());
+        add(new NavigationInfo());
         add(new TelephoneInfo());
         add(new TimerInfo());
         add(new CurrentTimeInfo());
