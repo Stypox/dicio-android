@@ -13,7 +13,6 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.squareup.picasso.Picasso;
 
-import org.dicio.skill.Skill;
 import org.dicio.skill.chain.CaptureEverythingRecognizer;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.OutputGenerator;
@@ -23,7 +22,6 @@ import org.stypox.dicio.SectionsGenerated;
 import org.stypox.dicio.output.graphical.GraphicalOutputUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
@@ -34,8 +32,6 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
         public String url;
         public String description;
     }
-
-    private boolean tryAgain = false;
 
 
     @Override
@@ -49,10 +45,19 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
             ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildSubHeader(
                     ctx().android(), message));
 
-            tryAgain = true;
+            // try again
+            setNextSkills(Arrays.asList(
+                    new ChainSkill.Builder()
+                            .recognize(new StandardRecognizer(getSection(SectionsGenerated.search)))
+                            .process(new DuckDuckGoProcessor())
+                            .output(new SearchOutput()),
+                    new ChainSkill.Builder()
+                            .recognize(new CaptureEverythingRecognizer())
+                            .process(new DuckDuckGoProcessor())
+                            .output(new SearchOutput())));
             return;
         }
-        tryAgain = false;
+
 
         final LinearLayout output
                 = GraphicalOutputUtils.buildVerticalLinearLayout(ctx().android(),
@@ -76,26 +81,5 @@ public class SearchOutput extends OutputGenerator<List<SearchOutput.Data>> {
         ctx().getSpeechOutputDevice().speak(ctx().android().getString(
                 R.string.skill_search_here_is_what_i_found));
         ctx().getGraphicalOutputDevice().display(output);
-    }
-
-    @Override
-    public List<Skill> nextSkills() {
-        if (!tryAgain) {
-            return Collections.emptyList();
-        }
-
-        return Arrays.asList(
-                new ChainSkill.Builder()
-                        .recognize(new StandardRecognizer(getSection(SectionsGenerated.search)))
-                        .process(new DuckDuckGoProcessor())
-                        .output(new SearchOutput()),
-                new ChainSkill.Builder()
-                        .recognize(new CaptureEverythingRecognizer())
-                        .process(new DuckDuckGoProcessor())
-                        .output(new SearchOutput()));
-    }
-
-    @Override
-    public void cleanup() {
     }
 }

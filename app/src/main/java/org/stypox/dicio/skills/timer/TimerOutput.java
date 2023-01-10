@@ -89,9 +89,6 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
 
     private static final List<SetTimer> SET_TIMERS = new ArrayList<>();
 
-    private Data askForDurationData = null;
-    private boolean confirmCancelAll = false;
-
 
     @Override
     public void generate(final Data data) {
@@ -104,7 +101,46 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                     ctx().getGraphicalOutputDevice().display(
                             GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
 
-                    askForDurationData = data;
+                    setNextSkills(Collections.singletonList(new Skill() {
+                        private String input;
+                        private Duration duration;
+
+                        @Override
+                        public InputRecognizer.Specificity specificity() {
+                            return InputRecognizer.Specificity.high;
+                        }
+
+                        @Override
+                        public void setInput(final String input,
+                                             final List<String> inputWords,
+                                             final List<String> normalizedWordKeys) {
+                            this.input = input;
+                        }
+
+                        @Override
+                        public float score() {
+                            duration = ctx().requireNumberParserFormatter()
+                                    .extractDuration(input).get();
+                            return duration == null ? 0.0f : 1.0f;
+                        }
+
+                        @Override
+                        public void processInput() {
+                        }
+
+                        @Override
+                        public void generateOutput() {
+                            if (duration != null) {
+                                setTimer(duration, data.name);
+                            }
+                        }
+
+                        @Override
+                        public void cleanup() {
+                            input = null;
+                            duration = null;
+                        }
+                    }));
                     return;
                 }
                 setTimer(data.duration, data.name);
@@ -118,7 +154,23 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                     ctx().getGraphicalOutputDevice().display(
                             GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
 
-                    confirmCancelAll = true;
+                    setNextSkills(Collections.singletonList(new ChainSkill.Builder()
+                            .recognize(new StandardRecognizer(getSection(util_yes_no)))
+                            .output(new OutputGenerator<StandardResult>() {
+                                @Override
+                                public void generate(final StandardResult data) {
+                                    if ("yes".equals(data.getSentenceId())) {
+                                        cancelTimer(null);
+                                    } else {
+                                        final String message = ctx().android()
+                                                .getString(R.string.skill_timer_none_canceled);
+                                        ctx().getSpeechOutputDevice().speak(message);
+                                        ctx().getGraphicalOutputDevice().display(
+                                                GraphicalOutputUtils.buildSubHeader(ctx().android(),
+                                                        message));
+                                    }
+                                }
+                            })));
                     return;
                 }
                 cancelTimer(data.name);
@@ -128,85 +180,6 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
                 queryTimer(data.name);
                 break;
         }
-    }
-
-    @Override
-    public List<Skill> nextSkills() {
-        if (askForDurationData != null) {
-            // use local variable, otherwise cleaned up by cleanup()
-            final String askForDurationDataName = askForDurationData.name;
-            return Collections.singletonList(new Skill() {
-                private String input;
-                private Duration duration;
-
-                @Override
-                public InputRecognizer.Specificity specificity() {
-                    return InputRecognizer.Specificity.high;
-                }
-
-                @Override
-                public void setInput(final String input,
-                                     final List<String> inputWords,
-                                     final List<String> normalizedWordKeys) {
-                    this.input = input;
-                }
-
-                @Override
-                public float score() {
-                    duration = ctx().requireNumberParserFormatter()
-                            .extractDuration(input).get();
-                    return duration == null ? 0.0f : 1.0f;
-                }
-
-                @Override
-                public void processInput() {
-                }
-
-                @Override
-                public void generateOutput() {
-                    if (duration != null) {
-                        setTimer(duration, askForDurationDataName);
-                    }
-                }
-
-                @Override
-                public void cleanup() {
-                    input = null;
-                    duration = null;
-                }
-            });
-
-        } else if (confirmCancelAll) {
-            return Collections.singletonList(new ChainSkill.Builder()
-                    .recognize(new StandardRecognizer(getSection(util_yes_no)))
-                    .output(new OutputGenerator<StandardResult>() {
-                        @Override
-                        public void generate(final StandardResult data) {
-                            if ("yes".equals(data.getSentenceId())) {
-                                cancelTimer(null);
-                            } else {
-                                final String message = ctx().android()
-                                        .getString(R.string.skill_timer_none_canceled);
-                                ctx().getSpeechOutputDevice().speak(message);
-                                ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils
-                                        .buildSubHeader(ctx().android(), message));
-                            }
-                        }
-
-                        @Override
-                        public void cleanup() {
-                        }
-                    }));
-
-        } else {
-            return super.nextSkills();
-        }
-    }
-
-    @Override
-    public void cleanup() {
-        askForDurationData = null;
-        confirmCancelAll = false;
     }
 
     private void setTimer(@NonNull final Duration duration,

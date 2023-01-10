@@ -11,25 +11,20 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
-import org.stypox.dicio.R;
-import org.stypox.dicio.SectionsGenerated;
-import org.stypox.dicio.output.graphical.GraphicalOutputUtils;
-import org.dicio.skill.Skill;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.OutputGenerator;
 import org.dicio.skill.standard.StandardRecognizer;
 import org.dicio.skill.standard.StandardResult;
+import org.stypox.dicio.R;
+import org.stypox.dicio.SectionsGenerated;
+import org.stypox.dicio.output.graphical.GraphicalOutputUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 public class TelephoneOutput extends OutputGenerator<StandardResult> {
-
-    @Nullable String numberToCallAfterConfirmation = null;
-
 
     public void generate(final StandardResult data) {
         final ContentResolver contentResolver = ctx().android().getContentResolver();
@@ -74,48 +69,8 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
         }
     }
 
-    @Override
-    public List<Skill> nextSkills() {
-        if (numberToCallAfterConfirmation == null) {
-            return super.nextSkills();
-        } else {
-            final String number = numberToCallAfterConfirmation;
-            return Collections.singletonList(new ChainSkill.Builder()
-                    .recognize(new StandardRecognizer(getSection(SectionsGenerated.util_yes_no)))
-                    .output(new OutputGenerator<StandardResult>() {
-                        @Override
-                        public void generate(final StandardResult data) {
-                            final String message;
-                            if (data.getSentenceId().equals("yes")) {
-                                call(ctx().android(), number);
-                                message = ctx().android()
-                                        .getString(R.string.skill_telephone_calling, number);
-                                // do not speak anything since a call has started
-                            } else {
-                                message = ctx().android()
-                                        .getString(R.string.skill_telephone_not_calling);
-                                ctx().getSpeechOutputDevice().speak(message);
-                            }
-                            ctx().getGraphicalOutputDevice().display(
-                                    GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
-                        }
-
-                        @Override
-                        public void cleanup() {
-                        }
-                    }));
-        }
-    }
-
-    @Override
-    public void cleanup() {
-        numberToCallAfterConfirmation = null;
-    }
-
     private void callAfterConfirmation(final String name,
                                        final String number) {
-        numberToCallAfterConfirmation = number;
-
         final String message = ctx().android()
                 .getString(R.string.skill_telephone_confirm_call, name);
         ctx().getSpeechOutputDevice().speak(message);
@@ -125,6 +80,28 @@ public class TelephoneOutput extends OutputGenerator<StandardResult> {
         output.addView(GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
         output.addView(GraphicalOutputUtils.buildDescription(ctx().android(), number));
         ctx().getGraphicalOutputDevice().display(output);
+
+        // ask for confirmation using the util_yes_no section
+        setNextSkills(Collections.singletonList(new ChainSkill.Builder()
+                .recognize(new StandardRecognizer(getSection(SectionsGenerated.util_yes_no)))
+                .output(new OutputGenerator<StandardResult>() {
+                    @Override
+                    public void generate(final StandardResult data) {
+                        final String message;
+                        if (data.getSentenceId().equals("yes")) {
+                            call(ctx().android(), number);
+                            message = ctx().android()
+                                    .getString(R.string.skill_telephone_calling, number);
+                            // do not speak anything since a call has started
+                        } else {
+                            message = ctx().android()
+                                    .getString(R.string.skill_telephone_not_calling);
+                            ctx().getSpeechOutputDevice().speak(message);
+                        }
+                        ctx().getGraphicalOutputDevice().display(
+                                GraphicalOutputUtils.buildSubHeader(ctx().android(), message));
+                    }
+                })));
     }
 
     private void addNumbersToOutput(final Contact contact,
