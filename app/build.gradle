@@ -118,7 +118,7 @@ dependencies {
 task sentencesCompiler {
     doFirst {
         File baseInputDirectory = file("src/main/sentences/")
-        File outputDirectory = file("build/generated/source/sentences/main/org/dicio/dicio_android")
+        File outputDirectory = file("build/generated/source/sentences/main/org/stypox/dicio")
         outputDirectory.mkdirs()
 
         List<String> locales = new ArrayList<>()
