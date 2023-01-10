@@ -49,8 +49,4 @@ public class LyricsOutput extends OutputGenerator<LyricsOutput.Data> {
                             lyricsView));
         }
     }
-
-    @Override
-    public void cleanup() {
-    }
 }

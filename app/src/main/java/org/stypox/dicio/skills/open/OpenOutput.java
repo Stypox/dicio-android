@@ -75,8 +75,4 @@ public class OpenOutput extends OutputGenerator<StandardResult> {
         }
         return bestApplicationInfo;
     }
-
-    @Override
-    public void cleanup() {
-    }
 }

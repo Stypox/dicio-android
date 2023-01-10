@@ -68,8 +68,4 @@ public class CalculatorOutput extends OutputGenerator<CalculatorOutput.Data> {
                             numberToString(decimalFormat, data.number))));
         }
     }
-
-    @Override
-    public void cleanup() {
-    }
 }

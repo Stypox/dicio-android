@@ -15,10 +15,6 @@ public class TextFallback extends FallbackSkill {
     }
 
     @Override
-    public void cleanup() {
-    }
-
-    @Override
     public void processInput() {
     }
 

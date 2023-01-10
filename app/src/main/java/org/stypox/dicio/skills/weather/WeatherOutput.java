@@ -54,8 +54,4 @@ public class WeatherOutput extends OutputGenerator<WeatherOutput.Data> {
             ctx().getGraphicalOutputDevice().display(weatherView);
         }
     }
-
-    @Override
-    public void cleanup() {
-    }
 }

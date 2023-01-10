@@ -13,8 +13,4 @@ public class CurrentTimeOutput extends OutputGenerator<String> {
         ctx().getGraphicalOutputDevice().display(GraphicalOutputUtils.buildSubHeader(
                 ctx().android(), message));
     }
-
-    @Override
-    public void cleanup() {
-    }
 }

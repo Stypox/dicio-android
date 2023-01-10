@@ -137,6 +137,7 @@ public class TimerOutput extends OutputGenerator<TimerOutput.Data> {
 
                         @Override
                         public void cleanup() {
+                            super.cleanup();
                             input = null;
                             duration = null;
                         }
