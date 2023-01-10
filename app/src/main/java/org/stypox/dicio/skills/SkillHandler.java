@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
+import org.stypox.dicio.skills.navigation.NavigationInfo;
 import org.stypox.dicio.R;
 import org.stypox.dicio.Sections;
 import org.stypox.dicio.skills.calculator.CalculatorInfo;
@@ -38,12 +39,13 @@ public final class SkillHandler {
     }
 
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
-    private static final List<SkillInfo> SKILL_INFO_LIST = new ArrayList<SkillInfo>() {{
+    private static final List<SkillInfo> SKILL_INFO_LIST = new ArrayList<>() {{
         add(new WeatherInfo());
         add(new SearchInfo());
         add(new LyricsInfo());
         add(new OpenInfo());
         add(new CalculatorInfo());
+        add(new NavigationInfo());
         add(new TelephoneInfo());
         add(new TimerInfo());
         add(new CurrentTimeInfo());
