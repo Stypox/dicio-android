@@ -1,12 +1,12 @@
-package org.dicio.dicio_android.skills.navigation;
+package org.stypox.dicio.skills.navigation;
 
-import static org.dicio.dicio_android.SectionsGenerated.navigation;
+import static org.stypox.dicio.SectionsGenerated.navigation;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.Sections;
+import org.stypox.dicio.R;
+import org.stypox.dicio.Sections;
 import org.dicio.skill.Skill;
 import org.dicio.skill.SkillContext;
 import org.dicio.skill.SkillInfo;

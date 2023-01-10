@@ -1,16 +1,16 @@
-package org.dicio.dicio_android.skills.navigation;
+package org.stypox.dicio.skills.navigation;
 
-import static org.dicio.dicio_android.Sections.getSection;
+import static org.stypox.dicio.Sections.getSection;
 
 import android.content.Intent;
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
-import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.SectionsGenerated;
-import org.dicio.dicio_android.output.graphical.GraphicalOutputUtils;
-import org.dicio.dicio_android.util.StringUtils;
+import org.stypox.dicio.R;
+import org.stypox.dicio.SectionsGenerated;
+import org.stypox.dicio.output.graphical.GraphicalOutputUtils;
+import org.stypox.dicio.util.StringUtils;
 import org.dicio.skill.Skill;
 import org.dicio.skill.chain.ChainSkill;
 import org.dicio.skill.chain.InputRecognizer;

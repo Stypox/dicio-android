@@ -1,6 +1,6 @@
-package org.dicio.dicio_android.skills.navigation;
+package org.stypox.dicio.skills.navigation;
 
-import static org.dicio.dicio_android.Sentences_en.navigation;
+import static org.stypox.dicio.Sentences_en.navigation;
 
 import org.dicio.numbers.NumberParserFormatter;
 import org.dicio.numbers.util.Number;

@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
-import org.dicio.dicio_android.R;
-import org.dicio.dicio_android.skills.navigation.NavigationInfo;
+import org.stypox.dicio.skills.navigation.NavigationInfo;
+import org.stypox.dicio.R;
 import org.stypox.dicio.Sections;
 import org.stypox.dicio.skills.calculator.CalculatorInfo;
 import org.stypox.dicio.skills.fallback.text.TextFallbackInfo;
