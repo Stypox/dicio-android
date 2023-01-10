@@ -53,7 +53,7 @@ public abstract class OutputGenerator<FromType> extends SkillComponent implement
      *               Skill#setSkillInfo(org.dicio.skill.SkillInfo)} on the skills, as that has to be
      *               done by the caller of {@link #nextSkills()}.
      */
-    protected void setNextSkills(final List<Skill> skills) {
+    public final void setNextSkills(final List<Skill> skills) {
         nextSkills = skills;
     }
 
