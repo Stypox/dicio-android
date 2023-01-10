@@ -84,8 +84,6 @@ public class StringUtilsTest {
         assertEquals( -6, customStringDistance("kitten", "sittieng"));
         assertEquals( -6, customStringDistance("dog", "dog"));
         assertEquals(  4, customStringDistance("dòg", "caty"));
-        assertEquals( -5, customStringDistance("dog", "dogy")); // strange case
-        assertEquals( -6, customStringDistance("dog", "doggy")); // ^
         assertEquals( -3, customStringDistance("dog", "dosgy"));
         assertEquals( -1, customStringDistance("dog", "dosay"));
         assertEquals( -4, customStringDistance("dog", "doag"));
@@ -105,5 +103,14 @@ public class StringUtilsTest {
         assertEquals(-18, customStringDistance("abc123ABC&%$", "ABC&123%abc."));
         assertEquals(-20, customStringDistance("email@email.email", "EMAIL#atEMAIL#dotEMAIL"));
         assertEquals(-28, customStringDistance("Hello, hòw are you?", "hellohoware!you"));
+    }
+
+    @Test
+    public void customStringDistanceRepeatedLettersTest() {
+        assertEquals(-5, customStringDistance("hello", "Helloo Hiii"));
+        assertEquals(-6, customStringDistance("hello", "Hello Guys"));
+        assertEquals(-6, customStringDistance("hello", "Hello 2uys"));
+        assertEquals(-5, customStringDistance("dog", "dogy"));
+        assertEquals(-4, customStringDistance("dog", "doggy"));
     }
 }

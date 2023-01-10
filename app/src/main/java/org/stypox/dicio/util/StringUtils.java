@@ -99,9 +99,11 @@ public final class StringUtils {
     private static class LevenshteinMemoryPos {
         final int i;
         final int j;
-        LevenshteinMemoryPos(final int i, final int j) {
+        final boolean match;
+        LevenshteinMemoryPos(final int i, final int j, final boolean match) {
             this.i = i;
             this.j = j;
+            this.match = match;
         }
     }
 
@@ -112,7 +114,10 @@ public final class StringUtils {
         int i = a.length() - 1;
         int j = b.length() - 1;
         while (i >= 0 && j >= 0) {
-            positions.add(new LevenshteinMemoryPos(i, j));
+            final int iOld = i;
+            final int jOld = j;
+            boolean match = false;
+
             if (memory[i + 1][j + 1] == memory[i][j + 1] + 1) {
                 // the path goes up
                 --i;
@@ -122,9 +127,12 @@ public final class StringUtils {
             } else  {
                 // the path goes up-left diagonally (surely either
                 // memory[i+1][j+1] == memory[i][j] or memory[i+1][j+1] == memory[i][j] + 1)
+                match = memory[i + 1][j + 1] == memory[i][j];
                 --i;
                 --j;
             }
+
+            positions.add(new LevenshteinMemoryPos(iOld, jOld, match));
         }
         return positions;
     }
@@ -172,8 +180,7 @@ public final class StringUtils {
         int subsequentChars = 0;
         int maxSubsequentChars = 0;
         for (final LevenshteinMemoryPos pos : pathInLevenshteinMemory(a, b, memory)) {
-            if (Character.toLowerCase(a.codePointAt(pos.i))
-                    == Character.toLowerCase(b.codePointAt(pos.j))) {
+            if (pos.match) {
                 ++matchingCharCount;
                 ++subsequentChars;
                 maxSubsequentChars = Math.max(maxSubsequentChars, subsequentChars);
