@@ -1,0 +1,1 @@
+Dicio je bezplatný hlasový asistent s otevřeným zdrojovým kódem. Podporuje mnoho různých dovedností a vstupních výstupních metod a poskytuje řečovou i grafickou zpětnou vazbu na otázku. Pro převod řeči na text používá funkci Voice. Má vícejazyčnou podporu a v současné době je k dispozici v angličtině, francouzštině, němčině, řečtině, italštině, ruštině a španělštině.
