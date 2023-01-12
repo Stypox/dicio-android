@@ -1,0 +1,21 @@
+Dicio je <i>svobodný</i> <b>hlasový asistent</b> s <i>otevřeným zdrojovým kódem</i>. Podporuje mnoho různých <b>dovedností</b> a vstupních/výstupních metod a poskytuje jak <b>řečovou</b>, tak <b>grafickou</b> zpětnou vazbu na otázku. Pro převod <i>řeči na text</i> používá program <a href="https://github.com/alphacep/vosk-api/">Vosk</a>. Má <b>vícejazyčnou</b> podporu a v současné době je k dispozici v češtině, angličtině, francouzštině, němčině, řečtině, italštině, ruštině a španělštině.
+
+Dicio odpovídá na otázky týkající se:
+<ul>
+<li><b>vyhledávání</b>: vyhledává informace v <b>DuckDuckGo</b> (a v budoucnu i v dalších vyhledávačích) - <i>Hledej Dicio</i></li>
+<li><b>počasí</b>: shromažďuje informace o počasí z <b>OpenWeatherMap</b> - <i>Jaké je počasí?</i></li>
+<li><b>texty písní</b>: zobrazuje texty písní z <b>Genius</b> - <i>Jaká je píseň, ve které se zpívá we will we will rock you?</i></li>
+<li><b>otevřít</b>: otevře aplikaci v zařízení - <i>Otevři NewPipe</i></li>
+<li><b>kalkulačka</b>: vyhodnotí základní výpočty - <i>Kolik je čtyři tisíce dva krát tři minus milion děleno třemi sty?</i></li>
+<li><b>Telefon</b>: zobrazí kontakty a volá na ně - <i>Volej Tom</i></li>
+<li><b>časovač</b>: nastavuje, dotazuje se a ruší časovače - <i>Nastav časovač na jedenáct minut</i></li>
+</ul>
+
+Dicio umí přijímat vstupy prostřednictvím textového pole nebo <i>převodu řeči na text</i> pomocí aplikace <a href="https://github.com/alphacep/vosk-api/">Vosk</a> a umí komunikovat pomocí toastů nebo mechanismu <i>syntézy řeči</i> systému Android. <b>Interaktivní grafický výstup</b> poskytují dovednosti, když odpoví na otázku.
+
+Každou dovednost lze povolit, zakázat nebo přizpůsobit pomocí příslušné obrazovky nastavení. K dispozici je tmavé téma.
+
+Uživatelský vstup je interpretován specifickými, avšak opakovaně použitelnými knihovnami: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a>, <a href="https://github.com/Stypox/dicio-skill">dicio-skill</a> a <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
+
+Tato aplikace má příznak <i>NonFreeNet</i>, protože některé dovednosti používají k získání informací požadovaných uživatelem nesvobodné služby. Nechtěné dovednosti můžete snadno zakázat nebo si prostřednictvím nastavení vybrat alternativní služby.
+
