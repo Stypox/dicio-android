@@ -1,0 +1,4 @@
+weather: high
+(jaké je)? počasí (v? .where.)?;
+jak je venku;
+je venku|(v? .where.) zima|chladno|teplo|horko;
