@@ -21,7 +21,7 @@ public class Contact {
     private static final String TAG = Contact.class.getSimpleName();
     private static final String NUMBERS_QUERY = ContactsContract.CommonDataKinds.Phone.NUMBER
             + " IS NOT NULL AND " + ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?";
-    private static final Pattern NUMBER_CLEANER = Pattern.compile("[^0-9]");
+    private static final Pattern NUMBER_CLEANER = Pattern.compile("\\D");
 
     private final String name;
     private final int distance;
@@ -80,8 +80,8 @@ public class Contact {
                 final String name = contactCursor.getString(contactNameColumnIndex);
                 final String id = contactCursor.getString(contactIdColumnIndex);
                 if (name != null) {
-                    final int distance = StringUtils.customStringDistance(name, userContactName);
-                    if (distance < 6) {
+                    final int distance = StringUtils.contactStringDistance(name, userContactName);
+                    if (distance < -7) {
                         contacts.add(new Contact(name, distance, id));
                     }
                 }
