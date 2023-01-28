@@ -65,7 +65,7 @@
     <string name="eval_network_error_description">Aplikace Dicio nemá přístup k internetu. Zkontrolujte prosím vaše připojení a zkuste to znovu.</string>
     <string name="eval_no_match">Nerozuměl jsem, mohli byste to zopakovat\?</string>
     <string name="skill_name_lyrics">Texty písniček</string>
-    <string name="skill_sentence_example_lyrics">Jak se jmenuje skladba, ve které se zpívá we will we will rock you\?</string>
+    <string name="skill_sentence_example_lyrics">Jak se jmenuje písnička, kde se zpívá we will we will rock you\?</string>
     <string name="skill_name_open">Otevírání aplikací</string>
     <string name="skill_name_calculator">Kalkulačka</string>
     <string name="skill_name_telephone">Telefon</string>
@@ -78,7 +78,7 @@
     <string name="skill_open_opening">Otevírám %1$s…</string>
     <string name="skill_calculator_could_not_calculate">Nepodařilo se vypočítat váš příklad</string>
     <string name="skill_telephone_unknown_contact">Nenalezen žádný kontakt, zkuste to znovu</string>
-    <string name="skill_telephone_found_contacts">Našel jsem %1$d kontaktů</string>
+    <string name="skill_telephone_found_contacts">Našel jsem %1$d kontaktů, kterému z nich mám zavolat\?</string>
     <string name="skill_telephone_confirm_call">Mám zavolat kontaktu %1$s\?</string>
     <string name="skill_telephone_calling">Volám kontaktu %1$s…</string>
     <string name="skill_telephone_not_calling">Dobře, nikomu nebudu volat</string>
@@ -127,4 +127,14 @@
     <string name="skill_sentence_example_current_time">Kolik je hodin\?</string>
     <string name="skill_name_current_time">Aktuální čas</string>
     <string name="skill_time_current_time">Právě teď je %1$s</string>
+    <string name="pref_stt_auto_finish_title">Přímo odesílat výsledek služby převodu řeči na text</string>
+    <string name="pref_stt_auto_finish_summary_on">Automatické odeslání výsledku řeči do vyžadující aplikace po ukončení poslechu</string>
+    <string name="stt_say_something">Řekněte něco…</string>
+    <string name="pref_stt_auto_finish_summary_off">Před odesláním výsledku řeči do žádající aplikace počkejte na ruční potvrzení</string>
+    <string name="stt_did_not_understand">Nerozumím, zkuste to znovu</string>
+    <string name="stt_service">Služba převodu řeči na text</string>
+    <string name="skill_name_navigation">Navigace</string>
+    <string name="skill_sentence_example_navigation">Naviguj do Brussele</string>
+    <string name="skill_navigation_navigating_to">Navigovat do %1$s</string>
+    <string name="skill_navigation_specify_where">Určete, kam chcete navigovat</string>
 </resources>

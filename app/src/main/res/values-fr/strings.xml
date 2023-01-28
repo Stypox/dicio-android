@@ -57,7 +57,7 @@
     <string name="vosk_model_extracting">Extraction du modèle Vosk…</string>
     <string name="vosk_model_downloading">Téléchargement du modèle Vosk…</string>
     <string name="vosk_model_unsupported_language">Aucun modèle Vosk disponible pour la langue actuelle</string>
-    <string name="vosk_model_notification_description">Langue: %1$s</string>
+    <string name="vosk_model_notification_description">Langue : %1$s</string>
     <string name="vosk_model_notification_title">Modèle de Vosk</string>
     <string name="microphone_error">Impossible d\'accéder au microphone, il est probablement déjà utilisé ou l\'autorisation correspondante a été refusée.</string>
     <string name="listening">À l\'écoute…</string>
@@ -80,7 +80,7 @@
     <string name="skill_sentence_example_telephone">Appelle Tom</string>
     <string name="skill_name_timer">Minuteur</string>
     <string name="skill_telephone_unknown_contact">Aucun contact trouvé, réessayez</string>
-    <string name="skill_telephone_found_contacts">J\'ai trouvé %1$d contacts</string>
+    <string name="skill_telephone_found_contacts">J\'ai trouvé %1$d contacts, lequel dois-je appeler \?</string>
     <string name="skill_telephone_not_calling">OK, je n\'appelle personne</string>
     <string name="skill_timer_how_much_time">Combien de temps doit durer la minuterie \?</string>
     <string name="skill_timer_confirm_cancel">Etes-vous sûr de vouloir annuler toutes les minuteries \?</string>
@@ -114,12 +114,12 @@
     <string name="error_report_notification_toast">Une erreur s\'est produite, voir la notification</string>
     <string name="error_github_notice">Veuillez vérifier si une issue concernant votre problème n\'existe pas déjà. Lorsque vous créez des tickets en double, vous nous faites perdre du temps que nous pourrions consacrer à la correction du bogue réel.</string>
     <string name="error_report_notification_title">Dicio a rencontré une erreur, appuyez pour rapporter</string>
-    <string name="error_details_labels">Action :
-\nLocale :
-\nGMT Heure :
-\nPaquet :
-\nVersion :
-\nVersion du système d\'exploitation :</string>
+    <string name="error_details_labels">Action :
+\nLocale :
+\nGMT Heure :
+\nPaquet :
+\nVersion :
+\nVersion du système d\'exploitation :</string>
     <string name="error_report_github">Rapport sur GitHub</string>
     <string name="error_report_channel_description">Notifications pour signaler les erreurs</string>
     <string name="error_sorry">Désolé, une erreur s\'est produite</string>
@@ -127,4 +127,14 @@
     <string name="skill_time_current_time">En ce moment, c\'est %1$s</string>
     <string name="skill_name_current_time">Heure actuelle</string>
     <string name="skill_sentence_example_current_time">Quelle heure est-il \?</string>
+    <string name="pref_stt_auto_finish_summary_off">Attendez une confirmation manuelle avant d\'envoyer le résultat de la parole à l\'application requérante</string>
+    <string name="stt_say_something">Dites quelque chose…</string>
+    <string name="stt_did_not_understand">Je ne comprends pas, réessayez</string>
+    <string name="stt_service">Service speech to text</string>
+    <string name="pref_stt_auto_finish_title">Envoyez directement le résultat de la parole au service de texte</string>
+    <string name="pref_stt_auto_finish_summary_on">Envoyez automatiquement le résultat de la parole à l\'application requérante à la fin de l\'écoute</string>
+    <string name="skill_name_navigation">Navigation</string>
+    <string name="skill_sentence_example_navigation">Naviguer vers l\'aéroport international de Vancouver</string>
+    <string name="skill_navigation_specify_where">Où naviguer vers</string>
+    <string name="skill_navigation_navigating_to">Navigation vers %1$s</string>
 </resources>

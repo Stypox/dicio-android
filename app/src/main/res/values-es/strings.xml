@@ -77,7 +77,7 @@
     <string name="no_app_to_open_intent">Ninguna aplicación de su dispositivo puede abrir esto</string>
     <string name="permission_denied">Permiso denegado</string>
     <string name="skill_search_no_results">La búsqueda no arrojó resultados, intenta decirme de nuevo lo que quieres buscar</string>
-    <string name="skill_telephone_found_contacts">He encontrado %1$d contactos</string>
+    <string name="skill_telephone_found_contacts">He encontrado %1$d contactos, ¿a cuál llamo\?</string>
     <string name="skill_name_telephone">Teléfono</string>
     <string name="skill_sentence_example_telephone">Llamar a Tom</string>
     <string name="android_tts_error">Se ha producido un error al inicializar el motor de conversión de texto a voz de Android</string>
@@ -127,4 +127,14 @@
     <string name="skill_name_current_time">Hora actual</string>
     <string name="skill_sentence_example_current_time">¿Qué hora es\?</string>
     <string name="skill_time_current_time">En este momento, es %1$s</string>
+    <string name="pref_stt_auto_finish_title">Enviar directamente el resultado del servicio de voz a texto</string>
+    <string name="pref_stt_auto_finish_summary_on">Envíe automáticamente el resultado del habla a la aplicación solicitante cuando finalice la escucha</string>
+    <string name="stt_say_something">Diga algo…</string>
+    <string name="stt_did_not_understand">No lo he entendido, inténtalo de nuevo</string>
+    <string name="stt_service">Servicio de voz a texto</string>
+    <string name="pref_stt_auto_finish_summary_off">Esperar la confirmación manual antes de enviar el resultado del habla a la aplicación solicitante</string>
+    <string name="skill_navigation_specify_where">Especifique hacia dónde desea ir</string>
+    <string name="skill_navigation_navigating_to">Navegando a %1$s</string>
+    <string name="skill_name_navigation">Navegación</string>
+    <string name="skill_sentence_example_navigation">Ir hasta el aeropuerto internacional de Vancouver</string>
 </resources>

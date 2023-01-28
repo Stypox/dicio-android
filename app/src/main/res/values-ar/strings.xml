@@ -29,9 +29,9 @@
 \nسرعة الرياح: %3$.1f م/س</string>
     <string name="skill_weather_in_city_there_is_description">حاليًّا في %1$s هناك %2$s</string>
     <string name="eval_network_error_description">لم يستطع Dicio الاتصال بالانترنت. رجاءً تأكّد من اتّصالك ثم حاول مجددًا.</string>
-    <string name="eval_fatal_error">المعذرة، لقد واجهني خطأ أثناء تنفيذ طلبك</string>
+    <string name="eval_fatal_error">تعذر تقييم طلبك</string>
     <string name="skill_calculator_could_not_calculate">لم أستطع حساب طلبك</string>
-    <string name="skill_open_opening">يتم فتح %1$s</string>
+    <string name="skill_open_opening">فتح %1$s…</string>
     <string name="skill_open_unknown_app">%1$s تطبيق غير معروف</string>
     <string name="skill_lyrics_found_song_by_artist">وجدت %1$s من صنع %2$s</string>
     <string name="skill_lyrics_song_not_found">لم أستطع إيجاد الأغنية %1$s</string>
@@ -64,4 +64,77 @@
     <string name="vosk_model_downloading">موديل ڤوسك قيد التحميل…</string>
     <string name="vosk_model_unsupported_language">لا يوجد موديل ڤوسك للغة الحاليّة</string>
     <string name="vosk_model_notification_title">موديل ڤوسك</string>
+    <string name="skill_sentence_example_current_time">كم الساعة؟</string>
+    <string name="skill_timer_expired">انتهت صلاحية المؤقت!</string>
+    <string name="skill_timer_how_much_time">كم من الوقت يجب أن يدوم المؤقت؟</string>
+    <string name="skill_timer_confirm_cancel">هل أنت متأكد من أنك تريد إلغاء جميع المؤقتات؟</string>
+    <string name="skill_timer_canceled">تم إلغاء المؤقت</string>
+    <string name="pref_speech_output_method_toast">نخب (رسالة منبثقة)</string>
+    <string name="error_title">تقرير عن المشكلة</string>
+    <string name="skill_sentence_example_timer">اضبط مؤقتا لمدة خمس دقائق</string>
+    <string name="error_report_channel_description">إشعارات للإبلاغ عن الأخطاء</string>
+    <string name="pref_skill_not_available">هذه المهارة ليست متاحة بعد للغتك. مساهمتك هي موضع ترحيب!</string>
+    <string name="error_report_channel_name">إشعار الإبلاغ عن الأخطاء</string>
+    <string name="error_github_notice">يرجى مراجعة ما إذا توجد بالفعل نقاش عن المشكلة موجود بالفعل. عند إنشاء تذاكر مكررة، فإنك قد تضيع منا وقتًا يمكن أن نقضيه في إصلاح الخطأ الفعلي.</string>
+    <string name="microphone_error">تعذر الوصول إلى الميكروفون ، ربما يكون قيد الاستخدام بالفعل أو تم رفض الإذن المطلوب.</string>
+    <string name="skill_fallback_name_text">رسالة نصية</string>
+    <string name="vosk_model_download_error">فشل تنزيل نموذج Vosk</string>
+    <string name="pref_stt_auto_finish_summary_off">انتظر تأكيدا يدويا قبل إرسال نتيجة خطاب طلب التطبيق</string>
+    <string name="stt_say_something">قل شيئا…</string>
+    <string name="stt_did_not_understand">لم أستطع أن أفهم ، حاول مرة أخرى</string>
+    <string name="skill_sentence_example_lyrics">ما هي هذه الاغنية بذكر كلماتها بدون العنوان؟</string>
+    <string name="skill_sentence_example_telephone">اتصل بمحمد</string>
+    <string name="skill_name_timer">المؤقت</string>
+    <string name="skill_name_current_time">التوقيت الحالي</string>
+    <string name="skill_search_no_results">لم ينتج عن البحث أي نتائج ، حاول إخباري مرة أخرى بما تريد البحث عنه</string>
+    <string name="skill_telephone_found_contacts">لقد وجدت جهات اتصال %1$d ، أي جهة يجب أن أتصل؟</string>
+    <string name="skill_telephone_not_calling">حسنًا ، أنا لا أتصل بأي شخص</string>
+    <string name="skill_time_current_time">الآن ، هو %1$s</string>
+    <string name="skill_timer_canceled_name">تم إلغاء المؤقت %1$s</string>
+    <string name="skill_timer_no_active_name">لا يوجد مؤقت نشط باسم %1$s</string>
+    <string name="skill_timer_query">تنتهي صلاحية المؤقت في %1$s</string>
+    <string name="skill_timer_query_name">تنتهي صلاحية المؤقت %1$s في %2$s</string>
+    <string name="skill_timer_none_canceled">حسنا ، لم يتم إلغاء أي مؤقت</string>
+    <string name="pref_stt_auto_finish_title">إرسال نتائج الخطاب مباشرة إلى خدمة النص</string>
+    <string name="open_with">فتح بواسطة</string>
+    <string name="no_app_to_open_intent">لا يمكن لأي تطبيق على جهازك فتح هذا</string>
+    <string name="permission_denied">تم رفض الإذن</string>
+    <string name="error_report">إبلاغ</string>
+    <string name="error_sorry">عذرا، حدث خطأ</string>
+    <string name="error_details_headline">التفاصيل:</string>
+    <string name="error_crash_log_headline">سجل الأعطال:</string>
+    <string name="error_copy_formatted">نسخ التقرير المنسق</string>
+    <string name="error_details_labels">الإجراء:
+\nالموقع:
+\nتوقيت جرينتش:
+\nالحزمة:
+\nالإصدار:
+\nإصدار نظام التشغيل:</string>
+    <string name="error_report_github">تقرير على GitHub</string>
+    <string name="error_report_notification_title">واجه Dicio خطأ، انقر للإبلاغ</string>
+    <string name="error_report_notification_toast">حدث خطأ ، انظر للإشعار</string>
+    <string name="eval_missing_permissions">تحتاج المهارة \"%1$s\" إلى هذه الأذونات للعمل: %2$s</string>
+    <string name="skill_name_telephone">الهاتف</string>
+    <string name="skill_telephone_calling">جارٍ الاتصال بـ %1$s …</string>
+    <string name="skill_telephone_confirm_call">هل يجب أن أتصل ب %1$s؟</string>
+    <string name="skill_timer_set">حسنا ، ستنتهي صلاحية المؤقت في %1$s</string>
+    <string name="skill_timer_set_name">حسنا ، ستنتهي صلاحية المؤقت %1$s في %2$s</string>
+    <string name="skill_timer_expired_name">انتهت صلاحية المؤقت %1$s!</string>
+    <string name="android_tts_error">حدث خطأ أثناء تهيئة محرك تحويل النص إلى كلام في Android</string>
+    <string name="pref_speech_output_method_snackbar">Snackbar (رسالة في الأسفل)</string>
+    <string name="pref_skill_missing_permissions">يتطلب هذه الأذونات: %1$s</string>
+    <string name="pref_skill_grant_permissions">السماح</string>
+    <string name="skill_search_what_question">ما الذي تريد البحث عنه؟</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f درجة مئوية</string>
+    <string name="pref_stt_auto_finish_summary_on">إرسال نتيجة الكلام تلقائيًا إلى التطبيق الذي يطلبه عند انتهاء الاستماع</string>
+    <string name="pref_skill_number_library_not_available">مكتبة تحليل الأرقام وتنسيقها <i> dicio-number </i> لم تتم ترجمتها بعد إلى لغتك ، مما يعني أن جميع المهارات المتعلقة بالأرقام والمدد والتواريخ غير متوفرة. <b> الرجاء المساهمة بـ </b> إذا كان بإمكانك النقر هنا!</string>
+    <string name="skill_timer_all_canceled">تم إلغاء جميع الموقتات</string>
+    <string name="skill_timer_no_active">لا يوجد مؤقت نشط</string>
+    <string name="stt_service">خدمة تحويل الكلام إلى نص</string>
+    <string name="skill_telephone_unknown_contact">لم يتم العثور على جهة اتصال ، حاول مرة أخرى</string>
+    <string name="skill_timer_query_last">تنتهي صلاحية المؤقت الأخير في %1$s</string>
+    <string name="skill_name_navigation">الملاحة</string>
+    <string name="skill_navigation_specify_where">حدد المكان الذي تريد الانتقال إليه</string>
+    <string name="skill_navigation_navigating_to">الملاحة إلى %1$s</string>
+    <string name="skill_sentence_example_navigation">انطلق الى مطار الملك خالد</string>
 </resources>

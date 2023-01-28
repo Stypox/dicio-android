@@ -21,7 +21,7 @@
     <string name="skill_fallback_name_text">Textnachricht</string>
     <string name="skill_sentence_example_calculator">Was ergibt fuenf mal vier minus eine millionen\?</string>
     <string name="skill_name_calculator">Taschenrechner</string>
-    <string name="skill_sentence_example_open">Oeffne \'New Pipe\'</string>
+    <string name="skill_sentence_example_open">Öffne \'NewPipe\'</string>
     <string name="skill_name_open">App starten</string>
     <string name="skill_sentence_example_lyrics">Wie heißt das Lied, das so geht: \'we will we will rock you\'\?</string>
     <string name="skill_name_lyrics">Liedertexte</string>
@@ -80,7 +80,7 @@
     <string name="skill_name_telephone">Anrufen</string>
     <string name="skill_sentence_example_telephone">Rufe Tom an</string>
     <string name="skill_telephone_unknown_contact">Es wurde kein passender Kontakt gefunden</string>
-    <string name="skill_telephone_found_contacts">Es wurden %1$d Kontakte gefunden</string>
+    <string name="skill_telephone_found_contacts">Ich habe %1$d Kontakte gefunden, welchen davon soll ich anrufen\?</string>
     <string name="eval_missing_permissions">Die Fähigkeit \"%1$s\" benötigt zum Funktionieren diese Genehmigungen: %2$s</string>
     <string name="android_tts_error">Während des Starts des Android TTS engine ist ein Fehler aufgetreten</string>
     <string name="pref_skill_missing_permissions">Folgende Genehmigungen werden benötigt: %1$s</string>
@@ -127,4 +127,14 @@
     <string name="skill_name_current_time">Aktuelle Zeit</string>
     <string name="skill_sentence_example_current_time">Wie viel Uhr ist es\?</string>
     <string name="skill_time_current_time">Es ist %1$s</string>
+    <string name="pref_stt_auto_finish_title">Ergebnis, des Sprache zu Text Dienstes direkt senden</string>
+    <string name="stt_say_something">Sagen Sie etwas…</string>
+    <string name="stt_did_not_understand">Ich konnte es nicht verstehen, versuchen Sie es noch einmal</string>
+    <string name="pref_stt_auto_finish_summary_on">Sprachergebnis automatisch an die anfordernde App senden, wenn das Zuhören beendet ist</string>
+    <string name="pref_stt_auto_finish_summary_off">Auf manuelle Bestätigung warten, bevor das Sprachergebnis an die anfordernde App gesendet wird</string>
+    <string name="stt_service">Sprache-zu-Text-Dienst</string>
+    <string name="skill_navigation_navigating_to">Zu %1$s navigieren</string>
+    <string name="skill_name_navigation">Navigation</string>
+    <string name="skill_sentence_example_navigation">Zum internationalen Flughafen von Vancouver navigieren</string>
+    <string name="skill_navigation_specify_where">Wohin soll navigiert werden</string>
 </resources>
