@@ -1,0 +1,13 @@
+New:
+- New logo
+- Add basic navigation skill
+- [Current time] French translation
+- Add backup rules that only preserve the preferences file
+
+Improved:
+- [Telephone] When there are many matching contacts, choose one using voice
+- [Vosk] Update model URLs
+
+Fixed:
+- [Search] Fix "Search for" interpreted as lyrics
+- Fix miscalculating matching character count in fuzzy string comparison
