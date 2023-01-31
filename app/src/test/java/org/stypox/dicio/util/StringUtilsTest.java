@@ -1,9 +1,11 @@
 package org.stypox.dicio.util;
 
-import static org.stypox.dicio.util.StringUtils.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.stypox.dicio.util.StringUtils.contactStringDistance;
+import static org.stypox.dicio.util.StringUtils.customStringDistance;
+import static org.stypox.dicio.util.StringUtils.join;
+import static org.stypox.dicio.util.StringUtils.levenshteinDistance;
+import static org.stypox.dicio.util.StringUtils.removePunctuation;
 
 import org.junit.Test;
 
@@ -22,26 +24,16 @@ public class StringUtilsTest {
 
     @Test
     public void joinTest() {
-        assertEquals("a-b-c", join("-", Arrays.asList("a", "b", "c")));
-        assertEquals("", join("-", Collections.emptyList()));
-        assertEquals("abc", join("-", Collections.singletonList("abc")));
-        assertEquals("-", join("-", Arrays.asList("", "")));
+        assertEquals("a-b-c", join(Arrays.asList("a", "b", "c"), "-"));
+        assertEquals("", join(Collections.emptyList(), "-"));
+        assertEquals("abc", join(Collections.singletonList("abc"), "-"));
+        assertEquals("-", join(Arrays.asList("", ""), "-"));
     }
 
     @Test
     public void removePunctuationTest() {
         assertEquals("hello how are you ", removePunctuation("hello, how are you? "));
         assertEquals("12345", removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~"));
-    }
-
-    @Test
-    public void isNullOrEmptyTest() {
-        assertFalse(isNullOrEmpty("hi"));
-        assertFalse(isNullOrEmpty(" \t"));
-        assertFalse(isNullOrEmpty("\0"));
-        //noinspection ConstantConditions
-        assertTrue(isNullOrEmpty(null));
-        assertTrue(isNullOrEmpty(""));
     }
 
     @Test
