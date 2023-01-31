@@ -33,7 +33,7 @@ public final class SkillContext {
     /**
      * @return the Android context, useful for example to get resources, etc. Will only be {@code
      *         null} while the context is being build or right before being freed, so this can be
-     *         easily considered always nonnull
+     *         easily considered always nonnull.
      * @implNote the name is like this because getAndroidContext would be too long
      */
     @NonNull
@@ -43,7 +43,9 @@ public final class SkillContext {
 
     /**
      * @return the Android shared preferences, useful for user customization, also see
-     *         {@link SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}
+     *         {@link SkillInfo#hasPreferences()} and {@link SkillInfo#getPreferenceFragment()}.
+     *         Will only be {@code null} while the context is being build or right before being
+     *         freed, so this can be easily considered always nonnull.
      */
     @NonNull
     public SharedPreferences getPreferences() {
