@@ -13,9 +13,9 @@ import org.unbescape.javascript.JavaScriptEscape
 import org.unbescape.json.JsonEscape
 import java.util.regex.Pattern
 
-class GeniusProcessor : IntermediateProcessor<StandardResult, LyricsOutput.Data?>() {
+class GeniusProcessor : IntermediateProcessor<StandardResult, LyricsOutput.Data>() {
     @Throws(Exception::class)
-    override fun process(data: StandardResult): LyricsOutput.Data? {
+    override fun process(data: StandardResult): LyricsOutput.Data {
         val songName: String = data.getCapturingGroup(lyrics.song).trim { it <= ' ' }
         val search: JSONObject = ConnectionUtils.getPageJson(
             GENIUS_SEARCH_URL + ConnectionUtils.urlEncode(songName) + "&count=1"
@@ -23,7 +23,7 @@ class GeniusProcessor : IntermediateProcessor<StandardResult, LyricsOutput.Data?
         val searchHits: JSONArray = search.getJSONObject("response").getJSONArray("sections")
             .getJSONObject(0).getJSONArray("hits")
         if (searchHits.length() == 0) {
-            return null
+            return LyricsOutput.Data(title = songName, artist = null, lyrics = null)
         }
 
         val song: JSONObject = searchHits.getJSONObject(0).getJSONObject("result")
