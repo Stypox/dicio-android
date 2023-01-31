@@ -36,6 +36,7 @@ public final class SkillContext {
      *         easily considered always nonnull
      * @implNote the name is like this because getAndroidContext would be too long
      */
+    @NonNull
     public Context android() {
         return androidContext;
     }
@@ -112,12 +113,13 @@ public final class SkillContext {
 
     /**
      * @apiNote not intended for usage inside skills, but only for constructing and maintaining a
-     *          skill context
+     *          skill context. You may pass {@code null} to this method in case you are freeing
+     *          resources.
      * @param preferences the Android shared preferences, useful for user customization, also see
      *                    {@link SkillInfo#hasPreferences()} and
      *                    {@link SkillInfo#getPreferenceFragment()}
      */
-    public void setPreferences(@NonNull final SharedPreferences preferences) {
+    public void setPreferences(@Nullable final SharedPreferences preferences) {
         this.preferences = preferences;
     }
 
