@@ -360,8 +360,16 @@ class SkillEvaluator(
     }
 
     private fun generateOutput(skill: Skill) {
-        skill.generateOutput()
-        val nextSkills = skill.nextSkills()
+        val nextSkills: List<Skill>?
+        try {
+            skill.generateOutput()
+            nextSkills = skill.nextSkills()
+            skill.cleanup() // cleanup the input that was set
+        } catch (t: Throwable) {
+            onError(t)
+            return
+        }
+
         if (nextSkills == null || nextSkills.isEmpty()) {
             // current conversation has ended, reset to the default batch of skills
             skillRanker.removeAllBatches()
@@ -372,7 +380,7 @@ class SkillEvaluator(
                 activity.runOnUiThread { primaryInputDevice.tryToGetInput(false) }
             }
         }
-        skill.cleanup() // cleanup the input that was set
+
         finishedProcessingInput()
     }
 
