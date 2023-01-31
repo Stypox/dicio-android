@@ -31,7 +31,9 @@ public final class SkillContext {
     SpeechOutputDevice speechOutputDevice;
 
     /**
-     * @return the Android context, useful for example to get resources, etc.
+     * @return the Android context, useful for example to get resources, etc. Will only be {@code
+     *         null} while the context is being build or right before being freed, so this can be
+     *         easily considered always nonnull
      * @implNote the name is like this because getAndroidContext would be too long
      */
     public Context android() {
@@ -100,10 +102,11 @@ public final class SkillContext {
 
     /**
      * @apiNote not intended for usage inside skills, but only for constructing and maintaining a
-     *          skill context
+     *          skill context. You may pass {@code null} to this method in case you are freeing
+     *          resources.
      * @param androidContext the Android context, useful for example to get resources, etc.
      */
-    public void setAndroidContext(@NonNull final Context androidContext) {
+    public void setAndroidContext(@Nullable final Context androidContext) {
         this.androidContext = androidContext;
     }
 
