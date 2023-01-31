@@ -332,6 +332,8 @@ class SkillEvaluator(
                         skillRanker.getFallbackSkill(inputs[0], inputWords, normalizedWords)
                     )
                 }
+            activity.runOnUiThread { displayUserInput(chosen.input) }
+
             val permissions = chosen.skill.skillInfo?.neededPermissions?.toTypedArray() ?: arrayOf()
             if (PermissionUtils.checkPermissions(activity, *permissions)) {
                 // skill's output will be generated below, so process input now
@@ -348,7 +350,6 @@ class SkillEvaluator(
     }
 
     private fun onChosenSkill(chosen: InputSkillPair) {
-        displayUserInput(chosen.input)
         chosen.permissionsToRequest?.also { permissionsToRequest ->
             // request permissions; when done process input in onSkillRequestPermissionsResult
             // note: need to do this here on main thread
