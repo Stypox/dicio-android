@@ -113,4 +113,12 @@ public class StringUtilsTest {
         assertEquals(-5, customStringDistance("dog", "dogy"));
         assertEquals(-4, customStringDistance("dog", "doggy"));
     }
+
+    @Test
+    public void contactStringDistanceTest() {
+        assertEquals(-12, contactStringDistance("Leo Morgan", "Morgan"));
+        assertEquals(-12, contactStringDistance("John Morgan", "Morgan"));
+        assertEquals(-7, contactStringDistance("Johan Morgan", "John"));
+        assertEquals(-4, contactStringDistance("Leonard John", "Morgan"));
+    }
 }

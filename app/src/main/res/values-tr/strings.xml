@@ -80,7 +80,7 @@
     <string name="eval_missing_permissions">\"%1$s\" yeteneğinin çalışması için şu izinlere ihtiyacı var: %2$s</string>
     <string name="pref_skill_grant_permissions">İzin ver</string>
     <string name="pref_skill_missing_permissions">Şu izinleri gerektirir: %1$s</string>
-    <string name="skill_telephone_found_contacts">%1$d kişi buldum</string>
+    <string name="skill_telephone_found_contacts">%1$d kişi buldum, hangisini arayayım\?</string>
     <string name="android_tts_error">Android metin okuma motoru başlatılırken bir hata oluştu</string>
     <string name="skill_name_telephone">Telefon</string>
     <string name="skill_sentence_example_telephone">Tom\'u ara</string>
@@ -127,4 +127,14 @@
     <string name="skill_name_current_time">Geçerli saat</string>
     <string name="skill_sentence_example_current_time">Saat kaç\?</string>
     <string name="skill_time_current_time">Şu anda %1$s</string>
+    <string name="pref_stt_auto_finish_title">Konuşmanın sonucunu doğrudan metin hizmetine gönder</string>
+    <string name="stt_say_something">Bir şey söyleyin…</string>
+    <string name="pref_stt_auto_finish_summary_on">Dinleme bittiğinde konuşma sonucunu istekte bulunan uygulamaya otomatik olarak gönder</string>
+    <string name="pref_stt_auto_finish_summary_off">İstekte bulunan uygulamaya konuşma sonucunu göndermeden önce elle onay için bekle</string>
+    <string name="stt_did_not_understand">Anlayamadım, tekrar deneyin</string>
+    <string name="stt_service">Konuşmayı metne dönüştürme hizmeti</string>
+    <string name="skill_navigation_specify_where">Nereye gitmek istediğinizi belirtin</string>
+    <string name="skill_name_navigation">Navigasyon</string>
+    <string name="skill_sentence_example_navigation">Vancouver uluslararası havaalanına git</string>
+    <string name="skill_navigation_navigating_to">%1$s\'e gidiliyor</string>
 </resources>

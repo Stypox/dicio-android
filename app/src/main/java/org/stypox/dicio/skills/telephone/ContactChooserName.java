@@ -44,8 +44,8 @@ public class ContactChooserName extends Skill {
         input = input.trim();
         bestContact = contacts.stream()
                 .map(nameNumberPair -> new Pair(nameNumberPair,
-                        StringUtils.customStringDistance(input, nameNumberPair.name)))
-                .filter(pair -> pair.distance < 6)
+                        StringUtils.contactStringDistance(input, nameNumberPair.name)))
+                .filter(pair -> pair.distance < -7)
                 .min(Comparator.comparingInt(a -> a.distance))
                 .map(pair -> pair.nameNumberPair)
                 .orElse(null);

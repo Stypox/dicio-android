@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public final class StringUtils {
     private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("\\p{Punct}");
-    private static final Pattern WORD_DELIMITERS_PATTERN = Pattern.compile("[^\\p{L}0-9]");
+    private static final Pattern WORD_DELIMITERS_PATTERN = Pattern.compile("[^\\p{L}\\d]");
 
     private StringUtils() {
     }
@@ -156,24 +156,33 @@ public final class StringUtils {
         return levenshteinDistanceMemory(a, b)[a.length()][b.length()];
     }
 
+
+    private static final class StringDistanceStats {
+        private final int levenshteinDistance;
+        private final int maxSubsequentChars;
+        private final int matchingCharCount;
+
+        private StringDistanceStats(final int levenshteinDistance,
+                                    final int maxSubsequentChars,
+                                    final int matchingCharCount) {
+            this.levenshteinDistance = levenshteinDistance;
+            this.maxSubsequentChars = maxSubsequentChars;
+            this.matchingCharCount = matchingCharCount;
+        }
+    }
+
     /**
-     * Calculates a custom string distance between the two provided strings. Internally calculates
-     * the dynamic programming memory of the
-     * <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a>, then
-     * follows the path chosen by the dynamic programming algorithm and draws some statistics about
-     * the total number of matched character and the maximum number of roughly subsequent characters
-     * matched. The result is a combination of the latter statistics and the actual Levenshtein
-     * distance. The two strings will be cleaned with {@link #cleanStringForDistance(String)} before
-     * calculating the distance.
-     * @param aNotCleaned the first string
-     * @param bNotCleaned the second string
-     * @return the custom string distance between the two cleaned strings as described above, lower
-     *         is better, values can be lower than 0, values are always less than or equal to the
-     *         {@link #levenshteinDistance(String, String)} between the two strings
+     * Calculates some statistics about the
+     * <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance</a> between
+     * the two strings. Follows the path chosen by the dynamic programming algorithm to obtain the
+     * total number of matched characters and the maximum number of roughly subsequent characters
+     * matched.
+     *
+     * @param a the first string, maybe cleaned with {@link #cleanStringForDistance(String)}
+     * @param b the second string, maybe cleaned with {@link #cleanStringForDistance(String)}
+     * @return a triple of Levenshtein distance, max subsequent chars and matching char count
      */
-    public static int customStringDistance(final String aNotCleaned, final String bNotCleaned) {
-        final String a = cleanStringForDistance(aNotCleaned);
-        final String b = cleanStringForDistance(bNotCleaned);
+    private static StringDistanceStats stringDistanceStats(final String a, final String b) {
         final int[][] memory = levenshteinDistanceMemory(a, b);
 
         int matchingCharCount = 0;
@@ -189,6 +198,44 @@ public final class StringUtils {
             }
         }
 
-        return memory[a.length()][b.length()] - maxSubsequentChars - matchingCharCount;
+        return new StringDistanceStats(memory[a.length()][b.length()], maxSubsequentChars,
+                matchingCharCount);
+    }
+
+    /**
+     * Calculates a custom string distance between the two provided strings, based on the statistics
+     * drawn by {@link #stringDistanceStats(String, String)}. Seems to work well when matching
+     * names of objects, where the difference in length between the two strings counts by some
+     * factor, but max subsequent chars and matching char count also play a big role.
+     *
+     * @param aNotCleaned the first string
+     * @param bNotCleaned the second string
+     * @return the custom string distance between the two cleaned strings, lower is better, values
+     *         can be lower than 0, values are always less than or equal to the {@link
+     *         #levenshteinDistance(String, String)} between the two strings
+     */
+    public static int customStringDistance(final String aNotCleaned, final String bNotCleaned) {
+        final String a = cleanStringForDistance(aNotCleaned);
+        final String b = cleanStringForDistance(bNotCleaned);
+        final StringDistanceStats stats = stringDistanceStats(a, b);
+        return stats.levenshteinDistance - stats.maxSubsequentChars - stats.matchingCharCount;
+    }
+
+    /**
+     * Calculates a custom string distance between the two provided strings, based on the statistics
+     * drawn by {@link #stringDistanceStats(String, String)}. Seems to work well when matching
+     * contact names, where the difference in length between the two strings is mostly irrelevant,
+     * and what mostly counts are max subsequent chars and matching char count.
+     *
+     * @param aNotCleaned the first string
+     * @param bNotCleaned the second string
+     * @return the custom string distance between the two cleaned strings, lower is better, values
+     *         will always be lower than or equal to 0
+     */
+    public static int contactStringDistance(final String aNotCleaned, final String bNotCleaned) {
+        final String a = cleanStringForDistance(aNotCleaned);
+        final String b = cleanStringForDistance(bNotCleaned);
+        final StringDistanceStats stats = stringDistanceStats(a, b);
+        return -stats.maxSubsequentChars - stats.matchingCharCount;
     }
 }

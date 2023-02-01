@@ -81,6 +81,10 @@
     <string name="android_tts_error">Si è verificato un errore nell\'inizializzare il motore di sintesi vocale di Android</string>
     <string name="pref_skill_grant_permissions">Concedi</string>
     <string name="eval_missing_permissions">L\'abilità \"%1$s\" richiede questi permessi per funzionare: %2$s</string>
+    <string name="skill_name_navigation">Navigazione</string>
+    <string name="skill_sentence_example_navigation">Portami a Milano</string>
+    <string name="skill_navigation_specify_where">Specifica dove vuoi andare</string>
+    <string name="skill_navigation_navigating_to">Navigo verso %1$s</string>
     <string name="skill_name_telephone">Telefono</string>
     <string name="skill_sentence_example_telephone">Chiama Lorenzo</string>
     <string name="skill_telephone_unknown_contact">Nessun contatto trovato, riprova</string>

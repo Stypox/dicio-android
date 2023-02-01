@@ -9,6 +9,8 @@ Dicio risponde a richieste di questi tipi:
 <li><b>calcolatrice</b>: calcola delle semplici espressioni matematiche - <i>Quanto fa quattromiladue per tre meno un milione diviso trecento?</i></li>
 <li><b>telefono</b>: visualizza e chiama i contatti - <i>Chiama Lorenzo</i></li>
 <li><b>timer</b>: imposta, descrive e interrompe conti alla rovescia - <i>Metti un timer di cinque minuti</i></li>
+<li><b>ora corrente</b>: richiedi l'ora corrente - <i>Che ore sono?</i></li>
+<li><b>navigazione</b>: apre l'app di navigazione alla posizione richiesta - <i>Portami a Milano</i></li>
 </ul>
 
 Dicio può ricevere input tramite una casella di testo o tramite il <i>riconoscimento vocale</i> <a href="https://github.com/alphacep/vosk-api/">Vosk</a>, e può parlare con messaggi pop-up o con il <i>motore di sintesi vocale</i> di Android. Le abilità generano anche dell'<b>output grafico interattivo</b> quando rispondono a una domanda.
