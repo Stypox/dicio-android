@@ -1,60 +1,48 @@
 package org.stypox.dicio.input;
 
-import static org.stypox.dicio.util.LocaleUtils.LocaleResolutionResult;
-import static org.stypox.dicio.util.LocaleUtils.UnsupportedLocaleException;
-import static org.stypox.dicio.util.LocaleUtils.resolveSupportedLocale;
-import static org.stypox.dicio.util.StringUtils.isNullOrEmpty;
-
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.core.os.LocaleListCompat;
-import androidx.preference.PreferenceManager;
-
-import org.stypox.dicio.BuildConfig;
 import org.stypox.dicio.R;
 import org.stypox.dicio.Sections;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.vosk.LibVosk;
-import org.vosk.LogLevel;
-import org.vosk.Model;
-import org.vosk.Recognizer;
-import org.vosk.android.RecognitionListener;
-import org.vosk.android.SpeechService;
+import org.stypox.dicio.input.stt_service.SttService;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import androidx.annotation.Nullable;
+import androidx.core.os.LocaleListCompat;
+import androidx.preference.PreferenceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class VoskInputDevice extends SpeechInputDevice {
+import static org.stypox.dicio.util.LocaleUtils.LocaleResolutionResult;
+import static org.stypox.dicio.util.LocaleUtils.UnsupportedLocaleException;
+import static org.stypox.dicio.util.LocaleUtils.resolveSupportedLocale;
+
+public class VoskInputDevice extends SpeechRecogServiceInputDevice  {
 
     public static final String TAG = VoskInputDevice.class.getSimpleName();
     public static final String MODEL_PATH = "/vosk-model";
     public static final String MODEL_ZIP_FILENAME = "model.zip";
-    public static final float SAMPLE_RATE = 44100.0f;
 
     /**
      * All small models from <a href="https://alphacephei.com/vosk/models">Vosk</a>
@@ -92,18 +80,13 @@ public class VoskInputDevice extends SpeechInputDevice {
     private final CompositeDisposable disposables = new CompositeDisposable();
     @Nullable private BroadcastReceiver downloadingBroadcastReceiver = null;
     private Long currentModelDownloadId = null;
-    @Nullable private SpeechService speechService = null;
-
-    private boolean currentlyInitializingRecognizer = false;
-    private boolean startListeningOnLoaded = false;
-    private boolean currentlyListening = false;
-
 
     /////////////////////
     // Exposed methods //
     /////////////////////
 
     public VoskInputDevice(final Activity activity) {
+        super(activity);
         this.activity = activity;
     }
 
@@ -116,84 +99,71 @@ public class VoskInputDevice extends SpeechInputDevice {
      * @param manual if this is true and the model is not already downloaded, do not start
      *               downloading it. See {@link #tryToGetInput(boolean)}.
      */
-    private void load(final boolean manual) {
-        if (speechService == null && !currentlyInitializingRecognizer) {
-            if (new File(getModelDirectory(), "ivector").exists()) {
-                // one directory is in the correct place, so everything should be ok
-                Log.d(TAG, "Vosk model in place");
+    protected void load(final boolean manual) {
+        if (new File(getModelDirectory(), "ivector").exists()) {
+            // one directory is in the correct place, so everything should be ok
+            Log.d(TAG, "Vosk model in place");
+            super.load(manual);
+        } else {
+            Log.d(TAG, "Vosk model not in place");
+            final DownloadManager downloadManager =
+                    (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
 
-                currentlyInitializingRecognizer = true;
-                onLoading();
+            if (currentModelDownloadId == null) {
+                Log.d(TAG, "Vosk model is not already being downloaded");
 
-                disposables.add(Completable.fromAction(this::initializeRecognizer)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                            currentlyInitializingRecognizer = false;
-                            if (startListeningOnLoaded) {
-                                startListeningOnLoaded = false;
-                                tryToGetInput(manual);
-                            } else {
-                                onInactive();
-                            }
-                        }, throwable -> {
-                            currentlyInitializingRecognizer = false;
-                            if ("Failed to initialize recorder. Microphone might be already in use."
-                                    .equals(throwable.getMessage())) {
-                                notifyError(new UnableToAccessMicrophoneException());
-                            } else {
-                                notifyError(throwable);
-                            }
-                            onInactive();
-                        }));
-
-            } else {
-                Log.d(TAG, "Vosk model not in place");
-                final DownloadManager downloadManager =
-                        (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-
-                if (currentModelDownloadId == null) {
-                    Log.d(TAG, "Vosk model is not already being downloaded");
-
-                    if (manual) {
-                        // the model needs to be downloaded and no download has already started;
-                        // the user manually triggered the input device, so he surely wants the
-                        // model to be downloaded, so we can proceed
-                        onLoading();
-                        try {
-                            final LocaleResolutionResult result = resolveSupportedLocale(
-                                    LocaleListCompat.create(Sections.getCurrentLocale()),
-                                    MODEL_URLS.keySet());
-                            startDownloadingModel(downloadManager, result.supportedLocaleString);
-                        } catch (final UnsupportedLocaleException e) {
-                            asyncMakeToast(R.string.vosk_model_unsupported_language);
-                            e.printStackTrace();
-                            onRequiresDownload();
-                        }
-
-                    } else {
-                        // loading the model would require downloading it, but the user didn't
-                        // explicitly tell the voice recognizer to download files, so notify them
-                        // that a download is required
+                if (manual) {
+                    // the model needs to be downloaded and no download has already started;
+                    // the user manually triggered the input device, so he surely wants the
+                    // model to be downloaded, so we can proceed
+                    onLoading();
+                    try {
+                        final LocaleResolutionResult result = resolveSupportedLocale(
+                                LocaleListCompat.create(Sections.getCurrentLocale()),
+                                MODEL_URLS.keySet());
+                        startDownloadingModel(downloadManager, result.supportedLocaleString);
+                    } catch (final UnsupportedLocaleException e) {
+                        asyncMakeToast(R.string.vosk_model_unsupported_language);
+                        e.printStackTrace();
                         onRequiresDownload();
                     }
 
                 } else {
-                    Log.d(TAG, "Vosk model already being downloaded: " + currentModelDownloadId);
+                    // loading the model would require downloading it, but the user didn't
+                    // explicitly tell the voice recognizer to download files, so notify them
+                    // that a download is required
+                    onRequiresDownload();
                 }
+
+            } else {
+                Log.d(TAG, "Vosk model already being downloaded: " + currentModelDownloadId);
             }
         }
+    }
+
+    @Override
+    protected SpeechRecognizer getRecognizer() {
+        SpeechRecognizer sr = SpeechRecognizer.createSpeechRecognizer(activity,
+                new ComponentName(activity, SttService.class));
+        //additionally call startService so that service is not directly destroyed after
+        //speech recognizer is unbound (especially important if SttServiceActivity is
+        // only called from other apps. If dicio app is closed, service is destroyed anyway,
+        // too. Avoid destroyin in order to avoid re-initialization of SpeechService
+        //(observed when manually closed - check if this happens too when closed by system
+        // due to inactivity)
+        //works also when battery optimization is enabled
+        //TODO check long term behaviour with and without battery optimization
+        //TODO check how to call startService if neither Dicio Main app nor
+        // Dicios SttServiceActivity is called but directly
+        // SpeechRecognizer.createSpeechRecognizer by a 3rd party app
+        activity.startService(new Intent(activity, SttService.class));
+        return sr;
     }
 
     @Override
     public void cleanup() {
         super.cleanup();
         disposables.clear();
-        if (speechService != null) {
-            speechService.stop();
-            speechService.shutdown();
-            speechService = null;
-        }
 
         if (currentModelDownloadId != null) {
             final DownloadManager downloadManager =
@@ -207,117 +177,6 @@ public class VoskInputDevice extends SpeechInputDevice {
             downloadingBroadcastReceiver = null;
         }
         activity = null;
-    }
-
-    @Override
-    public synchronized void tryToGetInput(final boolean manual) {
-        if (currentlyInitializingRecognizer) {
-            startListeningOnLoaded = true;
-            return;
-        } else if (speechService == null) {
-            startListeningOnLoaded = true;
-            load(manual); // not loaded before, retry
-            return; // recognizer not ready
-        }
-
-        if (currentlyListening) {
-            return;
-        }
-        currentlyListening = true;
-        super.tryToGetInput(manual);
-
-        Log.d(TAG, "starting recognizer");
-
-        speechService.startListening(new RecognitionListener() {
-
-            @Override
-            public void onPartialResult(final String s) {
-                Log.d(TAG, "onPartialResult called with s = " + s);
-                if (!currentlyListening) {
-                    return;
-                }
-
-                String partialInput = null;
-                try {
-                    partialInput = new JSONObject(s).getString("partial");
-                } catch (final JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (!isNullOrEmpty(partialInput)) {
-                    notifyPartialInputReceived(partialInput);
-                }
-            }
-
-            @Override
-            public void onResult(final String s) {
-                Log.d(TAG, "onResult called with s = " + s);
-                if (!currentlyListening) {
-                    return;
-                }
-
-                stopRecognizer();
-
-                final ArrayList<String> inputs = new ArrayList<>();
-                try {
-                    final JSONObject jsonResult = new JSONObject(s);
-                    final int size = jsonResult.getJSONArray("alternatives").length();
-                    for (int i = 0; i < size; i++) {
-                        final String text = jsonResult.getJSONArray("alternatives")
-                                .getJSONObject(i).getString("text");
-                        if (!isNullOrEmpty(text)) {
-                            inputs.add(text);
-                        }
-                    }
-                } catch (final JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (inputs.isEmpty()) {
-                    notifyNoInputReceived();
-                } else {
-                    notifyInputReceived(inputs);
-                }
-            }
-
-            @Override
-            public void onFinalResult(final String s) {
-                Log.d(TAG, "onFinalResult called with s = " + s);
-                // TODO
-            }
-
-            @Override
-            public void onError(final Exception e) {
-                Log.d(TAG, "onError called");
-                stopRecognizer();
-                notifyError(e);
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.d(TAG, "onTimeout called");
-                stopRecognizer();
-                notifyNoInputReceived();
-            }
-        });
-        onListening();
-    }
-
-    @Override
-    public void cancelGettingInput() {
-        if (currentlyListening) {
-            if (speechService != null) {
-                speechService.stop();
-            }
-            notifyNoInputReceived();
-
-            // call onInactive() only if we really were listening, so that the SpeechInputDevice
-            // state icon is preserved if something different from "microphone on" was being shown
-            onInactive();
-        }
-
-        startListeningOnLoaded = false;
-        currentlyListening = false;
     }
 
     /**
@@ -334,31 +193,6 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
 
         deleteFolder(new File(context.getFilesDir(), MODEL_PATH));
-    }
-
-
-    ////////////////////
-    // Initialization //
-    ////////////////////
-
-    private synchronized void initializeRecognizer() throws IOException {
-        Log.d(TAG, "initializing recognizer");
-
-        LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
-        final Model model = new Model(getModelDirectory().getAbsolutePath());
-        final Recognizer recognizer = new Recognizer(model, SAMPLE_RATE);
-        recognizer.setMaxAlternatives(5);
-        this.speechService = new SpeechService(recognizer, SAMPLE_RATE);
-    }
-
-    private void stopRecognizer() {
-        currentlyListening = false;
-
-        if (speechService != null) {
-            speechService.stop();
-        }
-
-        onInactive();
     }
 
 
@@ -560,13 +394,4 @@ public class VoskInputDevice extends SpeechInputDevice {
         }
     }
 
-
-    /////////////////////
-    // Other utilities //
-    /////////////////////
-
-    private void asyncMakeToast(@StringRes final int message) {
-        activity.runOnUiThread(() ->
-                Toast.makeText(activity, activity.getString(message), Toast.LENGTH_SHORT).show());
-    }
 }

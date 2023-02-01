@@ -53,6 +53,7 @@
     <string name="pref_input_method">Input method</string>
     <string name="pref_input_method_summary">Choose the service to use to talk to Dicio - %1$s</string>
     <string name="pref_input_method_text">Text box</string>
+    <string name="pref_input_method_systemStt">System provided text-to-speech-service (speech is handled outside Dicio)</string>
     <string name="pref_input_method_vosk">Vosk offline speech recognition</string>
     <string name="pref_speech_output_method">Speech output method</string>
     <string name="pref_speech_output_method_summary">Choose the service Dicio should use to talk to you - %1$s</string>

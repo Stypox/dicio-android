@@ -1,8 +1,5 @@
 package org.stypox.dicio;
 
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,23 +10,16 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.preference.PreferenceManager;
-
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import org.dicio.skill.output.GraphicalOutputDevice;
+import org.dicio.skill.output.SpeechOutputDevice;
 import org.stypox.dicio.eval.SkillEvaluator;
 import org.stypox.dicio.eval.SkillRanker;
 import org.stypox.dicio.input.InputDevice;
 import org.stypox.dicio.input.SpeechInputDevice;
+import org.stypox.dicio.input.SpeechRecogServiceInputDevice;
 import org.stypox.dicio.input.ToolbarInputDevice;
 import org.stypox.dicio.input.VoskInputDevice;
 import org.stypox.dicio.input.stt_service.SttServiceActivity;
@@ -42,8 +32,19 @@ import org.stypox.dicio.settings.SettingsActivity;
 import org.stypox.dicio.skills.SkillHandler;
 import org.stypox.dicio.util.BaseActivity;
 import org.stypox.dicio.util.PermissionUtils;
-import org.dicio.skill.output.GraphicalOutputDevice;
-import org.dicio.skill.output.SpeechOutputDevice;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
+
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -304,6 +305,11 @@ public class MainActivity extends BaseActivity
                 .getString(getString(R.string.pref_key_input_method), "");
         if (preference.equals(getString(R.string.pref_val_input_method_text))) {
             return new ToolbarInputDevice();
+        } else if (preference.equals(getString(R.string.pref_val_input_method_systemStt))) {
+            //TODO make a hint/data privacy warning etc. in preference when this one is chosen that
+            // the speech dicio records is given to a third party app according to system
+            // settings
+            return new SpeechRecogServiceInputDevice(this);
         } else { // default
             return new VoskInputDevice(this);
         }

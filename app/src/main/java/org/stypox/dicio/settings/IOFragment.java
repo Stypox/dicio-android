@@ -2,10 +2,10 @@ package org.stypox.dicio.settings;
 
 import android.os.Bundle;
 
-import androidx.preference.PreferenceFragmentCompat;
-
 import org.stypox.dicio.R;
 import org.stypox.dicio.input.VoskInputDevice;
+
+import androidx.preference.PreferenceFragmentCompat;
 
 public class IOFragment extends PreferenceFragmentCompat {
     @Override
@@ -20,11 +20,12 @@ public class IOFragment extends PreferenceFragmentCompat {
                     }
                     return true;
                 });
-        findPreference(getString(R.string.pref_key_input_method))
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    VoskInputDevice.deleteCurrentModel(requireContext());
-                    return true;
-                });
+//TODO Discuss whether this is needed. At least for debugging commented
+//        findPreference(getString(R.string.pref_key_input_method))
+//                .setOnPreferenceChangeListener((preference, newValue) -> {
+//                    VoskInputDevice.deleteCurrentModel(requireContext());
+//                    return true;
+//                });
     }
 
     @Override
