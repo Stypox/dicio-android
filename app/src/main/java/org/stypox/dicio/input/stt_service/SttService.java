@@ -15,6 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.stypox.dicio.BuildConfig;
 import org.stypox.dicio.R;
+import org.stypox.dicio.error.ErrorInfo;
+import org.stypox.dicio.error.ErrorUtils;
+import org.stypox.dicio.error.UserAction;
 import org.vosk.LibVosk;
 import org.vosk.LogLevel;
 import org.vosk.Model;
@@ -101,11 +104,7 @@ public class SttService extends RecognitionService {
             }
 
             if (inputs.isEmpty()) {
-                try {
-                    callback.error(SpeechRecognizer.ERROR_NO_MATCH);
-                } catch (final RemoteException e) {
-                    logRemoteException(e);
-                }
+                callbackErrorReport(SpeechRecognizer.ERROR_NO_MATCH);
             } else {
                 final Bundle results = new Bundle();
                 results.putStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION, inputs);
@@ -134,24 +133,16 @@ public class SttService extends RecognitionService {
         @Override
         public void onError(final Exception e) {
             Log.e(TAG, "onError", e);
+            showErrorNotification(e);
             stopRecognizer();
-            try {
-                //The Error message is quite general because there is no "generic error code"
-                callback.error(SpeechRecognizer.ERROR_SERVER);
-            } catch (final RemoteException ex) {
-                Log.e(TAG, "onError", e);
-            }
+            callbackErrorReport(SpeechRecognizer.ERROR_SERVER);
         }
 
         @Override
         public void onTimeout() {
             Log.d(TAG, "onTimeout called");
             stopRecognizer();
-            try {
-                callback.error(SpeechRecognizer.ERROR_SPEECH_TIMEOUT);
-            } catch (final RemoteException e) {
-                logRemoteException(e);
-            }
+            callbackErrorReport(SpeechRecognizer.ERROR_SPEECH_TIMEOUT);
         }
     }
 
@@ -162,6 +153,8 @@ public class SttService extends RecognitionService {
      */
     @Nullable
     private SpeechService speechService = null;
+    private Model model;
+    private long modelDownloadDate;
     private boolean currentlyInitializingRecognizer = false;
     public static final String MODEL_PATH = "/vosk-model";
     public static final String TAG = SttService.class.getSimpleName();
@@ -173,13 +166,11 @@ public class SttService extends RecognitionService {
     private Intent lastRequestedIntent = null;
     Callback callback;
 
-//TODO support onCheckRecognitionSupport
-//TODO support onTriggerModelDownload
-
     @Override
     public void onCreate() {
         super.onCreate();
-        load();
+        LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
+        initialize();
         Log.d(TAG, "onCreate");
     }
 
@@ -208,11 +199,7 @@ public class SttService extends RecognitionService {
     public void onDestroy() {
         Log.d(TAG, "onDestroy");
         disposables.clear();
-        if (speechService != null) {
-            stopRecognizer();
-            speechService.shutdown();
-            speechService = null;
-        }
+        shutdownSpeechService();
         super.onDestroy();
     }
 
@@ -220,17 +207,79 @@ public class SttService extends RecognitionService {
     protected void onStartListening(final Intent intent, final Callback newCallback) {
         Log.d(TAG, "onStartListening");
         Log.d(TAG, "onStartCommand called is " + onStartCommandCalled);
+        this.callback = newCallback;
+        //TODO check permission. Actually it seems this is already done by the system interface
+        // (reports SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) , but it is
+        // explicitly recommended in the SpeechRecognizer documentation. However the way it is in
+        // the docs does not work here due to API Level for requested calls (and since Audio
+        // Recorder is not directly implemented here but by vosk library)
+        // https://developer.android.com/reference/android/speech/RecognitionService
+        // However even if there is a way for app without permission, not a security issue since
+        // stt service notifies user when speech input is started
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            final String callingPackageName = getPackageManager().getPackagesForUid(
+                    newCallback.getCallingUid())[0];
+//Not working this way - check fails even for dicio
+//            int permissionState = PermissionChecker.checkCallingPermission(this,
+//                    "android.permission.RECORD_AUDIO", callingPackageName);
+//            if (permissionState != PermissionChecker.PERMISSION_GRANTED){
+//                callbackErrorReport(SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS);
+//                return;
+//            }
+        }
+        if (speechService != null && !recogIntentExtrasEquals(lastRequestedIntent, intent)) {
+            shutdownSpeechService();
+            if (intent.hasExtra(RecognizerIntent.EXTRA_LANGUAGE)) {
+                //check if language change is the reason
+                Log.d(TAG, "requested language = "
+                        + intent.getStringExtra(RecognizerIntent.EXTRA_LANGUAGE));
+                if (!lastRequestedIntent.hasExtra(RecognizerIntent.EXTRA_LANGUAGE)
+                        || !lastRequestedIntent.getStringExtra(RecognizerIntent.EXTRA_LANGUAGE)
+                        .equals(intent.getStringExtra(RecognizerIntent.EXTRA_LANGUAGE))) {
+                    //Since at the moment only one language at the time is supported, just check
+                    // whether the downloaded model has changed. Otherwise use the language which
+                    // is installed anyway
+                    if (getModelDirectory().lastModified() != modelDownloadDate) {
+                        Log.d(TAG, "model last modified " + getModelDirectory().lastModified());
+                        Log.d(TAG, "model_download_date " + modelDownloadDate);
+                        model = null; //forces reloading
+                        shutdownSpeechService(); //forces reloading
+                    }
+                }
+            }
+        }
+        lastRequestedIntent = intent;
+
         //TODO remove toast or make different type of speech recognition hint or a preference option
         // to disable
         Toast.makeText(this, this.getString(R.string.pref_input_method_vosk),
                 Toast.LENGTH_SHORT).show();
-        //TODO maybe check here for audio permission of the caller (but already in manifest of this
-        // service declared => should not happen?): Need a test app without permission
-        // https://developer.android.com/reference/android/speech/RecognitionService#
-        // onStartListening(android.content.Intent,%20android.speech.RecognitionService.Callback)
-        this.callback = newCallback;
-        lastRequestedIntent = intent;
         tryToGetInput();
+
+    }
+
+    /**
+     * in order to identify whether a new recognizer has to be loaded or not
+     * @return true if all Extras, which are supported by this STT service, are equal
+     */
+    protected boolean recogIntentExtrasEquals(final Intent i1, final Intent i2) {
+        final Bundle ie1 = i1.getExtras();
+        final Bundle ie2 = i2.getExtras();
+        final String[] supportedExtras = {RecognizerIntent.EXTRA_LANGUAGE,
+                RecognizerIntent.EXTRA_MAX_RESULTS};
+        for (final String key: supportedExtras) {
+            final Object extra1 = ie1.get(key);
+            final Object extra2 = ie2.get(key);
+            //return false if they are not equal or one (but noth both) is null
+            if (extra1 != null) {
+                if (!extra1.equals(extra2)) {
+                    return false;
+                }
+            } else if (extra2 != null) {
+                return false;
+            }
+        }
+        return true;
 
         //TODO support Intent Extras if possible with vosk
         // EXTRA_LANGUAGE / EXTRA_LANGUAGE_PREFERENCE / EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE
@@ -244,8 +293,8 @@ public class SttService extends RecognitionService {
         // EXTRA_AUDIO_SOURCE_ENCODING / EXTRA_AUDIO_SOURCE_SAMPLING_RATE
         // EXTRA_BIASING_STRINGS
         // EXTRA_ENABLE_BIASING_DEVICE_CONTEXT
-
     }
+
 
     @Override
     protected void onCancel(final Callback newCallback) {
@@ -265,7 +314,7 @@ public class SttService extends RecognitionService {
 
 
 
-    private void load() {
+    private void initialize() {
         if (speechService == null && !currentlyInitializingRecognizer) {
             if (new File(getModelDirectory(), "ivector").exists()) {
                 // one directory is in the correct place, so everything should be ok
@@ -273,7 +322,7 @@ public class SttService extends RecognitionService {
 
                 currentlyInitializingRecognizer = true;
 
-                disposables.add(Completable.fromAction(this::initializeRecognizer)
+                disposables.add(Completable.fromAction(this::loadModel)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
@@ -284,25 +333,19 @@ public class SttService extends RecognitionService {
                             }
                         }, throwable -> {
                             currentlyInitializingRecognizer = false;
-                            if ("Failed to initialize recorder. Microphone might be already in use."
-                                    .equals(throwable.getMessage())) {
-                                callback.error(SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS);
-                            } else {
-                                Log.e(TAG, "load()->initializeRecognizer", throwable);
-                                callback.error(SpeechRecognizer.ERROR_SERVER);
-                            }
+                            showErrorNotification(throwable);
                         }));
 
             } else {
-                try {
+                if (callback != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        callback.error(SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE);
+                        callbackErrorReport(SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE);
                     } else {
-                        callback.error(SpeechRecognizer.ERROR_SERVER);
+                        callbackErrorReport(SpeechRecognizer.ERROR_SERVER);
                     }
-                } catch (final RemoteException e) {
-                    logRemoteException(e);
                 }
+                showErrorNotification(
+                        new Throwable(getString(R.string.vosk_model_unsupported_language)));
             }
         }
     }
@@ -310,27 +353,45 @@ public class SttService extends RecognitionService {
         if (currentlyInitializingRecognizer) {
             startListeningOnLoaded = true;
             return;
+        } else if (model == null) {
+            Log.w(TAG, "tryToGetInput model==null");
+            initialize(); //try to load anew
+            startListeningOnLoaded = true;
+            return; // recognizer not ready
+        } else if (getModelDirectory().lastModified() != modelDownloadDate) {
+            //if model has changed / updated / etc...
+            Log.i(TAG, "model directory modified date changed - load it anew");
+            Log.d(TAG, "model last modified " + getModelDirectory().lastModified());
+            Log.d(TAG, "model_download_date " + modelDownloadDate);
+            model = null; //reset
+            shutdownSpeechService();
+            initialize(); //load new one
+            startListeningOnLoaded = true;
+            return; // recognizer not ready
         } else if (speechService == null) {
             try {
-                callback.error(SpeechRecognizer.ERROR_SERVER);
-            } catch (final RemoteException e) {
-                logRemoteException(e);
+                loadSpeechService();
+            } catch (final IOException e) {
+                if ("Failed to initialize recorder. Microphone might be already in use."
+                        .equals(e.getMessage())) {
+                    callbackErrorReport(SpeechRecognizer.ERROR_AUDIO);
+                } else {
+                    Log.e(TAG, "load()->initializeRecognizer", e);
+                    showErrorNotification(e);
+                    callbackErrorReport(SpeechRecognizer.ERROR_SERVER);
+                }
+                return;
             }
-            return; // recognizer not ready
         }
         //(only one client can be connected via system to speech recognizer (otherwise
         // ERROR_BUSY seems to be reported) - check whether currently listening checks are
         // necessary at all) - on the other hand they do not harm
         if (currentlyListening) {
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    callback.error(SpeechRecognizer.ERROR_TOO_MANY_REQUESTS);
-                } else {
-                    //more generic
-                    callback.error(SpeechRecognizer.ERROR_SERVER);
-                }
-            } catch (final RemoteException e) {
-                logRemoteException(e);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                callbackErrorReport(SpeechRecognizer.ERROR_TOO_MANY_REQUESTS);
+            } else {
+                //more generic
+                callbackErrorReport(SpeechRecognizer.ERROR_SERVER);
             }
             return;
         }
@@ -349,10 +410,31 @@ public class SttService extends RecognitionService {
 
     private void logRemoteException(final RemoteException e) {
         Log.e(TAG, "Remote exception on callback information", e);
+        showErrorNotification(e);
+    }
+
+    /**
+     * wrapper for
+     * calling {@link RecognitionService.Callback#error(int)} and catches the remote exception
+     * @param errorType see {@link RecognitionService.Callback#error(int)}
+     */
+    protected void callbackErrorReport(final int errorType) {
+        try {
+            callback.error(errorType);
+        } catch (final RemoteException e) {
+            logRemoteException(e);
+        } catch (final NullPointerException e) {
+            showErrorNotification(e);
+        }
     }
 
     private File getModelDirectory() {
         return new File(this.getFilesDir(), MODEL_PATH);
+    }
+
+    protected void showErrorNotification(final Throwable t) {
+        final ErrorInfo ei = new ErrorInfo(t, UserAction.STT_SERVICE_SPEECH_TO_TEXT);
+        ErrorUtils.createNotification(this, ei);
     }
 
 
@@ -360,15 +442,49 @@ public class SttService extends RecognitionService {
     // Vosk Initialization //
     ////////////////////
 
-    private synchronized void initializeRecognizer() throws IOException {
-        Log.d(TAG, "initializing recognizer");
+    /**
+     * load the vosk model. Most time consuming procedure of recognizer intitializiation
+     */
+    private synchronized void loadModel() {
+        Log.d(TAG, "load Model");
+        final long t0 = System.currentTimeMillis();
+        model = new Model(getModelDirectory().getAbsolutePath());
+        modelDownloadDate = getModelDirectory().lastModified();
+        final long t1 = (System.currentTimeMillis() - t0);
+        Log.i(TAG, "Loading Model takes " + t1 + " ms");
+    }
 
-        LibVosk.setLogLevel(BuildConfig.DEBUG ? LogLevel.DEBUG : LogLevel.WARNINGS);
-        final Model model = new Model(getModelDirectory().getAbsolutePath());
+    /**
+     * load the recognizer. call this if a intent with new parameters (compared to last one) is
+     * received
+     */
+    private void loadSpeechService() throws IOException {
+        if (speechService != null) {
+            //first shutdown the old one, if a new one is requested
+            shutdownSpeechService();
+        }
+
+        final long t0 = System.currentTimeMillis();
         final Recognizer recognizer = new Recognizer(model, SAMPLE_RATE);
-        recognizer.setMaxAlternatives(
-                lastRequestedIntent.getIntExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5));
+        if (lastRequestedIntent != null) {
+            recognizer.setMaxAlternatives(
+                    lastRequestedIntent.getIntExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5));
+
+        }
         this.speechService = new SpeechService(recognizer, SAMPLE_RATE);
+        Log.i(TAG, "Loading SpeechService takes " + (System.currentTimeMillis() - t0)  + " ms");
+    }
+
+    /**
+     * only shut down speech service
+     * this still keeps the language model in cache for faster start of speech service
+     */
+    protected void shutdownSpeechService() {
+        if (speechService != null) {
+            stopRecognizer();
+            speechService.shutdown();
+            speechService = null;
+        }
     }
 
     /**

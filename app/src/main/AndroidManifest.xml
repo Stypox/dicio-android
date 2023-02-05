@@ -5,13 +5,16 @@
 
     <!-- Allow installing also on external storage -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- required by the download manager for APIs < Q -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- required by the download manager for APIs < Q -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" /> <!-- the open skill needs to query all apps -->
+        android:maxSdkVersion="28" />
+    <!-- the open skill needs to query all apps -->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" /> <!-- the telephone skill needs to query contacts and call them -->
+        tools:ignore="QueryAllPackagesPermission" />
+    <!-- the telephone skill needs to query contacts and call them -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -77,7 +80,6 @@
             android:exported="true"
             android:description="@string/pref_input_method_vosk"
             android:icon="@mipmap/ic_launcher"
-            android:permission="android.permission.RECORD_AUDIO"
         >
 <!-- TODO check the following tags whether these are helpful too           -->
         <!--            android:directBootAware=["true" | "false"]-->
