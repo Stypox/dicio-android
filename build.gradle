@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.kotlin_version = '1.7.21'
     repositories {
         google()
         mavenCentral()
@@ -8,6 +9,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.Stypox:dicio-sentences-compiler:ae228425c4071448ec09c6026b5b3a80e5744818'
     }
 }
