@@ -7,8 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        val notificationManager = NotificationManagerCompat.from(this)
-        notificationManager.createNotificationChannelsCompat(
+        NotificationManagerCompat.from(this).createNotificationChannelsCompat(
             listOf(
                 NotificationChannelCompat.Builder(
                     getString(R.string.error_report_channel_id),
