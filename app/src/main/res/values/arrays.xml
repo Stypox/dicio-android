@@ -12,7 +12,7 @@
     <!-- Add language names below here (make sure they are ordered alphabetically!) -->
     <string-array name="pref_language_entries">
         <item>@string/pref_language_system</item>
-        <item>Česky</item>
+        <item>Čeština</item>
         <item>Deutsch</item>
         <item>English</item>
         <item>English (India)</item>
