@@ -27,13 +27,32 @@
         android:key="@string/pref_key_speech_output_method"
         android:summary="@string/pref_speech_output_method_summary"
         android:title="@string/pref_speech_output_method" />
+    <PreferenceCategory android:title="@string/stt_service">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_stt_auto_finish"
+            android:title="@string/pref_stt_auto_finish_title"
+            android:summaryOn="@string/pref_stt_auto_finish_summary_on"
+            android:summaryOff="@string/pref_stt_auto_finish_summary_off"
+            android:icon="?attr/iconRecordVoiceOver"
+            />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_stt_onlisten_sound"
+            android:title="@string/pref_stt_onlisten_sound_title"
+            android:summaryOn="@string/pref_stt_onlisten_sound_summary_on"
+            android:summaryOff="@string/pref_stt_onlisten_sound_summary_off"
+            />
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="@string/pref_key_stt_auto_finish"
-        android:title="@string/pref_stt_auto_finish_title"
-        android:summaryOn="@string/pref_stt_auto_finish_summary_on"
-        android:summaryOff="@string/pref_stt_auto_finish_summary_off"
-        android:icon="?attr/iconRecordVoiceOver"
-        />
+        <org.stypox.dicio.input.stt_service.MakeSoundPreference
+            android:key="@string/pref_key_stt_sound_onlisten"
+            android:title="@string/pref_stt_sound_onlisten_title"
+            android:dialogTitle="@string/pref_stt_sound_onlisten_title_dialog"
+            android:summary="@string/pref_stt_sound_onlisten_title_summary"
+            android:defaultValue="@array/pref_stt_empty_array"
+            android:entries="@array/pref_stt_empty_array"
+            android:entryValues="@array/pref_stt_empty_array"
+            android:dependency="@string/pref_key_stt_onlisten_sound"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

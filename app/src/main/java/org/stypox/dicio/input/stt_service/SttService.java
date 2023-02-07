@@ -1,6 +1,10 @@
 package org.stypox.dicio.input.stt_service;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -8,7 +12,6 @@ import android.speech.RecognitionService;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,8 +31,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -208,7 +214,7 @@ public class SttService extends RecognitionService {
         Log.d(TAG, "onStartListening");
         Log.d(TAG, "onStartCommand called is " + onStartCommandCalled);
         this.callback = newCallback;
-        //TODO check permission. Actually it seems this is already done by the system interface
+        //Regarding check permission: Actually it seems this is already done by the system interface
         // (reports SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) , but it is
         // explicitly recommended in the SpeechRecognizer documentation. However the way it is in
         // the docs does not work here due to API Level for requested calls (and since Audio
@@ -216,16 +222,33 @@ public class SttService extends RecognitionService {
         // https://developer.android.com/reference/android/speech/RecognitionService
         // However even if there is a way for app without permission, not a security issue since
         // stt service notifies user when speech input is started
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean makeSound = preferences.getBoolean(
+                getString(R.string.pref_key_stt_onlisten_sound), true);
+        if (makeSound && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             final String callingPackageName = getPackageManager().getPackagesForUid(
                     newCallback.getCallingUid())[0];
-//Not working this way - check fails even for dicio
-//            int permissionState = PermissionChecker.checkCallingPermission(this,
-//                    "android.permission.RECORD_AUDIO", callingPackageName);
-//            if (permissionState != PermissionChecker.PERMISSION_GRANTED){
-//                callbackErrorReport(SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS);
-//                return;
-//            }
+            final Set<String> exceptedPackages = preferences.getStringSet(
+                    getString(R.string.pref_key_stt_sound_onlisten), new HashSet<>());
+            if (exceptedPackages.contains(callingPackageName)) {
+                Log.i(TAG, "Suppressed stt onbegin sound for package " + callingPackageName);
+            } else {
+                final Uri notification = RingtoneManager.getDefaultUri(
+                        RingtoneManager.TYPE_NOTIFICATION);
+                final Ringtone r = RingtoneManager.getRingtone(this, notification);
+                r.play();
+                final Set<String> knownPackages = preferences.getStringSet(
+                        getString(R.string.pref_key_stt_onlisten_sound_entries), new HashSet<>());
+                if (!knownPackages.contains(callingPackageName)) {
+                    //add to preference entries to offer to user whether it shall be excepted
+                    final HashSet<String> extendedKnownPackages = new HashSet<>(knownPackages);
+                    extendedKnownPackages.add(callingPackageName);
+                    preferences.edit().putStringSet(
+                            getString(R.string.pref_key_stt_onlisten_sound_entries),
+                                    extendedKnownPackages)
+                            .apply();
+                }
+            }
         }
         if (speechService != null && !recogIntentExtrasEquals(lastRequestedIntent, intent)) {
             shutdownSpeechService();
@@ -250,10 +273,6 @@ public class SttService extends RecognitionService {
         }
         lastRequestedIntent = intent;
 
-        //TODO remove toast or make different type of speech recognition hint or a preference option
-        // to disable
-        Toast.makeText(this, this.getString(R.string.pref_input_method_vosk),
-                Toast.LENGTH_SHORT).show();
         tryToGetInput();
 
     }

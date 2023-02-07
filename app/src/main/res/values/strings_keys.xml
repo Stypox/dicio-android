@@ -26,4 +26,9 @@
     <string name="pref_key_weather_default_city" translatable="false">weather_default_city</string>
 
     <string name="pref_key_stt_auto_finish" translatable="false">stt_auto_finish</string>
+
+    <string name="pref_key_stt_onlisten_sound" translatable="false">pref_key_stt_onlisten_sound</string>
+    <string name="pref_key_stt_sound_onlisten" translatable="false">pref_key_stt_sound_onlisten</string>
+    <string name="pref_key_stt_onlisten_sound_entries" translatable="false">pref_key_stt_onlisten_sound_entries</string>
+    <string-array name="pref_stt_empty_array"/>
 </resources>

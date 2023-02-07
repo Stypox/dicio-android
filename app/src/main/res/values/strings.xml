@@ -69,9 +69,17 @@
     <string name="pref_search_engine_duckduckgo" translatable="false">DuckDuckGo</string>
     <string name="pref_weather_default_city">Default city</string>
     <string name="pref_weather_default_city_using_ip_info">Set the city to use for weather when you do not explicitly say one. The current behaviour is to get the location from IP info.</string>
-    <string name="pref_stt_auto_finish_title">Directly send result of speech to text service</string>
+    <string name="pref_stt_auto_finish_title">Directly send result (for STT with dicio UI)</string>
     <string name="pref_stt_auto_finish_summary_on">Automatically send speech result to requesting app when listening finishes</string>
     <string name="pref_stt_auto_finish_summary_off">Wait for manual confirmation before sending speech result to requesting app</string>
+    <string name="pref_stt_onlisten_sound_title">Sound</string>
+    <string name="pref_stt_onlisten_sound_summary_on">Play a sound when speech input starts</string>
+    <string name="pref_stt_onlisten_sound_summary_off">Sound on speech input start is disabled</string>
+    <string name="pref_stt_sound_onlisten_title">Exceptions from sound notification</string>
+    <string name="pref_stt_sound_onlisten_title_dialog">Disable sound per known application</string>
+    <string name="pref_stt_sound_onlisten_title_summary">Choose which applications can request speech input without sound notifications. Requires at least Android 6 (Marshmallow).</string>
+
+
     <string name="eval_missing_permissions">The skill \"%1$s\" needs these permissions to work: %2$s</string>
     <string name="eval_fatal_error">Could not evaluate your request</string>
     <string name="eval_network_error">Network error</string>
