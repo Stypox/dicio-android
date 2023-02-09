@@ -38,7 +38,7 @@ import static org.stypox.dicio.util.LocaleUtils.LocaleResolutionResult;
 import static org.stypox.dicio.util.LocaleUtils.UnsupportedLocaleException;
 import static org.stypox.dicio.util.LocaleUtils.resolveSupportedLocale;
 
-public class VoskInputDevice extends SpeechRecogServiceInputDevice  {
+public class VoskInputDevice extends AndroidSttServiceInputDevice {
 
     public static final String TAG = VoskInputDevice.class.getSimpleName();
     public static final String MODEL_PATH = "/vosk-model";

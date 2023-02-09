@@ -17,10 +17,10 @@ import androidx.preference.PreferenceManager;
 
 import static org.stypox.dicio.util.StringUtils.isNullOrEmpty;
 
-public class SpeechRecogServiceInputDevice extends SpeechInputDevice
+public class AndroidSttServiceInputDevice extends SpeechInputDevice
         implements android.speech.RecognitionListener {
 
-    public static final String TAG = SpeechRecogServiceInputDevice.class.getSimpleName();
+    public static final String TAG = AndroidSttServiceInputDevice.class.getSimpleName();
     private Activity activity;
 
     private boolean startListeningOnLoaded = false;
@@ -33,7 +33,7 @@ public class SpeechRecogServiceInputDevice extends SpeechInputDevice
     // Exposed methods //
     /////////////////////
 
-    public SpeechRecogServiceInputDevice(final Activity activity) {
+    public AndroidSttServiceInputDevice(final Activity activity) {
         this.activity = activity;
     }
 

@@ -19,7 +19,7 @@ import org.stypox.dicio.eval.SkillEvaluator;
 import org.stypox.dicio.eval.SkillRanker;
 import org.stypox.dicio.input.InputDevice;
 import org.stypox.dicio.input.SpeechInputDevice;
-import org.stypox.dicio.input.SpeechRecogServiceInputDevice;
+import org.stypox.dicio.input.AndroidSttServiceInputDevice;
 import org.stypox.dicio.input.ToolbarInputDevice;
 import org.stypox.dicio.input.VoskInputDevice;
 import org.stypox.dicio.input.stt_service.SttServiceActivity;
@@ -309,7 +309,7 @@ public class MainActivity extends BaseActivity
             //TODO make a hint/data privacy warning etc. in preference when this one is chosen that
             // the speech dicio records is given to a third party app according to system
             // settings
-            return new SpeechRecogServiceInputDevice(this);
+            return new AndroidSttServiceInputDevice(this);
         } else { // default
             return new VoskInputDevice(this);
         }

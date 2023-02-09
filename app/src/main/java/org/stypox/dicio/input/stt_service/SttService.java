@@ -512,6 +512,9 @@ public class SttService extends RecognitionService {
     private void stopRecognizer() {
         if (speechService != null) {
             speechService.stop(); //does nothing if recognition is not active.
+//TODO test whether some devices need shutdown call everytime in order to / conflict with performens if yes
+//            speechService.shutdown();
+//            speechService = null;
         } else if (currentlyListening) {
             //(actually currentlyListening should never be true at this point-however does not harm)
             //means SpeechRecognizer.startListening was called, but endOfSpeech not yet
