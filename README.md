@@ -40,6 +40,10 @@ Currently Dicio answers questions about:
 ## Speech to text
 
 Dicio uses [Vosk](https://github.com/alphacep/vosk-api/) as its speech to text (`STT`) engine. In order to be able to run on every phone small models are employed, weighing `~50MB`. The download from [here](https://alphacephei.com/vosk/models) starts automatically whenever needed, so the app language can be changed seamlessly.
+Dicio exports vosk as a speech-to-text service to the android system. Other apps can query this by different ways:
+- [Via an intent](https://developer.android.com/reference/android/speech/RecognizerIntent), which shows up a dicio UI for speech input. The result is then provided to the requesting app (automatically of after user agreed as set in dicio settings).
+- [From background](https://developer.android.com/reference/android/speech/SpeechRecognizer), if the requesting app has the record audio permission and dicio is set as speech input within settings -> apps -> default apps -> assistant (the exact path may vary depending on the Android version)
+- If you want to use it as a "speech keyboard" (IME), you currently still need an app which use the Android speech-to-text-service and provides an IME (e.g. [this one](https://github.com/Kaljurand/K6nele))
 
 ## Contributing
 
@@ -57,7 +61,6 @@ When contributing keep in mind that other people may have **needs** and **views 
 If you want to translate Dicio to a new language you have to follow these **steps**:
 <ul><li>
   Translate the <b>strings used inside the app</b> via <a href="https://hosted.weblate.org/engage/dicio-android/">Weblate</a>. If your language isn't already there, add it with <a href="https://hosted.weblate.org/new-lang/dicio-android/strings/">tool -> start new translation</a>.
-  </br>
   <a href="https://hosted.weblate.org/engage/dicio-android/">
   <img src="https://hosted.weblate.org/widgets/dicio-android/-/287x66-grey.png" alt="Translation status" />
   </a>
