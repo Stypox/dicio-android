@@ -1,0 +1,7 @@
+Miglioramenti:
+- Rimossi i permessi inutili READ_PHONE_STATE, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+- [Vosk] Non far partire direttamente il download del modello, ma mostra l'icona di download
+
+Correzioni:
+- [Vosk] Migliorata pesantemente la strategia di download del modello, sistemando molti comportamenti inaspettati
+- [Vosk] Ora uscendo e rientrando dall'app le icone di download o caricamento sono preservate, invece che essere rimpiazzate dall'icona del microfono spento

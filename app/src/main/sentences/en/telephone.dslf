@@ -1,0 +1,3 @@
+telephone: high
+(call up?)|(ring up)|phone|dial|contact .who.;
+call|ring .who. up;

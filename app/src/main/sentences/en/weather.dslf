@@ -1,0 +1,5 @@
+weather: high
+(what is|s)|whats the weather like? (in|on .where.)?;
+weather (in|on? .where.)?;
+how is it outside;
+is it cold|cool|warm|hot|sunny|rainy|raining (in|on .where.)|outside?;

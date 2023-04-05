@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="6dp"
+    android:background="@drawable/rectangle_rounded_corners"
+    android:elevation="@dimen/outputCardElevation">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/skillIconImageView"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:tint="?attr/iconsTint"
+        app:layout_constraintBottom_toBottomOf="@+id/skillCheckBox"
+        app:layout_constraintStart_toEndOf="@+id/skillCheckBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/skillCheckBox"
+        tools:src="@drawable/ic_music_note_white" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/skillCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/expandImageView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/skillIconImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Weather lorem ipsum dolor sit amet, consectetur adipisci elit" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/expandImageView"
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/skillCheckBox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/skillCheckBox"
+        app:srcCompat="?attr/iconExpandMore" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/permissionsNoticeImageView"
+        android:layout_width="8dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/expandImageView"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/expandImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_circle_notice" />
+
+    <TextView
+        android:id="@+id/notAvailableTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/pref_skill_not_available"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/skillCheckBox"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/permissionsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/grantPermissionsTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notAvailableTextView"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_goneMarginRight="16dp"
+        tools:text="Requires these permissions: lorem ipsum dolor sit amet, consectetur adipisci elit" />
+
+    <TextView
+        android:id="@+id/grantPermissionsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        android:text="@string/pref_skill_grant_permissions"
+        android:textAppearance="?android:attr/textAppearanceButton"
+        app:layout_constraintBottom_toBottomOf="@+id/permissionsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/permissionsTextView" />
+
+    <FrameLayout
+        android:id="@+id/fragmentHolder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/permissionsTextView"
+        tools:layout_height="60dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

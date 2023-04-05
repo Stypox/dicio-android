@@ -1,0 +1,7 @@
+Improved:
+- Remove unused permissions READ_PHONE_STATE, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE
+- [Vosk] Do not start downloading the model right away, but show a download icon
+
+Fixed:
+- [Vosk] Heavily improve model downloading strategy, fixing many unexpected behaviors
+- [Vosk] Now the download or loading icons are preserved when resuming the app, instead of wrongfully replacing them with the microphone off icon

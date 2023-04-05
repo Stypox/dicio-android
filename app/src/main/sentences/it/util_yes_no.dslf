@@ -1,0 +1,3 @@
+util_yes_no: high
+[yes] si|sicur<o|a|i|e>|sicuramente|certamente|affermativo|vai|andiamo|procedi|continua;
+[no] assolutamente? no|ferma<ti?>|stop|smetti|(non procedere)|(non continuare)|(devi smettere)|negativo|basta;

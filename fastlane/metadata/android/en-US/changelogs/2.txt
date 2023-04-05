@@ -1,0 +1,3 @@
+Fixed:
+- Fix Dicio only starting on devices with English or Italian languages available
+- [Calculator] Fix "what's" not being interpreted the same way as "what is"

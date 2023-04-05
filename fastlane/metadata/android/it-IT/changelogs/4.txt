@@ -1,0 +1,12 @@
+Novità:
+- Aggiunte le lingue tedesco e russo
+
+Miglioramenti:
+- Mostra anche le abilità che non possono essere abilitate nelle impostazioni delle abilità
+- [Meteo] Migliorate le frasi in inglese
+- [Ricerca] Se una ricerca non ha prodotto risultati, viene chiesto nuovamente all'utente cosa cercare
+
+Correzioni:
+- Sistemato l'allineamento del titolo nella schermata iniziale
+- [Ricerca] Cliccare sui risultati ora funziona
+- [Ricerca] Sistemato il locale di DuckDuckGo

@@ -1,0 +1,10 @@
+Dicio now has an IRC/Matrix channel: #dicio:libera.chat
+
+Improved:
+- [Vosk] Now multiple possible interpretations are provided for what the user said, and the app uses the first one it can understand
+- [Telephone] Translate the skill into Spanish
+- Add an error reporting activity, similar to NewPipe's, so that (skill) errors can be reported
+
+Fixed:
+- Fix input editing view remaining focused after input is sent
+- [Timer] Fix Timer not hidden for languages not supported by dicio-numbers

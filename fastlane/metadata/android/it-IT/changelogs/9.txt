@@ -1,0 +1,12 @@
+Novità:
+- Nuovo logo
+- Abilità di navigazione (base)
+- [Ora corrente] Traduzione in francese
+- Regole di backup che mantengono solo il file delle preferenze
+
+Miglioramenti:
+- [Telefono] Quando vengono trovati molti contatti, se ne può ora scegliere uno a voce
+- [Vosk] Aggiornati gli URL dei modelli
+
+Correzioni:
+- Il numero di caratteri combacianti viene ora calcolato correttamente nella comparazione approsimativa di stringhe

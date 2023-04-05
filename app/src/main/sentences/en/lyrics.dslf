@@ -1,0 +1,5 @@
+lyrics: high
+get|show|load|display|find? me? the? lyrics|text (for|of|from|about (the song)?)? .song.;
+sing (the song)? .song.;
+.song. lyrics|text;
+sing|whats|(what is|s) that|the song going|(that|which goes|says|tells|sings)|(with lyrics) .song.;
