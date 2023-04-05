@@ -1,6 +1,14 @@
 # Dicio assistant
 
+<<<<<<< HEAD
 Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English, French, German, Greek, Italian, Russian and Spanish. Open to contributions :-D
+=======
+<<<<<<< HEAD
+Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English, French, German, Greek, Italian, Russian and Spanish. Open to contributions :-D
+=======
+Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It uses [Vosk](https://github.com/alphacep/vosk-api/) for *speech to text*. It has multilanguage support, and is currently available in these languages: English, French, German, Greek, Italian, Russian, Slovenian and Spanish. Open to contributions :-D
+>>>>>>> cf3ac23 (Update and add files)
+>>>>>>> 8d6f020 (Add and update files)
 
 <p align="center">
     <img height="80" alt="Dicio logo" src="./app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
