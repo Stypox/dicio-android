@@ -1,12 +1,9 @@
-<<<<<<< HEAD
+
 Dicio is a <i>free and open source</i> <b>voice assistant</b>. It supports many different <b>skills</b> and input/output methods, and it provides both <b>speech</b> and <b>graphical</b> feedback to a question. It uses <a href="https://github.com/alphacep/vosk-api/">Vosk</a> for <i>speech to text</i>. It has <b>multilanguage</b> support, and is currently available in English, French, German, Greek, Italian, Russian and Spanish.
-=======
-<<<<<<< HEAD
+
 Dicio is a <i>free and open source</i> <b>voice assistant</b>. It supports many different <b>skills</b> and input/output methods, and it provides both <b>speech</b> and <b>graphical</b> feedback to a question. It uses <a href="https://github.com/alphacep/vosk-api/">Vosk</a> for <i>speech to text</i>. It has <b>multilanguage</b> support, and is currently available in English, French, German, Greek, Italian, Russian and Spanish.
-=======
+
 Dicio is a <i>free and open source</i> <b>voice assistant</b>. It supports many different <b>skills</b> and input/output methods, and it provides both <b>speech</b> and <b>graphical</b> feedback to a question. It uses <a href="https://github.com/alphacep/vosk-api/">Vosk</a> for <i>speech to text</i>. It has <b>multilanguage</b> support, and is currently available in English, French, German, Greek, Italian, Russian, Slovenian and Spanish.
->>>>>>> cf3ac23 (Update and add files)
->>>>>>> 8d6f020 (Add and update files)
 
 Dicio answers questions about:
 <ul>
