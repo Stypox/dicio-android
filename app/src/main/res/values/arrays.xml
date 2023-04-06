@@ -21,13 +21,8 @@
         <item>Français</item>
         <item>Italiano</item>
         <item>Русский</item>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
         <item>Slovenščina</item>
->>>>>>> cf3ac23 (Update and add files)
->>>>>>> 8d6f020 (Add and update files)
+
     </string-array>
 
     <!-- Add language codes below here
@@ -43,13 +38,8 @@
         <item>fr</item>
         <item>it</item>
         <item>ru</item>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
         <item>sl</item>
->>>>>>> cf3ac23 (Update and add files)
->>>>>>> 8d6f020 (Add and update files)
+
     </string-array>
 
     <string-array name="pref_input_method_entries">
