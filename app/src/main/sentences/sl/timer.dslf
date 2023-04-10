@@ -1,6 +1,6 @@
 timer: high
 [set] časovnik|uro|čas|tajmer .duration.;
-[set] (nastavi?)|nastavip|začni|ustvari ? (.duration.? časovnik)|(časovnik za|of .duration. (poimenovan|z imenom|(z imenom) .name.)?);
+[set] nastavi|nastavip|začni|ustvari? (.duration.? časovnik)|(časovnik za|of .duration. (poimenovan|(z imenom) .name.)?);
 [cancel] ustavi|prekliči ? (.name.? časovnik<s?>)|(časovnik<s?> poimenovan|(z imenom) .name.);
 [query] kako dolg|(koliko časa) je lev? na? (.name.? časovnik<s?>)|(časovnik<s?> z imenom|poimenovan|(z imenom) .name.);
 [query] kdaj bo? (.name.? časovnik<s?>)|(časovnik<s?> poimenovan|(po imenu) .name.) (bo);
