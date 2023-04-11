@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="open_with">Avaa ohjelmalla</string>
+    <string name="permission_denied">Pääsy kielletty</string>
+    <string name="text_input_hint">Kysy mitä vaan…</string>
+    <string name="share">Jaa</string>
+    <string name="no_app_to_open_intent">Mikään puhelimesi sovellus ei voi avata tätä</string>
+    <string name="copied_to_clipboard">Kopioitu leikepöydälle</string>
+</resources>

@@ -98,7 +98,7 @@
     <string name="skill_name_timer">Temporitzador</string>
     <string name="skill_sentence_example_timer">Establir un temporitzador durant cinc minuts</string>
     <string name="skill_search_what_question">Què voleu cercar\?</string>
-    <string name="skill_telephone_found_contacts">He trobat %1$d contactes</string>
+    <string name="skill_telephone_found_contacts">He trobat %1$d contactes, a quin voleu trucar\?</string>
     <string name="skill_telephone_confirm_call">He de trucar a %1$s\?</string>
     <string name="skill_timer_how_much_time">Quant de temps ha de durar el temporitzador\?</string>
     <string name="skill_timer_expired">El temporitzador ha expirat!</string>
@@ -127,4 +127,14 @@
     <string name="skill_time_current_time">Ara son les %1$s</string>
     <string name="skill_name_current_time">Hora actual</string>
     <string name="skill_sentence_example_current_time">Quina hora es\?</string>
+    <string name="pref_stt_auto_finish_summary_on">Envia automaticament l\'enregistrament de veu un cop finalitzat, a l\'aplicació</string>
+    <string name="pref_stt_auto_finish_summary_off">Espera una confirmació manual abans d\'enviar l\'enregistrament de veu a l\'aplicació</string>
+    <string name="pref_stt_auto_finish_title">Envia directament el resultat del servei de veu a text</string>
+    <string name="stt_say_something">Digueu alguna cosa…</string>
+    <string name="stt_did_not_understand">No us he entès, si us plau, repetiu</string>
+    <string name="stt_service">Servei de reconeixement de veu</string>
+    <string name="skill_name_navigation">Navegació</string>
+    <string name="skill_sentence_example_navigation">Navegar a l\'aeroport del Prat</string>
+    <string name="skill_navigation_specify_where">Especifiqueu on voleu anar</string>
+    <string name="skill_navigation_navigating_to">Navegant cap a %1$s</string>
 </resources>

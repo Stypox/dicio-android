@@ -72,7 +72,7 @@
     <string name="skill_open_opening">Abrindo %1$s…</string>
     <string name="skill_calculator_could_not_calculate">Não consegui calcular seu pedido</string>
     <string name="skill_telephone_unknown_contact">Contato não encontrado, tente novamente</string>
-    <string name="skill_telephone_found_contacts">Eu encontrei %1$d contatos</string>
+    <string name="skill_telephone_found_contacts">Eu encontrei %1$d contatos, qual deles você deseja\?</string>
     <string name="skill_telephone_confirm_call">Devo ligar para %1$s\?</string>
     <string name="skill_telephone_calling">Ligando para %1$s…</string>
     <string name="skill_timer_confirm_cancel">Você quer mesmo cancelar todos os alarmes\?</string>
@@ -127,4 +127,6 @@
     <string name="skill_name_current_time">Tempo actual</string>
     <string name="skill_time_current_time">Neste momento, são %1$s</string>
     <string name="skill_sentence_example_current_time">Que horas são\?</string>
+    <string name="stt_say_something">Fale alguma coisa…</string>
+    <string name="stt_did_not_understand">Não estou conseguindo entender bem, por favor tente novamente</string>
 </resources>
