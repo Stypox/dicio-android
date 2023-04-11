@@ -7,4 +7,4 @@ calculator_operators: low
 [multiplication] times|(pomnoži|krat|množenje z?);
 [division] (deli|deljeno|deljenje z?);
 [power] na potenco;
-[square_root] square root of?;
+[square_root] koreni;
