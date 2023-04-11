@@ -6,5 +6,5 @@ calculator_operators: low
 [subtraction] minus|(minus|odštevanje od?);
 [multiplication] times|(pomnoži|krat|množenje z?);
 [division] (deli|deljeno|deljenje z?);
-[power] (to? the? power of?)|(to the);
+[power] na potenco;
 [square_root] square root of?;
