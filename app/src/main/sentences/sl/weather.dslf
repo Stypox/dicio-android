@@ -1,0 +1,3 @@
+weather: high
+(kakšno je?)? vreme (kako je?)? (v|na|za? .where.)|zunaj?;
+je|ali mrzlo|hladno|toplo|hovroče|sončno|deževno|dežuje (v|na|za? .where.)|odzunaj?;

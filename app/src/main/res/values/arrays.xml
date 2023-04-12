@@ -21,6 +21,7 @@
         <item>Français</item>
         <item>Italiano</item>
         <item>Русский</item>
+        <item>Slovenščina</item>
     </string-array>
 
     <!-- Add language codes below here
@@ -36,6 +37,7 @@
         <item>fr</item>
         <item>it</item>
         <item>ru</item>
+        <item>sl</item>
     </string-array>
 
     <string-array name="pref_input_method_entries">
