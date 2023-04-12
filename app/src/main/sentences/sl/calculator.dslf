@@ -1,10 +1,10 @@
 calculator: medium
-calculate|evaluate|(koliko je)|(kolk je)|(kok je) .calculation.;
+koliko|kolk|kok je? .calculation.;
 
 calculator_operators: low
-[addition] plus|(plus|dodajanje|dodaj k?);
-[subtraction] minus|(minus|odštevanje od?);
-[multiplication] times|(pomnoži|krat|množenje z?);
-[division] (deli|deljeno|deljenje z?);
+[addition] dodajanje|dodaj k?;
+[subtraction] odštevanje od?;
+[multiplication] pomnoži|krat|množenje z?;
+[division] deli|deljeno|deljenje z?;
 [power] na potenco;
 [square_root] koreni;

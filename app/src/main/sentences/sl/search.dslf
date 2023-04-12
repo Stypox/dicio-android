@@ -1,3 +1,2 @@
 search: low
-(poišči|pogooglej za?) .what. online|(na? internetu|brskalniku)?;
-poglej .what. ;
+poišči|pogooglej|poglej za? .what. online|(na? internetu|brskalniku)?;
