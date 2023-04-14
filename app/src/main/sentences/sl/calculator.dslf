@@ -2,9 +2,10 @@ calculator: medium
 koliko|kolk|kok je? .calculation.;
 
 calculator_operators: low
-[addition] dodajanje|dodaj k?;
-[subtraction] odštevanje od?;
-[multiplication] pomnoži|krat|množenje z?;
-[division] deli|deljeno|deljenje z?;
+[addition] plus;
+[subtraction] odštej od?;
+[multiplication] množi|pomnoži z? s?;
+[division] deli s? z?;
 [power] na potenco;
-[square_root] koreni;
+[square_root] koreni|koren od?;
+
