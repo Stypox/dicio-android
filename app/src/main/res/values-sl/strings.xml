@@ -103,6 +103,7 @@
     <string name="skill_telephone_confirm_call">Naj pokličem %1$s\?</string>
     <string name="skill_telephone_calling">Kličem %1$s…</string>
     <string name="skill_telephone_not_calling">V redu, nobenega ne kličem</string>
+    <string name="skill_telephone_not_calling">V redu, nobenega ne bom poklical</string>
     <string name="skill_time_current_time">Trenutno je %1$s</string>
     <string name="skill_timer_how_much_time">Koliko časa naj traja časovnik\?</string>
     <string name="skill_timer_expired">Časovnik je potekel!</string>
@@ -125,6 +126,8 @@
     <string name="skill_sentence_example_search">Poišči, kako nahraniti mačko</string>
     <string name="skill_sentence_example_weather">Kakšno je vreme v Rimu\?</string>
     <string name="skill_sentence_example_lyrics">Kakšna je pesem, ki se začne s kuža pazi z repkom miga\?</string>
+    <string name="skill_sentence_example_weather">Kakšno je vreme v Rim\?</string>
+    <string name="skill_sentence_example_lyrics">Zapoj kuža pazi z repkom miga</string>
     <string name="skill_sentence_example_navigation">Pelji me na letališče Brnik</string>
     <string name="skill_name_navigation">Navigacija</string>
     <string name="skill_telephone_unknown_contact">Ne najdem nobenega stika s tem imenom, poskusi znova</string>
