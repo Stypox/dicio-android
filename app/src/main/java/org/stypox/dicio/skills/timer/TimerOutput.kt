@@ -23,7 +23,7 @@ import kotlin.math.absoluteValue
 // TODO cleanup this skill and use a service to manage timers
 class TimerOutput : OutputGenerator<TimerOutput.Data>() {
     enum class Action {
-        SET, CANCEL, QUERY
+        SET, CANCEL, QUERY // TODO add action to stop playing ringtone, if one is playing
     }
 
     class Data(val action: Action, val duration: Duration?, val name: String?)
