@@ -315,6 +315,8 @@ class SkillEvaluator(
     private class InputSkillPair constructor(val input: String, val skill: Skill) {
         var permissionsToRequest: Array<String>? = null
     }
+    private class SkillProcessInputError(val choseInputSkill: InputSkillPair, cause: Throwable)
+        : Exception(cause)
 
     private fun evaluateMatchingSkill(inputs: List<String>) {
         evaluationDisposable?.dispose()
@@ -334,14 +336,20 @@ class SkillEvaluator(
                     )
                 }
 
-            val permissions = chosen.skill.skillInfo?.neededPermissions?.toTypedArray() ?: arrayOf()
-            if (PermissionUtils.checkPermissions(activity, *permissions)) {
-                // skill's output will be generated below, so process input now
-                chosen.skill.processInput()
-            } else {
-                // before executing this skill needs some permissions, don't process input now
-                chosen.permissionsToRequest = permissions
+            try {
+                val permissions = chosen.skill.skillInfo?.neededPermissions?.toTypedArray() ?: arrayOf()
+                if (PermissionUtils.checkPermissions(activity, *permissions)) {
+                    // skill's output will be generated below, so process input now
+                    chosen.skill.processInput()
+                } else {
+                    // before executing this skill needs some permissions, don't process input now
+                    chosen.permissionsToRequest = permissions
+                }
+            } catch (t: Throwable) {
+                // this allows displaying the error on the main thread in onError
+                throw SkillProcessInputError(chosen, t)
             }
+
             chosen
         }
             .subscribeOn(Schedulers.io())
@@ -391,8 +399,16 @@ class SkillEvaluator(
     ///////////
     // Error //
     ///////////
-    private fun onError(t: Throwable) {
-        t.printStackTrace()
+    private fun onError(wrappedThrowable: Throwable) {
+        wrappedThrowable.printStackTrace()
+
+        val t = if (wrappedThrowable is SkillProcessInputError) {
+            displayUserInput(wrappedThrowable.choseInputSkill.input)
+            wrappedThrowable.cause!!
+        } else {
+            wrappedThrowable
+        }
+
         if (ExceptionUtils.hasAssignableCause(t, UnableToAccessMicrophoneException::class.java)) {
             val message = activity.getString(R.string.microphone_error)
             speechOutputDevice.speak(message)
