@@ -6,4 +6,4 @@ New:
 Improved:
 - Capture errors when generating output
 - Target Android 13
-- Update German translations
+- Translate navigation and current time to German

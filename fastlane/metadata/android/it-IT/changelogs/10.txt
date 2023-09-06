@@ -1,9 +1,9 @@
 Novità:
 - Il progetto è passato da Java a Kotlin, fa' sapere se trovi bug!
 - [Timer] Il suono ora va avanti per 30s o finchè l'utente non chiede di fermarlo
-- Aggiunto lo Sloveno e il Ceco
+- Aggiunto lo sloveno e il ceco
 
 Miglioramenti:
 - Gli errori nel momento della generazione dell'output sono ora catturati
 - Adattatamenti per Android 13
-- Aggiornate le traduzioni Tedesche
+- Tradotti navigazione e ora corrente in tedesco
