@@ -99,7 +99,7 @@
 \nCzas GMT:
 \nPakiet:
 \nWersja:
-\nWersja systemu:</string>
+\nWersja OS:</string>
     <string name="skill_name_telephone">Telefon</string>
     <string name="eval_missing_permissions">Umiejętność „%1$s” wymaga następujących uprawnień: %2$s</string>
     <string name="pref_skill_missing_permissions">Wymaga następujących uprawnień: %1$s</string>

@@ -127,4 +127,6 @@
     <string name="pref_skill_number_library_not_available">Pustaka penguraian dan pemformatan <i>dicio-numbers</i> belum diterjemahkan ke bahasa Anda, yang berarti seluruh keterampilan yang berkaitan dengan angka, durasi, dan tanggal tidak tersedia. <b>Silakan berkontribusi</b> dengan mengetuk di sini!</string>
     <string name="pref_weather_default_city">Kota bawaan</string>
     <string name="skill_weather_in_city_there_is_description">Saat ini di %1$s ada %2$s</string>
+    <string name="pref_stt_auto_finish_title">Kirim langsung hasil ucapan ke layanan teks</string>
+    <string name="pref_stt_auto_finish_summary_on">Secara otomatis mengirim hasil ucapan ke aplikasi yang meminta ketika mendengarkan selesai</string>
 </resources>

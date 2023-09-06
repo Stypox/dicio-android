@@ -42,7 +42,7 @@
     <string name="pref_language_summary">Kateri jezik naj Dicio uporablja za poslušanje tebe in tvojih odgovorov\? %1$s</string>
     <string name="error_crash_log_headline">Poročilo o sesutju:</string>
     <string name="error_github_notice">Preverite, ali že obstaja težava, ki obravnava vaše sesutje. Ko ustvarite podvojene vstopnice, nam vzamete čas, ki bi ga lahko porabili za odpravo dejanske napake.</string>
-    <string name="pref_skill_not_available">Ta sposobnost ni še na voljo v tvojem jeziku. Prispevki so dobrodošli!</string>
+    <string name="pref_skill_not_available">Ta sposobnost še ni na voljo v tvojem jeziku. Prispevanje je dobrodošlo!</string>
     <string name="stt_service">Storitev pretvorbe govora v besedilo</string>
     <string name="pref_language_system">Uporabi sistemski jezik</string>
     <string name="pref_input_method">Vhodna metoda</string>
@@ -120,11 +120,11 @@
     <string name="text_input_hint">Vprašaj me karkoli…</string>
     <string name="error_sorry">Oprostite, prišlo je do napake</string>
     <string name="error_report_notification_title">Dicio sporoča napako, pritisni, da jo sporočiš</string>
-    <string name="pref_skill_number_library_not_available">Knjižnica za razčlenitev in oblikovanje številk <i>dicio-numbers</i> še ni prevedena v tvoj jezik, kar pomeni, da so vse sposobnosti v povezavi s številkami, trajanje in datumi nerazpoložljive. <b>Prosim prispevajte</b> s pritiskom sem, če lahko!</string>
+    <string name="pref_skill_number_library_not_available">Knjižnica za razčlenitev in oblikovanje številk <i>dicio-numbers</i> še ni prevedena v tvoj jezik, kar pomeni, da so vse sposobnosti v povezavi s številkami, trajanje in datumi nerazpoložljive. <b>Prosim programsko prispevajte</b> s pritiskom sem, če lahko!</string>
     <string name="stt_did_not_understand">Ne razumem, poskusite znova</string>
     <string name="skill_sentence_example_search">Poišči, kako nahraniti mačko</string>
-    <string name="skill_sentence_example_weather">Kakšno je vreme v Rimu\?</string>
-    <string name="skill_sentence_example_lyrics">Kakšna je pesem, ki se začne s kuža pazi z repkom miga\?</string>
+    <string name="skill_sentence_example_weather">Kakšno je vreme v Rim\?</string>
+    <string name="skill_sentence_example_lyrics">Zapoj kuža pazi z repkom miga</string>
     <string name="skill_sentence_example_navigation">Pelji me na letališče Brnik</string>
     <string name="skill_name_navigation">Navigacija</string>
     <string name="skill_telephone_unknown_contact">Ne najdem nobenega stika s tem imenom, poskusi znova</string>
