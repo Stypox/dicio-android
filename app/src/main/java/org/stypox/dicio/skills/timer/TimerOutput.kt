@@ -1,7 +1,8 @@
 package org.stypox.dicio.skills.timer
 
+import android.media.Ringtone
 import android.media.RingtoneManager
-import android.net.Uri
+import android.os.Build
 import android.os.CountDownTimer
 import androidx.annotation.StringRes
 import org.dicio.skill.Skill
@@ -15,9 +16,9 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.util_yes_no
 import org.stypox.dicio.output.graphical.GraphicalOutputUtils
 import org.stypox.dicio.util.StringUtils
+import java.text.DecimalFormatSymbols
 import java.time.Duration
-import java.util.function.BiConsumer
-import java.util.function.Consumer
+import kotlin.math.absoluteValue
 
 // TODO cleanup this skill and use a service to manage timers
 class TimerOutput : OutputGenerator<TimerOutput.Data>() {
@@ -30,29 +31,50 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
     private class SetTimer constructor(
         duration: Duration,
         name: String?,
-        onTickCallback: BiConsumer<String?, Long>,
-        onFinishCallback: Consumer<String?>,
-        val onCancelCallback: Consumer<String?>
+        onMillisTickCallback: (Long) -> Unit,
+        onSecondsTickCallback: (Long) -> Unit,
+        onExpiredCallback: (String?) -> Unit,
+        val onCancelCallback: () -> Unit
     ) {
         val name: String? = name?.trim { it <= ' ' }
-        var lastTickSeconds: Long = duration.seconds
-        val countDownTimer: CountDownTimer = object : CountDownTimer(duration.toMillis(), 1000) {
+        var lastTickMillis: Long = duration.toMillis()
+
+        val countDownTimer = object : CountDownTimer(
+            lastTickMillis + RINGTONE_DURATION_MILLIS,
+            TIMER_TICK_MILLIS
+        ) {
             override fun onTick(millisUntilFinished: Long) {
-                lastTickSeconds = millisUntilFinished / 1000
-                onTickCallback.accept(name, lastTickSeconds)
+                val prevLastTickMillis = lastTickMillis
+                lastTickMillis = millisUntilFinished - RINGTONE_DURATION_MILLIS
+
+                if (prevLastTickMillis >= 0) {
+                    // round up to the nearest second
+                    val prevLastTickSeconds = (prevLastTickMillis + 999) / 1000
+                    val lastTickSeconds = (lastTickMillis + 999) / 1000
+
+                    if (prevLastTickSeconds != lastTickSeconds) {
+                        onSecondsTickCallback(lastTickSeconds)
+                    }
+                    if (lastTickMillis < 0) {
+                        onExpiredCallback(name)
+                    }
+                }
+
+                onMillisTickCallback(lastTickMillis)
             }
 
             override fun onFinish() {
-                onFinishCallback.accept(name)
+                onMillisTickCallback(-RINGTONE_DURATION_MILLIS)
+                onCancelCallback()
                 // removed from setTimers list automatically here
-                SET_TIMERS.removeIf { setTimer: SetTimer -> setTimer.countDownTimer === this }
+                SET_TIMERS.removeIf { setTimer -> setTimer === this@SetTimer }
             }
         }.apply { start() }
 
         fun cancel() {
             // removed from setTimers list by caller
             countDownTimer.cancel()
-            onCancelCallback.accept(name)
+            onCancelCallback()
         }
     }
 
@@ -143,18 +165,26 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
     ) {
         ctx().speechOutputDevice.speak(
             formatStringWithName(
-                name, duration.seconds,
+                name, duration.toMillis(),
                 R.string.skill_timer_set, R.string.skill_timer_set_name
             )
         )
         val textView = GraphicalOutputUtils.buildSubHeader(
             ctx().android(),
-            getFormattedDuration(duration.seconds, false)
+            getFormattedDuration(duration.toMillis(), false)
         )
         ctx().graphicalOutputDevice.display(textView)
+
+        var ringtone: Ringtone? = null
+
         SET_TIMERS.add(SetTimer(duration, name,
-            { _, seconds: Long ->
-                textView.text = getFormattedDuration(seconds, false)
+            onMillisTickCallback = { milliseconds ->
+                textView.text = getFormattedDuration(milliseconds, false)
+                if (milliseconds < 0 && ringtone?.isPlaying == false) {
+                    ringtone?.play()
+                }
+            },
+            onSecondsTickCallback = { seconds ->
                 if (seconds <= 5) {
                     ctx().speechOutputDevice.speak(
                         ctx()
@@ -163,29 +193,39 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                     )
                 }
             },
-            { theName: String? ->
-                // TODO improve how alarm is played, and allow stopping it
-                val message = formatStringWithName(
-                    theName,
-                    R.string.skill_timer_expired, R.string.skill_timer_expired_name
-                )
-                val ringtoneUri: Uri? = RingtoneManager.getActualDefaultRingtoneUri(
+            onExpiredCallback = { theName ->
+                // initialize ringtone when the timer has expired (play will be called right after)
+                ringtone = RingtoneManager.getActualDefaultRingtoneUri(
                     ctx().android(), RingtoneManager.TYPE_ALARM
                 )
+                    ?.let {
+                        RingtoneManager.getRingtone(ctx().android(), it)
+                    }
+                    ?.also {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            // on older API versions it is looped manually in onMillisTickCallback
+                            it.isLooping = true
+                        }
+                        it.play()
+                    }
 
-                val ringtone = ringtoneUri.let {
-                    RingtoneManager.getRingtone(ctx().android(), ringtoneUri)
+                if (ringtone == null) {
+                    // we could not load a ringtone, so we can announce via speech instead
+                    ctx().speechOutputDevice.speak(
+                        formatStringWithName(
+                            theName,
+                            R.string.skill_timer_expired,
+                            R.string.skill_timer_expired_name
+                        )
+                    )
                 }
-
-                ringtone?.play() ?: run { ctx().speechOutputDevice.speak(message) }
-                textView.text = message
+            },
+            onCancelCallback = {
+                ringtone?.stop()
+                ringtone = null
+                // keep the previous message
             }
-        ) { theName: String? ->
-            textView.text = formatStringWithName(
-                theName,
-                R.string.skill_timer_canceled, R.string.skill_timer_canceled_name
-            )
-        })
+        ))
     }
 
     private fun cancelTimer(name: String?) {
@@ -195,12 +235,11 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                 .getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             message = if (SET_TIMERS.size == 1) {
-                if (SET_TIMERS[0].name == null) {
-                    ctx().android().getString(R.string.skill_timer_canceled)
-                } else {
-                    ctx().android()
-                        .getString(R.string.skill_timer_canceled_name, SET_TIMERS[0].name)
-                }
+                formatStringWithName(
+                    SET_TIMERS[0].name,
+                    R.string.skill_timer_canceled,
+                    R.string.skill_timer_canceled_name
+                )
             } else {
                 ctx().android().getString(R.string.skill_timer_all_canceled)
             }
@@ -241,7 +280,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                 R.string.skill_timer_query_last
 
             formatStringWithName(
-                lastTimer.name, lastTimer.lastTickSeconds,
+                lastTimer.name, lastTimer.lastTickMillis,
                 noNameQueryString, R.string.skill_timer_query_name
             )
 
@@ -252,7 +291,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
             } else {
                 ctx().android().getString(
                     R.string.skill_timer_query_name, setTimer.name,
-                    getFormattedDuration(setTimer.lastTickSeconds, true)
+                    getFormattedDuration(setTimer.lastTickMillis, true)
                 )
             }
         }
@@ -263,13 +302,23 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
     }
 
     private fun getFormattedDuration(
-        seconds: Long,
+        milliseconds: Long,
         speech: Boolean
     ): String {
-        return ctx().requireNumberParserFormatter()
-            .niceDuration(Duration.ofSeconds(seconds))
+        val niceDuration = ctx().requireNumberParserFormatter()
+            .niceDuration(Duration.ofMillis(milliseconds.absoluteValue))
             .speech(speech)
             .get()
+
+        return if (speech) {
+            niceDuration // no need to speak milliseconds
+        } else {
+            (if (milliseconds < 0) "-" else "") +
+                    niceDuration +
+                    DecimalFormatSymbols.getInstance().decimalSeparator +
+                    // show only the first decimal place, rounded to the nearest one
+                    ((milliseconds.absoluteValue + 50) / 100) % 10
+        }
     }
 
     private fun formatStringWithName(
@@ -316,5 +365,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
 
     companion object {
         private val SET_TIMERS: MutableList<SetTimer> = ArrayList()
+        private const val TIMER_TICK_MILLIS = 100L // milliseconds
+        private const val RINGTONE_DURATION_MILLIS = 30000L // 30 seconds of ringtone
     }
 }
