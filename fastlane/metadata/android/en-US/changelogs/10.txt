@@ -1,0 +1,8 @@
+New:
+- Convert project from Java to Kotlin, if you notice issues please report them!
+- [Timer] The ringtone now plays in a loop for 30s, or until the user interrupts it
+- Add Slovenian language, update German and Czech
+
+Improved:
+- Capture errors when generating output
+- Target Android 13
