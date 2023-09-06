@@ -14,13 +14,13 @@ import org.dicio.sentences_compiler.util.CompilerError
 import java.nio.charset.StandardCharsets
 
 android {
-    compileSdk 34
+    compileSdk 33
     namespace 'org.stypox.dicio'
 
     defaultConfig {
         applicationId "org.stypox.dicio"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 9
         versionName "0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
