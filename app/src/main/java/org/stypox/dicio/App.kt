@@ -1,12 +1,23 @@
 package org.stypox.dicio
 
+import android.Manifest
 import android.app.Application
+import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import org.stypox.dicio.util.PermissionUtils
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            PermissionUtils.checkPermissions(this, Manifest.permission.POST_NOTIFICATIONS)
+        ) {
+            initNotificationChannels();
+        }
+    }
+
+    fun initNotificationChannels() {
         NotificationManagerCompat.from(this).createNotificationChannelsCompat(
             listOf(
                 NotificationChannelCompat.Builder(

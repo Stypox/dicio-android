@@ -1,9 +1,10 @@
 package org.stypox.dicio
 
-import android.Manifest.permission
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
@@ -56,6 +57,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setContentView(R.layout.activity_main)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        requestInitialPermissionsIfNeeded()
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         drawer = findViewById(R.id.drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -91,6 +94,33 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onDestroy()
         destroySkillEvaluator()
         SkillHandler.releaseSkillContext()
+    }
+
+    private fun requestInitialPermissionsIfNeeded() {
+        val permissionsToRequest = mutableListOf<String>()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            !PermissionUtils.checkPermissions(this, Manifest.permission.POST_NOTIFICATIONS)
+        ) {
+            permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if (!PermissionUtils.checkPermissions(this, Manifest.permission.RECORD_AUDIO) &&
+            preferences.getString(
+                getString(R.string.pref_key_input_method),
+                ""
+            ) != getString(R.string.pref_val_input_method_text)
+        ) {
+            permissionsToRequest.add(Manifest.permission.RECORD_AUDIO)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsToRequest.toTypedArray(),
+                NOTIFICATIONS_OR_MICROPHONE_PERMISSION_REQUEST_CODE
+            )
+        }
     }
 
     private fun setupVoiceButton() {
@@ -144,7 +174,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (appJustOpened) {
             // now everything should have been initialized
             if (skillEvaluator?.primaryInputDevice !is SpeechInputDevice
-                || PermissionUtils.checkPermissions(this, permission.RECORD_AUDIO)
+                || PermissionUtils.checkPermissions(this, Manifest.permission.RECORD_AUDIO)
             ) {
                 // if no voice permission start listening in onActivityResult
                 skillEvaluator?.primaryInputDevice?.tryToGetInput(false)
@@ -208,13 +238,32 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == MICROPHONE_PERMISSION_REQUEST_CODE &&
-                grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                skillEvaluator?.primaryInputDevice is SpeechInputDevice) {
-            skillEvaluator?.primaryInputDevice?.load()
-            skillEvaluator?.primaryInputDevice?.tryToGetInput(false)
-        } else if (requestCode == SKILL_PERMISSIONS_REQUEST_CODE) {
-            skillEvaluator?.onSkillRequestPermissionsResult(grantResults)
+
+        when (requestCode) {
+            NOTIFICATIONS_OR_MICROPHONE_PERMISSION_REQUEST_CODE -> {
+                permissions
+                    .filterIndexed { index, _ ->
+                        grantResults[index] == PackageManager.PERMISSION_GRANTED
+                    }
+                    .forEach { permission ->
+                        when (permission) {
+                            Manifest.permission.RECORD_AUDIO -> {
+                                val speechInputDevice = skillEvaluator?.primaryInputDevice
+                                        as? SpeechInputDevice ?: return
+                                speechInputDevice.load()
+                                speechInputDevice.tryToGetInput(false)
+                            }
+
+                            Manifest.permission.POST_NOTIFICATIONS -> {
+                                (application as App).initNotificationChannels()
+                            }
+                        }
+                    }
+            }
+
+            SKILL_PERMISSIONS_REQUEST_CODE -> {
+                skillEvaluator?.onSkillRequestPermissionsResult(grantResults)
+            }
         }
         // SETTINGS_PERMISSIONS_REQUEST_CODE results are ignored
     }
@@ -232,15 +281,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else {
             secondaryInputDevice = ToolbarInputDevice()
             secondaryInputDevice.load()
-            if (primaryInputDevice is SpeechInputDevice
-                && !PermissionUtils.checkPermissions(this, permission.RECORD_AUDIO)
+            if (primaryInputDevice !is SpeechInputDevice ||
+                PermissionUtils.checkPermissions(this, Manifest.permission.RECORD_AUDIO)
             ) {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(permission.RECORD_AUDIO),
-                    MICROPHONE_PERMISSION_REQUEST_CODE
-                )
-            } else {
-                primaryInputDevice.load() // load only if permission granted
+                // load only if permission granted (requesting the permission is handled above)
+                primaryInputDevice.load()
             }
         }
         val speechOutputDevice = buildSpeechOutputDevice()
@@ -277,12 +322,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             getString(R.string.pref_val_speech_output_method_nothing) -> {
                 NothingSpeechDevice()
             }
+
             getString(R.string.pref_val_speech_output_method_snackbar) -> {
                 SnackbarSpeechDevice(findViewById(android.R.id.content))
             }
+
             getString(R.string.pref_val_speech_output_method_toast) -> {
                 ToastSpeechDevice(this)
             }
+
             else -> { // default
                 AndroidTtsSpeechDevice(this, Sections.currentLocale)
             }
@@ -295,7 +343,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     companion object {
-        const val MICROPHONE_PERMISSION_REQUEST_CODE = 13893
+        const val NOTIFICATIONS_OR_MICROPHONE_PERMISSION_REQUEST_CODE = 13893
         const val SKILL_PERMISSIONS_REQUEST_CODE = 1928430
         const val SETTINGS_PERMISSIONS_REQUEST_CODE = 420938
     }

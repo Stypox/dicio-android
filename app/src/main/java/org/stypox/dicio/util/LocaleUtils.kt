@@ -35,9 +35,9 @@ object LocaleUtils {
         for (i in 0 until availableLocales.size()) {
             try {
                 val supportedLocaleString = resolveLocaleString(
-                    availableLocales[i], supportedLocales
+                    availableLocales[i]!!, supportedLocales
                 )
-                return LocaleResolutionResult(availableLocales[i], supportedLocaleString)
+                return LocaleResolutionResult(availableLocales[i]!!, supportedLocaleString)
             } catch (e: UnsupportedLocaleException) {
                 if (unsupportedLocaleException == null) {
                     unsupportedLocaleException = e
