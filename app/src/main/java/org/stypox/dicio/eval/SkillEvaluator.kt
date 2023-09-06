@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.UiThread
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -332,7 +333,6 @@ class SkillEvaluator(
                         skillRanker.getFallbackSkill(inputs[0], inputWords, normalizedWords)
                     )
                 }
-            activity.runOnUiThread { displayUserInput(chosen.input) }
 
             val permissions = chosen.skill.skillInfo?.neededPermissions?.toTypedArray() ?: arrayOf()
             if (PermissionUtils.checkPermissions(activity, *permissions)) {
@@ -349,7 +349,9 @@ class SkillEvaluator(
             .subscribe(::onChosenSkill, ::onError)
     }
 
+    @UiThread
     private fun onChosenSkill(chosen: InputSkillPair) {
+        displayUserInput(chosen.input)
         chosen.permissionsToRequest?.also { permissionsToRequest ->
             // request permissions; when done process input in onSkillRequestPermissionsResult
             // note: need to do this here on main thread
@@ -360,6 +362,7 @@ class SkillEvaluator(
         } ?: generateOutput(chosen.skill)
     }
 
+    @UiThread
     private fun generateOutput(skill: Skill) {
         val nextSkills: List<Skill>?
         try {
@@ -371,7 +374,7 @@ class SkillEvaluator(
             return
         }
 
-        if (nextSkills == null || nextSkills.isEmpty()) {
+        if (nextSkills.isNullOrEmpty()) {
             // current conversation has ended, reset to the default batch of skills
             skillRanker.removeAllBatches()
             graphicalOutputDevice.addDivider()
