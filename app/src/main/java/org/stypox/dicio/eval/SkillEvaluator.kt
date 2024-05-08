@@ -304,7 +304,7 @@ class SkillEvaluator(
             // open keyboard
             val inputMethodManager =
                 activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(inputEditText, InputMethodManager.SHOW_FORCED)
+            inputMethodManager.showSoftInput(inputEditText, 0)
         }
         graphicalOutputDevice.display(userInputView)
     }

@@ -28,7 +28,7 @@ class SkillRanker(
             mediumSkills = ArrayList()
             lowSkills = ArrayList()
             for (skill in skills) {
-                when (skill.specificity()) {
+                when (skill.specificity()!!) {
                     Specificity.high -> highSkills.add(skill)
                     Specificity.medium -> mediumSkills.add(skill)
                     Specificity.low -> lowSkills.add(skill)
