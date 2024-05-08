@@ -1,5 +1,6 @@
 package org.stypox.dicio.input
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -7,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -345,7 +347,15 @@ class VoskInputDevice(activity: Activity) : SpeechInputDevice() {
                 }
             }
         }
-        activity.registerReceiver(downloadingBroadcastReceiver, filter)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            activity.registerReceiver(downloadingBroadcastReceiver, filter,
+                Context.RECEIVER_EXPORTED)
+        } else {
+            // RECEIVER_NOT_EXPORTED is only available from API 33
+            //noinspection UnspecifiedRegisterReceiverFlag
+            activity.registerReceiver(downloadingBroadcastReceiver, filter)
+        }
 
         // launch download
         Log.d(TAG, "Starting vosk model download: $request")
@@ -390,7 +400,8 @@ class VoskInputDevice(activity: Activity) : SpeechInputDevice() {
         val filePath = entryName.substring(entryName.indexOf('/') + 1)
         val destinationDirectory = modelDirectory
 
-        // protect from Zip Slip vulnerability (!)
+        // protect from Zip Slip / Zip Path Traversal vulnerability (!)
+        // on Android 14+ this check is not needed anymore, since `ZipFile` already avoids it
         val destinationFile = File(destinationDirectory, filePath)
         if (destinationDirectory.canonicalPath != destinationFile.canonicalPath
             && !destinationFile.canonicalPath.startsWith(
