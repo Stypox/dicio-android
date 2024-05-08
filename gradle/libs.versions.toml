@@ -1,0 +1,45 @@
+[versions]
+appcompat = "1.6.1"
+checkstyle = "10.12.3"
+constraintlayout = "2.1.4"
+desugar_jdk_libs = "2.0.4"
+dicioNumbers = "03e71abbe0259e1782ef5e7f5d00f7ac8cf2cc1e"
+dicioSentencesCompiler = "ae228425c4071448ec09c6026b5b3a80e5744818"
+dicioSkill = "d442b542c4bcaeaa10e56574334f4e26c520be2e"
+exp4j = "0.4.8"
+gradle = "8.4.0"
+jna = "5.14.0"
+jsoup = "1.17.2"
+junit = "4.13.2"
+kotlinGradlePlugin = "1.9.24"
+material = "1.12.0"
+picasso = "2.71828"
+preferenceKtx = "1.2.1"
+rxandroid = "3.0.2"
+rxjava = "3.1.8"
+unbescape = "1.1.6.RELEASE"
+voskAndroid = "0.3.32"
+
+[libraries]
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+dicio-numbers = { module = "com.github.Stypox:dicio-numbers", version.ref = "dicioNumbers" }
+dicio-sentences-compiler = { module = "com.github.Stypox:dicio-sentences-compiler", version.ref = "dicioSentencesCompiler" }
+dicio-skill = { module = "com.github.Stypox:dicio-skill", version.ref = "dicioSkill" }
+exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
+rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+unbescape = { module = "org.unbescape:unbescape", version.ref = "unbescape" }
+vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
+
+[plugins]

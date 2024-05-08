@@ -59,10 +59,6 @@ android {
     }
 }
 
-ext {
-    checkstyleVersion = '10.12.3'
-}
-
 configurations {
     checkstyle
 }
@@ -71,7 +67,7 @@ checkstyle {
     getConfigDirectory().set(rootProject.file("checkstyle"))
     ignoreFailures false
     showViolations true
-    toolVersion = checkstyleVersion
+    toolVersion = libs.checkstyle.get().version
 }
 
 task runCheckstyle(type: Checkstyle) {
@@ -87,39 +83,39 @@ afterEvaluate {
 
 dependencies {
     // Desugaring
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+    coreLibraryDesugaring libs.desugar.jdk.libs
 
     // Checkstyle
-    checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+    checkstyle libs.checkstyle
 
     // Android
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    implementation libs.preference.ktx
 
     // RxJava3
-    implementation "io.reactivex.rxjava3:rxjava:3.1.8"
-    implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
+    implementation libs.rxjava
+    implementation libs.rxandroid
 
     // Dicio own libraries
-    implementation 'com.github.Stypox:dicio-skill:d442b542c4bcaeaa10e56574334f4e26c520be2e'
-    implementation 'com.github.Stypox:dicio-numbers:03e71abbe0259e1782ef5e7f5d00f7ac8cf2cc1e'
+    implementation libs.dicio.skill
+    implementation libs.dicio.numbers
 
     // Vosk
-    implementation 'net.java.dev.jna:jna:5.14.0@aar'
-    implementation 'com.alphacephei:vosk-android:0.3.32'
+    implementation libs.jna, { artifact { type = "aar" } }
+    implementation libs.vosk.android
 
     // Miscellaneous
-    implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'org.unbescape:unbescape:1.1.6.RELEASE'
-    implementation 'org.jsoup:jsoup:1.17.2'
+    implementation libs.picasso
+    implementation libs.unbescape
+    implementation libs.jsoup
 
     // Used by skills
-    implementation 'net.objecthunter:exp4j:0.4.8'
+    implementation libs.exp4j
 
     // Testing
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.junit
 }
 
 
