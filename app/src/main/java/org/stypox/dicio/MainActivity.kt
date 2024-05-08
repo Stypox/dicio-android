@@ -90,6 +90,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupVoiceButton()
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        tryToGetInput()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         destroySkillEvaluator()
@@ -173,15 +178,19 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         if (appJustOpened) {
             // now everything should have been initialized
-            if (skillEvaluator?.primaryInputDevice !is SpeechInputDevice
-                || PermissionUtils.checkPermissions(this, Manifest.permission.RECORD_AUDIO)
-            ) {
-                // if no voice permission start listening in onActivityResult
-                skillEvaluator?.primaryInputDevice?.tryToGetInput(false)
-            }
+            tryToGetInput()
             appJustOpened = false
         }
         return true
+    }
+
+    private fun tryToGetInput() {
+        if (skillEvaluator?.primaryInputDevice !is SpeechInputDevice
+            || PermissionUtils.checkPermissions(this, Manifest.permission.RECORD_AUDIO)
+        ) {
+            // if no voice permission start listening in onRequestPermissionsResult
+            skillEvaluator?.primaryInputDevice?.tryToGetInput(false)
+        }
     }
 
     private fun hideAllItems(menu: Menu) {
