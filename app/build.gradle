@@ -3,7 +3,6 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id "kotlin-parcelize"
-    id "checkstyle"
 }
 
 import org.dicio.sentences_compiler.compiler.CompilerBase
@@ -59,34 +58,9 @@ android {
     }
 }
 
-configurations {
-    checkstyle
-}
-
-checkstyle {
-    getConfigDirectory().set(rootProject.file("checkstyle"))
-    ignoreFailures false
-    showViolations true
-    toolVersion = libs.checkstyle.get().version
-}
-
-task runCheckstyle(type: Checkstyle) {
-    source 'src/main'
-    include '**/*.java'
-    classpath = configurations.checkstyle
-    showViolations true
-}
-
-afterEvaluate {
-    preDebugBuild.dependsOn runCheckstyle
-}
-
 dependencies {
     // Desugaring
     coreLibraryDesugaring libs.desugar.jdk.libs
-
-    // Checkstyle
-    checkstyle libs.checkstyle
 
     // Android
     implementation libs.appcompat

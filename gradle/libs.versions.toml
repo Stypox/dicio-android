@@ -1,6 +1,5 @@
 [versions]
 appcompat = "1.6.1"
-checkstyle = "10.12.3"
 constraintlayout = "2.1.4"
 desugar_jdk_libs = "2.0.4"
 dicioNumbers = "03e71abbe0259e1782ef5e7f5d00f7ac8cf2cc1e"
@@ -22,7 +21,6 @@ voskAndroid = "0.3.32"
 
 [libraries]
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 dicio-numbers = { module = "com.github.Stypox:dicio-numbers", version.ref = "dicioNumbers" }
