@@ -26,7 +26,7 @@ public class ChainSkillTest {
     // the type parameters used here are just random: the chain skill does not check if they match
 
     private static final InputRecognizer<Integer> ir = new InputRecognizer<Integer>() {
-        @Override public Specificity specificity() { return Specificity.high; }
+        @Override public Specificity specificity() { return Specificity.HIGH; }
         @Override public void setInput(final String input, final List<String> inputWords,
                 final List<String> normalizedInputWords) {}
         @Override public float score() { return 0; }
@@ -81,8 +81,7 @@ public class ChainSkillTest {
 
     @Test
     public void testBuildNoIntermediateProcessors() throws Exception {
-        final Skill skill = new ChainSkill.Builder()
-                .recognize(ir)
+        final Skill skill = new ChainSkill.Builder(ir)
                 .output(og);
 
         assertSetSkillInfo(skill, ir, og);
@@ -92,8 +91,7 @@ public class ChainSkillTest {
 
     @Test
     public void testBuildOneIntermediateProcessor() throws Exception {
-        final Skill skill = new ChainSkill.Builder()
-                .recognize(ir)
+        final Skill skill = new ChainSkill.Builder(ir)
                 .process(ip1)
                 .output(og);
 
@@ -104,8 +102,7 @@ public class ChainSkillTest {
 
     @Test
     public void testBuildTwoIntermediateProcessors() throws Exception {
-        final Skill skill = new ChainSkill.Builder()
-                .recognize(ir)
+        final Skill skill = new ChainSkill.Builder(ir)
                 .process(ip1)
                 .process(ip2)
                 .output(og);
@@ -113,20 +110,5 @@ public class ChainSkillTest {
         assertSetSkillInfo(skill, ir, ip1, ip2, og);
         assertEquals(ir.specificity(), skill.specificity());
         assertGeneratedOutput(Float.class + "-" + (float)(2 * (8 / 3.0)), skill);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testNoInputRecognizerProcess() {
-        new ChainSkill.Builder().process(ip1);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testNoInputRecognizerOutput() {
-        new ChainSkill.Builder().output(og);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testTwoInputRecognizers() {
-        new ChainSkill.Builder().recognize(ir).recognize(ir);
     }
 }

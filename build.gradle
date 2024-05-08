@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -11,6 +12,9 @@ android {
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 }
 
@@ -30,5 +34,6 @@ afterEvaluate {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.github.Stypox:dicio-numbers:dummy-SNAPSHOT'
+    implementation 'androidx.core:core-ktx:1.13.1'
     testImplementation 'junit:junit:4.13.2'
 }

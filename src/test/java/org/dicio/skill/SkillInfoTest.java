@@ -22,11 +22,11 @@ public class SkillInfoTest {
             @Nullable @Override public Fragment getPreferenceFragment() { return null; }
         };
 
-        assertSame("testId", skillInfo.getId());
-        assertEquals(11, skillInfo.getNameResource());
-        assertEquals(222, skillInfo.getSentenceExampleResource());
-        assertEquals(0, skillInfo.getIconResource());
-        assertTrue(skillInfo.hasPreferences());
+        assertSame("testId", skillInfo.id);
+        assertEquals(11, skillInfo.nameResource);
+        assertEquals(222, skillInfo.sentenceExampleResource);
+        assertEquals(0, skillInfo.iconResource);
+        assertTrue(skillInfo.hasPreferences);
     }
 
     @Test

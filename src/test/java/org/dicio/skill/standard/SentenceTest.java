@@ -125,7 +125,7 @@ public class SentenceTest {
                     a <= score && score <= b);
         }
 
-        final StandardResult r = scoreResult.toStandardResult(s.getSentenceId(), input);
+        final StandardResult r = scoreResult.toStandardResult(s.sentenceId, input);
         assertEquals((captGr0 != null ? 1 : 0) + (captGr1 != null ? 1 : 0),
                 r.getCapturingGroupRanges().size());
         assertCapturingGroup(inputWords, r.getCapturingGroupRanges().get("0"), captGr0);

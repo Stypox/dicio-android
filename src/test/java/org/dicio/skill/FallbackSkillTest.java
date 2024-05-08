@@ -35,6 +35,6 @@ public class FallbackSkillTest {
         };
 
         assertEquals(0.0f, skill.score(), 0.0f);
-        assertSame(InputRecognizer.Specificity.low, skill.specificity());
+        assertSame(InputRecognizer.Specificity.LOW, skill.specificity());
     }
 }

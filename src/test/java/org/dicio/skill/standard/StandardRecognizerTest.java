@@ -18,7 +18,7 @@ import java.util.Map;
 public class StandardRecognizerTest {
 
     public static final StandardRecognizerData section_mood = new StandardRecognizerData(
-            InputRecognizer.Specificity.high,
+            InputRecognizer.Specificity.HIGH,
             new Sentence("", new int[] {0,},
                     new DiacriticsSensitiveWord("how", 4, 1, 4), new DiacriticsSensitiveWord("are", 3, 2), new DiacriticsSensitiveWord("you", 2, 3, 7),
                     new DiacriticsSensitiveWord("doing", 1, 7), new DiacriticsSensitiveWord("is", 3, 5), new DiacriticsSensitiveWord("it", 2, 6),
@@ -28,7 +28,7 @@ public class StandardRecognizerTest {
                     new DiacriticsSensitiveWord("going", 3, 4), new DiacriticsSensitiveWord("over", 2, 5), new DiacriticsSensitiveWord("there", 1, 6)));
 
     public static final StandardRecognizerData section_GPS_navigation = new StandardRecognizerData(
-            InputRecognizer.Specificity.medium,
+            InputRecognizer.Specificity.MEDIUM,
             new Sentence("question", new int[] {0, 1,},
                     new DiacriticsSensitiveWord("take", 9, 2), new DiacriticsSensitiveWord("bring", 11, 2), new DiacriticsSensitiveWord("me", 10, 3),
                     new DiacriticsSensitiveWord("to", 9, 4), new CapturingGroup("place", 8, 5, 7, 8), new DiacriticsSensitiveWord("by", 6, 6),
@@ -50,7 +50,7 @@ public class StandardRecognizerTest {
                     new DiacriticsSensitiveWord("to", 3, 7), new DiacriticsSensitiveWord("go", 2, 8), new DiacriticsSensitiveWord("to", 1, 9)));
 
     public static final StandardRecognizerData section_hello = new StandardRecognizerData(
-            InputRecognizer.Specificity.low,
+            InputRecognizer.Specificity.LOW,
             new Sentence("first", new int[]{0},
                     new DiacriticsInsensitiveWord("hello", 3, 1), new CapturingGroup("hi", 2, 2)),
             new Sentence("second", new int[]{0},
@@ -67,7 +67,7 @@ public class StandardRecognizerTest {
         final float score = sr.score();
         final StandardResult result = sr.getResult();
         sr.cleanup();
-        assertEquals(sentenceId, result.getSentenceId());
+        assertEquals(sentenceId, result.sentenceId);
 
         if (a == b) {
             assertEquals("Score " + score + " is not equal to " + a,
@@ -89,15 +89,15 @@ public class StandardRecognizerTest {
     @Test
     public void testSpecificity() {
         final StandardRecognizer sr = new StandardRecognizer(
-                new StandardRecognizerData(InputRecognizer.Specificity.high));
-        assertEquals(InputRecognizer.Specificity.high, sr.specificity());
+                new StandardRecognizerData(InputRecognizer.Specificity.HIGH));
+        assertEquals(InputRecognizer.Specificity.HIGH, sr.specificity());
         sr.cleanup();
     }
 
     @Test
     public void testCompilerReadmeMood() {
         final StandardRecognizer sr = new StandardRecognizer(section_mood);
-        assertEquals(InputRecognizer.Specificity.high, sr.specificity());
+        assertEquals(InputRecognizer.Specificity.HIGH, sr.specificity());
 
         assertRecognized(sr, "how are you",                "",          1.0f, 1.0f, Collections.emptyMap());
         assertRecognized(sr, "how are you doing",          "",          1.0f, 1.0f, Collections.emptyMap());
@@ -114,7 +114,7 @@ public class StandardRecognizerTest {
     @Test
     public void testCompilerReadmeNavigation() {
         final StandardRecognizer sr = new StandardRecognizer(section_GPS_navigation);
-        assertEquals(InputRecognizer.Specificity.medium, sr.specificity());
+        assertEquals(InputRecognizer.Specificity.MEDIUM, sr.specificity());
 
         final Map<String, String> place = Collections.singletonMap("place", "a");
         final Map<String, String> placeAndVehicle = new HashMap<String, String>() {{
@@ -147,7 +147,7 @@ public class StandardRecognizerTest {
     @Test
     public void testSmallerCapturingGroupIsPreferred() {
         final StandardRecognizer sr = new StandardRecognizer(section_hello);
-        assertEquals(InputRecognizer.Specificity.low, sr.specificity());
+        assertEquals(InputRecognizer.Specificity.LOW, sr.specificity());
 
         final Map<String, String> guys = Collections.singletonMap("hi", "guys");
         final Map<String, String> girlsAndBoys = Collections.singletonMap("hi", "girls and boys");
