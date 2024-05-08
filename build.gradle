@@ -5,13 +5,14 @@ plugins {
 }
 
 android {
+    namespace = "org.dicio.skill"
     compileSdkVersion 31
     defaultConfig {
         minSdkVersion 14 // must be at least 4, otherwise some unwanted permissions are requested
     }
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = 17
+        targetCompatibility = 17
     }
     kotlinOptions {
         jvmTarget = '17'
