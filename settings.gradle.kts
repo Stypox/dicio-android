@@ -11,11 +11,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url = java.net.URI("https://jitpack.io") }
     }
 }
 
-include ':app'
+include(":app")
 
 // Uncomment these lines to use a local copy of the projects, instead of letting Gradle fetch them
 // from Jitpack. You may want to change the paths in `includeBuild()` if you don't have those
