@@ -13,10 +13,11 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
 import org.dicio.skill.Skill
 import org.dicio.skill.output.GraphicalOutputDevice
 import org.dicio.skill.output.SpeechOutputDevice
@@ -47,7 +48,7 @@ class SkillEvaluator(
     private val queuedInputs: Queue<List<String>> = LinkedList()
     private var partialInputView: View? = null
     private var hasAddedPartialInputView = false
-    private var evaluationDisposable: Disposable? = null
+    private val scope = CoroutineScope(Dispatchers.Default)
     private var skillNeedingPermissions: Skill? = null
 
     init {
@@ -82,7 +83,7 @@ class SkillEvaluator(
         secondaryInputDevice?.cleanup()
         speechOutputDevice.cleanup()
         graphicalOutputDevice.cleanup()
-        evaluationDisposable?.dispose()
+        scope.cancel()
         skillNeedingPermissions = null
         queuedInputs.clear()
         partialInputView = null
@@ -101,13 +102,14 @@ class SkillEvaluator(
         // make sure this skill is not reprocessed (also should never happen, but who knows)
         skillNeedingPermissions = null
         if (PermissionUtils.areAllPermissionsGranted(*grantResults)) {
-            evaluationDisposable = Single.fromCallable {
-                skill.processInput()
-                skill
+            scope.launch {
+                try {
+                    skill.processInput()
+                    activity.runOnUiThread { generateOutput(skill) }
+                } catch (throwable: Throwable) {
+                    activity.runOnUiThread { onError(throwable) }
+                }
             }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(::generateOutput, ::onError)
         } else {
             // permissions were not granted, show a message
             val skillInfo = skill.skillInfo
@@ -319,9 +321,8 @@ class SkillEvaluator(
         : Exception(cause)
 
     private fun evaluateMatchingSkill(inputs: List<String>) {
-        evaluationDisposable?.dispose()
-        evaluationDisposable = Single.fromCallable {
-            val chosen: InputSkillPair =
+        scope.launch {
+            val chosen = try {
                 inputs.firstNotNullOfOrNull { input: String ->
                     val inputWords = WordExtractor.extractWords(input)
                     val normalizedWords = WordExtractor.normalizeWords(inputWords)
@@ -335,6 +336,10 @@ class SkillEvaluator(
                         skillRanker.getFallbackSkill(inputs[0], inputWords, normalizedWords)
                     )
                 }
+            } catch (throwable: Throwable) {
+                activity.runOnUiThread { onError(throwable) }
+                return@launch
+            }
 
             try {
                 val permissions = chosen.skill.skillInfo?.neededPermissions?.toTypedArray() ?: arrayOf()
@@ -347,14 +352,14 @@ class SkillEvaluator(
                 }
             } catch (t: Throwable) {
                 // this allows displaying the error on the main thread in onError
-                throw SkillProcessInputError(chosen, t)
+                activity.runOnUiThread {
+                    onError(SkillProcessInputError(chosen, t))
+                }
+                return@launch
             }
 
-            chosen
+            activity.runOnUiThread { onChosenSkill(chosen) }
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::onChosenSkill, ::onError)
     }
 
     @UiThread

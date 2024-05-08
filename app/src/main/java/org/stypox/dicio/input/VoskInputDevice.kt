@@ -1,6 +1,5 @@
 package org.stypox.dicio.input
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
@@ -14,10 +13,11 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.os.LocaleListCompat
 import androidx.preference.PreferenceManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
 import org.json.JSONException
 import org.json.JSONObject
 import org.stypox.dicio.BuildConfig
@@ -38,22 +38,14 @@ import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-class VoskInputDevice(activity: Activity) : SpeechInputDevice() {
-    private var activity: Activity
-    private val disposables: CompositeDisposable = CompositeDisposable()
+class VoskInputDevice(private val activity: Activity) : SpeechInputDevice() {
+    private val scope = CoroutineScope(Dispatchers.Default)
     private var downloadingBroadcastReceiver: BroadcastReceiver? = null
     private var currentModelDownloadId: Long? = null
     private var speechService: SpeechService? = null
     private var currentlyInitializingRecognizer = false
     private var startListeningOnLoaded = false
     private var currentlyListening = false
-
-    /////////////////////
-    // Exposed methods //
-    /////////////////////
-    init {
-        this.activity = activity
-    }
 
     override fun load() {
         load(false) // the user did not press on a button, so manual=false
@@ -70,30 +62,33 @@ class VoskInputDevice(activity: Activity) : SpeechInputDevice() {
                 Log.d(TAG, "Vosk model in place")
                 currentlyInitializingRecognizer = true
                 onLoading()
-                disposables.add(
-                    Completable.fromAction { initializeRecognizer() }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        currentlyInitializingRecognizer = false
-                        if (startListeningOnLoaded) {
-                            startListeningOnLoaded = false
-                            tryToGetInput(manual)
-                        } else {
+
+                scope.launch {
+                    try {
+                        initializeRecognizer()
+                        activity.runOnUiThread {
+                            currentlyInitializingRecognizer = false
+                            if (startListeningOnLoaded) {
+                                startListeningOnLoaded = false
+                                tryToGetInput(manual)
+                            } else {
+                                onInactive()
+                            }
+                        }
+                    } catch (throwable: Throwable) {
+                        activity.runOnUiThread {
+                            currentlyInitializingRecognizer = false
+                            if ("Failed to initialize recorder. Microphone might be already in use."
+                                == throwable.message
+                            ) {
+                                notifyError(UnableToAccessMicrophoneException())
+                            } else {
+                                notifyError(throwable)
+                            }
                             onInactive()
                         }
-                    }, { throwable: Throwable ->
-                        currentlyInitializingRecognizer = false
-                        if ("Failed to initialize recorder. Microphone might be already in use."
-                            == throwable.message
-                        ) {
-                            notifyError(UnableToAccessMicrophoneException())
-                        } else {
-                            notifyError(throwable)
-                        }
-                        onInactive()
-                    })
-                )
+                    }
+                }
             } else {
                 Log.d(TAG, "Vosk model not in place")
                 val downloadManager =
@@ -131,7 +126,7 @@ class VoskInputDevice(activity: Activity) : SpeechInputDevice() {
 
     override fun cleanup() {
         super.cleanup()
-        disposables.clear()
+        scope.cancel()
         speechService?.apply {
             stop()
             shutdown()
@@ -323,27 +318,30 @@ class VoskInputDevice(activity: Activity) : SpeechInputDevice() {
                         return
                     }
                     Log.d(TAG, "Vosk model download complete, extracting from zip")
-                    disposables.add(
-                        Completable
-                            .fromAction { extractModelZip() }
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                    asyncMakeToast(R.string.vosk_model_ready)
-                                    downloadManager.remove(id)
-                                    updateCurrentDownloadId(null)
 
-                                    // surely the user pressed a button a while ago that
-                                    // triggered the download process, so manual=true
-                                    load(true)
-                                }, { throwable: Throwable ->
-                                    asyncMakeToast(R.string.vosk_model_extraction_error)
-                                    throwable.printStackTrace()
-                                    downloadManager.remove(id)
-                                    updateCurrentDownloadId(null)
-                                    onInactive()
-                                })
-                    )
+                    scope.launch {
+                        try {
+                            extractModelZip()
+
+                            asyncMakeToast(R.string.vosk_model_ready)
+                            downloadManager.remove(id)
+                            updateCurrentDownloadId(null)
+
+                            activity.runOnUiThread {
+                                // surely the user pressed a button a while ago that
+                                // triggered the download process, so manual=true
+                                load(true)
+                            }
+                        } catch (throwable: Throwable) {
+                            asyncMakeToast(R.string.vosk_model_extraction_error)
+                            Log.e(TAG, "Extracting Vosk model from Zip failed", throwable)
+                            downloadManager.remove(id)
+                            updateCurrentDownloadId(null)
+                            activity.runOnUiThread {
+                                onInactive()
+                            }
+                        }
+                    }
                 }
             }
         }

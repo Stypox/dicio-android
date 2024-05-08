@@ -14,8 +14,6 @@ kotlin = "1.9.24"
 material = "1.12.0"
 picasso = "2.71828"
 preferenceKtx = "1.2.1"
-rxandroid = "3.0.2"
-rxjava = "3.1.8"
 unbescape = "1.1.6.RELEASE"
 voskAndroid = "0.3.32"
 
@@ -33,8 +31,6 @@ junit = { module = "junit:junit", version.ref = "junit" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
-rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
-rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 unbescape = { module = "org.unbescape:unbescape", version.ref = "unbescape" }
 vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
 

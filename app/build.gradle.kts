@@ -83,10 +83,6 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.preference.ktx)
 
-    // RxJava3
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
-
     // Dicio own libraries
     implementation(libs.dicio.skill)
     implementation(libs.dicio.numbers)
