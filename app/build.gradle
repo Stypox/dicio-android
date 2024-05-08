@@ -1,7 +1,17 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath(libs.dicio.sentences.compiler)
+    }
+}
+
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "kotlin-parcelize"
+    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.parcelize)
 }
 
 import org.dicio.sentences_compiler.compiler.CompilerBase
