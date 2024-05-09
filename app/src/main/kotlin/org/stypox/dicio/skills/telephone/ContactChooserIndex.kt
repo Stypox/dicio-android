@@ -1,6 +1,6 @@
 package org.stypox.dicio.skills.telephone
 
-import org.dicio.numbers.util.Number
+import org.dicio.numbers.unit.Number
 import org.dicio.skill.Skill
 import org.dicio.skill.chain.InputRecognizer.Specificity
 
@@ -13,24 +13,22 @@ class ContactChooserIndex internal constructor(private val contacts: List<NameNu
     }
 
     override fun setInput(
-        theInput: String,
+        input: String,
         inputWords: List<String>,
         normalizedWordKeys: List<String>
     ) {
-        input = theInput
+        this.input = input
     }
 
     override fun score(): Float {
-        index = ctx().numberParserFormatter!!
-            .extractNumbers(input)
+        index = ctx().parserFormatter!!
+            .extractNumber(input)
             .preferOrdinal(true)
-            .get().stream()
-            .filter { obj: Any? -> Number::class.java.isInstance(obj) }
-            .map { obj: Any? -> Number::class.java.cast(obj) }
-            .filter { obj: Number -> obj.isInteger }
-            .mapToInt { number: Number -> number.integerValue().toInt() }
-            .findFirst()
-            .orElse(0)
+            .mixedWithText
+            .asSequence()
+            .filter { obj -> (obj as? Number)?.isInteger == true }
+            .map { obj -> (obj as Number).integerValue().toInt() }
+            .firstOrNull() ?: 0
         return if (index <= 0 || index > contacts.size) 0.0f else 1.0f
     }
 

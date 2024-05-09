@@ -15,7 +15,7 @@ class CalculatorInfo : SkillInfo(
     R.string.skill_sentence_example_calculator, R.drawable.ic_calculate_white, false
 ) {
     override fun isAvailable(context: SkillContext): Boolean {
-        return Sections.isSectionAvailable(calculator) && context.numberParserFormatter != null
+        return Sections.isSectionAvailable(calculator) && context.parserFormatter != null
     }
 
     override fun build(context: SkillContext): Skill {

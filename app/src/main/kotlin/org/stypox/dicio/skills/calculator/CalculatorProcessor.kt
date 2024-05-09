@@ -1,7 +1,7 @@
 package org.stypox.dicio.skills.calculator
 
 import net.objecthunter.exp4j.ExpressionBuilder
-import org.dicio.numbers.util.Number
+import org.dicio.numbers.unit.Number
 import org.dicio.skill.chain.IntermediateProcessor
 import org.dicio.skill.standard.StandardRecognizer
 import org.dicio.skill.standard.StandardResult
@@ -25,8 +25,9 @@ class CalculatorProcessor : IntermediateProcessor<StandardResult, CalculatorOutp
     }
 
     override fun process(data: StandardResult): CalculatorOutput.Data? {
-        val textWithNumbers: List<Any> = ctx().numberParserFormatter!!
-            .extractNumbers(data.getCapturingGroup("calculation")).get()
+        val textWithNumbers: List<Any> = ctx().parserFormatter!!
+            .extractNumber(data.getCapturingGroup("calculation"))
+            .mixedWithText
         if (textWithNumbers.isEmpty()
             || (textWithNumbers.size == 1 && textWithNumbers[0] !is Number)) {
             return null

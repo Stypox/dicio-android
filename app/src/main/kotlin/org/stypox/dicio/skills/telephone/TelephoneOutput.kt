@@ -74,7 +74,7 @@ class TelephoneOutput : OutputGenerator<StandardResult>() {
             if (validContacts.size == 1 // there is exactly one valid contact and ...
                 // ... either it has exactly one number, or we would be forced to use
                 // RecognizeNameIO in any case, which only uses the first number anyway
-                && (validContacts[0].second.size == 1 || ctx().numberParserFormatter == null)
+                && (validContacts[0].second.size == 1 || ctx().parserFormatter == null)
             ) {
                 // not a good enough match, but since we have only this, call it directly
                 val contact = validContacts[0]
@@ -94,7 +94,7 @@ class TelephoneOutput : OutputGenerator<StandardResult>() {
                         .map { NameNumberPair(it.first, it.second[0]) }
                         .collect(Collectors.toList())
                 nextSkills.add(ContactChooserName(recognizeNameContacts))
-                if (ctx().numberParserFormatter != null) {
+                if (ctx().parserFormatter != null) {
                     val recognizeIndexContacts = validContacts.stream()
                         .flatMap {
                             it.second.stream().map { number -> NameNumberPair(it.first, number) }

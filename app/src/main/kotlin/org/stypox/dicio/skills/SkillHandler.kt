@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.preference.PreferenceManager
-import org.dicio.numbers.NumberParserFormatter
+import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.Skill
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
@@ -59,9 +59,9 @@ object SkillHandler {
             )
         }
 
-        var numberParserFormatter: NumberParserFormatter? = null
+        var parserFormatter: ParserFormatter? = null
         try {
-            numberParserFormatter = NumberParserFormatter(Sections.currentLocale)
+            parserFormatter = ParserFormatter(Sections.currentLocale)
         } catch (ignored: IllegalArgumentException) {
             // current locale is not supported by dicio-numbers
         }
@@ -69,7 +69,7 @@ object SkillHandler {
         skillContext.android = androidContext
         skillContext.preferences = PreferenceManager.getDefaultSharedPreferences(androidContext)
         skillContext.locale = Sections.currentLocale
-        skillContext.numberParserFormatter = numberParserFormatter
+        skillContext.parserFormatter = parserFormatter
     }
 
     /**

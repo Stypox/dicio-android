@@ -1,6 +1,6 @@
 package org.stypox.dicio.skills.navigation
 
-import org.dicio.numbers.util.Number
+import org.dicio.numbers.unit.Number
 import org.dicio.skill.chain.IntermediateProcessor
 import org.dicio.skill.standard.StandardResult
 import org.stypox.dicio.Sentences_en.navigation
@@ -9,15 +9,15 @@ class NavigationProcessor : IntermediateProcessor<StandardResult, String?>() {
     @Throws(Exception::class)
     override fun process(data: StandardResult): String? {
         val placeToNavigate: String = data.getCapturingGroup(navigation.where) ?: return null
-        val npf = ctx().numberParserFormatter
+        val npf = ctx().parserFormatter
         return if (npf == null) {
             // No number parser available, feed the spoken input directly to the map application.
             placeToNavigate.trim { it <= ' ' }
         } else {
             val textWithNumbers: List<Any> = npf
-                .extractNumbers(data.getCapturingGroup(navigation.where))
+                .extractNumber(data.getCapturingGroup(navigation.where))
                 .preferOrdinal(true)
-                .get()
+                .mixedWithText
 
             // Given an address of "9546 19 avenue", the building number is 9546 and the street
             // number is 19.

@@ -14,7 +14,7 @@ class TimerProcessor : IntermediateProcessor<StandardResult, TimerOutput.Data>()
                 else -> TimerOutput.Action.SET
             },
             duration = data.getCapturingGroup("duration")?.let {
-                ctx().numberParserFormatter!!.extractDuration(it).get()
+                ctx().parserFormatter!!.extractDuration(it).first?.toJavaDuration()
             },
             name = data.getCapturingGroup("name"),
         )

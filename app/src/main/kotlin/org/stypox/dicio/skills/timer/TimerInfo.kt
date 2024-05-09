@@ -18,7 +18,7 @@ class TimerInfo : SkillInfo(
     override fun isAvailable(context: SkillContext): Boolean {
         return Sections.isSectionAvailable(timer)
                 && Sections.isSectionAvailable(util_yes_no)
-                && context.numberParserFormatter != null
+                && context.parserFormatter != null
     }
 
     override fun build(context: SkillContext): Skill {

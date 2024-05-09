@@ -30,7 +30,7 @@ class SkillsFragment : Fragment() {
 
         // the skill context should always already have been initialized
         val skillContext = SkillHandler.skillContext
-        numberLibraryTextView.isVisible = skillContext.numberParserFormatter == null
+        numberLibraryTextView.isVisible = skillContext.parserFormatter == null
 
         numberLibraryTextView.setOnClickListener {
             openUrlInBrowser(requireContext(), DICIO_NUMBERS_URL)

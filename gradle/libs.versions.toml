@@ -2,7 +2,7 @@
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
 desugar_jdk_libs = "2.0.4"
-dicioNumbers = "03e71abbe0259e1782ef5e7f5d00f7ac8cf2cc1e"
+dicioNumbers = "219cd77023368ff3e4c616ba4a338a8462e2f5b6"
 dicioSentencesCompiler = "ae228425c4071448ec09c6026b5b3a80e5744818"
 dicioSkill = "d442b542c4bcaeaa10e56574334f4e26c520be2e"
 exp4j = "0.4.8"

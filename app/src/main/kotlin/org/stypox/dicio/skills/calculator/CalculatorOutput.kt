@@ -1,7 +1,7 @@
 package org.stypox.dicio.skills.calculator
 
 import androidx.core.content.res.ResourcesCompat
-import org.dicio.numbers.util.Number
+import org.dicio.numbers.unit.Number
 import org.dicio.skill.chain.OutputGenerator
 import org.stypox.dicio.R
 import org.stypox.dicio.output.graphical.GraphicalOutputUtils
@@ -49,7 +49,7 @@ class CalculatorOutput : OutputGenerator<CalculatorOutput.Data?>() {
             }
             inputInterpretation.append("=")
             ctx().speechOutputDevice!!.speak(
-                ctx().numberParserFormatter!!
+                ctx().parserFormatter!!
                     .niceNumber(
                         if (data.number.isDecimal)
                             data.number.decimalValue()

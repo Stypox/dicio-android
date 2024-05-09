@@ -19,6 +19,7 @@ import org.stypox.dicio.util.StringUtils
 import java.text.DecimalFormatSymbols
 import java.time.Duration
 import kotlin.math.absoluteValue
+import org.dicio.numbers.unit.Duration as DicioNumbersDuration
 
 // TODO cleanup this skill and use a service to manage timers
 class TimerOutput : OutputGenerator<TimerOutput.Data>() {
@@ -28,7 +29,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
 
     class Data(val action: Action, val duration: Duration?, val name: String?)
 
-    private class SetTimer constructor(
+    private class SetTimer(
         duration: Duration,
         name: String?,
         onMillisTickCallback: (Long) -> Unit,
@@ -104,8 +105,10 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                         }
 
                         override fun score(): Float {
-                            duration = ctx().numberParserFormatter!!
-                                .extractDuration(input).get()
+                            duration = ctx().parserFormatter!!
+                                .extractDuration(input)
+                                .first
+                                ?.toJavaDuration()
                             return if (duration == null) 0.0f else 1.0f
                         }
 
@@ -187,7 +190,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                 if (seconds <= 5) {
                     ctx().speechOutputDevice!!.speak(
                         ctx()
-                            .numberParserFormatter!!.pronounceNumber(seconds.toDouble())
+                            .parserFormatter!!.pronounceNumber(seconds.toDouble())
                             .get()
                     )
                 }
@@ -304,8 +307,8 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         milliseconds: Long,
         speech: Boolean
     ): String {
-        val niceDuration = ctx().numberParserFormatter!!
-            .niceDuration(Duration.ofMillis(milliseconds.absoluteValue))
+        val niceDuration = ctx().parserFormatter!!
+            .niceDuration(DicioNumbersDuration(Duration.ofMillis(milliseconds.absoluteValue)))
             .speech(speech)
             .get()
 
