@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "org.dicio.skill"
-    compileSdk = 31
+    compileSdk = 34
     defaultConfig {
         minSdk = 14 // must be at least 4, otherwise some unwanted permissions are requested
     }
