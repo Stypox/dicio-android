@@ -59,10 +59,10 @@ object StringUtils {
     private fun levenshteinDistanceMemory(a: String, b: String): Array<IntArray> {
         // memory already filled with zeros, as it's the default value for int
         val memory = Array(a.length + 1) { IntArray(b.length + 1) }
-        for (i in a.indices) {
+        for (i in 0..a.length) {
             memory[i][0] = i
         }
-        for (j in b.indices) {
+        for (j in 0..b.length) {
             memory[0][j] = j
         }
 
