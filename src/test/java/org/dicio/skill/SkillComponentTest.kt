@@ -1,12 +1,12 @@
 package org.dicio.skill
 
 import androidx.fragment.app.Fragment
-import org.junit.Assert
-import org.junit.Test
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 
-class SkillComponentTest {
-    @Test
-    fun testConstructorAndSetGet() {
+class SkillComponentTest : StringSpec({
+    "constructor, getters and setters" {
         val skillInfo: SkillInfo = object : SkillInfo("id", 0, 0, 0, false) {
             override fun isAvailable(context: SkillContext): Boolean {
                 return false
@@ -22,12 +22,12 @@ class SkillComponentTest {
 
         val skill: SkillComponent = object : SkillComponent() {}
 
-        Assert.assertNull(skill.skillInfo)
+        skill.skillInfo.shouldBeNull()
         skill.skillInfo = skillInfo
-        Assert.assertSame(skillInfo, skill.skillInfo)
+        skill.skillInfo shouldBeSameInstanceAs skillInfo
 
         val skillContext = SkillContext()
         skill.setContext(skillContext)
-        Assert.assertSame(skillContext, skill.ctx())
+        skill.ctx() shouldBeSameInstanceAs skillContext
     }
-}
+})

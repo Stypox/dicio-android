@@ -1,12 +1,12 @@
 package org.dicio.skill
 
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.dicio.skill.chain.InputRecognizer.Specificity
-import org.junit.Assert
-import org.junit.Test
 
-class FallbackSkillTest {
-    @Test
-    fun testConstructor() {
+class FallbackSkillTest : StringSpec({
+    "constructor" {
         object : FallbackSkill() {
             override fun setInput(
                 input: String, inputWords: List<String>,
@@ -20,8 +20,7 @@ class FallbackSkillTest {
         }
     }
 
-    @Test
-    fun testScoreAndSpecificity() {
+    "score and specificity" {
         val skill: Skill = object : FallbackSkill() {
             override fun setInput(
                 input: String, inputWords: List<String>,
@@ -34,7 +33,7 @@ class FallbackSkillTest {
             override fun cleanup() {}
         }
 
-        Assert.assertEquals(0.0f, skill.score(), 0.0f)
-        Assert.assertSame(Specificity.LOW, skill.specificity())
+        skill.score() shouldBe 0.0f
+        skill.specificity() shouldBeSameInstanceAs Specificity.LOW
     }
-}
+})

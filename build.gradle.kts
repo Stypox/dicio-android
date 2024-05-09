@@ -32,9 +32,20 @@ afterEvaluate {
     }
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 dependencies {
+    // Android
     implementation(libs.androidx.appcompat)
-    implementation(libs.dicio.numbers)
     implementation(libs.androidx.core.ktx)
-    testImplementation(libs.junit)
+
+    // Dummy dicio-numbers implementation to bring ParserFormatter into the classpath
+    implementation(libs.dicio.numbers)
+
+    // Testing
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.property)
 }

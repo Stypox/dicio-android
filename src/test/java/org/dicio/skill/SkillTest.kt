@@ -1,38 +1,48 @@
 package org.dicio.skill
 
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
 import org.dicio.skill.chain.InputRecognizer.Specificity
-import org.junit.Assert
-import org.junit.Test
 
-class SkillTest {
-    @Test
-    fun testConstructor() {
+class SkillTest : StringSpec({
+    "next skills should initially be empty" {
         val skill = buildEmptySkill()
-
-        Assert.assertTrue(skill.nextSkills().isEmpty())
+        skill.nextSkills().shouldBeEmpty()
     }
 
-    companion object {
-        fun buildEmptySkill(): Skill {
-            return object : Skill() {
-                override fun specificity(): Specificity {
-                    return Specificity.MEDIUM
-                }
+    "getting next skills should return the last value set with the setter" {
+        val skill = buildEmptySkill()
+        skill.setNextSkills(listOf(skill))
+        skill.nextSkills().shouldHaveSize(1)
+    }
 
-                override fun setInput(
-                    input: String, inputWords: List<String>,
-                    normalizedWordKeys: List<String>
-                ) {
-                }
+    "getting next skills should clear them" {
+        val skill = buildEmptySkill()
+        skill.setNextSkills(listOf(skill))
+        skill.nextSkills().shouldHaveSize(1)
+        skill.nextSkills().shouldBeEmpty()
+    }
+})
 
-                override fun score(): Float {
-                    return 0.0f
-                }
-
-                override fun processInput() {}
-                override fun generateOutput() {}
-                override fun cleanup() {}
-            }
+fun buildEmptySkill(): Skill {
+    return object : Skill() {
+        override fun specificity(): Specificity {
+            return Specificity.MEDIUM
         }
+
+        override fun setInput(
+            input: String, inputWords: List<String>,
+            normalizedWordKeys: List<String>
+        ) {
+        }
+
+        override fun score(): Float {
+            return 0.0f
+        }
+
+        override fun processInput() {}
+        override fun generateOutput() {}
+        override fun cleanup() {}
     }
 }

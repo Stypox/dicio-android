@@ -1,25 +1,24 @@
 package org.dicio.skill.chain
 
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.dicio.skill.chain.InputRecognizer.Specificity
-import org.junit.Assert
-import org.junit.Test
 
-class CaptureEverythingRecognizerTest {
-    @Test
-    fun testSpecificityScore() {
+class CaptureEverythingRecognizerTest : StringSpec({
+    "specificity and score" {
         val cer = CaptureEverythingRecognizer()
-        Assert.assertEquals(Specificity.LOW, cer.specificity())
-        Assert.assertEquals(1.0f, cer.score(), 0.0f)
+        cer.specificity() shouldBeSameInstanceAs Specificity.LOW
+        cer.score() shouldBe 1.0f
     }
 
-    @Test
-    fun testInput() {
+    "input in capturing groups" {
         val input = "Some inpùt"
         val cer = CaptureEverythingRecognizer()
 
         cer.setInput(input, mutableListOf("Some", "inpùt"), mutableListOf("Some", "input"))
-        Assert.assertSame(input, cer.result.getCapturingGroup(""))
-        Assert.assertSame(input, cer.result.getCapturingGroup("hello"))
-        Assert.assertSame(input, cer.result.getCapturingGroup(input))
+        cer.result.getCapturingGroup("") shouldBeSameInstanceAs input
+        cer.result.getCapturingGroup("hello") shouldBeSameInstanceAs input
+        cer.result.getCapturingGroup(input) shouldBeSameInstanceAs input
     }
-}
+})
