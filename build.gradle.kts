@@ -33,8 +33,8 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.github.Stypox:dicio-numbers:dummy-SNAPSHOT")
-    implementation("androidx.core:core-ktx:1.13.1")
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.dicio.numbers)
+    implementation(libs.androidx.core.ktx)
+    testImplementation(libs.junit)
 }
