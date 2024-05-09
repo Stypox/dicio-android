@@ -106,7 +106,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
 
                         override fun score(): Float {
                             duration = ctx().parserFormatter!!
-                                .extractDuration(input)
+                                .extractDuration(input!!)
                                 .first
                                 ?.toJavaDuration()
                             return if (duration == null) 0.0f else 1.0f

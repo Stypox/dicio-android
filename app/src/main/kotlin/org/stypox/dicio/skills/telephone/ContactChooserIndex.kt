@@ -22,7 +22,7 @@ class ContactChooserIndex internal constructor(private val contacts: List<NameNu
 
     override fun score(): Float {
         index = ctx().parserFormatter!!
-            .extractNumber(input)
+            .extractNumber(input!!)
             .preferOrdinal(true)
             .mixedWithText
             .asSequence()

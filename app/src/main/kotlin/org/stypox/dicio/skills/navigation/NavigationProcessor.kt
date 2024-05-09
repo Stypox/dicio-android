@@ -15,7 +15,7 @@ class NavigationProcessor : IntermediateProcessor<StandardResult, String?>() {
             placeToNavigate.trim { it <= ' ' }
         } else {
             val textWithNumbers: List<Any> = npf
-                .extractNumber(data.getCapturingGroup(navigation.where))
+                .extractNumber(placeToNavigate)
                 .preferOrdinal(true)
                 .mixedWithText
 
