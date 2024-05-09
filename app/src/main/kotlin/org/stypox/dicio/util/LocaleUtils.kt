@@ -54,7 +54,6 @@ object LocaleUtils {
     /**
      * @see resolveSupportedLocale
      */
-    @JvmStatic
     @Throws(UnsupportedLocaleException::class)
     fun resolveLocaleString(
         locale: Locale,

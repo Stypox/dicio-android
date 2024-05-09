@@ -27,7 +27,6 @@ object ShareUtils {
      * @return true if the URL can be opened or false if it cannot
      * @implNote Taken from NewPipe, file util/ShareUtils.java
      */
-    @JvmOverloads
     fun openUrlInBrowser(
         context: Context,
         url: String,
@@ -194,7 +193,6 @@ object ShareUtils {
      * @param imagePreviewUrl the image of the subject
      * @implNote Taken from NewPipe, file util/ShareUtils.java
      */
-    @JvmOverloads
     fun shareText(
         context: Context,
         title: String,

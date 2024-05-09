@@ -16,8 +16,6 @@ object StringUtils {
      * @return `string1 + delimiter + string2 + delimiter + ...
      * + delimiter + stringN-1 + delimiter + stringN`
      */
-    @JvmStatic
-    @JvmOverloads
     fun join(strings: List<String>, delimiter: String = " "): String {
         val builder = StringBuilder()
         val iterator = strings.iterator()
@@ -36,7 +34,6 @@ object StringUtils {
      * @param string a string to remove punctuation from
      * @return e.g. for "hello, how are you? " returns "hello how are you "
      */
-    @JvmStatic
     fun removePunctuation(string: String): String {
         return RegexUtils.replaceAll(PUNCTUATION_PATTERN, string, "")
     }
@@ -119,7 +116,6 @@ object StringUtils {
      * @return the Levenshtein distance between the two cleaned strings, lower is better, values are
      * always greater than or equal to 0
      */
-    @JvmStatic
     fun levenshteinDistance(aNotCleaned: String, bNotCleaned: String): Int {
         val a = cleanStringForDistance(aNotCleaned)
         val b = cleanStringForDistance(bNotCleaned)
@@ -168,7 +164,6 @@ object StringUtils {
      * @return the custom string distance between the two cleaned strings, lower is better, values
      * can be lower than 0, values are always less than or equal to the [levenshteinDistance] between the two strings
      */
-    @JvmStatic
     fun customStringDistance(aNotCleaned: String, bNotCleaned: String): Int {
         val a = cleanStringForDistance(aNotCleaned)
         val b = cleanStringForDistance(bNotCleaned)
@@ -187,7 +182,6 @@ object StringUtils {
      * @return the custom string distance between the two cleaned strings, lower is better, values
      * will always be lower than or equal to 0
      */
-    @JvmStatic
     fun contactStringDistance(aNotCleaned: String, bNotCleaned: String): Int {
         val a = cleanStringForDistance(aNotCleaned)
         val b = cleanStringForDistance(bNotCleaned)
