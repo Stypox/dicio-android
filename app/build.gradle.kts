@@ -73,6 +73,10 @@ android {
     }
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 dependencies {
     // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
@@ -100,7 +104,9 @@ dependencies {
     implementation(libs.exp4j)
 
     // Testing
-    testImplementation(libs.junit)
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.property)
 }
 
 task("sentencesCompiler") {

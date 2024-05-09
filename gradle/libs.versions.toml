@@ -9,7 +9,7 @@ exp4j = "0.4.8"
 gradle = "8.4.0"
 jna = "5.14.0"
 jsoup = "1.17.2"
-junit = "4.13.2"
+kotest = "5.8.1"
 kotlin = "1.9.24"
 material = "1.12.0"
 picasso = "2.71828"
@@ -27,7 +27,9 @@ dicio-skill = { module = "com.github.Stypox:dicio-skill", version.ref = "dicioSk
 exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
-junit = { module = "junit:junit", version.ref = "junit" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }

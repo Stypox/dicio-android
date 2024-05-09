@@ -1,123 +1,100 @@
 package org.stypox.dicio.util
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 import org.stypox.dicio.util.StringUtils.contactStringDistance
 import org.stypox.dicio.util.StringUtils.customStringDistance
 import org.stypox.dicio.util.StringUtils.join
 import org.stypox.dicio.util.StringUtils.levenshteinDistance
 import org.stypox.dicio.util.StringUtils.removePunctuation
 
-class StringUtilsTest {
-    @Test
-    fun defaultJoinTest() {
-        assertEquals("a b c", join(mutableListOf("a", "b", "c")))
-        assertEquals("", join(emptyList()))
-        assertEquals("abc", join(listOf("abc")))
-        assertEquals(" ", join(mutableListOf("", "")))
+class StringUtilsTest : StringSpec({
+    "join with default parameters" {
+        join(mutableListOf("a", "b", "c")) shouldBe "a b c"
+        join(emptyList()) shouldBe ""
+        join(listOf("abc")) shouldBe "abc"
+        join(mutableListOf("", "")) shouldBe " "
     }
 
-    @Test
-    fun joinTest() {
-        assertEquals("a-b-c", join(mutableListOf("a", "b", "c"), "-"))
-        assertEquals("", join(emptyList(), "-"))
-        assertEquals("abc", join(listOf("abc"), "-"))
-        assertEquals("-", join(mutableListOf("", ""), "-"))
+    "join" {
+        join(mutableListOf("a", "b", "c"), "-") shouldBe "a-b-c"
+        join(emptyList(), "-") shouldBe ""
+        join(listOf("abc"), "-") shouldBe "abc"
+        join(mutableListOf("", ""), "-") shouldBe "-"
     }
 
-    @Test
-    fun removePunctuationTest() {
-        assertEquals("hello how are you ", removePunctuation("hello, how are you? "))
-        assertEquals("12345", removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~"))
+    "remove punctuation" {
+        removePunctuation("hello, how are you? ") shouldBe "hello how are you "
+        removePunctuation("!\"#1$%&'()*+2,-./:;<=34>?@[5]^_`{|}~") shouldBe "12345"
     }
 
-    @Test
-    fun levenshteinDistanceTest() {
-        assertEquals(0, levenshteinDistance("kitten", "kitten").toLong())
-        assertEquals(1, levenshteinDistance("kitten", "sitten").toLong())
-        assertEquals(2, levenshteinDistance("kitten", "sittin").toLong())
-        assertEquals(3, levenshteinDistance("kitten", "sitting").toLong())
-        assertEquals(0, levenshteinDistance("dog", "dog").toLong())
-        assertEquals(4, levenshteinDistance("dòg", "caty").toLong())
-        assertEquals(2, levenshteinDistance("dog", "doggy").toLong())
-        assertEquals(2, levenshteinDistance("dog", "dosgy").toLong())
-        assertEquals(3, levenshteinDistance("dog", "dosay").toLong())
-        assertEquals(1, levenshteinDistance("dog", "doag").toLong())
-        assertEquals(1, levenshteinDistance("dog", "dogè").toLong())
+    "levenshtein distance" {
+        levenshteinDistance("kitten", "kitten") shouldBe 0
+        levenshteinDistance("kitten", "sitten") shouldBe 1
+        levenshteinDistance("kitten", "sittin") shouldBe 2
+        levenshteinDistance("kitten", "sitting") shouldBe 3
+        levenshteinDistance("dog", "dog") shouldBe 0
+        levenshteinDistance("dòg", "caty") shouldBe 4
+        levenshteinDistance("dog", "doggy") shouldBe 2
+        levenshteinDistance("dog", "dosgy") shouldBe 2
+        levenshteinDistance("dog", "dosay") shouldBe 3
+        levenshteinDistance("dog", "doag") shouldBe 1
+        levenshteinDistance("dog", "dogè") shouldBe 1
     }
 
-    @Test
-    fun levenshteinDistanceCaseTest() {
-        assertEquals(3, levenshteinDistance("Kitten", "siTting").toLong())
-        assertEquals(0, levenshteinDistance("DOG", "dog").toLong())
-        assertEquals(0, levenshteinDistance("cÈd", "CèD").toLong())
+    "levenshtein distance with different upper/lower case" {
+        levenshteinDistance("Kitten", "siTting") shouldBe 3
+        levenshteinDistance("DOG", "dog") shouldBe 0
+        levenshteinDistance("cÈd", "CèD") shouldBe 0
     }
 
-    @Test
-    fun levenshteinDistanceSpecialTest() {
-        assertEquals(3, levenshteinDistance("abc123ABC&%$", "&%\$ABCabc").toLong())
-        assertEquals(0, levenshteinDistance("abc123ABC&%$", "ABC&123%abc.").toLong())
-        assertEquals(
-            5,
-            levenshteinDistance("email@email.email", "EMAIL#atEMAIL#dotEMAIL").toLong()
-        )
-        assertEquals(
-            0,
-            levenshteinDistance("Hello, hòw are you?", "hellohoware!you").toLong()
-        )
+    "levenshtein distance with special characters" {
+        levenshteinDistance("abc123ABC&%$", "&%\$ABCabc") shouldBe 3
+        levenshteinDistance("abc123ABC&%$", "ABC&123%abc.") shouldBe 0
+        levenshteinDistance("email@email.email", "EMAIL#atEMAIL#dotEMAIL") shouldBe 5
+        levenshteinDistance("Hello, hòw are you?", "hellohoware!you") shouldBe 0
     }
 
-    @Test
-    fun customStringDistanceTest() {
-        assertEquals(-12, customStringDistance("kitten", "kitten").toLong())
-        assertEquals(-9, customStringDistance("kitten", "sitten").toLong())
-        assertEquals(-5, customStringDistance("kitten", "sittin").toLong())
-        assertEquals(-5, customStringDistance("kitten", "sitlen").toLong())
-        assertEquals(-4, customStringDistance("kitten", "sitting").toLong())
-        assertEquals(-6, customStringDistance("kitten", "sittieng").toLong())
-        assertEquals(-6, customStringDistance("dog", "dog").toLong())
-        assertEquals(4, customStringDistance("dòg", "caty").toLong())
-        assertEquals(-3, customStringDistance("dog", "dosgy").toLong())
-        assertEquals(-1, customStringDistance("dog", "dosay").toLong())
-        assertEquals(-4, customStringDistance("dog", "doag").toLong())
-        assertEquals(-5, customStringDistance("dog", "dogè").toLong())
+    "custom string distance" {
+        customStringDistance("kitten", "kitten") shouldBe -12
+        customStringDistance("kitten", "sitten") shouldBe -9
+        customStringDistance("kitten", "sittin") shouldBe -5
+        customStringDistance("kitten", "sitlen") shouldBe -5
+        customStringDistance("kitten", "sitting") shouldBe -4
+        customStringDistance("kitten", "sittieng") shouldBe -6
+        customStringDistance("dog", "dog") shouldBe -6
+        customStringDistance("dòg", "caty") shouldBe 4
+        customStringDistance("dog", "dosgy") shouldBe -3
+        customStringDistance("dog", "dosay") shouldBe -1
+        customStringDistance("dog", "doag") shouldBe -4
+        customStringDistance("dog", "dogè") shouldBe -5
     }
 
-    @Test
-    fun customStringDistanceCaseTest() {
-        assertEquals(-4, customStringDistance("Kitten", "siTting").toLong())
-        assertEquals(-6, customStringDistance("DOG", "dog").toLong())
-        assertEquals(-6, customStringDistance("cÈd", "CèD").toLong())
+    "custom string distance with different upper/lower case" {
+        customStringDistance("Kitten", "siTting") shouldBe -4
+        customStringDistance("DOG", "dog") shouldBe -6
+        customStringDistance("cÈd", "CèD") shouldBe -6
     }
 
-    @Test
-    fun customStringDistanceSpecialTest() {
-        assertEquals(-6, customStringDistance("abc123ABC&%$", "&%\$ABCabc").toLong())
-        assertEquals(-18, customStringDistance("abc123ABC&%$", "ABC&123%abc.").toLong())
-        assertEquals(
-            -20,
-            customStringDistance("email@email.email", "EMAIL#atEMAIL#dotEMAIL").toLong()
-        )
-        assertEquals(
-            -28,
-            customStringDistance("Hello, hòw are you?", "hellohoware!you").toLong()
-        )
+    "custom string distance with special characters" {
+        customStringDistance("abc123ABC&%$", "&%\$ABCabc") shouldBe -6
+        customStringDistance("abc123ABC&%$", "ABC&123%abc.") shouldBe -18
+        customStringDistance("email@email.email", "EMAIL#atEMAIL#dotEMAIL") shouldBe -20
+        customStringDistance("Hello, hòw are you?", "hellohoware!you") shouldBe -28
     }
 
-    @Test
-    fun customStringDistanceRepeatedLettersTest() {
-        assertEquals(-5, customStringDistance("hello", "Helloo Hiii").toLong())
-        assertEquals(-6, customStringDistance("hello", "Hello Guys").toLong())
-        assertEquals(-6, customStringDistance("hello", "Hello 2uys").toLong())
-        assertEquals(-5, customStringDistance("dog", "dogy").toLong())
-        assertEquals(-4, customStringDistance("dog", "doggy").toLong())
+    "custom string distance with repeated letters" {
+        customStringDistance("hello", "Helloo Hiii") shouldBe -5
+        customStringDistance("hello", "Hello Guys") shouldBe -6
+        customStringDistance("hello", "Hello 2uys") shouldBe -6
+        customStringDistance("dog", "dogy") shouldBe -5
+        customStringDistance("dog", "doggy") shouldBe -4
     }
 
-    @Test
-    fun contactStringDistanceTest() {
-        assertEquals(-12, contactStringDistance("Leo Morgan", "Morgan").toLong())
-        assertEquals(-12, contactStringDistance("John Morgan", "Morgan").toLong())
-        assertEquals(-7, contactStringDistance("Johan Morgan", "John").toLong())
-        assertEquals(-4, contactStringDistance("Leonard John", "Morgan").toLong())
+    "contact string distance" {
+        contactStringDistance("Leo Morgan", "Morgan") shouldBe -12
+        contactStringDistance("John Morgan", "Morgan") shouldBe -12
+        contactStringDistance("Johan Morgan", "John") shouldBe -7
+        contactStringDistance("Leonard John", "Morgan") shouldBe -4
     }
-}
+})

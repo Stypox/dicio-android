@@ -8,25 +8,22 @@ import java.util.Stack
 
 class SkillRanker(
     defaultSkillBatch: List<Skill>,
-    fallbackSkill: Skill
+    private var fallbackSkill: Skill
 ) : CleanableUp {
-    private class SkillScoreResult constructor(val skill: Skill?, val score: Float) :
+    private class SkillScoreResult(val skill: Skill?, val score: Float) :
         CleanableUp {
         override fun cleanup() {
             skill?.cleanup()
         }
     }
 
-    private class SkillBatch constructor(skills: List<Skill>) {
+    private class SkillBatch(skills: List<Skill>) {
         // all of the skills by specificity category (high, medium and low)
-        private val highSkills: MutableList<Skill>
-        private val mediumSkills: MutableList<Skill>
-        private val lowSkills: MutableList<Skill>
+        private val highSkills: MutableList<Skill> = ArrayList()
+        private val mediumSkills: MutableList<Skill> = ArrayList()
+        private val lowSkills: MutableList<Skill> = ArrayList()
 
         init {
-            highSkills = ArrayList()
-            mediumSkills = ArrayList()
-            lowSkills = ArrayList()
             for (skill in skills) {
                 when (skill.specificity()) {
                     Specificity.HIGH -> highSkills.add(skill)
@@ -117,15 +114,8 @@ class SkillRanker(
         }
     }
 
-    private var defaultBatch: SkillBatch
-    private var fallbackSkill: Skill
-    private val batches: Stack<SkillBatch>
-
-    init {
-        defaultBatch = SkillBatch(defaultSkillBatch)
-        this.fallbackSkill = fallbackSkill
-        batches = Stack()
-    }
+    private var defaultBatch: SkillBatch = SkillBatch(defaultSkillBatch)
+    private val batches: Stack<SkillBatch> = Stack()
 
     fun addBatchToTop(skillBatch: List<Skill>) {
         for (skill in skillBatch) {
