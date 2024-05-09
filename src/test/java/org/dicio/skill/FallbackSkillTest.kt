@@ -15,7 +15,7 @@ class FallbackSkillTest : StringSpec({
             }
 
             override fun processInput() {}
-            override fun generateOutput() {}
+            override fun generateOutput() = throw NotImplementedError()
             override fun cleanup() {}
         }
     }
@@ -29,7 +29,7 @@ class FallbackSkillTest : StringSpec({
             }
 
             override fun processInput() {}
-            override fun generateOutput() {}
+            override fun generateOutput() = throw NotImplementedError()
             override fun cleanup() {}
         }
 

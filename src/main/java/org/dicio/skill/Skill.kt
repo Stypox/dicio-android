@@ -5,17 +5,14 @@ import org.dicio.skill.chain.InputRecognizer
 import org.dicio.skill.chain.InputRecognizer.Specificity
 import org.dicio.skill.chain.IntermediateProcessor
 import org.dicio.skill.chain.OutputGenerator
+import org.dicio.skill.output.SkillOutput
 import org.dicio.skill.util.CleanableUp
-import org.dicio.skill.util.NextSkills
 
 /**
  * A skill is the component that scores input, processes it and finally generates output. Take a
  * look at [org.dicio.skill.chain.ChainSkill] for a class that separates these three things.
  */
-abstract class Skill : SkillComponent(), NextSkills, CleanableUp {
-    // no next skills by default
-    private var nextSkills: List<Skill> = listOf()
-
+abstract class Skill : SkillComponent(), CleanableUp {
     /**
      * @see InputRecognizer.specificity
      */
@@ -49,31 +46,11 @@ abstract class Skill : SkillComponent(), NextSkills, CleanableUp {
     /**
      * @see OutputGenerator.generate
      */
-    abstract fun generateOutput()
+    abstract fun generateOutput(): SkillOutput
 
     /**
-     * @see NextSkills.nextSkills
-     */
-    override fun nextSkills(): List<Skill> {
-        val skills = nextSkills
-        nextSkills = listOf()
-        return skills
-    }
-
-    /**
-     * @see NextSkills.setNextSkills
-     */
-    override fun setNextSkills(skills: List<Skill>) {
-        nextSkills = skills
-    }
-
-    /**
-     * Resets the last list of next skills passed to [.setNextSkills] to an empty list.
-     * Remember to call super if you override.
      * @see CleanableUp.cleanup
      */
     @CallSuper
-    override fun cleanup() {
-        nextSkills = listOf()
-    }
+    override fun cleanup() {}
 }

@@ -44,6 +44,16 @@ dependencies {
     // Dummy dicio-numbers implementation to bring ParserFormatter into the classpath
     implementation(libs.dicio.numbers)
 
+    // Compose (check out https://developer.android.com/jetpack/compose/bom/bom-mapping)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.test.android.compose.ui.test.junit4)
+    debugImplementation(libs.debug.compose.ui.tooling)
+    debugImplementation(libs.debug.compose.ui.test.manifest)
+
     // Testing
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)

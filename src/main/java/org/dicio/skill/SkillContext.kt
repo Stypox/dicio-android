@@ -3,7 +3,6 @@ package org.dicio.skill
 import android.content.Context
 import android.content.SharedPreferences
 import org.dicio.numbers.ParserFormatter
-import org.dicio.skill.output.GraphicalOutputDevice
 import org.dicio.skill.output.SpeechOutputDevice
 import java.util.Locale
 
@@ -51,15 +50,6 @@ class SkillContext {
      * maintaining a skill context
      */
     var parserFormatter: ParserFormatter? = null
-
-    /**
-     * The [GraphicalOutputDevice] that should be used for skill graphical output. Will only be
-     * `null` while the context is being built or right before being freed, so this can be easily
-     * considered always nonnull.
-     * @apiNote the setter is not intended for usage inside skills, but only for constructing and
-     * maintaining a skill context
-     */
-    var graphicalOutputDevice: GraphicalOutputDevice? = null
 
     /**
      * The [SpeechOutputDevice] that should be used for skill speech output. Will only be

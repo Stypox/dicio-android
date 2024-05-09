@@ -1,5 +1,6 @@
 package org.dicio.skill.chain
 
+import androidx.compose.runtime.Composable
 import androidx.fragment.app.Fragment
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -9,6 +10,7 @@ import org.dicio.skill.Skill
 import org.dicio.skill.SkillComponent
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
+import org.dicio.skill.output.SkillOutput
 
 class ChainSkillTest : StringSpec({
     "build, no intermediate processor" {
@@ -90,11 +92,13 @@ private val ip2 = object : IntermediateProcessor<Double, Float>() {
     }
 }
 
-private val generatedOutput = StringBuilder()
 private val og = object : OutputGenerator<Any>() {
-    override fun generate(data: Any) {
+    override fun generate(data: Any): SkillOutput {
         data.shouldNotBeNull()
-        generatedOutput.append(data.javaClass).append("|").append(data)
+        return object : SkillOutput {
+            override val speechOutput: String = "${data.javaClass}|$data"
+            @Composable override fun GraphicalOutput() {}
+        }
     }
 
     override fun cleanup() {}
@@ -103,10 +107,8 @@ private val og = object : OutputGenerator<Any>() {
 @Throws(Exception::class)
 private fun assertGeneratedOutput(expected: String, skill: Skill) {
     // use static generatedOutput variable
-    generatedOutput.setLength(0)
     skill.processInput()
-    skill.generateOutput()
-    generatedOutput.toString() shouldBe expected
+    skill.generateOutput().speechOutput shouldBe expected
 }
 
 private fun assertSetSkillInfo(skill: Skill, vararg skillComponents: SkillComponent) {

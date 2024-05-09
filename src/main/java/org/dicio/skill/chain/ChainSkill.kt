@@ -4,6 +4,7 @@ import org.dicio.skill.Skill
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
 import org.dicio.skill.chain.InputRecognizer.Specificity
+import org.dicio.skill.output.SkillOutput
 
 @Suppress("UNCHECKED_CAST")
 class ChainSkill(
@@ -48,7 +49,6 @@ class ChainSkill(
     }
 
     override fun cleanup() {
-        super.cleanup()
         inputRecognizer.cleanup()
         outputGenerator.cleanup()
         lastResult = null
@@ -64,15 +64,8 @@ class ChainSkill(
         }
     }
 
-    override fun generateOutput() {
-        (outputGenerator as OutputGenerator<Any?>).generate(lastResult)
-    }
-
-    /**
-     * @see OutputGenerator.nextSkills
-     */
-    override fun nextSkills(): List<Skill> {
-        return outputGenerator.nextSkills()
+    override fun generateOutput(): SkillOutput {
+        return (outputGenerator as OutputGenerator<Any?>).generate(lastResult)
     }
 
     /**
