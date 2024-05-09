@@ -2,11 +2,10 @@ package org.dicio.skill
 
 import android.content.Context
 import android.content.SharedPreferences
-import org.dicio.numbers.NumberParserFormatter
+import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.output.GraphicalOutputDevice
 import org.dicio.skill.output.SpeechOutputDevice
 import java.util.Locale
-import java.util.Objects
 
 /**
  * A class that just wraps the Android context, the Android shared preferences, the user locale, the
@@ -46,12 +45,12 @@ class SkillContext {
     /**
      * The number parser formatter for the current locale, useful for example to format a
      * number to show to the user or extract numbers from an utterance. Is set to `null` if
-     * the current user language is not supported by any [NumberParserFormatter].
-     * @see NumberParserFormatter
+     * the current user language is not supported by any [ParserFormatter].
+     * @see ParserFormatter
      * @apiNote the setter is not intended for usage inside skills, but only for constructing and
      * maintaining a skill context
      */
-    var numberParserFormatter: NumberParserFormatter? = null
+    var parserFormatter: ParserFormatter? = null
 
     /**
      * The [GraphicalOutputDevice] that should be used for skill graphical output. Will only be
