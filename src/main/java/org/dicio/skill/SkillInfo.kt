@@ -22,31 +22,31 @@ abstract class SkillInfo(
     /**
      * @return a unique identifier for this skill (different from that of all other skills)
      */
-    @JvmField val id: String,
+    val id: String,
 
     /**
      * @return the Android string resource containing the skill name to show to the user (e.g.
      * "Weather")
      */
-    @JvmField @field:StringRes @get:StringRes @param:StringRes val nameResource: Int,
+    @field:StringRes @get:StringRes @param:StringRes val nameResource: Int,
 
     /**
      * @return the Android string resource containing an example of the usage of this skill to show
      * to the user (e.g. "What's the weather?")
      */
-    @JvmField @field:StringRes @get:StringRes @param:StringRes val sentenceExampleResource: Int,
+    @field:StringRes @get:StringRes @param:StringRes val sentenceExampleResource: Int,
 
     /**
      * @return the Android drawable resource containing the skill icon to show to the user (e.g. an
      * icon with sun and clouds representing weather)
      */
-    @JvmField @field:DrawableRes @get:DrawableRes @param:DrawableRes val iconResource: Int,
+    @field:DrawableRes @get:DrawableRes @param:DrawableRes val iconResource: Int,
 
     /**
      * @return whether this skill has preferences. [.getPreferenceFragment] returns
      * `null` only if this is false.
      */
-    @JvmField val hasPreferences: Boolean
+    val hasPreferences: Boolean
 ) {
     /**
      * Use this method to signal that the skill is not available in case, for example, the user

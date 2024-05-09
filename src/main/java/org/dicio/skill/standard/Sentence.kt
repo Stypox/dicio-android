@@ -5,7 +5,7 @@ import org.dicio.skill.standard.word.CapturingGroup
 import org.dicio.skill.standard.word.StringWord
 
 class Sentence(
-    @JvmField val sentenceId: String,
+    val sentenceId: String,
     private val startingWordIndices: IntArray,
     private vararg val words: BaseWord
 ) {

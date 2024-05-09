@@ -161,13 +161,11 @@ class PartialScoreResult {
     }
 
     companion object {
-        @JvmStatic
         fun dropAt0point75(x: Float): Float {
             // similar to a sigmoid; it has LOW values in range [0,0.75) and HIGH values otherwise
             return ((171f * (x - .65f) / (.2f + abs((x - .75f).toDouble())) + 117f) / 250f).toFloat()
         }
 
-        @JvmStatic
         fun dropAt0point6(x: Float): Float {
             // similar to a sigmoid; it has LOW values in range [0,0.6) and HIGH values otherwise
             return ((28 * (x - .55f) / (.15f + abs((x - .55f).toDouble())) + 22f) / 43f).toFloat()

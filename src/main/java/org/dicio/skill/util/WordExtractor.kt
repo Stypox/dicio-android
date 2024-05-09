@@ -16,7 +16,6 @@ object WordExtractor {
      * @param input the input from which to extract words
      * @return the list of extracted words in order
      */
-    @JvmStatic
     fun extractWords(input: String): List<String> {
         // match all non-letter characters
         val splitInput = wordSplitter.split(input)
@@ -38,7 +37,6 @@ object WordExtractor {
      * @param inputWords the lowercase words to normalize
      * @return the normalized words in order
      */
-    @JvmStatic
     fun normalizeWords(inputWords: List<String>): List<String> {
         val normalizedInputWords: MutableList<String> = ArrayList(inputWords.size)
         for (inputWord in inputWords) {
@@ -52,7 +50,6 @@ object WordExtractor {
      * @return the unicode NFKD normalized value for the provided word
      * @implNote the normalization process could be slow
      */
-    @JvmStatic
     fun nfkdNormalizeWord(word: String): String {
         val normalized = Normalizer.normalize(word, Normalizer.Form.NFKD)
         return diacriticalMarksRemover.matcher(normalized).replaceAll("")
@@ -68,7 +65,6 @@ object WordExtractor {
      * @param range the range of words representing those captured in the capturing group
      * @return the content of the capturing group
      */
-    @JvmStatic
     fun extractCapturingGroup(input: String, range: InputWordRange): String? {
         val pattern = Pattern.compile(
             "^(?:[^\\p{L}]*\\p{L}+){" + range.from()

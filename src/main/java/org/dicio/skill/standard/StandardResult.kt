@@ -3,7 +3,7 @@ package org.dicio.skill.standard
 import org.dicio.skill.util.WordExtractor
 
 open class StandardResult(
-    @JvmField val sentenceId: String,
+    val sentenceId: String,
     private val input: String,
     val capturingGroupRanges: Map<String, InputWordRange>
 ) {
