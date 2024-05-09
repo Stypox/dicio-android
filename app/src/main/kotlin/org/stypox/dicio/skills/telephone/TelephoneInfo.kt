@@ -21,13 +21,12 @@ class TelephoneInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(telephone)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(telephone)))
             .output(TelephoneOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment? = null
+    override val preferenceFragment: Fragment? = null
 
-    override fun getNeededPermissions(): List<String>
+    override val neededPermissions: List<String>
         = listOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE)
 }

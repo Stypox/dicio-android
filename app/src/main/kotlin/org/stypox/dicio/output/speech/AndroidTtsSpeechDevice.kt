@@ -64,9 +64,8 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
         textToSpeech?.stop()
     }
 
-    override fun isSpeaking(): Boolean {
-        return textToSpeech?.isSpeaking == true
-    }
+    override val isSpeaking: Boolean
+        get() = textToSpeech?.isSpeaking == true
 
     override fun runWhenFinishedSpeaking(runnable: Runnable) {
         if (isSpeaking) {

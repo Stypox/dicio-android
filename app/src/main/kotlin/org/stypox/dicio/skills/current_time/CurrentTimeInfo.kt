@@ -19,11 +19,10 @@ class CurrentTimeInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(current_time)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(current_time)))
             .process(CurrentTimeStringProcessor())
             .output(CurrentTimeOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment? = null
+    override val preferenceFragment: Fragment? = null
 }

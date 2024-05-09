@@ -11,38 +11,38 @@ class LyricsOutput : OutputGenerator<LyricsOutput.Data>() {
 
     override fun generate(data: Data) {
         if (data.lyrics == null) {
-            val message = ctx().android().getString(
+            val message = ctx().android!!.getString(
                 R.string.skill_lyrics_song_not_found, data.title
             )
-            ctx().speechOutputDevice.speak(message)
-            ctx().graphicalOutputDevice.display(
+            ctx().speechOutputDevice!!.speak(message)
+            ctx().graphicalOutputDevice!!.display(
                 GraphicalOutputUtils.buildSubHeader(
-                    ctx().android(), message
+                    ctx().android!!, message
                 )
             )
         } else {
-            ctx().speechOutputDevice.speak(
-                ctx().android().getString(
+            ctx().speechOutputDevice!!.speak(
+                ctx().android!!.getString(
                     R.string.skill_lyrics_found_song_by_artist, data.title, data.artist!!
                 )
             )
             val lyricsView = GraphicalOutputUtils.buildDescription(
-                ctx().android(), data.lyrics
+                ctx().android!!, data.lyrics
             )
             lyricsView.gravity = Gravity.START
             lyricsView.setPadding(8, 0, 0, 0)
-            ctx().graphicalOutputDevice.display(
+            ctx().graphicalOutputDevice!!.display(
                 GraphicalOutputUtils.buildVerticalLinearLayout(
-                    ctx().android(),
+                    ctx().android!!,
                     ResourcesCompat.getDrawable(
-                        ctx().android().resources,
+                        ctx().android!!.resources,
                         R.drawable.divider_items, null
                     ),
                     GraphicalOutputUtils.buildHeader(
-                        ctx().android(), data.title
+                        ctx().android!!, data.title
                     ),
                     GraphicalOutputUtils.buildSubHeader(
-                        ctx().android(), data.artist
+                        ctx().android!!, data.artist
                     ),
                     lyricsView
                 )

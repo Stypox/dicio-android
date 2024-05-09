@@ -24,14 +24,12 @@ class CalculatorOutput : OutputGenerator<CalculatorOutput.Data?>() {
 
     override fun generate(data: Data?) {
         if (data == null) {
-            val message = ctx().android().getString(
+            val message = ctx().android!!.getString(
                 R.string.skill_calculator_could_not_calculate
             )
-            ctx().speechOutputDevice.speak(message)
-            ctx().graphicalOutputDevice.display(
-                GraphicalOutputUtils.buildHeader(
-                    ctx().android(), message
-                )
+            ctx().speechOutputDevice!!.speak(message)
+            ctx().graphicalOutputDevice!!.display(
+                GraphicalOutputUtils.buildHeader(ctx().android!!, message)
             )
         } else {
             val decimalFormat = DecimalFormat("#.##", DecimalFormatSymbols(ctx().locale))
@@ -50,8 +48,8 @@ class CalculatorOutput : OutputGenerator<CalculatorOutput.Data?>() {
                 inputInterpretation.append(" ")
             }
             inputInterpretation.append("=")
-            ctx().speechOutputDevice.speak(
-                ctx().requireNumberParserFormatter()
+            ctx().speechOutputDevice!!.speak(
+                ctx().numberParserFormatter!!
                     .niceNumber(
                         if (data.number.isDecimal)
                             data.number.decimalValue()
@@ -60,18 +58,18 @@ class CalculatorOutput : OutputGenerator<CalculatorOutput.Data?>() {
                     )
                     .get()
             )
-            ctx().graphicalOutputDevice.display(
+            ctx().graphicalOutputDevice!!.display(
                 GraphicalOutputUtils.buildVerticalLinearLayout(
-                    ctx().android(),
+                    ctx().android,
                     ResourcesCompat.getDrawable(
-                        ctx().android().resources,
+                        ctx().android!!.resources,
                         R.drawable.divider_items, null
                     ),
                     GraphicalOutputUtils.buildDescription(
-                        ctx().android(), inputInterpretation.toString()
+                        ctx().android!!, inputInterpretation.toString()
                     ),
                     GraphicalOutputUtils.buildHeader(
-                        ctx().android(),
+                        ctx().android!!,
                         numberToString(decimalFormat, data.number)
                     )
                 )

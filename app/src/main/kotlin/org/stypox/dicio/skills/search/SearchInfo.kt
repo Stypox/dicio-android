@@ -21,12 +21,11 @@ class SearchInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        val builder: ChainSkill.Builder = ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(search)))
+        val builder: ChainSkill.Builder = ChainSkill.Builder(StandardRecognizer(Sections.getSection(search)))
 
         // Qwant was once available as a second search engine; restore this if adding a new engine
         /*final String searchEngine = context.getPreferences().getString(
-                ctx().android().getString(R.string.pref_key_search_engine), "");
+                ctx().android!!.getString(R.string.pref_key_search_engine), "");
         if (searchEngine.equals(ctx()
                 .getString(R.string.pref_val_search_engine_duckduckgo))) {
         }*/
@@ -35,7 +34,8 @@ class SearchInfo : SkillInfo(
         return builder.output(SearchOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment = Preferences()
+    override val preferenceFragment: Fragment
+        get() = Preferences()
 
     class Preferences : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

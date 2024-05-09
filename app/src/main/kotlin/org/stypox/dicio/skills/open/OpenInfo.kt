@@ -19,10 +19,9 @@ class OpenInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(open)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(open)))
             .output(OpenOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment? = null
+    override val preferenceFragment: Fragment? = null
 }

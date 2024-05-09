@@ -28,7 +28,7 @@ class SearchOutput : OutputGenerator<List<SearchOutput.Data>?>() {
     override fun generate(data: List<Data>?) {
         if (data == null || data.isEmpty()) {
             // empty capturing group, e.g. "search for" without anything else
-            val message: String = ctx().android()
+            val message: String = ctx().android!!
                 .getString(
                     if (data == null)
                         R.string.skill_search_what_question
@@ -36,22 +36,20 @@ class SearchOutput : OutputGenerator<List<SearchOutput.Data>?>() {
                         R.string.skill_search_no_results
                 )
 
-            ctx().speechOutputDevice.speak(message)
-            ctx().graphicalOutputDevice.display(
+            ctx().speechOutputDevice!!.speak(message)
+            ctx().graphicalOutputDevice!!.display(
                 GraphicalOutputUtils.buildSubHeader(
-                    ctx().android(), message
+                    ctx().android!!, message
                 )
             )
 
             // try again
             setNextSkills(
                 listOf(
-                    ChainSkill.Builder()
-                        .recognize(StandardRecognizer(Sections.getSection(SectionsGenerated.search)))
+                    ChainSkill.Builder(StandardRecognizer(Sections.getSection(SectionsGenerated.search)))
                         .process(DuckDuckGoProcessor())
                         .output(SearchOutput()),
-                    ChainSkill.Builder()
-                        .recognize(CaptureEverythingRecognizer())
+                    ChainSkill.Builder(CaptureEverythingRecognizer())
                         .process(DuckDuckGoProcessor())
                         .output(SearchOutput())
                 )
@@ -59,28 +57,28 @@ class SearchOutput : OutputGenerator<List<SearchOutput.Data>?>() {
             return
         }
         val output: LinearLayout = GraphicalOutputUtils.buildVerticalLinearLayout(
-            ctx().android(),
+            ctx().android!!,
             ResourcesCompat.getDrawable(
-                ctx().android().resources,
+                ctx().android!!.resources,
                 R.drawable.divider_items, null
             )
         )
         for (item in data) {
             val view: View = GraphicalOutputUtils.inflate(
-                ctx().android(),
+                ctx().android!!,
                 R.layout.skill_search_result
             )
             view.findViewById<TextView>(R.id.title).text = Html.fromHtml(item.title)
             Picasso.get().load(item.thumbnailUrl).into(view.findViewById<ImageView>(R.id.thumbnail))
             view.findViewById<TextView>(R.id.description).text = Html.fromHtml(item.description)
-            view.setOnClickListener { openUrlInBrowser(ctx().android(), item.url) }
+            view.setOnClickListener { openUrlInBrowser(ctx().android!!, item.url) }
             output.addView(view)
         }
-        ctx().speechOutputDevice.speak(
-            ctx().android().getString(
+        ctx().speechOutputDevice!!.speak(
+            ctx().android!!.getString(
                 R.string.skill_search_here_is_what_i_found
             )
         )
-        ctx().graphicalOutputDevice.display(output)
+        ctx().graphicalOutputDevice!!.display(output)
     }
 }

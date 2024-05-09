@@ -16,7 +16,7 @@ import java.util.regex.Pattern
 class GeniusProcessor : IntermediateProcessor<StandardResult, LyricsOutput.Data>() {
     @Throws(Exception::class)
     override fun process(data: StandardResult): LyricsOutput.Data {
-        val songName: String = data.getCapturingGroup(lyrics.song).trim { it <= ' ' }
+        val songName: String = data.getCapturingGroup(lyrics.song)!!.trim { it <= ' ' }
         val search: JSONObject = ConnectionUtils.getPageJson(
             GENIUS_SEARCH_URL + ConnectionUtils.urlEncode(songName) + "&count=1"
         )

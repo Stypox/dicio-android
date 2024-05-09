@@ -25,7 +25,7 @@ class CalculatorProcessor : IntermediateProcessor<StandardResult, CalculatorOutp
     }
 
     override fun process(data: StandardResult): CalculatorOutput.Data? {
-        val textWithNumbers: List<Any> = ctx().requireNumberParserFormatter()
+        val textWithNumbers: List<Any> = ctx().numberParserFormatter!!
             .extractNumbers(data.getCapturingGroup("calculation")).get()
         if (textWithNumbers.isEmpty()
             || (textWithNumbers.size == 1 && textWithNumbers[0] !is Number)) {

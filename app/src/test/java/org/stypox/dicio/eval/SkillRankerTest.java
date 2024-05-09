@@ -1,8 +1,8 @@
 package org.stypox.dicio.eval;
 
-import static org.dicio.skill.chain.InputRecognizer.Specificity.high;
-import static org.dicio.skill.chain.InputRecognizer.Specificity.low;
-import static org.dicio.skill.chain.InputRecognizer.Specificity.medium;
+import static org.dicio.skill.chain.InputRecognizer.Specificity.HIGH;
+import static org.dicio.skill.chain.InputRecognizer.Specificity.LOW;
+import static org.dicio.skill.chain.InputRecognizer.Specificity.MEDIUM;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
@@ -83,13 +83,13 @@ public class SkillRankerTest {
 
     @Test
     public void testOrderPreservedAndCorrectInput() {
-        TestSkill  ac1 =   new TestSkill(high,   0.80f),
-                ac2 =   new TestSkill(high,   0.93f),
-                ac3 =   new TestSkill(high,   1.00f),
-                acMed = new TestSkill(medium, 1.00f),
-                acLow = new TestSkill(low,    1.00f);
+        TestSkill ac1 =   new TestSkill(HIGH,   0.80f),
+                  ac2 =   new TestSkill(HIGH,   0.93f),
+                  ac3 =   new TestSkill(HIGH,   1.00f),
+                  acMed = new TestSkill(MEDIUM, 1.00f),
+                  acLow = new TestSkill(LOW,    1.00f);
 
-        final SkillRanker cr = getRanker(new TestSkill(low, 0.0f), ac1, acMed, ac2, acLow, ac3);
+        final SkillRanker cr = getRanker(new TestSkill(LOW, 0.0f), ac1, acMed, ac2, acLow, ac3);
         cr.getBest(input, inputWords, normalizedWordKeys);
 
         assertEquals(input, ac1.getInput());
@@ -101,37 +101,37 @@ public class SkillRankerTest {
 
     @Test
     public void testHighPrHighScore() {
-        final TestSkill fallback = new TestSkill(low, 0.0f);
-        final TestSkill best = new TestSkill(high, 0.92f);
+        final TestSkill fallback = new TestSkill(LOW, 0.0f);
+        final TestSkill best = new TestSkill(HIGH, 0.92f);
         final SkillRanker cr = getRanker(fallback,
-                new TestSkill(medium, 0.95f), new TestSkill(high, 0.71f),
-                best, new TestSkill(high, 1.00f), new TestSkill(low, 1.0f));
+                new TestSkill(MEDIUM, 0.95f), new TestSkill(HIGH, 0.71f),
+                best, new TestSkill(HIGH, 1.00f), new TestSkill(LOW, 1.0f));
         assertRanked(cr, fallback, best);
     }
 
 
     @Test
     public void testHighPrLowScore() {
-        final TestSkill fallback = new TestSkill(low, 0.0f);
-        final TestSkill best = new TestSkill(low, 1.0f);
+        final TestSkill fallback = new TestSkill(LOW, 0.0f);
+        final TestSkill best = new TestSkill(LOW, 1.0f);
         final SkillRanker cr = getRanker(fallback,
-                new TestSkill(medium, 0.81f), new TestSkill(high, 0.71f),
-                new TestSkill(low, 0.85f), best, new TestSkill(high, 0.32f));
+                new TestSkill(MEDIUM, 0.81f), new TestSkill(HIGH, 0.71f),
+                new TestSkill(LOW, 0.85f), best, new TestSkill(HIGH, 0.32f));
         assertRanked(cr, fallback, best);
     }
 
     @Test
     public void testNoMatch() {
-        final TestSkill fallback = new TestSkill(low, 0.0f);
-        final SkillRanker cr = getRanker(fallback, new TestSkill(low, 0.8f));
+        final TestSkill fallback = new TestSkill(LOW, 0.0f);
+        final SkillRanker cr = getRanker(fallback, new TestSkill(LOW, 0.8f));
         final TestSkill result = (TestSkill) cr.getBest(input, inputWords, normalizedWordKeys);
         assertNull(result); // make sure the fallback is not returned (this was once the case)
     }
 
     @Test
     public void testGetFallbackSkill() {
-        final TestSkill fallback = new TestSkill(low, 0.0f);
-        final SkillRanker cr = getRanker(fallback, new TestSkill(low, 0.8f));
+        final TestSkill fallback = new TestSkill(LOW, 0.0f);
+        final SkillRanker cr = getRanker(fallback, new TestSkill(LOW, 0.8f));
         final Skill gotFallback = cr.getFallbackSkill(input, inputWords, normalizedWordKeys);
         assertSame(fallback, gotFallback);
         assertEquals(input, ((TestSkill) gotFallback).getInput());

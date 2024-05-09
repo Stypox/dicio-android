@@ -10,7 +10,7 @@ class ContactChooserName internal constructor(private val contacts: List<NameNum
     private var bestContact: NameNumberPair? = null
     override fun specificity(): Specificity {
         // use a low specificity to prefer the index-based contact chooser
-        return Specificity.low
+        return Specificity.LOW
     }
 
     override fun setInput(

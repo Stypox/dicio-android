@@ -13,18 +13,18 @@ import org.stypox.dicio.util.StringUtils
 
 class OpenOutput : OutputGenerator<StandardResult>() {
     override fun generate(data: StandardResult) {
-        val userAppName: String = data.getCapturingGroup(open.what).trim { it <= ' ' }
-        val packageManager: PackageManager = ctx().android().packageManager
+        val userAppName: String = data.getCapturingGroup(open.what)!!.trim { it <= ' ' }
+        val packageManager: PackageManager = ctx().android!!.packageManager
         val applicationInfo: ApplicationInfo? = getMostSimilarApp(packageManager, userAppName)
         if (applicationInfo == null) {
-            ctx().speechOutputDevice.speak(
-                ctx().android().getString(
+            ctx().speechOutputDevice!!.speak(
+                ctx().android!!.getString(
                     R.string.skill_open_unknown_app, userAppName
                 )
             )
         } else {
-            ctx().speechOutputDevice.speak(
-                ctx().android().getString(
+            ctx().speechOutputDevice!!.speak(
+                ctx().android!!.getString(
                     R.string.skill_open_opening,
                     packageManager.getApplicationLabel(applicationInfo)
                 )
@@ -34,7 +34,7 @@ class OpenOutput : OutputGenerator<StandardResult>() {
             launchIntent.action = Intent.ACTION_MAIN
             launchIntent.addCategory(Intent.CATEGORY_LAUNCHER)
             launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            ctx().android().startActivity(launchIntent)
+            ctx().android!!.startActivity(launchIntent)
         }
     }
 

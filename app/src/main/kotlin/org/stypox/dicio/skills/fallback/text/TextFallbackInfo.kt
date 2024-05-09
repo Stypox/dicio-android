@@ -16,7 +16,5 @@ class TextFallbackInfo :
         return TextFallback()
     }
 
-    override fun getPreferenceFragment(): PreferenceFragmentCompat? {
-        return null
-    }
+    override val preferenceFragment: PreferenceFragmentCompat? = null
 }

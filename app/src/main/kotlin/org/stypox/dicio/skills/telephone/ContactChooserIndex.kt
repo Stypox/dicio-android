@@ -9,7 +9,7 @@ class ContactChooserIndex internal constructor(private val contacts: List<NameNu
     private var input: String? = null
     private var index = 0
     override fun specificity(): Specificity {
-        return Specificity.high
+        return Specificity.HIGH
     }
 
     override fun setInput(
@@ -21,7 +21,7 @@ class ContactChooserIndex internal constructor(private val contacts: List<NameNu
     }
 
     override fun score(): Float {
-        index = ctx().requireNumberParserFormatter()
+        index = ctx().numberParserFormatter!!
             .extractNumbers(input)
             .preferOrdinal(true)
             .get().stream()

@@ -19,11 +19,10 @@ class CalculatorInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(calculator)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(calculator)))
             .process(CalculatorProcessor())
             .output(CalculatorOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment? = null
+    override val preferenceFragment: Fragment? = null
 }

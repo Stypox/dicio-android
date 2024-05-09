@@ -77,7 +77,7 @@ class SkillItemHolder(
                 grantPermissionsTextView.visibility = View.GONE
             }
         }
-        if (skillInfo.hasPreferences() || skillInfo.neededPermissions.isNotEmpty()) {
+        if (skillInfo.hasPreferences || skillInfo.neededPermissions.isNotEmpty()) {
             showExpandButton(fragment, skillInfo)
         } else {
             expandImageView.visibility = View.GONE
@@ -147,7 +147,7 @@ class SkillItemHolder(
     }
 
     private fun showFragmentInHolderIfNeeded(fragment: Fragment, skillInfo: SkillInfo) {
-        if (!skillInfo.hasPreferences()) {
+        if (!skillInfo.hasPreferences) {
             return
         }
         val skillFragment = skillInfo.preferenceFragment ?: return

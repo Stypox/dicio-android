@@ -21,17 +21,17 @@ class ConfirmCallOutput private constructor(private val number: String) :
     override fun generate(data: StandardResult) {
         val message: String
         if (data.sentenceId == "yes") {
-            call(ctx().android(), number)
-            message = ctx().android()
+            call(ctx().android!!, number)
+            message = ctx().android!!
                 .getString(R.string.skill_telephone_calling, number)
             // do not speak anything since a call has just started
         } else {
-            message = ctx().android()
+            message = ctx().android!!
                 .getString(R.string.skill_telephone_not_calling)
-            ctx().speechOutputDevice.speak(message)
+            ctx().speechOutputDevice!!.speak(message)
         }
-        ctx().graphicalOutputDevice.display(
-            GraphicalOutputUtils.buildSubHeader(ctx().android(), message)
+        ctx().graphicalOutputDevice!!.display(
+            GraphicalOutputUtils.buildSubHeader(ctx().android!!, message)
         )
     }
 
@@ -50,19 +50,18 @@ class ConfirmCallOutput private constructor(private val number: String) :
         fun <T> callAfterConfirmation(
             outputGenerator: T, name: String, number: String
         ) where T : SkillComponent, T : NextSkills {
-            val context: Context = outputGenerator.ctx().android()
+            val context: Context = outputGenerator.ctx().android!!
             val message = context.getString(R.string.skill_telephone_confirm_call, name)
-            outputGenerator.ctx().speechOutputDevice.speak(message)
+            outputGenerator.ctx().speechOutputDevice!!.speak(message)
             val output: LinearLayout = GraphicalOutputUtils.buildVerticalLinearLayout(context, null)
             output.addView(GraphicalOutputUtils.buildSubHeader(context, message))
             output.addView(GraphicalOutputUtils.buildDescription(context, number))
-            outputGenerator.ctx().graphicalOutputDevice.display(output)
+            outputGenerator.ctx().graphicalOutputDevice!!.display(output)
 
             // ask for confirmation using the util_yes_no section
             outputGenerator.setNextSkills(
                 listOf(
-                    ChainSkill.Builder()
-                        .recognize(StandardRecognizer(
+                    ChainSkill.Builder(StandardRecognizer(
                             Sections.getSection(SectionsGenerated.util_yes_no)))
                         .output(ConfirmCallOutput(number))
                 )

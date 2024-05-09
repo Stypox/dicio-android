@@ -14,7 +14,7 @@ class NavigationProcessor : IntermediateProcessor<StandardResult, String?>() {
             // No number parser available, feed the spoken input directly to the map application.
             placeToNavigate.trim { it <= ' ' }
         } else {
-            val textWithNumbers: List<Any> = ctx().requireNumberParserFormatter()
+            val textWithNumbers: List<Any> = npf
                 .extractNumbers(data.getCapturingGroup(navigation.where))
                 .preferOrdinal(true)
                 .get()

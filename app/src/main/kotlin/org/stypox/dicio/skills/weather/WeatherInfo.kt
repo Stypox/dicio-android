@@ -22,13 +22,13 @@ class WeatherInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(weather)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(weather)))
             .process(OpenWeatherMapProcessor())
             .output(WeatherOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment = Preferences()
+    override val preferenceFragment: Fragment
+        get() = Preferences()
 
     class Preferences : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

@@ -17,15 +17,15 @@ import java.util.stream.Collectors
 
 class TelephoneOutput : OutputGenerator<StandardResult>() {
     override fun generate(data: StandardResult) {
-        val contentResolver: ContentResolver = ctx().android().contentResolver
-        val userContactName: String = data.getCapturingGroup(telephone.who).trim { it <= ' ' }
+        val contentResolver: ContentResolver = ctx().android!!.contentResolver
+        val userContactName: String = data.getCapturingGroup(telephone.who)!!.trim { it <= ' ' }
         val contacts: List<Contact> =
             Contact.getFilteredSortedContacts(contentResolver, userContactName)
         val validContacts: MutableList<Pair<String, List<String>>> = ArrayList()
         val output = GraphicalOutputUtils.buildVerticalLinearLayout(
-            ctx().android(),
+            ctx().android!!,
             ResourcesCompat.getDrawable(
-                ctx().android().resources,
+                ctx().android!!.resources,
                 R.drawable.divider_items, null
             )
         )
@@ -53,24 +53,24 @@ class TelephoneOutput : OutputGenerator<StandardResult>() {
                 return
             }
             validContacts.add(Pair(contact.name, numbers))
-            addNumbersToOutput(contact, numbers, output, ctx().android())
+            addNumbersToOutput(contact, numbers, output, ctx().android!!)
             ++i
         }
 
         // this point will not be reached if a very close match was found
         if (validContacts.isEmpty()) {
-            ctx().speechOutputDevice.speak(
-                ctx().android().getString(
+            ctx().speechOutputDevice!!.speak(
+                ctx().android!!.getString(
                     R.string.skill_telephone_unknown_contact
                 )
             )
         } else {
-            ctx().speechOutputDevice.speak(
-                ctx().android().getString(
+            ctx().speechOutputDevice!!.speak(
+                ctx().android!!.getString(
                     R.string.skill_telephone_found_contacts, validContacts.size
                 )
             )
-            ctx().graphicalOutputDevice.display(output)
+            ctx().graphicalOutputDevice!!.display(output)
             if (validContacts.size == 1 // there is exactly one valid contact and ...
                 // ... either it has exactly one number, or we would be forced to use
                 // RecognizeNameIO in any case, which only uses the first number anyway

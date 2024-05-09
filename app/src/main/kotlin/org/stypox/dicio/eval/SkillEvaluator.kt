@@ -73,7 +73,7 @@ class SkillEvaluator(
                 .setText(skillInfo.sentenceExampleResource)
             skillItemsLayout.addView(skillInfoItem)
         }
-        graphicalOutputDevice.displayTemporary(initialPanel)
+        graphicalOutputDevice!!.displayTemporary(initialPanel)
     }
 
     override fun cleanup() {
@@ -81,8 +81,8 @@ class SkillEvaluator(
         skillRanker.cleanup()
         primaryInputDevice.cleanup()
         secondaryInputDevice?.cleanup()
-        speechOutputDevice.cleanup()
-        graphicalOutputDevice.cleanup()
+        speechOutputDevice!!.cleanup()
+        graphicalOutputDevice!!.cleanup()
         scope.cancel()
         skillNeedingPermissions = null
         queuedInputs.clear()
@@ -120,12 +120,12 @@ class SkillEvaluator(
                     activity.getString(skillInfo.nameResource),
                     PermissionUtils.getCommaJoinedPermissions(activity, skillInfo)
                 )
-                speechOutputDevice.speak(message)
-                graphicalOutputDevice.display(
+                speechOutputDevice!!.speak(message)
+                graphicalOutputDevice!!.display(
                     GraphicalOutputUtils.buildDescription(activity, message)
                 )
             }
-            graphicalOutputDevice.addDivider()
+            graphicalOutputDevice!!.addDivider()
             finishedProcessingInput()
         }
     }
@@ -136,7 +136,7 @@ class SkillEvaluator(
     private fun setupInputDeviceListeners() {
         primaryInputDevice.setInputDeviceListener(object : InputDevice.InputDeviceListener {
             override fun onTryingToGetInput() {
-                speechOutputDevice.stopSpeaking()
+                speechOutputDevice!!.stopSpeaking()
                 secondaryInputDevice?.cancelGettingInput()
             }
 
@@ -159,7 +159,7 @@ class SkillEvaluator(
 
         secondaryInputDevice?.setInputDeviceListener(object : InputDevice.InputDeviceListener {
             override fun onTryingToGetInput() {
-                speechOutputDevice.stopSpeaking()
+                speechOutputDevice!!.stopSpeaking()
                 primaryInputDevice.cancelGettingInput()
             }
 
@@ -184,7 +184,7 @@ class SkillEvaluator(
     private fun setupOutputDevices() {
         // this adds a divider only if there are already some output views (can happen when
         // reloading the skill evaluator)
-        graphicalOutputDevice.addDivider()
+        graphicalOutputDevice!!.addDivider()
     }
 
     /////////////////////////////////////////
@@ -198,13 +198,13 @@ class SkillEvaluator(
 
         val textView = partialInputView.findViewById<TextView>(R.id.userInput)
         textView.text = input
-        graphicalOutputDevice.displayTemporary(partialInputView)
+        graphicalOutputDevice!!.displayTemporary(partialInputView)
     }
 
     private fun handleNoInput() {
         if (hasAddedPartialInputView) {
             // remove temporary partial input view: no input was provided
-            graphicalOutputDevice.removeTemporary()
+            graphicalOutputDevice!!.removeTemporary()
             hasAddedPartialInputView = false
         }
     }
@@ -308,7 +308,7 @@ class SkillEvaluator(
                 activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(inputEditText, 0)
         }
-        graphicalOutputDevice.display(userInputView)
+        graphicalOutputDevice!!.display(userInputView)
     }
 
     //////////////////////
@@ -390,10 +390,10 @@ class SkillEvaluator(
         if (nextSkills.isNullOrEmpty()) {
             // current conversation has ended, reset to the default batch of skills
             skillRanker.removeAllBatches()
-            graphicalOutputDevice.addDivider()
+            graphicalOutputDevice!!.addDivider()
         } else {
             skillRanker.addBatchToTop(nextSkills)
-            speechOutputDevice.runWhenFinishedSpeaking {
+            speechOutputDevice!!.runWhenFinishedSpeaking {
                 activity.runOnUiThread { primaryInputDevice.tryToGetInput(false) }
             }
         }
@@ -416,19 +416,19 @@ class SkillEvaluator(
 
         if (ExceptionUtils.hasAssignableCause(t, UnableToAccessMicrophoneException::class.java)) {
             val message = activity.getString(R.string.microphone_error)
-            speechOutputDevice.speak(message)
-            graphicalOutputDevice.display(
+            speechOutputDevice!!.speak(message)
+            graphicalOutputDevice!!.display(
                 GraphicalOutputUtils.buildDescription(activity, message)
             )
         } else if (ExceptionUtils.isNetworkError(t)) {
-            speechOutputDevice.speak(activity.getString(R.string.eval_network_error_description))
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(activity))
+            speechOutputDevice!!.speak(activity.getString(R.string.eval_network_error_description))
+            graphicalOutputDevice!!.display(GraphicalOutputUtils.buildNetworkErrorMessage(activity))
         } else {
             skillRanker.removeAllBatches()
-            speechOutputDevice.speak(activity.getString(R.string.eval_fatal_error))
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(activity, t))
+            speechOutputDevice!!.speak(activity.getString(R.string.eval_fatal_error))
+            graphicalOutputDevice!!.display(GraphicalOutputUtils.buildErrorMessage(activity, t))
         }
-        graphicalOutputDevice.addDivider()
+        graphicalOutputDevice!!.addDivider()
         finishedProcessingInput()
     }
 }

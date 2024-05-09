@@ -49,7 +49,7 @@ object Sections {
      * @param sectionName the name of the section to obtain
      * @return the section with the provided name under the current locale
      */
-    fun getSection(sectionName: String): StandardRecognizerData? {
-        return sectionsMap[sectionName]
+    fun getSection(sectionName: String): StandardRecognizerData {
+        return sectionsMap[sectionName]!!
     }
 }

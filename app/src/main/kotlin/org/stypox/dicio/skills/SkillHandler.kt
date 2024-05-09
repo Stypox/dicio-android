@@ -66,8 +66,8 @@ object SkillHandler {
             // current locale is not supported by dicio-numbers
         }
 
-        skillContext.setAndroidContext(androidContext)
-        skillContext.setPreferences(PreferenceManager.getDefaultSharedPreferences(androidContext))
+        skillContext.android = androidContext
+        skillContext.preferences = PreferenceManager.getDefaultSharedPreferences(androidContext)
         skillContext.locale = Sections.currentLocale
         skillContext.numberParserFormatter = numberParserFormatter
     }
@@ -82,14 +82,14 @@ object SkillHandler {
         speechOutputDevice: SpeechOutputDevice?,
         graphicalOutputDevice: GraphicalOutputDevice?
     ) {
-        skillContext.setSpeechOutputDevice(speechOutputDevice)
-        skillContext.setGraphicalOutputDevice(graphicalOutputDevice)
+        skillContext.speechOutputDevice = speechOutputDevice
+        skillContext.graphicalOutputDevice = graphicalOutputDevice
     }
 
     // we want to release resources, so we set to null
     fun releaseSkillContext() {
-        skillContext.setAndroidContext(null)
-        skillContext.setPreferences(null)
+        skillContext.android = null
+        skillContext.preferences = null
     }
 
     fun getIsEnabledPreferenceKey(skillId: String): String {
@@ -114,17 +114,17 @@ object SkillHandler {
         get() = allSkillInfoList.stream()
             .filter { skillInfo: SkillInfo -> skillInfo.isAvailable(skillContext) }
             .collect(Collectors.toList())
+
     val enabledSkillInfoList: List<SkillInfo>
         get() = allSkillInfoList.stream()
             .filter { skillInfo: SkillInfo ->
-                skillInfo.isAvailable(skillContext) && skillContext.preferences
+                skillInfo.isAvailable(skillContext) && skillContext.preferences!!
                     .getBoolean(getIsEnabledPreferenceKey(skillInfo.id), true)
             }
             .collect(Collectors.toList())
+
     val enabledSkillInfoListShuffled: List<SkillInfo>
-        get() {
-            return enabledSkillInfoList.shuffled()
-        }
+        get() = enabledSkillInfoList.shuffled()
 
     @DrawableRes
     fun getSkillIconResource(skillInfo: SkillInfo): Int {

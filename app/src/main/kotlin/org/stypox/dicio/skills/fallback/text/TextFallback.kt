@@ -14,11 +14,11 @@ class TextFallback : FallbackSkill() {
 
     override fun processInput() {}
     override fun generateOutput() {
-        val noMatchString = ctx().android().getString(R.string.eval_no_match)
-        ctx().speechOutputDevice.speak(noMatchString)
-        ctx().graphicalOutputDevice.display(
+        val noMatchString = ctx().android!!.getString(R.string.eval_no_match)
+        ctx().speechOutputDevice!!.speak(noMatchString)
+        ctx().graphicalOutputDevice!!.display(
             GraphicalOutputUtils.buildSubHeader(
-                ctx().android(), noMatchString
+                ctx().android!!, noMatchString
             )
         )
     }

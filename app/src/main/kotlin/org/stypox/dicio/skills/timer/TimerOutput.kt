@@ -82,17 +82,17 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         when (data.action) {
             Action.SET -> {
                 data.duration?.also { setTimer(it, data.name) } ?: run {
-                    val message: String = ctx().android()
+                    val message: String = ctx().android!!
                         .getString(R.string.skill_timer_how_much_time)
-                    ctx().speechOutputDevice.speak(message)
-                    ctx().graphicalOutputDevice.display(
-                        GraphicalOutputUtils.buildSubHeader(ctx().android(), message)
+                    ctx().speechOutputDevice!!.speak(message)
+                    ctx().graphicalOutputDevice!!.display(
+                        GraphicalOutputUtils.buildSubHeader(ctx().android!!, message)
                     )
                     setNextSkills(listOf(object : Skill() {
                         private var input: String? = null
                         private var duration: Duration? = null
                         override fun specificity(): InputRecognizer.Specificity {
-                            return InputRecognizer.Specificity.high
+                            return InputRecognizer.Specificity.HIGH
                         }
 
                         override fun setInput(
@@ -104,7 +104,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                         }
 
                         override fun score(): Float {
-                            duration = ctx().requireNumberParserFormatter()
+                            duration = ctx().numberParserFormatter!!
                                 .extractDuration(input).get()
                             return if (duration == null) 0.0f else 1.0f
                         }
@@ -124,14 +124,13 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
             }
             Action.CANCEL -> {
                 if (data.name == null && SET_TIMERS.size > 1) {
-                    val message: String = ctx().android()
+                    val message: String = ctx().android!!
                         .getString(R.string.skill_timer_confirm_cancel)
-                    ctx().speechOutputDevice.speak(message)
-                    ctx().graphicalOutputDevice.display(
-                        GraphicalOutputUtils.buildSubHeader(ctx().android(), message)
+                    ctx().speechOutputDevice!!.speak(message)
+                    ctx().graphicalOutputDevice!!.display(
+                        GraphicalOutputUtils.buildSubHeader(ctx().android!!, message)
                     )
-                    setNextSkills(listOf<Skill>(ChainSkill.Builder()
-                        .recognize(StandardRecognizer(Sections.getSection(util_yes_no)))
+                    setNextSkills(listOf<Skill>(ChainSkill.Builder(StandardRecognizer(Sections.getSection(util_yes_no)))
                         .output(object : OutputGenerator<StandardResult>() {
                             override fun generate(data: StandardResult) {
                                 if ("yes" == data.sentenceId) {
@@ -139,12 +138,12 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                                     return
                                 }
 
-                                val cancelMessage: String = ctx().android()
+                                val cancelMessage: String = ctx().android!!
                                     .getString(R.string.skill_timer_none_canceled)
-                                ctx().speechOutputDevice.speak(cancelMessage)
-                                ctx().graphicalOutputDevice.display(
+                                ctx().speechOutputDevice!!.speak(cancelMessage)
+                                ctx().graphicalOutputDevice!!.display(
                                     GraphicalOutputUtils.buildSubHeader(
-                                        ctx().android(),
+                                        ctx().android!!,
                                         cancelMessage
                                     )
                                 )
@@ -163,17 +162,17 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         duration: Duration,
         name: String?
     ) {
-        ctx().speechOutputDevice.speak(
+        ctx().speechOutputDevice!!.speak(
             formatStringWithName(
                 name, duration.toMillis(),
                 R.string.skill_timer_set, R.string.skill_timer_set_name
             )
         )
         val textView = GraphicalOutputUtils.buildSubHeader(
-            ctx().android(),
+            ctx().android!!,
             getFormattedDuration(duration.toMillis(), false)
         )
-        ctx().graphicalOutputDevice.display(textView)
+        ctx().graphicalOutputDevice!!.display(textView)
 
         var ringtone: Ringtone? = null
 
@@ -186,9 +185,9 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
             },
             onSecondsTickCallback = { seconds ->
                 if (seconds <= 5) {
-                    ctx().speechOutputDevice.speak(
+                    ctx().speechOutputDevice!!.speak(
                         ctx()
-                            .requireNumberParserFormatter().pronounceNumber(seconds.toDouble())
+                            .numberParserFormatter!!.pronounceNumber(seconds.toDouble())
                             .get()
                     )
                 }
@@ -196,10 +195,10 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
             onExpiredCallback = { theName ->
                 // initialize ringtone when the timer has expired (play will be called right after)
                 ringtone = RingtoneManager.getActualDefaultRingtoneUri(
-                    ctx().android(), RingtoneManager.TYPE_ALARM
+                    ctx().android!!, RingtoneManager.TYPE_ALARM
                 )
                     ?.let {
-                        RingtoneManager.getRingtone(ctx().android(), it)
+                        RingtoneManager.getRingtone(ctx().android!!, it)
                     }
                     ?.also {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -211,7 +210,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
 
                 if (ringtone == null) {
                     // we could not load a ringtone, so we can announce via speech instead
-                    ctx().speechOutputDevice.speak(
+                    ctx().speechOutputDevice!!.speak(
                         formatStringWithName(
                             theName,
                             R.string.skill_timer_expired,
@@ -231,7 +230,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
     private fun cancelTimer(name: String?) {
         val message: String
         if (SET_TIMERS.isEmpty()) {
-            message = ctx().android()
+            message = ctx().android!!
                 .getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             message = if (SET_TIMERS.size == 1) {
@@ -241,7 +240,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
                     R.string.skill_timer_canceled_name
                 )
             } else {
-                ctx().android().getString(R.string.skill_timer_all_canceled)
+                ctx().android!!.getString(R.string.skill_timer_all_canceled)
             }
 
             // cancel all
@@ -252,24 +251,24 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         } else {
             val setTimer = getSetTimerWithSimilarName(name)
             if (setTimer == null) {
-                message = ctx().android()
+                message = ctx().android!!
                     .getString(R.string.skill_timer_no_active_name, name)
             } else {
-                message = ctx().android()
+                message = ctx().android!!
                     .getString(R.string.skill_timer_canceled_name, setTimer.name)
                 setTimer.cancel()
                 SET_TIMERS.remove(setTimer)
             }
         }
-        ctx().speechOutputDevice.speak(message)
-        ctx().graphicalOutputDevice.display(
-            GraphicalOutputUtils.buildSubHeader(ctx().android(), message)
+        ctx().speechOutputDevice!!.speak(message)
+        ctx().graphicalOutputDevice!!.display(
+            GraphicalOutputUtils.buildSubHeader(ctx().android!!, message)
         )
     }
 
     private fun queryTimer(name: String?) {
         val message = if (SET_TIMERS.isEmpty()) {
-            ctx().android()
+            ctx().android!!
                 .getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             // no name provided by the user: query the last timer, but adapt the message if only one
@@ -287,17 +286,17 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         } else {
             val setTimer = getSetTimerWithSimilarName(name)
             if (setTimer == null) {
-                ctx().android().getString(R.string.skill_timer_no_active_name, name)
+                ctx().android!!.getString(R.string.skill_timer_no_active_name, name)
             } else {
-                ctx().android().getString(
+                ctx().android!!.getString(
                     R.string.skill_timer_query_name, setTimer.name,
                     getFormattedDuration(setTimer.lastTickMillis, true)
                 )
             }
         }
-        ctx().speechOutputDevice.speak(message)
-        ctx().graphicalOutputDevice.display(
-            GraphicalOutputUtils.buildSubHeader(ctx().android(), message)
+        ctx().speechOutputDevice!!.speak(message)
+        ctx().graphicalOutputDevice!!.display(
+            GraphicalOutputUtils.buildSubHeader(ctx().android!!, message)
         )
     }
 
@@ -305,7 +304,7 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         milliseconds: Long,
         speech: Boolean
     ): String {
-        val niceDuration = ctx().requireNumberParserFormatter()
+        val niceDuration = ctx().numberParserFormatter!!
             .niceDuration(Duration.ofMillis(milliseconds.absoluteValue))
             .speech(speech)
             .get()
@@ -327,9 +326,9 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
         @StringRes stringWithName: Int
     ): String {
         return if (name == null) {
-            ctx().android().getString(stringWithoutName)
+            ctx().android!!.getString(stringWithoutName)
         } else {
-            ctx().android().getString(stringWithName, name)
+            ctx().android!!.getString(stringWithName, name)
         }
     }
 
@@ -341,9 +340,9 @@ class TimerOutput : OutputGenerator<TimerOutput.Data>() {
     ): String {
         val duration = getFormattedDuration(seconds, true)
         return if (name == null) {
-            ctx().android().getString(stringWithoutName, duration)
+            ctx().android!!.getString(stringWithoutName, duration)
         } else {
-            ctx().android().getString(stringWithName, name, duration)
+            ctx().android!!.getString(stringWithName, name, duration)
         }
     }
 

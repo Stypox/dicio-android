@@ -20,11 +20,10 @@ class NavigationInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(navigation)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(navigation)))
             .process(NavigationProcessor())
             .output(NavigationOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment? = null
+    override val preferenceFragment: Fragment? = null
 }

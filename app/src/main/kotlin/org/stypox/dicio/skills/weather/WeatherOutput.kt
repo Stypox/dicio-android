@@ -22,24 +22,24 @@ class WeatherOutput : OutputGenerator<WeatherOutput.Data>() {
 
     override fun generate(data: Data) {
         if (data.failed) {
-            val message = ctx().android().getString(
+            val message = ctx().android!!.getString(
                 R.string.skill_weather_could_not_find_city, data.city
             )
-            ctx().speechOutputDevice.speak(message)
-            ctx().graphicalOutputDevice.display(
+            ctx().speechOutputDevice!!.speak(message)
+            ctx().graphicalOutputDevice!!.display(
                 GraphicalOutputUtils.buildSubHeader(
-                    ctx().android(), message
+                    ctx().android!!, message
                 )
             )
         } else {
-            ctx().speechOutputDevice.speak(
-                ctx().android().getString(
+            ctx().speechOutputDevice!!.speak(
+                ctx().android!!.getString(
                     R.string.skill_weather_in_city_there_is_description,
                     data.city, data.description
                 )
             )
             val weatherView = GraphicalOutputUtils.inflate(
-                ctx().android(),
+                ctx().android!!,
                 R.layout.skill_weather
             )
             Picasso.get().load(data.iconUrl).into(
@@ -47,16 +47,16 @@ class WeatherOutput : OutputGenerator<WeatherOutput.Data>() {
             )
             (weatherView.findViewById<View>(R.id.city) as TextView).text = data.city
             (weatherView.findViewById<View>(R.id.basicInfo) as TextView).text =
-                ctx().android().getString(
+                ctx().android!!.getString(
                     R.string.skill_weather_description_temperature,
                     data.description, data.temp
                 )
             (weatherView.findViewById<View>(R.id.advancedInfo) as TextView).text =
-                ctx().android().getString(
+                ctx().android!!.getString(
                     R.string.skill_weather_min_max_wind,
                     data.tempMin, data.tempMax, data.windSpeed
                 )
-            ctx().graphicalOutputDevice.display(weatherView)
+            ctx().graphicalOutputDevice!!.display(weatherView)
         }
     }
 }

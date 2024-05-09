@@ -18,8 +18,8 @@ class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherOut
             ?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
 
         if (result.city.isNullOrEmpty()) {
-            result.city = ctx().preferences.getString(
-                ctx().android().getString(R.string.pref_key_weather_default_city), ""
+            result.city = ctx().preferences!!.getString(
+                ctx().android!!.getString(R.string.pref_key_weather_default_city), ""
             )?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
         }
 
@@ -31,7 +31,7 @@ class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherOut
         try {
             weatherData = ConnectionUtils.getPageJson(
                 "$WEATHER_API_URL?APPID=$API_KEY&units=metric&lang=" +
-                        ctx().locale.language.lowercase(Locale.getDefault()) +
+                        ctx().locale!!.language.lowercase(Locale.getDefault()) +
                         "&q=" + ConnectionUtils.urlEncode(result.city)
             )
         } catch (ignored: FileNotFoundException) {

@@ -7,9 +7,7 @@ import org.dicio.skill.output.SpeechOutputDevice
  * [isSpeaking] so that it always returns false, and [runWhenFinishedSpeaking] so that the runnable is run instantly.
  */
 abstract class InstantSpeechDevice : SpeechOutputDevice {
-    override fun isSpeaking(): Boolean {
-        return false
-    }
+    override val isSpeaking: Boolean = false
 
     override fun runWhenFinishedSpeaking(runnable: Runnable) {
         runnable.run()

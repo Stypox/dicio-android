@@ -18,35 +18,33 @@ class NavigationOutput : OutputGenerator<String?>() {
             // try again
             setNextSkills(
                 listOf(
-                    ChainSkill.Builder()
-                        .recognize(
+                    ChainSkill.Builder(
                             StandardRecognizer(
                                 Sections.getSection(SectionsGenerated.navigation)
                             )
                         )
                         .process(NavigationProcessor())
                         .output(NavigationOutput()),
-                    ChainSkill.Builder()
-                        .recognize(CaptureEverythingRecognizer())
+                    ChainSkill.Builder(CaptureEverythingRecognizer())
                         .process(NavigationProcessor())
                         .output(NavigationOutput())
                 )
             )
 
-            ctx().android().getString(R.string.skill_navigation_specify_where)
+            ctx().android!!.getString(R.string.skill_navigation_specify_where)
 
         } else {
             val uriGeoSimple = String.format(Locale.ENGLISH, "geo:0,0?q=%s", data)
             val launchIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uriGeoSimple))
-            ctx().android().startActivity(launchIntent)
+            ctx().android!!.startActivity(launchIntent)
 
-            ctx().android().getString(R.string.skill_navigation_navigating_to, data)
+            ctx().android!!.getString(R.string.skill_navigation_navigating_to, data)
         }
 
-        ctx().speechOutputDevice.speak(message)
-        ctx().graphicalOutputDevice.display(
+        ctx().speechOutputDevice!!.speak(message)
+        ctx().graphicalOutputDevice!!.display(
             GraphicalOutputUtils.buildSubHeader(
-                ctx().android(), message
+                ctx().android!!, message
             )
         )
     }

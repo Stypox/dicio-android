@@ -19,11 +19,10 @@ class LyricsInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder()
-            .recognize(StandardRecognizer(Sections.getSection(lyrics)))
+        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(lyrics)))
             .process(GeniusProcessor())
             .output(LyricsOutput())
     }
 
-    override fun getPreferenceFragment(): Fragment? = null
+    override val preferenceFragment: Fragment? = null
 }
