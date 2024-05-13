@@ -1,19 +1,13 @@
 package org.stypox.dicio.skills.current_time
 
-import android.content.Context
-import androidx.compose.runtime.Composable
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.SkillContext
 import org.stypox.dicio.R
-import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.output.graphical.HeadlineSpeechSkillOutput
+import org.stypox.dicio.util.getString
 
 class CurrentTimeOutput(
-    context: Context,
-    timeStr: String,
-) : SkillOutput {
-    override val speechOutput = context.getString(R.string.skill_time_current_time, timeStr)
-
-    @Composable
-    override fun GraphicalOutput() {
-        Headline(text = speechOutput)
-    }
+    private val timeStr: String,
+) : HeadlineSpeechSkillOutput {
+    override fun getSpeechOutput(ctx: SkillContext): String =
+        ctx.getString(R.string.skill_time_current_time, timeStr)
 }

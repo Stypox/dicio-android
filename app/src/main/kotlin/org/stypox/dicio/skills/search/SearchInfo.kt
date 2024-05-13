@@ -25,7 +25,7 @@ class SearchInfo : SkillInfo(
 
         // Qwant was once available as a second search engine; restore this if adding a new engine
         /*final String searchEngine = context.getPreferences().getString(
-                ctx().android!!.getString(R.string.pref_key_search_engine), "");
+                ctx().getString(R.string.pref_key_search_engine), "");
         if (searchEngine.equals(ctx()
                 .getString(R.string.pref_val_search_engine_duckduckgo))) {
         }*/

@@ -12,6 +12,6 @@ class SearchGenerator : OutputGenerator<List<SearchGenerator.Data>?>() {
     )
 
     override fun generate(data: List<Data>?): SkillOutput {
-        return SearchOutput(ctx().android!!, data)
+        return SearchOutput(data)
     }
 }

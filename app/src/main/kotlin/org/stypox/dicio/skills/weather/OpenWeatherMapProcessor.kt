@@ -6,6 +6,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sentences_en.weather
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.StringUtils
+import org.stypox.dicio.util.getString
 import java.io.FileNotFoundException
 import java.util.Locale
 
@@ -16,7 +17,7 @@ class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherGen
 
         if (city.isNullOrEmpty()) {
             city = ctx().preferences!!.getString(
-                ctx().android!!.getString(R.string.pref_key_weather_default_city), ""
+                ctx().getString(R.string.pref_key_weather_default_city), ""
             )?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
         }
 

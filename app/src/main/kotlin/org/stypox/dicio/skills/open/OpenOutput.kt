@@ -1,6 +1,5 @@
 package org.stypox.dicio.skills.open
 
-import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -20,29 +19,30 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.util.getString
 
 private val TAG = OpenOutput::class.simpleName
 
 class OpenOutput(
-    context: Context,
     private val appName: String?,
     private val packageName: String?,
 ) : SkillOutput {
-    override val speechOutput = if (appName == null) {
-        context.getString(R.string.skill_open_could_not_understand)
+    override fun getSpeechOutput(ctx: SkillContext): String = if (appName == null) {
+        ctx.getString(R.string.skill_open_could_not_understand)
     } else if (packageName == null) {
-        context.getString(R.string.skill_open_unknown_app, appName)
+        ctx.getString(R.string.skill_open_unknown_app, appName)
     } else {
-        context.getString(R.string.skill_open_opening, appName)
+        ctx.getString(R.string.skill_open_opening, appName)
     }
 
     @Composable
-    override fun GraphicalOutput() {
+    override fun GraphicalOutput(ctx: SkillContext) {
         if (appName == null || packageName == null) {
-            Headline(text = speechOutput)
+            Headline(text = getSpeechOutput(ctx))
 
         } else {
             Row(
@@ -76,7 +76,7 @@ class OpenOutput(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
-                        text = speechOutput,
+                        text = getSpeechOutput(ctx),
                         style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),

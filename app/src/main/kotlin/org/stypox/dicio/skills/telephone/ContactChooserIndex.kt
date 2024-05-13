@@ -37,10 +37,10 @@ class ContactChooserIndex internal constructor(private val contacts: List<Pair<S
     override fun generateOutput(): SkillOutput {
         if (index > 0 && index <= contacts.size) {
             val contact = contacts[index - 1]
-            return ConfirmCallOutput(ctx().android!!, contact.first, contact.second)
+            return ConfirmCallOutput(contact.first, contact.second)
         } else {
             // impossible situation
-            return ConfirmedCallOutput(ctx().android!!, null)
+            return ConfirmedCallOutput(null)
         }
     }
 

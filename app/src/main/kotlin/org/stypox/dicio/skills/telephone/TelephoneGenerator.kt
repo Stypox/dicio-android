@@ -27,7 +27,7 @@ class TelephoneGenerator : OutputGenerator<StandardResult>() {
                         || contacts[i + 1].distance - 2 > contact.distance)
             ) {
                 // very close match with just one number and without distance ties: call it directly
-                return ConfirmCallOutput(ctx().android!!, contact.name, numbers[0])
+                return ConfirmCallOutput(contact.name, numbers[0])
             }
             validContacts.add(Pair(contact.name, numbers))
             ++i
@@ -41,10 +41,10 @@ class TelephoneGenerator : OutputGenerator<StandardResult>() {
         ) {
             // not a good enough match, but since we have only this, call it directly
             val contact = validContacts[0]
-            return ConfirmCallOutput(ctx().android!!, contact.first, contact.second[0])
+            return ConfirmCallOutput(contact.first, contact.second[0])
         }
 
         // this point will not be reached if a very close match was found
-        return TelephoneOutput(ctx().android!!, ctx().parserFormatter != null, validContacts)
+        return TelephoneOutput(validContacts)
     }
 }

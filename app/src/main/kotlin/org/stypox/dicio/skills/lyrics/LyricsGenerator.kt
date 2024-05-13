@@ -17,6 +17,6 @@ class LyricsGenerator : OutputGenerator<LyricsGenerator.Data>() {
     }
 
     override fun generate(data: Data): SkillOutput {
-        return LyricsOutput(ctx().android!!, data)
+        return LyricsOutput(data)
     }
 }

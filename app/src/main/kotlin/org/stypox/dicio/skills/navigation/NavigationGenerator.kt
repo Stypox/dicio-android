@@ -21,6 +21,6 @@ class NavigationGenerator : OutputGenerator<String?>() {
             ctx().android!!.startActivity(launchIntent)
         }
 
-        return NavigationOutput(ctx().android!!, data)
+        return NavigationOutput(data)
     }
 }

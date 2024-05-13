@@ -1,29 +1,29 @@
 package org.stypox.dicio.skills.calculator
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.output.graphical.Headline
 import org.stypox.dicio.output.graphical.Subtitle
+import org.stypox.dicio.util.getString
 
 class CalculatorOutput(
-    context: Context,
     private val result: String?,
-    spokenResult: String,
+    private val spokenResult: String,
     private val inputInterpretation: String,
 ) : SkillOutput {
-    override val speechOutput = if (result == null) {
-        context.getString(R.string.skill_calculator_could_not_calculate)
+    override fun getSpeechOutput(ctx: SkillContext) = if (result == null) {
+        ctx.getString(R.string.skill_calculator_could_not_calculate)
     } else {
         spokenResult
     }
 
     @Composable
-    override fun GraphicalOutput() {
+    override fun GraphicalOutput(ctx: SkillContext) {
         if (result == null) {
-            Headline(text = speechOutput)
+            Headline(text = getSpeechOutput(ctx))
         } else {
             Column {
                 Subtitle(text = inputInterpretation)

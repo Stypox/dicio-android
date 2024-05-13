@@ -9,6 +9,7 @@ import org.dicio.skill.chain.OutputGenerator
 import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.util.StringUtils
+import org.stypox.dicio.util.getString
 import java.time.Duration
 
 // TODO cleanup this skill and use a service to manage timers
@@ -23,14 +24,14 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         return when (data.action) {
             Action.SET -> {
                 if (data.duration == null) {
-                    TimerOutput.SetAskDuration(ctx().android!!) { setTimer(it, data.name) }
+                    TimerOutput.SetAskDuration { setTimer(it, data.name) }
                 } else {
                     setTimer(data.duration, data.name)
                 }
             }
             Action.CANCEL -> {
                 if (data.name == null && SET_TIMERS.size > 1) {
-                    TimerOutput.ConfirmCancel(ctx().android!!) { cancelTimer(null) }
+                    TimerOutput.ConfirmCancel { cancelTimer(null) }
                 } else {
                     cancelTimer(data.name)
                 }
@@ -99,8 +100,6 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         SET_TIMERS.add(setTimer)
 
         return TimerOutput.Set(
-            ctx().android!!,
-            ctx().parserFormatter!!,
             duration.toMillis(),
             setTimer.lastTickMillisState,
             name,
@@ -121,7 +120,7 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
                     R.string.skill_timer_canceled_name
                 )
             } else {
-                ctx().android!!.getString(R.string.skill_timer_all_canceled)
+                ctx().getString(R.string.skill_timer_all_canceled)
             }
 
             // cancel all timers (copying the SET_TIMERS list, since cancel() is going to remove
@@ -152,7 +151,7 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
 
     private fun queryTimer(name: String?): SkillOutput {
         val message = if (SET_TIMERS.isEmpty()) {
-            ctx().android!!.getString(R.string.skill_timer_no_active)
+            ctx().getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             // no name provided by the user: query the last timer, but adapt the message if only one
             val lastTimer = SET_TIMERS[SET_TIMERS.size - 1]
@@ -162,17 +161,19 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
                 R.string.skill_timer_query_last
 
             formatStringWithName(
-                ctx().android!!, ctx().parserFormatter!!,
-                lastTimer.name, lastTimer.lastTickMillis,
-                noNameQueryString, R.string.skill_timer_query_name
+                ctx(),
+                lastTimer.name,
+                lastTimer.lastTickMillis,
+                noNameQueryString,
+                R.string.skill_timer_query_name
             )
 
         } else {
             val setTimer = getSetTimerWithSimilarName(name)
             if (setTimer == null) {
-                ctx().android!!.getString(R.string.skill_timer_no_active_name, name)
+                ctx().getString(R.string.skill_timer_no_active_name, name)
             } else {
-                ctx().android!!.getString(
+                ctx().getString(
                     R.string.skill_timer_query_name, setTimer.name,
                     getFormattedDuration(ctx().parserFormatter!!, setTimer.lastTickMillis, true)
                 )

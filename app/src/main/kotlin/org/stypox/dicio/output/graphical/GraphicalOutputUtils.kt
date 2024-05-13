@@ -19,7 +19,6 @@ import org.stypox.dicio.R
 import org.stypox.dicio.error.ErrorInfo
 import org.stypox.dicio.error.ErrorUtils
 import org.stypox.dicio.error.UserAction
-import org.stypox.dicio.util.StringUtils
 import org.stypox.dicio.util.ThemeUtils
 
 object GraphicalOutputUtils {

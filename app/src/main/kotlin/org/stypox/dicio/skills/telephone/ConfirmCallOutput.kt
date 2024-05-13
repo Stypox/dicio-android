@@ -1,16 +1,13 @@
 package org.stypox.dicio.skills.telephone
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.dicio.skill.Skill
+import org.dicio.skill.SkillContext
 import org.dicio.skill.chain.ChainSkill
 import org.dicio.skill.output.SkillOutput
 import org.dicio.skill.standard.StandardRecognizer
@@ -19,23 +16,24 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.output.graphical.Body
 import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.util.getString
 
 class ConfirmCallOutput(
-    context: Context,
-    name: String,
-    val number: String
+    private val name: String,
+    private val number: String
 ) : SkillOutput {
-    override val speechOutput = context.getString(R.string.skill_telephone_confirm_call, name)
+    override fun getSpeechOutput(ctx: SkillContext): String =
+        ctx.getString(R.string.skill_telephone_confirm_call, name)
 
-    override val nextSkills = listOf(
+    override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(
         ChainSkill.Builder(StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no)))
             .output(ConfirmCallGenerator(number))
     )
 
     @Composable
-    override fun GraphicalOutput() {
+    override fun GraphicalOutput(ctx: SkillContext) {
         Column {
-            Headline(text = speechOutput)
+            Headline(text = getSpeechOutput(ctx))
             Spacer(modifier = Modifier.height(4.dp))
             Body(text = number)
         }

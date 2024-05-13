@@ -382,18 +382,18 @@ class SkillEvaluator(
         try {
             val output = skill.generateOutput()
 
-            speechOutputDevice.speak(output.speechOutput)
+            speechOutputDevice.speak(output.getSpeechOutput(skill.ctx()))
 
             val composeView = ComposeView(activity)
             composeView.apply {
                 setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                 setContent {
-                    output.GraphicalOutput()
+                    output.GraphicalOutput(skill.ctx())
                 }
             }
             graphicalOutputDevice.display(composeView)
 
-            nextSkills = output.nextSkills
+            nextSkills = output.getNextSkills(skill.ctx())
             skill.cleanup() // cleanup the input that was set
         } catch (t: Throwable) {
             onError(t)

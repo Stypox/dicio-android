@@ -7,6 +7,6 @@ import org.stypox.dicio.output.graphical.GraphicalOutputUtils
 
 class CurrentTimeGenerator : OutputGenerator<String>() {
     override fun generate(data: String): SkillOutput {
-        return CurrentTimeOutput(ctx().android!!, data)
+        return CurrentTimeOutput(data)
     }
 }

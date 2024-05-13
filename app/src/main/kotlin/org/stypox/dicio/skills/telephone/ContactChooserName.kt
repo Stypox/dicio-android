@@ -42,10 +42,10 @@ class ContactChooserName internal constructor(private val contacts: List<Pair<St
     override fun processInput() {}
     override fun generateOutput(): SkillOutput {
         return bestContact?.let {
-            ConfirmCallOutput(ctx().android!!, it.first, it.second)
+            ConfirmCallOutput(it.first, it.second)
         }
             // impossible situation
-            ?: ConfirmedCallOutput(ctx().android!!, null)
+            ?: ConfirmedCallOutput(null)
     }
 
     override fun cleanup() {

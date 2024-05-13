@@ -16,9 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.util.getString
 import org.stypox.dicio.util.lowercaseCapitalized
 import java.util.Locale
 
@@ -26,20 +28,20 @@ class WeatherOutput(
     context: Context,
     private val data: WeatherGenerator.Data,
 ) : SkillOutput {
-    override val speechOutput = when (data) {
-        is WeatherGenerator.Data.Success -> context.getString(
+    override fun getSpeechOutput(ctx: SkillContext): String = when (data) {
+        is WeatherGenerator.Data.Success -> ctx.getString(
             R.string.skill_weather_in_city_there_is_description, data.city, data.description
         )
-        is WeatherGenerator.Data.Failed -> context.getString(
+        is WeatherGenerator.Data.Failed -> ctx.getString(
             R.string.skill_weather_could_not_find_city, data.city
         )
     }
 
     @Composable
-    override fun GraphicalOutput() {
+    override fun GraphicalOutput(ctx: SkillContext) {
         when (data) {
             is WeatherGenerator.Data.Success -> CurrentWeatherRow(data = data)
-            is WeatherGenerator.Data.Failed -> Headline(text = speechOutput)
+            is WeatherGenerator.Data.Failed -> Headline(text = getSpeechOutput(ctx))
         }
     }
 }

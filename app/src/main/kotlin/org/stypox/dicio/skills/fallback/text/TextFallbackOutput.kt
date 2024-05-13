@@ -1,18 +1,11 @@
 package org.stypox.dicio.skills.fallback.text
 
-import android.content.Context
-import androidx.compose.runtime.Composable
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.SkillContext
 import org.stypox.dicio.R
-import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.output.graphical.HeadlineSpeechSkillOutput
+import org.stypox.dicio.util.getString
 
-class TextFallbackOutput(
-    context: Context
-) : SkillOutput {
-    override val speechOutput = context.getString(R.string.eval_no_match)
-
-    @Composable
-    override fun GraphicalOutput() {
-        Headline(text = speechOutput)
-    }
+class TextFallbackOutput : HeadlineSpeechSkillOutput {
+    override fun getSpeechOutput(ctx: SkillContext): String =
+        ctx.getString(R.string.eval_no_match)
 }

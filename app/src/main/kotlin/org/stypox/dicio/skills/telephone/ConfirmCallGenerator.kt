@@ -13,9 +13,9 @@ class ConfirmCallGenerator(private val number: String) :
     override fun generate(data: StandardResult): SkillOutput {
         return if (data.sentenceId == "yes") {
             call(ctx().android!!, number)
-            ConfirmedCallOutput(ctx().android!!, number)
+            ConfirmedCallOutput(number)
         } else {
-            ConfirmedCallOutput(ctx().android!!, null)
+            ConfirmedCallOutput(null)
         }
     }
 

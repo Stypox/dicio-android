@@ -13,6 +13,6 @@ class TextFallback : FallbackSkill() {
     override fun processInput() {}
 
     override fun generateOutput(): SkillOutput {
-        return TextFallbackOutput(ctx().android!!)
+        return TextFallbackOutput()
     }
 }

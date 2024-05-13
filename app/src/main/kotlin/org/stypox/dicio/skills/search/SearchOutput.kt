@@ -1,6 +1,5 @@
 package org.stypox.dicio.skills.search
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import org.dicio.skill.Skill
+import org.dicio.skill.SkillContext
 import org.dicio.skill.chain.CaptureEverythingRecognizer
 import org.dicio.skill.chain.ChainSkill
 import org.dicio.skill.output.SkillOutput
@@ -27,12 +28,12 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.output.graphical.Headline
 import org.stypox.dicio.util.ShareUtils
+import org.stypox.dicio.util.getString
 
 class SearchOutput(
-    context: Context,
     private val results: List<SearchGenerator.Data>?
 ) : SkillOutput {
-    override val speechOutput = context.getString(
+    override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
         if (results == null)
             R.string.skill_search_what_question
         else if (results.isEmpty())
@@ -41,23 +42,22 @@ class SearchOutput(
             R.string.skill_search_here_is_what_i_found
     )
 
-    override val nextSkills =
-        if (results.isNullOrEmpty())
-            listOf(
-                ChainSkill.Builder(StandardRecognizer(Sections.getSection(SectionsGenerated.search)))
-                    .process(DuckDuckGoProcessor())
-                    .output(SearchGenerator()),
-                ChainSkill.Builder(CaptureEverythingRecognizer())
-                    .process(DuckDuckGoProcessor())
-                    .output(SearchGenerator())
-            )
-        else
-            listOf()
+    override fun getNextSkills(ctx: SkillContext): List<Skill> = if (results.isNullOrEmpty())
+        listOf(
+            ChainSkill.Builder(StandardRecognizer(Sections.getSection(SectionsGenerated.search)))
+                .process(DuckDuckGoProcessor())
+                .output(SearchGenerator()),
+            ChainSkill.Builder(CaptureEverythingRecognizer())
+                .process(DuckDuckGoProcessor())
+                .output(SearchGenerator())
+        )
+    else
+        listOf()
 
     @Composable
-    override fun GraphicalOutput() {
+    override fun GraphicalOutput(ctx: SkillContext) {
         if (results.isNullOrEmpty()) {
-            Headline(text = speechOutput)
+            Headline(text = getSpeechOutput(ctx))
         } else {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),

@@ -22,7 +22,7 @@ class CalculatorGenerator : OutputGenerator<CalculatorGenerator.Data?>() {
 
     override fun generate(data: Data?): SkillOutput {
         if (data == null) {
-            return CalculatorOutput(ctx().android!!, null, "", "")
+            return CalculatorOutput(null, "", "")
         }
 
         val decimalFormat = DecimalFormat("#.##", DecimalFormatSymbols(ctx().locale))
@@ -43,7 +43,6 @@ class CalculatorGenerator : OutputGenerator<CalculatorGenerator.Data?>() {
         inputInterpretation.append("=")
 
         return CalculatorOutput(
-            context = ctx().android!!,
             result = numberToString(decimalFormat, data.number),
             spokenResult = ctx().parserFormatter!!
                 .niceNumber(

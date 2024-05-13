@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LongState
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.Skill
+import org.dicio.skill.SkillContext
 import org.dicio.skill.chain.ChainSkill
 import org.dicio.skill.chain.InputRecognizer
 import org.dicio.skill.chain.OutputGenerator
@@ -16,27 +17,28 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.output.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.skills.fallback.text.TextFallbackOutput
+import org.stypox.dicio.util.getString
 import java.text.DecimalFormatSymbols
 import java.time.Duration
 import kotlin.math.absoluteValue
 
 sealed class TimerOutput : SkillOutput {
     class Set(
-        context: Context,
-        private val parserFormatter: ParserFormatter,
-        milliseconds: Long,
+        private val milliseconds: Long,
         private val lastTickMillis: LongState,
-        name: String?
+        private val name: String?
     ) : TimerOutput() {
-        override val speechOutput = formatStringWithName(context, parserFormatter,
-            name, milliseconds, R.string.skill_timer_set, R.string.skill_timer_set_name)
+        override fun getSpeechOutput(ctx: SkillContext): String = formatStringWithName(
+            ctx, name, milliseconds, R.string.skill_timer_set, R.string.skill_timer_set_name
+        )
 
         @Composable
-        override fun GraphicalOutput() {
+        override fun GraphicalOutput(ctx: SkillContext) {
             Headline(
                 text = getFormattedDuration(
-                    parserFormatter,
+                    ctx.parserFormatter!!,
                     lastTickMillis.longValue,
                     false,
                 ),
@@ -45,12 +47,12 @@ sealed class TimerOutput : SkillOutput {
     }
 
     class SetAskDuration(
-        context: Context,
-        val onGotDuration: (Duration) -> SkillOutput,
-    ) : TimerOutput() {
-        override val speechOutput = context.getString(R.string.skill_timer_how_much_time)
+        private val onGotDuration: (Duration) -> SkillOutput,
+    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_timer_how_much_time)
 
-        override val nextSkills = listOf<Skill>(object : Skill() {
+        override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(object : Skill() {
             private var input: String? = null
             private var duration: Duration? = null
             override fun specificity(): InputRecognizer.Specificity {
@@ -76,7 +78,7 @@ sealed class TimerOutput : SkillOutput {
             override fun processInput() {}
             override fun generateOutput(): SkillOutput {
                 return duration?.let { onGotDuration(it) }
-                    ?: TextFallbackOutput(ctx().android!!)
+                    ?: TextFallbackOutput()
             }
 
             override fun cleanup() {
@@ -85,29 +87,21 @@ sealed class TimerOutput : SkillOutput {
                 duration = null
             }
         })
-
-        @Composable
-        override fun GraphicalOutput() {
-            Headline(text = speechOutput)
-        }
     }
 
     class Cancel(
-        override val speechOutput: String,
-    ) : TimerOutput() {
-        @Composable
-        override fun GraphicalOutput() {
-            Headline(text = speechOutput)
-        }
+        private val speechOutput: String,
+    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String = speechOutput
     }
 
     class ConfirmCancel(
-        context: Context,
-        val onConfirm: () -> SkillOutput,
-    ) : TimerOutput() {
-        override val speechOutput = context.getString(R.string.skill_timer_confirm_cancel)
+        private val onConfirm: () -> SkillOutput,
+    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_timer_confirm_cancel)
 
-        override val nextSkills = listOf(
+        override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(
             ChainSkill.Builder(
                 StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no))
             ).output(object : OutputGenerator<StandardResult>() {
@@ -116,40 +110,31 @@ sealed class TimerOutput : SkillOutput {
                         return onConfirm()
                     }
 
-                    return Cancel(ctx().android!!.getString(R.string.skill_timer_none_canceled))
+                    return Cancel(ctx().getString(R.string.skill_timer_none_canceled))
                 }
             })
         )
-
-        @Composable
-        override fun GraphicalOutput() {
-            Headline(text = speechOutput)
-        }
     }
 
     class Query(
-        override val speechOutput: String,
-    ) : TimerOutput() {
-        @Composable
-        override fun GraphicalOutput() {
-            Headline(text = speechOutput)
-        }
+        private val speechOutput: String,
+    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String = speechOutput
     }
 }
 
 fun formatStringWithName(
-    context: Context,
-    parserFormatter: ParserFormatter,
+    ctx: SkillContext,
     name: String?,
     milliseconds: Long,
     @StringRes stringWithoutName: Int,
     @StringRes stringWithName: Int
 ): String {
-    val duration = getFormattedDuration(parserFormatter, milliseconds, true)
+    val duration = getFormattedDuration(ctx.parserFormatter!!, milliseconds, true)
     return if (name == null) {
-        context.getString(stringWithoutName, duration)
+        ctx.getString(stringWithoutName, duration)
     } else {
-        context.getString(stringWithName, name, duration)
+        ctx.getString(stringWithName, name, duration)
     }
 }
 

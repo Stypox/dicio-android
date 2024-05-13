@@ -27,7 +27,6 @@ class OpenGenerator : OutputGenerator<StandardResult>() {
         }
 
         return OpenOutput(
-            context = ctx().android!!,
             appName = applicationInfo?.loadLabel(packageManager)?.toString() ?: userAppName,
             packageName = applicationInfo?.packageName,
         )
