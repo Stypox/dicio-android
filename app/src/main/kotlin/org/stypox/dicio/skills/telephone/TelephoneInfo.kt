@@ -22,7 +22,7 @@ class TelephoneInfo : SkillInfo(
 
     override fun build(context: SkillContext): Skill {
         return ChainSkill.Builder(StandardRecognizer(Sections.getSection(telephone)))
-            .output(TelephoneOutput())
+            .output(TelephoneGenerator())
     }
 
     override val preferenceFragment: Fragment? = null

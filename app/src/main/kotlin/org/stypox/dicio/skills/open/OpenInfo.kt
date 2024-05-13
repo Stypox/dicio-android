@@ -20,7 +20,7 @@ class OpenInfo : SkillInfo(
 
     override fun build(context: SkillContext): Skill {
         return ChainSkill.Builder(StandardRecognizer(Sections.getSection(open)))
-            .output(OpenOutput())
+            .output(OpenGenerator())
     }
 
     override val preferenceFragment: Fragment? = null

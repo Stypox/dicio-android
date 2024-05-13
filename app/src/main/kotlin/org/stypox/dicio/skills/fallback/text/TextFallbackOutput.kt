@@ -1,4 +1,4 @@
-package org.stypox.dicio.skills.current_time
+package org.stypox.dicio.skills.fallback.text
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -6,11 +6,10 @@ import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.output.graphical.Headline
 
-class CurrentTimeOutput(
-    context: Context,
-    timeStr: String,
+class TextFallbackOutput(
+    context: Context
 ) : SkillOutput {
-    override val speechOutput = context.getString(R.string.skill_time_current_time, timeStr)
+    override val speechOutput = context.getString(R.string.eval_no_match)
 
     @Composable
     override fun GraphicalOutput() {

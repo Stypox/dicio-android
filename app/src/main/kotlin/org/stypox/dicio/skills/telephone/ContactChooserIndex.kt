@@ -3,8 +3,9 @@ package org.stypox.dicio.skills.telephone
 import org.dicio.numbers.unit.Number
 import org.dicio.skill.Skill
 import org.dicio.skill.chain.InputRecognizer.Specificity
+import org.dicio.skill.output.SkillOutput
 
-class ContactChooserIndex internal constructor(private val contacts: List<NameNumberPair>) :
+class ContactChooserIndex internal constructor(private val contacts: List<Pair<String, String>>) :
     Skill() {
     private var input: String? = null
     private var index = 0
@@ -33,14 +34,13 @@ class ContactChooserIndex internal constructor(private val contacts: List<NameNu
     }
 
     override fun processInput() {}
-    override fun generateOutput() {
+    override fun generateOutput(): SkillOutput {
         if (index > 0 && index <= contacts.size) {
             val contact = contacts[index - 1]
-            ConfirmCallOutput.callAfterConfirmation(
-                this,
-                contact.name,
-                contact.number
-            )
+            return ConfirmCallOutput(ctx().android!!, contact.first, contact.second)
+        } else {
+            // impossible situation
+            return ConfirmedCallOutput(ctx().android!!, null)
         }
     }
 

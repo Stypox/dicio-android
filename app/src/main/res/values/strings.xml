@@ -103,12 +103,13 @@
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>
     <string name="skill_search_no_results">The search returned no results, try telling me again what you want to search for</string>
     <string name="skill_search_what_question">What do you want to search for?</string>
-    <string name="skill_weather_could_not_find_city">I could not find city %1$s</string>
+    <string name="skill_weather_could_not_find_city">Could not find city %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Currently in %1$s there is %2$s</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="skill_weather_min_max_wind">Minimum temperature: %1$.1f°C\nMaximum temperature: %2$.1f°C\nWind speed: %3$.1fm/s</string>
     <string name="skill_lyrics_song_not_found">Unable to find song %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Found %1$s by %2$s</string>
+    <string name="skill_open_could_not_understand">Could not understand app</string>
     <string name="skill_open_unknown_app">Unknown app %1$s</string>
     <string name="skill_open_opening">Opening %1$s…</string>
     <string name="skill_calculator_could_not_calculate">I could not calculate your request</string>

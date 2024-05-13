@@ -9,7 +9,7 @@ import org.dicio.skill.util.WordExtractor
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 
-class CalculatorProcessor : IntermediateProcessor<StandardResult, CalculatorOutput.Data?>() {
+class CalculatorProcessor : IntermediateProcessor<StandardResult, CalculatorGenerator.Data?>() {
     private fun getOperation(
         operatorRecognizer: StandardRecognizer,
         text: String
@@ -24,7 +24,7 @@ class CalculatorProcessor : IntermediateProcessor<StandardResult, CalculatorOutp
         }
     }
 
-    override fun process(data: StandardResult): CalculatorOutput.Data? {
+    override fun process(data: StandardResult): CalculatorGenerator.Data? {
         val textWithNumbers: List<Any> = ctx().parserFormatter!!
             .extractNumber(data.getCapturingGroup("calculation") ?: return null)
             .mixedWithText
@@ -123,7 +123,7 @@ class CalculatorProcessor : IntermediateProcessor<StandardResult, CalculatorOutp
         }
 
         operatorRecognizer.cleanup()
-        return CalculatorOutput.Data(
+        return CalculatorGenerator.Data(
             inputInterpretation,
             Number(
                 ExpressionBuilder(expressionString.toString())

@@ -24,7 +24,7 @@ class WeatherInfo : SkillInfo(
     override fun build(context: SkillContext): Skill {
         return ChainSkill.Builder(StandardRecognizer(Sections.getSection(weather)))
             .process(OpenWeatherMapProcessor())
-            .output(WeatherOutput())
+            .output(WeatherGenerator())
     }
 
     override val preferenceFragment: Fragment

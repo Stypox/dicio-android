@@ -1,62 +1,100 @@
 package org.stypox.dicio.skills.weather
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import com.squareup.picasso.Picasso
-import org.dicio.skill.chain.OutputGenerator
+import android.content.Context
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
-import org.stypox.dicio.output.graphical.GraphicalOutputUtils
+import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.util.lowercaseCapitalized
+import java.util.Locale
 
-class WeatherOutput : OutputGenerator<WeatherOutput.Data>() {
-    class Data {
-        var failed = false
-        var city: String? = null
-        var description: String? = null
-        var iconUrl: String? = null
-        var temp = 0.0
-        var tempMin = 0.0
-        var tempMax = 0.0
-        var windSpeed = 0.0
+class WeatherOutput(
+    context: Context,
+    private val data: WeatherGenerator.Data,
+) : SkillOutput {
+    override val speechOutput = when (data) {
+        is WeatherGenerator.Data.Success -> context.getString(
+            R.string.skill_weather_in_city_there_is_description, data.city, data.description
+        )
+        is WeatherGenerator.Data.Failed -> context.getString(
+            R.string.skill_weather_could_not_find_city, data.city
+        )
     }
 
-    override fun generate(data: Data) {
-        if (data.failed) {
-            val message = ctx().android!!.getString(
-                R.string.skill_weather_could_not_find_city, data.city
-            )
-            ctx().speechOutputDevice!!.speak(message)
-            ctx().graphicalOutputDevice!!.display(
-                GraphicalOutputUtils.buildSubHeader(
-                    ctx().android!!, message
-                )
-            )
-        } else {
-            ctx().speechOutputDevice!!.speak(
-                ctx().android!!.getString(
-                    R.string.skill_weather_in_city_there_is_description,
-                    data.city, data.description
-                )
-            )
-            val weatherView = GraphicalOutputUtils.inflate(
-                ctx().android!!,
-                R.layout.skill_weather
-            )
-            Picasso.get().load(data.iconUrl).into(
-                weatherView.findViewById<View>(R.id.image) as ImageView
-            )
-            (weatherView.findViewById<View>(R.id.city) as TextView).text = data.city
-            (weatherView.findViewById<View>(R.id.basicInfo) as TextView).text =
-                ctx().android!!.getString(
-                    R.string.skill_weather_description_temperature,
-                    data.description, data.temp
-                )
-            (weatherView.findViewById<View>(R.id.advancedInfo) as TextView).text =
-                ctx().android!!.getString(
-                    R.string.skill_weather_min_max_wind,
-                    data.tempMin, data.tempMax, data.windSpeed
-                )
-            ctx().graphicalOutputDevice!!.display(weatherView)
+    @Composable
+    override fun GraphicalOutput() {
+        when (data) {
+            is WeatherGenerator.Data.Success -> CurrentWeatherRow(data = data)
+            is WeatherGenerator.Data.Failed -> Headline(text = speechOutput)
         }
     }
+}
+
+
+@Composable
+fun CurrentWeatherRow(data: WeatherGenerator.Data.Success) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        WeatherImage(
+            iconUrl = data.iconUrl,
+            description = data.description,
+            widthFraction = 0.38f
+        )
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = data.city.lowercaseCapitalized(Locale.getDefault()),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+            )
+            Text(
+                text = stringResource(
+                    R.string.skill_weather_description_temperature,
+                    data.description.lowercaseCapitalized(Locale.getDefault()),
+                    data.temp
+                ),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(
+                    R.string.skill_weather_min_max_wind,
+                    data.tempMin, data.tempMax, data.windSpeed
+                ),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+    }
+}
+
+@Composable
+fun WeatherImage(iconUrl: String, description: String, widthFraction: Float) {
+    AsyncImage(
+        model = iconUrl,
+        contentDescription = description,
+        modifier = Modifier
+            .fillMaxWidth(widthFraction)
+            .aspectRatio(1.0f),
+    )
 }

@@ -201,3 +201,11 @@ object StringUtils {
         val matchingCharCount: Int
     )
 }
+
+/**
+ * @param locale the current user locale
+ * @return the whole [this] lowercase, with only the first letter uppercase.
+ */
+fun String.lowercaseCapitalized(locale: Locale): String {
+    return lowercase(locale).replaceFirstChar { it.titlecase(locale) }
+}

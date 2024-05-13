@@ -9,9 +9,9 @@ import org.stypox.dicio.Sentences_en.search
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.LocaleUtils
 
-class DuckDuckGoProcessor : IntermediateProcessor<StandardResult, List<SearchOutput.Data>?>() {
+class DuckDuckGoProcessor : IntermediateProcessor<StandardResult, List<SearchGenerator.Data>?>() {
     @Throws(Exception::class)
-    override fun process(data: StandardResult): List<SearchOutput.Data>? {
+    override fun process(data: StandardResult): List<SearchGenerator.Data>? {
         val queryToSearch: String? = data.getCapturingGroup(search.what)
         if (queryToSearch.isNullOrBlank()) {
             // empty capturing group, e.g. "search for" without anything else
@@ -44,18 +44,18 @@ class DuckDuckGoProcessor : IntermediateProcessor<StandardResult, List<SearchOut
 
         val document: Document = Jsoup.parse(html)
         val elements = document.select("div[class=links_main links_deep result__body]")
-        val result: MutableList<SearchOutput.Data> = ArrayList()
+        val result: MutableList<SearchGenerator.Data> = ArrayList()
         for (element in elements) {
             try {
                 result.add(
-                    SearchOutput.Data(
-                        title = element.select("a[class=result__a]").first()!!.html(),
+                    SearchGenerator.Data(
+                        title = element.select("a[class=result__a]").first()!!.text(),
                         thumbnailUrl = "https:" + element.select("img[class=result__icon__img]")
                             .first()!!.attr("src"),
                         url = ConnectionUtils.urlDecode(
                             element.select("a[class=result__a]").first()!!.attr("href")
                         ),
-                        description = element.select("a[class=result__snippet]").first()!!.html(),
+                        description = element.select("a[class=result__snippet]").first()!!.text(),
                     )
                 )
             } catch (ignored: NullPointerException) {

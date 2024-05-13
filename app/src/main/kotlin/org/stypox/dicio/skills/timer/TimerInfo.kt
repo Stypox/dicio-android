@@ -24,7 +24,7 @@ class TimerInfo : SkillInfo(
     override fun build(context: SkillContext): Skill {
         return ChainSkill.Builder(StandardRecognizer(Sections.getSection(timer)))
             .process(TimerProcessor())
-            .output(TimerOutput())
+            .output(TimerGenerator())
     }
 
     override val preferenceFragment: Fragment? = null

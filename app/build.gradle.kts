@@ -70,6 +70,11 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompilerExtension.get()
     }
 }
 
@@ -87,6 +92,19 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.preference.ktx)
 
+    // Compose (check out https://developer.android.com/jetpack/compose/bom/bom-mapping)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons.extended)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.test.android.compose.ui.test.junit4)
+    debugImplementation(libs.debug.compose.ui.tooling)
+    debugImplementation(libs.debug.compose.ui.test.manifest)
+
     // Dicio own libraries
     implementation(libs.dicio.skill)
     implementation(libs.dicio.numbers)
@@ -95,8 +113,12 @@ dependencies {
     implementation(libs.jna) { artifact { type = "aar" } }
     implementation(libs.vosk.android)
 
-    // Miscellaneous
+    // Image loading
+    implementation(libs.coil.compose)
+    implementation(libs.accompanist.drawablepainter)
     implementation(libs.picasso)
+
+    // Miscellaneous
     implementation(libs.unbescape)
     implementation(libs.jsoup)
 

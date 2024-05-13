@@ -21,7 +21,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import org.dicio.skill.output.GraphicalOutputDevice
 import org.dicio.skill.output.SpeechOutputDevice
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillRanker
@@ -30,6 +29,7 @@ import org.stypox.dicio.input.SpeechInputDevice
 import org.stypox.dicio.input.ToolbarInputDevice
 import org.stypox.dicio.input.VoskInputDevice
 import org.stypox.dicio.input.stt_service.SttServiceActivity
+import org.stypox.dicio.output.graphical.GraphicalOutputDevice
 import org.stypox.dicio.output.graphical.MainScreenGraphicalDevice
 import org.stypox.dicio.output.speech.AndroidTtsSpeechDevice
 import org.stypox.dicio.output.speech.NothingSpeechDevice
@@ -301,7 +301,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val graphicalOutputDevice: GraphicalOutputDevice = MainScreenGraphicalDevice(
             findViewById(R.id.outputScrollView), findViewById(R.id.outputLayout)
         )
-        SkillHandler.setSkillContextDevices(speechOutputDevice, graphicalOutputDevice)
+        SkillHandler.setSkillContextDevices(speechOutputDevice)
         skillEvaluator =
             SkillEvaluator( // Sections language is initialized in BaseActivity.setLocale
                 SkillRanker(SkillHandler.standardSkillBatch, SkillHandler.fallbackSkill),

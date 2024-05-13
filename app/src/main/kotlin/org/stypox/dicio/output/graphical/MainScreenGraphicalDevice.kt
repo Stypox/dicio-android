@@ -6,25 +6,19 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import androidx.appcompat.widget.LinearLayoutCompat
-import org.dicio.skill.output.GraphicalOutputDevice
 import org.stypox.dicio.R
 
 class MainScreenGraphicalDevice(
-    outputScrollView: ScrollView,
-    outputLayout: LinearLayout
-) : GraphicalOutputDevice {
-    private var outputScrollView: ScrollView
+    private var outputScrollView: ScrollView,
     private var outputLayout: LinearLayout
-    private var context: Context
+) : GraphicalOutputDevice {
+    private var context: Context = outputScrollView.context
     private var atLeastOnePermanentViewDisplayed = false
     private var lastViewWasTemporary = false
     private var pendingDividers = 0
     private var previousScrollY = 0
 
     init {
-        this.outputScrollView = outputScrollView
-        this.outputLayout = outputLayout
-        context = outputScrollView.context
 
         // remove children that were there before, should happen only after opening settings
         outputLayout.removeAllViews()

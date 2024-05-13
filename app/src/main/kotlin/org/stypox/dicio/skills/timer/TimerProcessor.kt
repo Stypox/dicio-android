@@ -3,15 +3,15 @@ package org.stypox.dicio.skills.timer
 import org.dicio.skill.chain.IntermediateProcessor
 import org.dicio.skill.standard.StandardResult
 
-class TimerProcessor : IntermediateProcessor<StandardResult, TimerOutput.Data>() {
+class TimerProcessor : IntermediateProcessor<StandardResult, TimerGenerator.Data>() {
     @Throws(Exception::class)
-    override fun process(data: StandardResult): TimerOutput.Data {
-        return TimerOutput.Data(
+    override fun process(data: StandardResult): TimerGenerator.Data {
+        return TimerGenerator.Data(
             action = when (data.sentenceId) {
-                "set" -> TimerOutput.Action.SET
-                "cancel" -> TimerOutput.Action.CANCEL
-                "query" -> TimerOutput.Action.QUERY
-                else -> TimerOutput.Action.SET
+                "set" -> TimerGenerator.Action.SET
+                "cancel" -> TimerGenerator.Action.CANCEL
+                "query" -> TimerGenerator.Action.QUERY
+                else -> TimerGenerator.Action.SET
             },
             duration = data.getCapturingGroup("duration")?.let {
                 ctx().parserFormatter!!.extractDuration(it).first?.toJavaDuration()

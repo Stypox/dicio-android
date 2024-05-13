@@ -31,7 +31,7 @@ class SearchInfo : SkillInfo(
         }*/
 
         builder.process(DuckDuckGoProcessor())
-        return builder.output(SearchOutput())
+        return builder.output(SearchGenerator())
     }
 
     override val preferenceFragment: Fragment

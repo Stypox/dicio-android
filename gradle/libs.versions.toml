@@ -1,5 +1,10 @@
 [versions]
+accompanist = "0.34.0"
+activityCompose = "1.9.0"
 appcompat = "1.6.1"
+coilCompose = "2.6.0"
+composeBom = "2024.05.00"
+composeKotlinCompilerExtension = "1.5.13"
 constraintlayout = "2.1.4"
 desugar_jdk_libs = "2.0.4"
 dicioNumbers = "219cd77023368ff3e4c616ba4a338a8462e2f5b6"
@@ -10,7 +15,7 @@ gradle = "8.4.0"
 jna = "5.14.0"
 jsoup = "1.17.2"
 kotest = "5.8.1"
-kotlin = "1.9.24"
+kotlin = "1.9.23"
 material = "1.12.0"
 picasso = "2.71828"
 preferenceKtx = "1.2.1"
@@ -18,8 +23,19 @@ unbescape = "1.1.6.RELEASE"
 voskAndroid = "0.3.32"
 
 [libraries]
+accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+debug-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+debug-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 dicio-numbers = { module = "com.github.Stypox:dicio-numbers", version.ref = "dicioNumbers" }
 dicio-sentences-compiler = { module = "com.github.Stypox:dicio-sentences-compiler", version.ref = "dicioSentencesCompiler" }
@@ -33,6 +49,7 @@ kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref 
 material = { module = "com.google.android.material:material", version.ref = "material" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
+test-android-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 unbescape = { module = "org.unbescape:unbescape", version.ref = "unbescape" }
 vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
 

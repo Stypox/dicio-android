@@ -8,7 +8,6 @@ import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.Skill
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
-import org.dicio.skill.output.GraphicalOutputDevice
 import org.dicio.skill.output.SpeechOutputDevice
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
@@ -76,14 +75,9 @@ object SkillHandler {
      * Sets the provided devices in the static skill context used throughout the app. Has to be
      * called before requesting any skill output.
      * @param speechOutputDevice the speech output device to use in the skill context
-     * @param graphicalOutputDevice the graphical output device to use in the skill context
      */
-    fun setSkillContextDevices(
-        speechOutputDevice: SpeechOutputDevice?,
-        graphicalOutputDevice: GraphicalOutputDevice?
-    ) {
+    fun setSkillContextDevices(speechOutputDevice: SpeechOutputDevice?) {
         skillContext.speechOutputDevice = speechOutputDevice
-        skillContext.graphicalOutputDevice = graphicalOutputDevice
     }
 
     // we want to release resources, so we set to null

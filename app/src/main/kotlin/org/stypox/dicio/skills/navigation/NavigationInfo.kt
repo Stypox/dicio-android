@@ -22,7 +22,7 @@ class NavigationInfo : SkillInfo(
     override fun build(context: SkillContext): Skill {
         return ChainSkill.Builder(StandardRecognizer(Sections.getSection(navigation)))
             .process(NavigationProcessor())
-            .output(NavigationOutput())
+            .output(NavigationGenerator())
     }
 
     override val preferenceFragment: Fragment? = null

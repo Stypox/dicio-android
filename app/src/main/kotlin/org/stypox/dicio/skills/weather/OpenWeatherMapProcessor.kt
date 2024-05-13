@@ -2,7 +2,6 @@ package org.stypox.dicio.skills.weather
 
 import org.dicio.skill.chain.IntermediateProcessor
 import org.dicio.skill.standard.StandardResult
-import org.json.JSONObject
 import org.stypox.dicio.R
 import org.stypox.dicio.Sentences_en.weather
 import org.stypox.dicio.util.ConnectionUtils
@@ -10,47 +9,45 @@ import org.stypox.dicio.util.StringUtils
 import java.io.FileNotFoundException
 import java.util.Locale
 
-class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherOutput.Data?>() {
-    @Throws(Exception::class)
-    override fun process(data: StandardResult): WeatherOutput.Data {
-        val result = WeatherOutput.Data()
-        result.city = data.getCapturingGroup(weather.where)
+class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherGenerator.Data>() {
+    override fun process(data: StandardResult): WeatherGenerator.Data {
+        var city = data.getCapturingGroup(weather.where)
             ?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
 
-        if (result.city.isNullOrEmpty()) {
-            result.city = ctx().preferences!!.getString(
+        if (city.isNullOrEmpty()) {
+            city = ctx().preferences!!.getString(
                 ctx().android!!.getString(R.string.pref_key_weather_default_city), ""
             )?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
         }
 
-        if (result.city.isNullOrEmpty()) {
-            result.city = ConnectionUtils.getPageJson(IP_INFO_URL).getString("city")
+        if (city.isNullOrEmpty()) {
+            city = ConnectionUtils.getPageJson(IP_INFO_URL).getString("city")
         }
 
-        val weatherData: JSONObject
-        try {
-            weatherData = ConnectionUtils.getPageJson(
+        val weatherData = try {
+            ConnectionUtils.getPageJson(
                 "$WEATHER_API_URL?APPID=$API_KEY&units=metric&lang=" +
                         ctx().locale!!.language.lowercase(Locale.getDefault()) +
-                        "&q=" + ConnectionUtils.urlEncode(result.city)
+                        "&q=" + ConnectionUtils.urlEncode(city)
             )
         } catch (ignored: FileNotFoundException) {
-            result.failed = true
-            return result
+            return WeatherGenerator.Data.Failed(city = city)
         }
 
-        val weatherObject: JSONObject = weatherData.getJSONArray("weather").getJSONObject(0)
-        val mainObject: JSONObject = weatherData.getJSONObject("main")
-        val windObject: JSONObject = weatherData.getJSONObject("wind")
-        result.city = weatherData.getString("name")
-        result.description = weatherObject.getString("description")
-            .apply { this[0].uppercaseChar() + this.substring(1) }
-        result.iconUrl = ICON_BASE_URL + weatherObject.getString("icon") + ICON_FORMAT
-        result.temp = mainObject.getDouble("temp")
-        result.tempMin = mainObject.getDouble("temp_min")
-        result.tempMax = mainObject.getDouble("temp_max")
-        result.windSpeed = windObject.getDouble("speed")
-        return result
+        val weatherObject = weatherData.getJSONArray("weather").getJSONObject(0)
+        val mainObject = weatherData.getJSONObject("main")
+        val windObject = weatherData.getJSONObject("wind")
+
+        return WeatherGenerator.Data.Success(
+            city = weatherData.getString("name"),
+            description = weatherObject.getString("description")
+                .apply { this[0].uppercaseChar() + this.substring(1) },
+            iconUrl = ICON_BASE_URL + weatherObject.getString("icon") + ICON_FORMAT,
+            temp = mainObject.getDouble("temp"),
+            tempMin = mainObject.getDouble("temp_min"),
+            tempMax = mainObject.getDouble("temp_max"),
+            windSpeed = windObject.getDouble("speed"),
+        )
     }
 
     companion object {
