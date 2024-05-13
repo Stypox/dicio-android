@@ -7,6 +7,7 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.dicio.skill.Skill
 import org.dicio.skill.chain.InputRecognizer
+import org.dicio.skill.output.SkillOutput
 import org.dicio.skill.util.WordExtractor.extractWords
 import org.dicio.skill.util.WordExtractor.normalizeWords
 
@@ -34,7 +35,7 @@ private class TestSkill(val specificity: InputRecognizer.Specificity, val score:
 
     // useless for this test
     override fun processInput() {}
-    override fun generateOutput() {}
+    override fun generateOutput(): SkillOutput = TODO()
     override fun cleanup() {}
 }
 
