@@ -8,5 +8,5 @@ fun SkillContext.getString(@StringRes resId: Int): String {
 }
 
 fun SkillContext.getString(@StringRes resId: Int, vararg formatArgs: Any?): String {
-    return this.android?.getString(resId, formatArgs) ?: ""
+    return this.android?.getString(resId, *formatArgs) ?: ""
 }
