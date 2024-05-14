@@ -4,6 +4,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_header_subtitle">May I help you?</string>
+    <string name="back">Back</string>
+    <string name="clear">Clear</string>
     <string name="share">Share</string>
     <string name="open_with">Open with</string>
     <string name="no_app_to_open_intent">No app on your device can open this</string>
