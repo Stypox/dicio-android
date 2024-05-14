@@ -12,7 +12,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.search
 
-class SearchInfo : SkillInfo(
+object SearchInfo : SkillInfo(
     "search", R.string.skill_name_search, R.string.skill_sentence_example_search,
     R.drawable.ic_search_white, true
 ) {

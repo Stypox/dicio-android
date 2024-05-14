@@ -10,7 +10,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.calculator
 
-class CalculatorInfo : SkillInfo(
+object CalculatorInfo : SkillInfo(
     "calculator", R.string.skill_name_calculator,
     R.string.skill_sentence_example_calculator, R.drawable.ic_calculate_white, false
 ) {

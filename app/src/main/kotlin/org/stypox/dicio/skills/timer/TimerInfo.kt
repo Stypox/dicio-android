@@ -11,7 +11,7 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.timer
 import org.stypox.dicio.SectionsGenerated.util_yes_no
 
-class TimerInfo : SkillInfo(
+object TimerInfo : SkillInfo(
     "timer", R.string.skill_name_timer, R.string.skill_sentence_example_timer,
     R.drawable.ic_timer_white, false
 ) {

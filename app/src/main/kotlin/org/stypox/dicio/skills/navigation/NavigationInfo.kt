@@ -10,7 +10,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.navigation
 
-class NavigationInfo : SkillInfo(
+object NavigationInfo : SkillInfo(
     "navigation", R.string.skill_name_navigation,
     R.string.skill_sentence_example_navigation, R.drawable.ic_navigate_white,
     false

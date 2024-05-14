@@ -28,15 +28,15 @@ import java.util.stream.Collectors
 object SkillHandler {
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
     val allSkillInfoList = listOf(
-        WeatherInfo(),
-        SearchInfo(),
-        LyricsInfo(),
-        OpenInfo(),
-        CalculatorInfo(),
-        NavigationInfo(),
-        TelephoneInfo(),
-        TimerInfo(),
-        CurrentTimeInfo(),
+        WeatherInfo,
+        SearchInfo,
+        LyricsInfo,
+        OpenInfo,
+        CalculatorInfo,
+        NavigationInfo,
+        TelephoneInfo,
+        TimerInfo,
+        CurrentTimeInfo,
     )
 
     private val fallbackSkillInfoList = listOf(TextFallbackInfo())

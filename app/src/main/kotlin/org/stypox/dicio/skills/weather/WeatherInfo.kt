@@ -13,7 +13,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.weather
 
-class WeatherInfo : SkillInfo(
+object WeatherInfo : SkillInfo(
     "weather", R.string.skill_name_weather, R.string.skill_sentence_example_weather,
     R.drawable.ic_cloud_white, true
 ) {

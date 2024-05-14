@@ -10,7 +10,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.current_time
 
-class CurrentTimeInfo : SkillInfo(
+object CurrentTimeInfo : SkillInfo(
     "current_time", R.string.skill_name_current_time,
     R.string.skill_sentence_example_current_time, R.drawable.ic_watch_white, false
 ) {

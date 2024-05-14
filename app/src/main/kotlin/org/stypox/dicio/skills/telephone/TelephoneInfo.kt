@@ -12,7 +12,7 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.telephone
 import org.stypox.dicio.SectionsGenerated.util_yes_no
 
-class TelephoneInfo : SkillInfo(
+object TelephoneInfo : SkillInfo(
     "open", R.string.skill_name_telephone, R.string.skill_sentence_example_telephone,
     R.drawable.ic_call_white, false
 ) {

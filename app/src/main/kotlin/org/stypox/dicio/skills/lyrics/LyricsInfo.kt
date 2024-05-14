@@ -10,7 +10,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.lyrics
 
-class LyricsInfo : SkillInfo(
+object LyricsInfo : SkillInfo(
     "lyrics", R.string.skill_name_lyrics, R.string.skill_sentence_example_lyrics,
     R.drawable.ic_music_note_white, false
 ) {
