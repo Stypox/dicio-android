@@ -21,6 +21,6 @@ class WeatherGenerator : OutputGenerator<WeatherGenerator.Data>() {
     }
 
     override fun generate(data: Data): SkillOutput {
-        return WeatherOutput(ctx().android!!, data)
+        return WeatherOutput(data)
     }
 }

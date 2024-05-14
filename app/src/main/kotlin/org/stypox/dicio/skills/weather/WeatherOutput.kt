@@ -1,6 +1,5 @@
 package org.stypox.dicio.skills.weather
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,7 +24,6 @@ import org.stypox.dicio.util.lowercaseCapitalized
 import java.util.Locale
 
 class WeatherOutput(
-    context: Context,
     private val data: WeatherGenerator.Data,
 ) : SkillOutput {
     override fun getSpeechOutput(ctx: SkillContext): String = when (data) {
