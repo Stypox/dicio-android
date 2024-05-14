@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.speech
+package org.stypox.dicio.io.speech
 
 class NothingSpeechDevice : InstantSpeechDevice() {
     override fun speak(speechOutput: String) {

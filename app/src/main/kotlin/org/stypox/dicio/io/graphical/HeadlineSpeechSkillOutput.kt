@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.graphical
+package org.stypox.dicio.io.graphical
 
 import androidx.compose.runtime.Composable
 import org.dicio.skill.SkillContext

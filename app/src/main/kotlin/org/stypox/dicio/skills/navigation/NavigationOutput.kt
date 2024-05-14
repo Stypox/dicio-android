@@ -2,7 +2,7 @@ package org.stypox.dicio.skills.navigation
 
 import org.dicio.skill.SkillContext
 import org.stypox.dicio.R
-import org.stypox.dicio.output.graphical.HeadlineSpeechSkillOutput
+import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.util.getString
 
 class NavigationOutput(

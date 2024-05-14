@@ -26,11 +26,11 @@ import org.dicio.skill.util.WordExtractor
 import org.stypox.dicio.MainActivity
 import org.stypox.dicio.R
 import org.stypox.dicio.error.ExceptionUtils
-import org.stypox.dicio.input.InputDevice
-import org.stypox.dicio.input.SpeechInputDevice.UnableToAccessMicrophoneException
-import org.stypox.dicio.input.ToolbarInputDevice
-import org.stypox.dicio.output.graphical.GraphicalOutputDevice
-import org.stypox.dicio.output.graphical.GraphicalOutputUtils
+import org.stypox.dicio.io.input.InputDevice
+import org.stypox.dicio.io.input.SpeechInputDevice.UnableToAccessMicrophoneException
+import org.stypox.dicio.io.input.ToolbarInputDevice
+import org.stypox.dicio.io.graphical.GraphicalOutputDevice
+import org.stypox.dicio.io.graphical.GraphicalOutputUtils
 import org.stypox.dicio.skills.SkillHandler
 import org.stypox.dicio.util.PermissionUtils
 import java.util.LinkedList

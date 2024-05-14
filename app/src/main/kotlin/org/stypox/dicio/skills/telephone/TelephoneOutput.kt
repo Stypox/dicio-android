@@ -13,7 +13,7 @@ import org.dicio.skill.Skill
 import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.R
-import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.util.getString
 
 class TelephoneOutput(

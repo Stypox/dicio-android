@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.speech
+package org.stypox.dicio.io.speech
 
 import android.content.Context
 import android.widget.Toast

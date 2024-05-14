@@ -14,8 +14,8 @@ import org.dicio.skill.standard.StandardRecognizer
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
-import org.stypox.dicio.output.graphical.Body
-import org.stypox.dicio.output.graphical.Headline
+import org.stypox.dicio.io.graphical.Body
+import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.util.getString
 
 class ConfirmCallOutput(

@@ -1,4 +1,4 @@
-package org.stypox.dicio.input
+package org.stypox.dicio.io.input
 
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView

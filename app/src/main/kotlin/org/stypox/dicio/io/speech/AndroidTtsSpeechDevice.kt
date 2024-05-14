@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.speech
+package org.stypox.dicio.io.speech
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
@@ -17,7 +17,7 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
     private var lastUtteranceId = 0
 
     init {
-        textToSpeech = TextToSpeech(context, OnInitListener label@ { status: Int ->
+        textToSpeech = TextToSpeech(context) { status: Int ->
             if (status == TextToSpeech.SUCCESS) {
                 textToSpeech?.run {
                     if (setLanguage(locale) >= 0) { // errors are -1 or -2
@@ -36,7 +36,8 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
                             }
 
                             @Deprecated("")
-                            override fun onError(utteranceId: String) {}
+                            override fun onError(utteranceId: String) {
+                            }
                         })
                     } else {
                         handleInitializationError(R.string.android_tts_unsupported_language)
@@ -45,7 +46,7 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
             } else {
                 handleInitializationError(R.string.android_tts_error)
             }
-        })
+        }
     }
 
     override fun speak(speechOutput: String) {

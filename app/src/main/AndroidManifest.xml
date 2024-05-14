@@ -63,7 +63,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".input.stt_service.SttServiceActivity"
+            android:name=".io.input.stt_service.SttServiceActivity"
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:exported="true"

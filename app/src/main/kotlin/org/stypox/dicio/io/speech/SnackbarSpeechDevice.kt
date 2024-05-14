@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.speech
+package org.stypox.dicio.io.speech
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar

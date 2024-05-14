@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.graphical
+package org.stypox.dicio.io.graphical
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme

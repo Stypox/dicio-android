@@ -1,4 +1,4 @@
-package org.stypox.dicio.input.stt_service
+package org.stypox.dicio.io.input.stt_service
 
 import android.app.PendingIntent
 import android.app.PendingIntent.CanceledException
@@ -18,9 +18,9 @@ import org.stypox.dicio.databinding.DialogSttServiceBinding
 import org.stypox.dicio.error.ErrorInfo
 import org.stypox.dicio.error.ErrorUtils
 import org.stypox.dicio.error.UserAction
-import org.stypox.dicio.input.InputDevice
-import org.stypox.dicio.input.SpeechInputDevice
-import org.stypox.dicio.input.VoskInputDevice
+import org.stypox.dicio.io.input.InputDevice
+import org.stypox.dicio.io.input.SpeechInputDevice
+import org.stypox.dicio.io.input.VoskInputDevice
 import org.stypox.dicio.util.BaseActivity
 import org.stypox.dicio.util.ShareUtils
 import org.stypox.dicio.util.ShareUtils.shareText

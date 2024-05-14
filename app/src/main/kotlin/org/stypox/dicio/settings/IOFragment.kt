@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.stypox.dicio.R
-import org.stypox.dicio.input.VoskInputDevice
+import org.stypox.dicio.io.input.VoskInputDevice
 
 class IOFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

@@ -1,9 +1,7 @@
-package org.stypox.dicio.output.graphical
+package org.stypox.dicio.io.graphical
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.TypedValue
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat

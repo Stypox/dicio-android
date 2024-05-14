@@ -1,4 +1,4 @@
-package org.stypox.dicio.output.graphical
+package org.stypox.dicio.io.graphical
 
 import android.content.Context
 import android.view.View

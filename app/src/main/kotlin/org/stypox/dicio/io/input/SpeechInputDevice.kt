@@ -1,4 +1,4 @@
-package org.stypox.dicio.input
+package org.stypox.dicio.io.input
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
