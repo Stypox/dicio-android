@@ -126,7 +126,7 @@ fun AppBarTextField(
     }
 
     // set the correct cursor position when this composable is first initialized
-    var textFieldValueState by remember {
+    var textFieldValueState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(value, TextRange(value.length)))
     }
     val textFieldValue = textFieldValueState.copy(text = value) // keep the value updated
@@ -187,8 +187,7 @@ fun AppBarTextField(
 
 @Composable
 fun SearchTopAppBar(
-    searchString: String,
-    setSearchString: (String) -> Unit,
+    onSearch: (String) -> Unit,
     hint: String,
     title: @Composable () -> Unit,
     searchIcon: @Composable () -> Unit,
@@ -198,10 +197,9 @@ fun SearchTopAppBar(
 
     if (searchExpanded) {
         SearchTopAppBarExpanded(
-            searchString = searchString,
-            setSearchString = setSearchString,
+            onSearch = onSearch,
+            onSearchDone = { searchExpanded = false },
             hint = hint,
-            onSearchDone = { searchExpanded = false }
         )
     } else {
         SearchTopAppBarUnexpanded(
@@ -216,11 +214,9 @@ fun SearchTopAppBar(
 @Preview
 @Composable
 private fun SearchTopAppBarPreview() {
-    var searchString by rememberSaveable { mutableStateOf("") }
     AppTheme {
         SearchTopAppBar(
-            searchString = searchString,
-            setSearchString = { searchString = it },
+            onSearch = {},
             hint = "The hint…",
             title = { AppBarTitle("The title") },
             searchIcon = { Icon(Icons.Default.QuestionAnswer, contentDescription = null) },
@@ -264,45 +260,36 @@ private fun SearchTopAppBarUnexpandedPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTopAppBarExpanded(
-    searchString: String,
-    setSearchString: (String) -> Unit,
+    onSearch: (String) -> Unit,
+    onSearchDone: () -> Unit,
     hint: String,
-    onSearchDone: () -> Unit
 ) {
-    fun cancelSearch() {
-        // clear the search filter (will not work properly, but prevents the old value from
-        // appearing for the one frame before the runnable posted below is called)
-        setSearchString("")
-        // then close the search bar
-        onSearchDone()
-        // wait for the search bar to lose focus and so send the last onValueChange event (with the
-        // previous value, not with "", that's why we need to clear the search string again)
-        Handler(Looper.getMainLooper()).post {
-            // on the next frame clear the search filter (now it will work)
-            setSearchString("")
-        }
-    }
+    var searchString by rememberSaveable { mutableStateOf("") }
 
     TopAppBar(
         title = {
             AppBarTextField(
                 value = searchString,
-                onValueChange = setSearchString,
+                onValueChange = { searchString = it },
                 hint = hint,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = { onSearchDone() }),
+                keyboardActions = KeyboardActions(onSearch = {
+                    onSearchDone()
+                    onSearch(searchString)
+                }),
                 modifier = Modifier.onKeyEvent {
                     if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                         onSearchDone()
+                        onSearch(searchString)
                         return@onKeyEvent true
                     }
                     return@onKeyEvent false
                 },
             )
         },
-        navigationIcon = { AppBarBackIcon { cancelSearch() } },
+        navigationIcon = { AppBarBackIcon { onSearchDone() } },
         actions = {
-            IconButton(onClick = { setSearchString("") }) {
+            IconButton(onClick = { searchString = "" }) {
                 Icon(
                     imageVector = Icons.Filled.Clear,
                     contentDescription = stringResource(R.string.clear)
@@ -313,19 +300,16 @@ private fun SearchTopAppBarExpanded(
 
     BackHandler {
         // this will only be triggered if the user presses back when the keyboard is already closed
-        cancelSearch()
+        onSearchDone()
     }
 }
 
 @Preview
 @Composable
 private fun SearchTopAppBarExpandedPreview() {
-    var searchString by remember { mutableStateOf("Test") }
-
     AppTheme {
         SearchTopAppBarExpanded(
-            searchString = searchString,
-            setSearchString = { searchString = it },
+            onSearch = {},
             hint = "The hint…",
             onSearchDone = {},
         )
