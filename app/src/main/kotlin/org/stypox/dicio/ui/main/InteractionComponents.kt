@@ -30,34 +30,35 @@ import androidx.compose.ui.unit.dp
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
 import org.dicio.skill.output.SkillOutput
-import org.stypox.dicio.ui.theme.AppTheme
-import org.stypox.dicio.ui.util.ConversationPreviews
+import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SkillOutputPreviews
 import org.stypox.dicio.ui.util.UserInputPreviews
 
 @Composable
 fun ConversationList(
-    conversations: List<Conversation>,
-    pendingQuestion: PendingQuestion?,
+    @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
     modifier: Modifier = Modifier,
 ) {
+    val interactions = interactionLog.interactions
+    val pendingQuestion = interactionLog.pendingQuestion
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        conversations.forEachIndexed { index, conversation ->
+        interactions.forEachIndexed { index, interaction ->
             if (index != 0) {
                 item { Spacer(modifier = Modifier.height(16.dp)) }
             }
-            conversation.questionsAnswers.forEach {
+            interaction.questionsAnswers.forEach {
                 item { ConfirmedQuestionCard(userInput = it.first) }
                 item { SkillAnswerCard(skillOutput = it.second) }
             }
         }
 
         if (pendingQuestion != null) {
-            if (conversations.isNotEmpty() && !pendingQuestion.continuesLastConversation) {
+            if (interactions.isNotEmpty() && !pendingQuestion.continuesLastInteraction) {
                 item { Spacer(modifier = Modifier.height(16.dp)) }
             }
 
@@ -68,18 +69,6 @@ fun ConversationList(
                 item { LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated) }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun ConversationListPreview(@PreviewParameter(ConversationPreviews::class)
-                                    data: Pair<List<Conversation>, PendingQuestion?>) {
-    AppTheme(dynamicColor = false) {
-        ConversationList(
-            conversations = data.first,
-            pendingQuestion = data.second,
-        )
     }
 }
 

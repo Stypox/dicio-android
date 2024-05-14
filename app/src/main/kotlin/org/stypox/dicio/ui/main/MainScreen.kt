@@ -16,12 +16,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import org.stypox.dicio.R
 import org.stypox.dicio.ui.nav.SearchTopAppBar
 import org.stypox.dicio.ui.theme.AppTheme
-import org.stypox.dicio.ui.util.ConversationPreviews
+import org.stypox.dicio.ui.util.InteractionLogPreviews
 
 @Composable
 fun MainScreen(
-    conversations: List<Conversation>,
-    pendingQuestion: PendingQuestion?,
+    interactionLog: InteractionLog,
     navigationIcon: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -43,8 +42,7 @@ fun MainScreen(
         },
         content = {
             ConversationList(
-                conversations = conversations,
-                pendingQuestion = pendingQuestion,
+                interactionLog = interactionLog,
                 modifier = Modifier.padding(it),
             )
         }
@@ -53,12 +51,10 @@ fun MainScreen(
 
 @Preview
 @Composable
-private fun MainScreenPreview(@PreviewParameter(ConversationPreviews::class)
-                              data: Pair<List<Conversation>, PendingQuestion?>) {
+private fun MainScreenPreview(@PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog) {
     AppTheme(dynamicColor = false) {
         MainScreen(
-            conversations = data.first,
-            pendingQuestion = data.second,
+            interactionLog = interactionLog,
             navigationIcon = {
                 IconButton(onClick = {}) {
                     Icon(

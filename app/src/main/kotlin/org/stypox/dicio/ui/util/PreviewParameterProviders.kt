@@ -15,7 +15,8 @@ import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.timer.TimerOutput
 import org.stypox.dicio.skills.weather.WeatherInfo
-import org.stypox.dicio.ui.main.Conversation
+import org.stypox.dicio.ui.main.Interaction
+import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
 
 
@@ -35,36 +36,36 @@ class SkillOutputPreviews : CollectionPreviewParameterProvider<SkillOutput>(list
     TextFallbackOutput(),
 ))
 
-class ConversationPreviews : CollectionPreviewParameterProvider<Pair<List<Conversation>, PendingQuestion?>>(listOf(
-    Pair(
+class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog>(listOf(
+    InteractionLog(
         listOf(),
         null,
     ),
-    Pair(
+    InteractionLog(
         listOf(),
         PendingQuestion(
             userInput = "What's the weather?",
-            continuesLastConversation = true,
+            continuesLastInteraction = true,
             skillBeingEvaluated = null,
         ),
     ),
-    Pair(
+    InteractionLog(
         listOf(),
         PendingQuestion(
             userInput = LoremIpsum(50).values.first(),
-            continuesLastConversation = false,
+            continuesLastInteraction = false,
             skillBeingEvaluated = SkillInfoPreviews().values.first(),
         ),
     ),
-    Pair(
+    InteractionLog(
         listOf(
-            Conversation(
+            Interaction(
                 skill = NavigationInfo,
                 questionsAnswers = listOf(
                     Pair("Take me to Paris", NavigationOutput("Paris"))
                 )
             ),
-            Conversation(
+            Interaction(
                 skill = TimerInfo,
                 questionsAnswers = listOf(
                     Pair("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput() })
@@ -73,13 +74,13 @@ class ConversationPreviews : CollectionPreviewParameterProvider<Pair<List<Conver
         ),
         PendingQuestion(
             userInput = "Twenty",
-            continuesLastConversation = true,
+            continuesLastInteraction = true,
             skillBeingEvaluated = null,
         ),
     ),
-    Pair(
+    InteractionLog(
         listOf(
-            Conversation(
+            Interaction(
                 skill = TelephoneInfo,
                 questionsAnswers = listOf(
                     Pair("call mom", ConfirmCallOutput("Mom", "1234567890")),
@@ -89,7 +90,7 @@ class ConversationPreviews : CollectionPreviewParameterProvider<Pair<List<Conver
         ),
         PendingQuestion(
             userInput = "lyrics i'm working on a dream",
-            continuesLastConversation = false,
+            continuesLastInteraction = false,
             skillBeingEvaluated = LyricsInfo,
         ),
     ),
