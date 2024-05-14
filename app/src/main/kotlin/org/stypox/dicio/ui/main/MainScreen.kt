@@ -3,6 +3,7 @@ package org.stypox.dicio.ui.main
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,9 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QuestionAnswer
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -128,10 +130,19 @@ private fun MainScreenPreview(@PreviewParameter(ConversationPreviews::class)
 @Composable
 fun PendingQuestionCard(@PreviewParameter(UserInputPreviews::class) userInput: String) {
     MessageCard(containerColor = MaterialTheme.colorScheme.tertiaryContainer) {
-        Text(
-            text = userInput,
-            modifier = Modifier.padding(12.dp)
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(12.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = null,
+            )
+            Text(
+                text = userInput,
+                fontStyle = FontStyle.Italic,
+            )
+        }
     }
 }
 
@@ -139,10 +150,19 @@ fun PendingQuestionCard(@PreviewParameter(UserInputPreviews::class) userInput: S
 @Composable
 fun ConfirmedQuestionCard(@PreviewParameter(UserInputPreviews::class) userInput: String) {
     MessageCard(containerColor = MaterialTheme.colorScheme.tertiaryContainer) {
-        Text(
-            text = userInput,
-            modifier = Modifier.padding(12.dp)
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(12.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = null,
+            )
+            Text(
+                text = userInput,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
     }
 }
 
