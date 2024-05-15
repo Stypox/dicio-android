@@ -187,23 +187,24 @@ fun AppBarTextField(
 
 @Composable
 fun SearchTopAppBar(
+    searchString: String?,
+    setSearchString: (String?) -> Unit,
     onSearch: (String) -> Unit,
     hint: String,
     title: @Composable () -> Unit,
     searchIcon: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit
 ) {
-    var searchExpanded by rememberSaveable { mutableStateOf(false) }
-
-    if (searchExpanded) {
+    if (searchString != null) {
         SearchTopAppBarExpanded(
+            searchString = searchString,
+            setSearchString = setSearchString,
             onSearch = onSearch,
-            onSearchDone = { searchExpanded = false },
             hint = hint,
         )
     } else {
         SearchTopAppBarUnexpanded(
-            onSearchClick = { searchExpanded = true },
+            onSearchClick = { setSearchString("") },
             title = title,
             searchIcon = searchIcon,
             navigationIcon = navigationIcon,
@@ -214,11 +215,16 @@ fun SearchTopAppBar(
 @Preview
 @Composable
 private fun SearchTopAppBarPreview() {
+    var searchString by rememberSaveable { mutableStateOf<String?>(null) }
+    var title by rememberSaveable { mutableStateOf("The initial title") }
+
     AppTheme {
         SearchTopAppBar(
-            onSearch = {},
+            searchString = searchString,
+            setSearchString = { searchString = it },
+            onSearch = { title = it },
             hint = "The hint…",
-            title = { AppBarTitle("The title") },
+            title = { AppBarTitle(title) },
             searchIcon = { Icon(Icons.Default.QuestionAnswer, contentDescription = null) },
             navigationIcon = { AppBarDrawerIcon(onDrawerClick = { }, isClosed = true) }
         )
@@ -260,36 +266,35 @@ private fun SearchTopAppBarUnexpandedPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTopAppBarExpanded(
+    searchString: String,
+    setSearchString: (String?) -> Unit,
     onSearch: (String) -> Unit,
-    onSearchDone: () -> Unit,
     hint: String,
 ) {
-    var searchString by rememberSaveable { mutableStateOf("") }
-
     TopAppBar(
         title = {
             AppBarTextField(
                 value = searchString,
-                onValueChange = { searchString = it },
+                onValueChange = { setSearchString(it) },
                 hint = hint,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
-                    onSearchDone()
                     onSearch(searchString)
+                    setSearchString(null)
                 }),
                 modifier = Modifier.onKeyEvent {
                     if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
-                        onSearchDone()
                         onSearch(searchString)
+                        setSearchString(null)
                         return@onKeyEvent true
                     }
                     return@onKeyEvent false
                 },
             )
         },
-        navigationIcon = { AppBarBackIcon { onSearchDone() } },
+        navigationIcon = { AppBarBackIcon { setSearchString(null) } },
         actions = {
-            IconButton(onClick = { searchString = "" }) {
+            IconButton(onClick = { setSearchString("") }) {
                 Icon(
                     imageVector = Icons.Filled.Clear,
                     contentDescription = stringResource(R.string.clear)
@@ -300,18 +305,21 @@ private fun SearchTopAppBarExpanded(
 
     BackHandler {
         // this will only be triggered if the user presses back when the keyboard is already closed
-        onSearchDone()
+        setSearchString(null)
     }
 }
 
 @Preview
 @Composable
 private fun SearchTopAppBarExpandedPreview() {
+    var searchString by rememberSaveable { mutableStateOf("") }
+
     AppTheme {
         SearchTopAppBarExpanded(
+            searchString = searchString,
+            setSearchString = { searchString = it ?: "" },
             onSearch = {},
             hint = "The hint…",
-            onSearchDone = {},
         )
     }
 }

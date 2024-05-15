@@ -1,5 +1,6 @@
 package org.stypox.dicio.ui.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
@@ -43,6 +44,7 @@ import org.stypox.dicio.ui.util.UserInputPreviews
 fun ConversationList(
     @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
     modifier: Modifier = Modifier,
+    onConfirmedQuestionClick: (String) -> Unit = {},
 ) {
     val interactions = interactionLog.interactions
     val pendingQuestion = interactionLog.pendingQuestion
@@ -56,7 +58,12 @@ fun ConversationList(
                 item { Spacer(modifier = Modifier.height(16.dp)) }
             }
             interaction.questionsAnswers.forEach {
-                item { ConfirmedQuestionCard(userInput = it.first) }
+                item {
+                    ConfirmedQuestionCard(
+                        userInput = it.first,
+                        onClick = onConfirmedQuestionClick,
+                    )
+                }
                 item { SkillAnswerCard(skillOutput = it.second) }
             }
         }
@@ -69,7 +76,12 @@ fun ConversationList(
             if (pendingQuestion.skillBeingEvaluated == null) {
                 item { PendingQuestionCard(userInput = pendingQuestion.userInput) }
             } else {
-                item { ConfirmedQuestionCard(userInput = pendingQuestion.userInput) }
+                item {
+                    ConfirmedQuestionCard(
+                        userInput = pendingQuestion.userInput,
+                        onClick = onConfirmedQuestionClick,
+                    )
+                }
                 item { LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated) }
             }
         }
@@ -99,8 +111,14 @@ fun PendingQuestionCard(@PreviewParameter(UserInputPreviews::class) userInput: S
 
 @Preview
 @Composable
-fun ConfirmedQuestionCard(@PreviewParameter(UserInputPreviews::class) userInput: String) {
-    MessageCard(containerColor = MaterialTheme.colorScheme.tertiaryContainer) {
+fun ConfirmedQuestionCard(
+    @PreviewParameter(UserInputPreviews::class) userInput: String,
+    onClick: (String) -> Unit = {},
+) {
+    MessageCard(
+        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        modifier = Modifier.clickable { onClick(userInput) },
+    ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.padding(12.dp),
@@ -157,10 +175,14 @@ fun SkillAnswerCard(@PreviewParameter(SkillOutputPreviews::class) skillOutput: S
 }
 
 @Composable
-fun MessageCard(containerColor: Color, content: @Composable ColumnScope.() -> Unit) {
+fun MessageCard(
+    containerColor: Color,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
         content = content,

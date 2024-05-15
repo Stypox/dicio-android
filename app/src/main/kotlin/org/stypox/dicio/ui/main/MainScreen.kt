@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,9 +34,13 @@ fun MainScreen(
     onSttClick: () -> Unit,
     navigationIcon: @Composable () -> Unit,
 ) {
+    var searchString by rememberSaveable { mutableStateOf<String?>(null) }
+
     Scaffold(
         topBar = {
             SearchTopAppBar(
+                searchString = searchString,
+                setSearchString = { searchString = it },
                 onSearch = {},
                 hint = stringResource(R.string.text_input_hint),
                 title = {
@@ -49,10 +55,11 @@ fun MainScreen(
                 navigationIcon = navigationIcon,
             )
         },
-        content = {
+        content = { paddingValues ->
             ConversationList(
                 interactionLog = interactionLog,
-                modifier = Modifier.padding(it),
+                modifier = Modifier.padding(paddingValues),
+                onConfirmedQuestionClick = { searchString = it }
             )
         },
         floatingActionButton = {
