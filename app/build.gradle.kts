@@ -124,6 +124,10 @@ dependencies {
     implementation(libs.jna) { artifact { type = "aar" } }
     implementation(libs.vosk.android)
 
+    // OkHttp
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+
     // Image loading
     implementation(libs.coil.compose)
     implementation(libs.accompanist.drawablepainter)
