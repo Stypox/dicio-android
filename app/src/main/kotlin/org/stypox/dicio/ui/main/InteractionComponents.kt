@@ -40,8 +40,9 @@ import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SkillOutputPreviews
 import org.stypox.dicio.ui.util.UserInputPreviews
 
+@Preview
 @Composable
-fun ConversationList(
+fun InteractionList(
     @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
     modifier: Modifier = Modifier,
     onConfirmedQuestionClick: (String) -> Unit = {},

@@ -57,7 +57,7 @@ fun MainScreen(
             )
         },
         content = { paddingValues ->
-            ConversationList(
+            InteractionList(
                 interactionLog = interactionLog,
                 modifier = Modifier.padding(paddingValues),
                 onConfirmedQuestionClick = { searchString = it }
