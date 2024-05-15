@@ -4,7 +4,7 @@ import org.dicio.skill.SkillInfo
 import org.dicio.skill.output.SkillOutput
 
 data class Interaction(
-    val skill: SkillInfo,
+    val skill: SkillInfo?,
     val questionsAnswers: List<Pair<String, SkillOutput>>
 )
 

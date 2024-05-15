@@ -25,16 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
 import org.dicio.skill.output.SkillOutput
+import org.stypox.dicio.skills.SkillHandler
 import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SkillOutputPreviews
@@ -171,8 +170,7 @@ fun SkillAnswerCard(@PreviewParameter(SkillOutputPreviews::class) skillOutput: S
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            val context = LocalContext.current
-            skillOutput.GraphicalOutput(ctx = SkillContext().apply { android = context })
+            skillOutput.GraphicalOutput(ctx = SkillHandler.skillContext)
         }
     }
 }
