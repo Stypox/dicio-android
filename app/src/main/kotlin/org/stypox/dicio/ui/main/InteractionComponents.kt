@@ -85,6 +85,8 @@ fun ConversationList(
                 item { LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated) }
             }
         }
+
+        item { Spacer(modifier = Modifier.height(84.dp)) }
     }
 }
 
