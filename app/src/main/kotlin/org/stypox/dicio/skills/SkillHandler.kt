@@ -39,7 +39,7 @@ object SkillHandler {
         CurrentTimeInfo,
     )
 
-    private val fallbackSkillInfoList = listOf(TextFallbackInfo())
+    private val fallbackSkillInfoList = listOf(TextFallbackInfo)
 
     @SuppressLint("StaticFieldLeak") // releaseSkillContext() is called in MainActivity.onDestroy()
     val skillContext = SkillContext()

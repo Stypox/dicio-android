@@ -6,7 +6,7 @@ import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
 import org.stypox.dicio.R
 
-class TextFallbackInfo :
+object TextFallbackInfo :
     SkillInfo("text", R.string.skill_fallback_name_text, 0, R.drawable.ic_short_text_white, false) {
     override fun isAvailable(context: SkillContext): Boolean {
         return true
