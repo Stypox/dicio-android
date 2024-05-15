@@ -21,7 +21,10 @@ object SearchInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        val builder: ChainSkill.Builder = ChainSkill.Builder(StandardRecognizer(Sections.getSection(search)))
+        val builder: ChainSkill.Builder = ChainSkill.Builder(
+            SearchInfo,
+            StandardRecognizer(Sections.getSection(search))
+        )
 
         // Qwant was once available as a second search engine; restore this if adding a new engine
         /*final String searchEngine = context.getPreferences().getString(

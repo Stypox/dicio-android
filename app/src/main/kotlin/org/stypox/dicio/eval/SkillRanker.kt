@@ -25,7 +25,7 @@ class SkillRanker(
 
         init {
             for (skill in skills) {
-                when (skill.specificity()) {
+                when (skill.specificity) {
                     Specificity.HIGH -> highSkills.add(skill)
                     Specificity.MEDIUM -> mediumSkills.add(skill)
                     Specificity.LOW -> lowSkills.add(skill)
@@ -123,6 +123,10 @@ class SkillRanker(
             skill.setContext(SkillHandler.skillContext)
         }
         batches.push(SkillBatch(skillBatch))
+    }
+
+    fun hasAnyBatches(): Boolean {
+        return batches.isNotEmpty()
     }
 
     fun removeTopBatch() {

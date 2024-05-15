@@ -44,10 +44,17 @@ class SearchOutput(
 
     override fun getNextSkills(ctx: SkillContext): List<Skill> = if (results.isNullOrEmpty())
         listOf(
-            ChainSkill.Builder(StandardRecognizer(Sections.getSection(SectionsGenerated.search)))
+            ChainSkill.Builder(
+                SearchInfo,
+                StandardRecognizer(Sections.getSection(SectionsGenerated.search))
+            )
                 .process(DuckDuckGoProcessor())
                 .output(SearchGenerator()),
-            ChainSkill.Builder(CaptureEverythingRecognizer())
+
+            ChainSkill.Builder(
+                SearchInfo,
+                CaptureEverythingRecognizer()
+            )
                 .process(DuckDuckGoProcessor())
                 .output(SearchGenerator())
         )

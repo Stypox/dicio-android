@@ -6,12 +6,10 @@ import org.dicio.skill.chain.InputRecognizer.Specificity
 import org.dicio.skill.output.SkillOutput
 
 class ContactChooserIndex internal constructor(private val contacts: List<Pair<String, String>>) :
-    Skill() {
+    Skill(TelephoneInfo, Specificity.HIGH) {
+
     private var input: String? = null
     private var index = 0
-    override fun specificity(): Specificity {
-        return Specificity.HIGH
-    }
 
     override fun setInput(
         input: String,

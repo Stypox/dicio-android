@@ -26,7 +26,10 @@ class ConfirmCallOutput(
         ctx.getString(R.string.skill_telephone_confirm_call, name)
 
     override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(
-        ChainSkill.Builder(StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no)))
+        ChainSkill.Builder(
+            TelephoneInfo,
+            StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no))
+        )
             .output(ConfirmCallGenerator(number))
     )
 

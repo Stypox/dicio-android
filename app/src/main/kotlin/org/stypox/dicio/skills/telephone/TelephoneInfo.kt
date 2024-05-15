@@ -21,7 +21,10 @@ object TelephoneInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(telephone)))
+        return ChainSkill.Builder(
+            TelephoneInfo,
+            StandardRecognizer(Sections.getSection(telephone))
+        )
             .output(TelephoneGenerator())
     }
 

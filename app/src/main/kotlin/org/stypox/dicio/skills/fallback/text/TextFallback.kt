@@ -3,7 +3,7 @@ package org.stypox.dicio.skills.fallback.text
 import org.dicio.skill.FallbackSkill
 import org.dicio.skill.output.SkillOutput
 
-class TextFallback : FallbackSkill() {
+class TextFallback : FallbackSkill(TextFallbackInfo) {
     override fun setInput(
         input: String,
         inputWords: List<String>,

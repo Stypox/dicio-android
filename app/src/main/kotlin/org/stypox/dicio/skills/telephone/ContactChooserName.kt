@@ -6,13 +6,11 @@ import org.dicio.skill.output.SkillOutput
 import org.stypox.dicio.util.StringUtils
 
 class ContactChooserName internal constructor(private val contacts: List<Pair<String, String>>) :
-    Skill() {
+    // use a low specificity to prefer the index-based contact chooser
+    Skill(TelephoneInfo, Specificity.LOW) {
+
     private var input: String? = null
     private var bestContact: Pair<String, String>? = null
-    override fun specificity(): Specificity {
-        // use a low specificity to prefer the index-based contact chooser
-        return Specificity.LOW
-    }
 
     override fun setInput(
         input: String,

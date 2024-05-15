@@ -20,7 +20,10 @@ object NavigationInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(navigation)))
+        return ChainSkill.Builder(
+            NavigationInfo,
+            StandardRecognizer(Sections.getSection(navigation))
+        )
             .process(NavigationProcessor())
             .output(NavigationGenerator())
     }

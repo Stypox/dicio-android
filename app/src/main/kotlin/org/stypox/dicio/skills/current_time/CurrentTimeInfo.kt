@@ -19,7 +19,10 @@ object CurrentTimeInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(current_time)))
+        return ChainSkill.Builder(
+            CurrentTimeInfo,
+            StandardRecognizer(Sections.getSection(current_time))
+        )
             .process(CurrentTimeStringProcessor())
             .output(CurrentTimeGenerator())
     }

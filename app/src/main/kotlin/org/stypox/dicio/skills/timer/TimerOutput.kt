@@ -52,12 +52,12 @@ sealed class TimerOutput : SkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_how_much_time)
 
-        override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(object : Skill() {
+        override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(object : Skill(
+            TimerInfo,
+            InputRecognizer.Specificity.HIGH,
+        ) {
             private var input: String? = null
             private var duration: Duration? = null
-            override fun specificity(): InputRecognizer.Specificity {
-                return InputRecognizer.Specificity.HIGH
-            }
 
             override fun setInput(
                 input: String,
@@ -103,6 +103,7 @@ sealed class TimerOutput : SkillOutput {
 
         override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(
             ChainSkill.Builder(
+                TimerInfo,
                 StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no))
             ).output(object : OutputGenerator<StandardResult>() {
                 override fun generate(data: StandardResult): SkillOutput {

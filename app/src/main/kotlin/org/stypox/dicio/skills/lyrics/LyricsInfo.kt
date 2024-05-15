@@ -19,7 +19,10 @@ object LyricsInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(lyrics)))
+        return ChainSkill.Builder(
+            LyricsInfo,
+            StandardRecognizer(Sections.getSection(lyrics))
+        )
             .process(GeniusProcessor())
             .output(LyricsGenerator())
     }

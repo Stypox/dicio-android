@@ -113,19 +113,15 @@ class SkillEvaluator(
             }
         } else {
             // permissions were not granted, show a message
-            val skillInfo = skill.skillInfo
-            if (skillInfo != null) {
-                // skill info will always be non-null, but stay on the safe side and add a check
-                val message = activity.getString(
-                    R.string.eval_missing_permissions,
-                    activity.getString(skillInfo.nameResource),
-                    PermissionUtils.getCommaJoinedPermissions(activity, skillInfo)
-                )
-                speechOutputDevice.speak(message)
-                graphicalOutputDevice.display(
-                    GraphicalOutputUtils.buildDescription(activity, message)
-                )
-            }
+            val message = activity.getString(
+                R.string.eval_missing_permissions,
+                activity.getString(skill.correspondingSkillInfo.nameResource),
+                PermissionUtils.getCommaJoinedPermissions(activity, skill.correspondingSkillInfo)
+            )
+            speechOutputDevice.speak(message)
+            graphicalOutputDevice.display(
+                GraphicalOutputUtils.buildDescription(activity, message)
+            )
             graphicalOutputDevice.addDivider()
             finishedProcessingInput()
         }
@@ -343,7 +339,8 @@ class SkillEvaluator(
             }
 
             try {
-                val permissions = chosen.skill.skillInfo?.neededPermissions?.toTypedArray() ?: arrayOf()
+                val permissions = chosen.skill.correspondingSkillInfo.neededPermissions
+                    .toTypedArray()
                 if (PermissionUtils.checkPermissions(activity, *permissions)) {
                     // skill's output will be generated below, so process input now
                     chosen.skill.processInput()

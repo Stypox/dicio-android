@@ -6,19 +6,22 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.dicio.skill.Skill
+import org.dicio.skill.SkillContext
+import org.dicio.skill.SkillInfo
 import org.dicio.skill.chain.InputRecognizer
 import org.dicio.skill.output.SkillOutput
 import org.dicio.skill.util.WordExtractor.extractWords
 import org.dicio.skill.util.WordExtractor.normalizeWords
 
+object TestSkillInfo : SkillInfo("", 0, 0, 0, false) {
+    override fun isAvailable(context: SkillContext) = TODO()
+    override fun build(context: SkillContext) = TODO()
+    override val preferenceFragment get() = TODO()
+}
 
-private class TestSkill(val specificity: InputRecognizer.Specificity, val score: Float) :
-    Skill() {
+private class TestSkill(specificity: InputRecognizer.Specificity, val score: Float) :
+    Skill(TestSkillInfo, specificity) {
     var input: String? = null
-
-    override fun specificity(): InputRecognizer.Specificity {
-        return specificity
-    }
 
     override fun score(): Float {
         return score
@@ -62,7 +65,7 @@ private fun assertRanked(
     withClue(if (result === fallback) {
         "Fallback skill returned by getBest"
     } else {
-        "Skill with specificity ${result!!.specificity()} and score ${
+        "Skill with specificity ${result!!.specificity} and score ${
             result.score()} returned by getBest"
     }) {
         result shouldBeSameInstanceAs best

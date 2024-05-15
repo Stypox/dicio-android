@@ -19,7 +19,10 @@ object OpenInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(open)))
+        return ChainSkill.Builder(
+            OpenInfo,
+            StandardRecognizer(Sections.getSection(open))
+        )
             .output(OpenGenerator())
     }
 

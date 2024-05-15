@@ -100,7 +100,6 @@ object SkillHandler {
     private fun buildSkillFromInfo(skillInfo: SkillInfo): Skill {
         val skill = skillInfo.build(skillContext)
         skill.setContext(skillContext)
-        skill.skillInfo = skillInfo
         return skill
     }
 

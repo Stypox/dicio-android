@@ -22,7 +22,10 @@ object WeatherInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(weather)))
+        return ChainSkill.Builder(
+            WeatherInfo,
+            StandardRecognizer(Sections.getSection(weather))
+        )
             .process(OpenWeatherMapProcessor())
             .output(WeatherGenerator())
     }

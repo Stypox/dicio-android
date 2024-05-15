@@ -19,7 +19,10 @@ object CalculatorInfo : SkillInfo(
     }
 
     override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(StandardRecognizer(Sections.getSection(calculator)))
+        return ChainSkill.Builder(
+            CalculatorInfo,
+            StandardRecognizer(Sections.getSection(calculator))
+        )
             .process(CalculatorProcessor())
             .output(CalculatorGenerator())
     }
