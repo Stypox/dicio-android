@@ -30,7 +30,7 @@ import kotlin.math.abs
 @Composable
 fun MainScreen(
     interactionLog: InteractionLog,
-    sttState: SttUiState,
+    sttState: SttState,
     onSttClick: () -> Unit,
     navigationIcon: @Composable () -> Unit,
 ) {

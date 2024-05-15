@@ -18,7 +18,7 @@ import org.stypox.dicio.skills.weather.WeatherInfo
 import org.stypox.dicio.ui.main.Interaction
 import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
-import org.stypox.dicio.ui.main.SttUiState
+import org.stypox.dicio.ui.main.SttState
 import java.io.IOException
 
 
@@ -98,20 +98,20 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
     ),
 ))
 
-class SttStatesPreviews : CollectionPreviewParameterProvider<SttUiState>(listOf(
-    SttUiState.NoMicrophonePermission,
-    SttUiState.NotDownloaded,
-    SttUiState.Downloading(987654, 0),
-    SttUiState.Downloading(987654, 1234567),
-    SttUiState.ErrorDownloading(IOException("ErrorDownloading exception")),
-    SttUiState.Downloaded,
-    SttUiState.Unzipping(765432, 0),
-    SttUiState.Unzipping(765432, 9876543),
-    SttUiState.ErrorUnzipping(Exception("ErrorUnzipping exception")),
-    SttUiState.NotLoaded,
-    SttUiState.Loading(true),
-    SttUiState.Loading(false),
-    SttUiState.ErrorLoading(Exception("ErrorLoading exception")),
-    SttUiState.Loaded,
-    SttUiState.Listening,
+class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
+    SttState.NoMicrophonePermission,
+    SttState.NotDownloaded,
+    SttState.Downloading(987654, 0),
+    SttState.Downloading(987654, 1234567),
+    SttState.ErrorDownloading(IOException("ErrorDownloading exception")),
+    SttState.Downloaded,
+    SttState.Unzipping(765432, 0),
+    SttState.Unzipping(765432, 9876543),
+    SttState.ErrorUnzipping(Exception("ErrorUnzipping exception")),
+    SttState.NotLoaded,
+    SttState.Loading(true),
+    SttState.Loading(false),
+    SttState.ErrorLoading(Exception("ErrorLoading exception")),
+    SttState.Loaded,
+    SttState.Listening,
 ))

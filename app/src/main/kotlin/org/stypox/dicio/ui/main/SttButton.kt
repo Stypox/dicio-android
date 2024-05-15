@@ -34,18 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import org.stypox.dicio.R
-import org.stypox.dicio.ui.main.SttUiState.Downloaded
-import org.stypox.dicio.ui.main.SttUiState.Downloading
-import org.stypox.dicio.ui.main.SttUiState.ErrorDownloading
-import org.stypox.dicio.ui.main.SttUiState.ErrorLoading
-import org.stypox.dicio.ui.main.SttUiState.ErrorUnzipping
-import org.stypox.dicio.ui.main.SttUiState.Listening
-import org.stypox.dicio.ui.main.SttUiState.Loaded
-import org.stypox.dicio.ui.main.SttUiState.Loading
-import org.stypox.dicio.ui.main.SttUiState.NoMicrophonePermission
-import org.stypox.dicio.ui.main.SttUiState.NotDownloaded
-import org.stypox.dicio.ui.main.SttUiState.NotLoaded
-import org.stypox.dicio.ui.main.SttUiState.Unzipping
+import org.stypox.dicio.ui.main.SttState.Downloaded
+import org.stypox.dicio.ui.main.SttState.Downloading
+import org.stypox.dicio.ui.main.SttState.ErrorDownloading
+import org.stypox.dicio.ui.main.SttState.ErrorLoading
+import org.stypox.dicio.ui.main.SttState.ErrorUnzipping
+import org.stypox.dicio.ui.main.SttState.Listening
+import org.stypox.dicio.ui.main.SttState.Loaded
+import org.stypox.dicio.ui.main.SttState.Loading
+import org.stypox.dicio.ui.main.SttState.NoMicrophonePermission
+import org.stypox.dicio.ui.main.SttState.NotDownloaded
+import org.stypox.dicio.ui.main.SttState.NotLoaded
+import org.stypox.dicio.ui.main.SttState.Unzipping
 import org.stypox.dicio.ui.util.LoadingProgress
 import org.stypox.dicio.ui.util.SmallCircularProgressIndicator
 import org.stypox.dicio.ui.util.SttStatesPreviews
@@ -55,7 +55,7 @@ import org.stypox.dicio.ui.util.loadingProgressString
  * Calls [SttFabImpl] with the data from the view model, and handles the microhone permission.
  */
 @Composable
-fun SttFab(state: SttUiState, onClick: () -> Unit) {
+fun SttFab(state: SttState, onClick: () -> Unit) {
     var microphonePermissionGranted by remember { mutableStateOf(true) }
     val context = LocalContext.current
     LaunchedEffect(null) {
@@ -84,7 +84,7 @@ fun SttFab(state: SttUiState, onClick: () -> Unit) {
  * to perform corresponding actions (downloading/unzipping/loading/listening) when pressed.
  */
 @Composable
-private fun SttFabImpl(state: SttUiState, onClick: () -> Unit) {
+private fun SttFabImpl(state: SttState, onClick: () -> Unit) {
     val text = sttFabText(state)
     var lastNonEmptyText by remember { mutableStateOf(text) }
     LaunchedEffect(text) {
@@ -102,7 +102,7 @@ private fun SttFabImpl(state: SttUiState, onClick: () -> Unit) {
 }
 
 @Composable
-private fun sttFabText(state: SttUiState): String {
+private fun sttFabText(state: SttState): String {
     return when (state) {
         NoMicrophonePermission -> stringResource(R.string.grant_microphone_permission)
         NotDownloaded -> stringResource(R.string.download_stt)
@@ -124,7 +124,7 @@ private fun sttFabText(state: SttUiState): String {
 }
 
 @Composable
-private fun SttFabIcon(state: SttUiState, contentDescription: String) {
+private fun SttFabIcon(state: SttState, contentDescription: String) {
     when (state) {
         NoMicrophonePermission -> Icon(Icons.Default.Warning, contentDescription)
         NotDownloaded -> Icon(Icons.Default.Download, contentDescription)
@@ -146,7 +146,7 @@ private fun SttFabIcon(state: SttUiState, contentDescription: String) {
 
 @Preview
 @Composable
-private fun SttFabPreview(@PreviewParameter(SttStatesPreviews::class) state: SttUiState) {
+private fun SttFabPreview(@PreviewParameter(SttStatesPreviews::class) state: SttState) {
     Column {
         Text(
             text = state.toString(),
