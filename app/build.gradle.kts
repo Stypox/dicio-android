@@ -23,6 +23,8 @@ plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.parcelize)
+    alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.com.google.dagger.hilt.android)
 }
 
 android {
@@ -86,6 +88,10 @@ dependencies {
     // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
+    // Dicio own libraries
+    implementation(libs.dicio.skill)
+    implementation(libs.dicio.numbers)
+
     // Android
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -105,9 +111,14 @@ dependencies {
     debugImplementation(libs.debug.compose.ui.tooling)
     debugImplementation(libs.debug.compose.ui.test.manifest)
 
-    // Dicio own libraries
-    implementation(libs.dicio.skill)
-    implementation(libs.dicio.numbers)
+    // Hilt Dependency Injection
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestAnnotationProcessor(libs.hilt.android.compiler)
+    testImplementation(libs.hilt.android.testing)
+    testAnnotationProcessor(libs.hilt.android.compiler)
 
     // Vosk
     implementation(libs.jna) { artifact { type = "aar" } }

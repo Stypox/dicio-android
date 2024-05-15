@@ -12,10 +12,13 @@ dicioSentencesCompiler = "ae228425c4071448ec09c6026b5b3a80e5744818"
 dicioSkill = "d442b542c4bcaeaa10e56574334f4e26c520be2e"
 exp4j = "0.4.8"
 gradle = "8.4.0"
+dagger = "2.50"
+hilt = "1.2.0"
 jna = "5.14.0"
 jsoup = "1.17.2"
 kotest = "5.8.1"
 kotlin = "1.9.23"
+ksp = "1.9.23-1.0.20"
 material = "1.12.0"
 picasso = "2.71828"
 preferenceKtx = "1.2.1"
@@ -41,6 +44,10 @@ dicio-numbers = { module = "com.github.Stypox:dicio-numbers", version.ref = "dic
 dicio-sentences-compiler = { module = "com.github.Stypox:dicio-sentences-compiler", version.ref = "dicioSentencesCompiler" }
 dicio-skill = { module = "com.github.Stypox:dicio-skill", version.ref = "dicioSkill" }
 exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
@@ -57,3 +64,5 @@ vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAnd
 com-android-application = { id = "com.android.application", version.ref = "gradle" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
