@@ -32,6 +32,7 @@ fun MainScreen(
     interactionLog: InteractionLog,
     sttState: SttState,
     onSttClick: () -> Unit,
+    onManualUserInput: (String) -> Unit,
     navigationIcon: @Composable () -> Unit,
 ) {
     var searchString by rememberSaveable { mutableStateOf<String?>(null) }
@@ -41,7 +42,7 @@ fun MainScreen(
             SearchTopAppBar(
                 searchString = searchString,
                 setSearchString = { searchString = it },
-                onSearch = {},
+                onSearch = onManualUserInput,
                 hint = stringResource(R.string.text_input_hint),
                 title = {
                     Text(text = stringResource(R.string.app_name))
@@ -83,6 +84,7 @@ private fun MainScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
             interactionLog = interactionLog,
             sttState = sttStatesPreviews[i % sttStatesPreviews.size],
             onSttClick = { i += 1 },
+            onManualUserInput = {},
             navigationIcon = {
                 IconButton(onClick = {}) {
                     Icon(
