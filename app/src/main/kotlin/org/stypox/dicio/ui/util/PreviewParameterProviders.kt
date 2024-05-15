@@ -18,6 +18,8 @@ import org.stypox.dicio.skills.weather.WeatherInfo
 import org.stypox.dicio.ui.main.Interaction
 import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
+import org.stypox.dicio.ui.main.SttUiState
+import java.io.IOException
 
 
 class UserInputPreviews : CollectionPreviewParameterProvider<String>(listOf(
@@ -94,4 +96,22 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
             skillBeingEvaluated = LyricsInfo,
         ),
     ),
+))
+
+class SttStatesPreviews : CollectionPreviewParameterProvider<SttUiState>(listOf(
+    SttUiState.NoMicrophonePermission,
+    SttUiState.NotDownloaded,
+    SttUiState.Downloading(987654, 0),
+    SttUiState.Downloading(987654, 1234567),
+    SttUiState.ErrorDownloading(IOException("ErrorDownloading exception")),
+    SttUiState.Downloaded,
+    SttUiState.Unzipping(765432, 0),
+    SttUiState.Unzipping(765432, 9876543),
+    SttUiState.ErrorUnzipping(Exception("ErrorUnzipping exception")),
+    SttUiState.NotLoaded,
+    SttUiState.Loading(true),
+    SttUiState.Loading(false),
+    SttUiState.ErrorLoading(Exception("ErrorLoading exception")),
+    SttUiState.Loaded,
+    SttUiState.Listening,
 ))
