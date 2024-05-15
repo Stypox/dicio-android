@@ -4,7 +4,7 @@ import org.dicio.skill.chain.InputRecognizer
 import kotlin.math.abs
 
 class StandardRecognizer(private val data: StandardRecognizerData) :
-    InputRecognizer<StandardResult>() {
+    InputRecognizer<StandardResult>(data.specificity) {
     private var input: String? = null
     private var inputWords: List<String>
     private var normalizedInputWords: List<String>
@@ -30,9 +30,6 @@ class StandardRecognizer(private val data: StandardRecognizerData) :
     ///////////////////////////////
     // InputRecognizer overrides //
     ///////////////////////////////
-    override fun specificity(): Specificity {
-        return data.specificity
-    }
 
     override fun setInput(
         input: String,

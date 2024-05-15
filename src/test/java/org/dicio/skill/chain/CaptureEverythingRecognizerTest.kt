@@ -8,7 +8,7 @@ import org.dicio.skill.chain.InputRecognizer.Specificity
 class CaptureEverythingRecognizerTest : StringSpec({
     "specificity and score" {
         val cer = CaptureEverythingRecognizer()
-        cer.specificity() shouldBeSameInstanceAs Specificity.LOW
+        cer.specificity shouldBeSameInstanceAs Specificity.LOW
         cer.score() shouldBe 1.0f
     }
 

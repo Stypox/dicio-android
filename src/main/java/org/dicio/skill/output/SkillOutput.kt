@@ -2,13 +2,13 @@ package org.dicio.skill.output
 
 import androidx.compose.runtime.Composable
 import org.dicio.skill.Skill
+import org.dicio.skill.SkillContext
 
 interface SkillOutput {
-    val speechOutput: String
+    fun getSpeechOutput(ctx: SkillContext): String
 
-    val nextSkills: List<Skill>
-        get() = listOf()
+    fun getNextSkills(ctx: SkillContext): List<Skill> = listOf()
 
     @Composable
-    fun GraphicalOutput()
+    fun GraphicalOutput(ctx: SkillContext)
 }

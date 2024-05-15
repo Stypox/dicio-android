@@ -11,13 +11,7 @@ import org.dicio.skill.util.CleanableUp
  * not allow throwing exceptions.
  * @param ResultType the type of the data extracted from the input
 */
-abstract class InputRecognizer<ResultType> : SkillComponent(), CleanableUp {
-    enum class Specificity {
-        HIGH,
-        MEDIUM,
-        LOW,
-    }
-
+abstract class InputRecognizer<ResultType> constructor(
     /**
      * The specificity of this input recognizer
      * @return [Specificity.HIGH] for specific things (e.g. weather);<br></br>
@@ -25,7 +19,13 @@ abstract class InputRecognizer<ResultType> : SkillComponent(), CleanableUp {
      * numbers);<br></br>
      * [Specificity.LOW] for broad things (e.g. omniscient API);<br></br>
      */
-    abstract fun specificity(): Specificity
+    val specificity: Specificity
+) : SkillComponent(), CleanableUp {
+    enum class Specificity {
+        HIGH,
+        MEDIUM,
+        LOW,
+    }
 
     /**
      * Sets the current input for the recognizer,

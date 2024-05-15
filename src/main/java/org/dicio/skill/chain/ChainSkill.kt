@@ -3,16 +3,17 @@ package org.dicio.skill.chain
 import org.dicio.skill.Skill
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
-import org.dicio.skill.chain.InputRecognizer.Specificity
 import org.dicio.skill.output.SkillOutput
 
 @Suppress("UNCHECKED_CAST")
 class ChainSkill(
+    correspondingSkillInfo: SkillInfo,
     private val inputRecognizer: InputRecognizer<*>,
     private val intermediateProcessors: List<IntermediateProcessor<*, *>>,
     private val outputGenerator: OutputGenerator<*>,
-) : Skill() {
+) : Skill(correspondingSkillInfo, inputRecognizer.specificity) {
     class Builder(
+        private val correspondingSkillInfo: SkillInfo,
         private val inputRecognizer: InputRecognizer<*>
     ) {
         private val intermediateProcessors: MutableList<IntermediateProcessor<*, *>> =
@@ -24,17 +25,18 @@ class ChainSkill(
         }
 
         fun output(outputGenerator: OutputGenerator<*>): ChainSkill {
-            return ChainSkill(inputRecognizer, intermediateProcessors, outputGenerator)
+            return ChainSkill(
+                correspondingSkillInfo,
+                inputRecognizer,
+                intermediateProcessors,
+                outputGenerator,
+            )
         }
     }
 
 
     private var lastResult: Any? = null
 
-
-    override fun specificity(): Specificity {
-        return inputRecognizer.specificity()
-    }
 
     override fun setInput(
         input: String,
@@ -80,21 +82,4 @@ class ChainSkill(
         }
         outputGenerator.setContext(context)
     }
-
-    override var skillInfo: SkillInfo?
-        get() = super.skillInfo
-        /**
-         * Also sets the skill info to all of this chain skill sub-components
-         * @param skillInfo the [SkillInfo] object this [Skill] is being created with (using
-         * [SkillInfo.build]), or `null` if this skill is
-         * not being built by a [SkillInfo]
-         */
-        set(skillInfo) {
-            super.skillInfo = skillInfo
-            inputRecognizer.skillInfo = skillInfo
-            for (intermediateProcessor in intermediateProcessors) {
-                intermediateProcessor.skillInfo = skillInfo
-            }
-            outputGenerator.skillInfo = skillInfo
-        }
 }

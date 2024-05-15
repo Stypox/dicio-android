@@ -7,12 +7,8 @@ import org.dicio.skill.standard.StandardResult
  * calling [StandardResult.getCapturingGroup] always returns the input. The
  * specificity is LOW and the score is always 1.0.
  */
-class CaptureEverythingRecognizer : InputRecognizer<StandardResult>() {
+class CaptureEverythingRecognizer : InputRecognizer<StandardResult>(Specificity.LOW) {
     private var input: String? = null
-
-    override fun specificity(): Specificity {
-        return Specificity.LOW
-    }
 
     override fun setInput(
         input: String,

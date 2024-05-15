@@ -24,13 +24,13 @@ class StandardRecognizerTest : StringSpec({
         val sr = StandardRecognizer(
             StandardRecognizerData(Specificity.HIGH)
         )
-        sr.specificity() shouldBeSameInstanceAs Specificity.HIGH
+        sr.specificity shouldBeSameInstanceAs Specificity.HIGH
         sr.cleanup()
     }
 
     "\"mood\" section from the README of the sentences compiler" {
         val sr = StandardRecognizer(section_mood)
-        sr.specificity() shouldBeSameInstanceAs Specificity.HIGH
+        sr.specificity shouldBeSameInstanceAs Specificity.HIGH
 
         assertRecognized(sr, "how are you", "", 1.0f, 1.0f, emptyMap())
         assertRecognized(sr, "how are you doing", "", 1.0f, 1.0f, emptyMap())
@@ -46,7 +46,7 @@ class StandardRecognizerTest : StringSpec({
 
     "\"GPS navigation\" section from the README of the sentences compiler" {
         val sr = StandardRecognizer(section_GPS_navigation)
-        sr.specificity() shouldBeSameInstanceAs Specificity.MEDIUM
+        sr.specificity shouldBeSameInstanceAs Specificity.MEDIUM
 
         val place = Collections.singletonMap("place", "a")
         val placeAndVehicle = mapOf("place" to "a", "vehicle" to "b")
@@ -84,7 +84,7 @@ class StandardRecognizerTest : StringSpec({
 
     "smaller capturing group should be preferred" {
         val sr = StandardRecognizer(section_hello)
-        sr.specificity() shouldBeSameInstanceAs Specificity.LOW
+        sr.specificity shouldBeSameInstanceAs Specificity.LOW
 
         val guys = Collections.singletonMap("hi", "guys")
         val girlsAndBoys = Collections.singletonMap("hi", "girls and boys")

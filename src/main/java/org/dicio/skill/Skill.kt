@@ -12,11 +12,10 @@ import org.dicio.skill.util.CleanableUp
  * A skill is the component that scores input, processes it and finally generates output. Take a
  * look at [org.dicio.skill.chain.ChainSkill] for a class that separates these three things.
  */
-abstract class Skill : SkillComponent(), CleanableUp {
-    /**
-     * @see InputRecognizer.specificity
-     */
-    abstract fun specificity(): Specificity
+abstract class Skill(
+    val correspondingSkillInfo: SkillInfo,
+    val specificity: Specificity,
+) : SkillComponent(), CleanableUp {
 
     /**
      * @see InputRecognizer.setInput

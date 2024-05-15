@@ -58,8 +58,7 @@ abstract class SkillInfo(
 
     /**
      * Builds an instance of the [Skill] this [SkillInfo] object represents. There is no need to
-     * call [Skill.setContext] and set [Skill.skillInfo] on the built skill, as that has to be done
-     * by the caller.
+     * call [Skill.setContext]  on the built skill, as that has to be done by the caller.
      * @param context the skill context with useful resources, see [SkillContext]
      * @return a skill
      */

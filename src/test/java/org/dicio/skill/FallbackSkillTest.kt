@@ -7,7 +7,7 @@ import org.dicio.skill.chain.InputRecognizer.Specificity
 
 class FallbackSkillTest : StringSpec({
     "constructor" {
-        object : FallbackSkill() {
+        object : FallbackSkill(TestSkillInfo) {
             override fun setInput(
                 input: String, inputWords: List<String>,
                 normalizedWordKeys: List<String>
@@ -21,7 +21,7 @@ class FallbackSkillTest : StringSpec({
     }
 
     "score and specificity" {
-        val skill: Skill = object : FallbackSkill() {
+        val skill: Skill = object : FallbackSkill(TestSkillInfo) {
             override fun setInput(
                 input: String, inputWords: List<String>,
                 normalizedWordKeys: List<String>
@@ -34,6 +34,12 @@ class FallbackSkillTest : StringSpec({
         }
 
         skill.score() shouldBe 0.0f
-        skill.specificity() shouldBeSameInstanceAs Specificity.LOW
+        skill.specificity shouldBeSameInstanceAs Specificity.LOW
     }
 })
+
+object TestSkillInfo : SkillInfo("", 0, 0, 0, false) {
+    override fun isAvailable(context: SkillContext) = TODO()
+    override fun build(context: SkillContext) = TODO()
+    override val preferenceFragment get() = TODO()
+}
