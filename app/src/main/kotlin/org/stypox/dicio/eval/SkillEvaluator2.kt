@@ -9,19 +9,22 @@ import kotlinx.coroutines.withContext
 import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SkillOutput
 import org.dicio.skill.util.WordExtractor
+import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.skills.SkillHandler
+import org.stypox.dicio.skills.SkillHandler2
 import org.stypox.dicio.ui.main.Interaction
 import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
 import javax.inject.Inject
 
-class SkillEvaluator2 @Inject constructor(
+class SkillEvaluator2(
     private val inputEventsModule: InputEventsModule,
     private val skillContext: SkillContext,
+    skillHandler: SkillHandler2,
     private val requestPermissions: suspend (Array<String>) -> Boolean,
 ) {
 
@@ -35,9 +38,9 @@ class SkillEvaluator2 @Inject constructor(
     )
     val state: StateFlow<InteractionLog> = _state
 
-    private val skillRanker: SkillRanker = SkillRanker(
-        SkillHandler.standardSkillBatch,
-        SkillHandler.fallbackSkill,
+    private val skillRanker = SkillRanker(
+        skillHandler.standardSkillBatch,
+        skillHandler.fallbackSkill,
     )
 
     init {
@@ -110,7 +113,7 @@ class SkillEvaluator2 @Inject constructor(
 
         try {
             val permissions = skillInfo.neededPermissions.toTypedArray()
-            if (!requestPermissions(permissions)) {
+            if (permissions.isNotEmpty() && !requestPermissions(permissions)) {
                 // permissions were not granted, show message
                 addInteractionFromPending(MissingPermissionsSkillOutput(skillInfo))
                 return

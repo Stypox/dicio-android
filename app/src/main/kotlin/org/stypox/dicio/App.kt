@@ -5,8 +5,10 @@ import android.app.Application
 import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import dagger.hilt.android.HiltAndroidApp
 import org.stypox.dicio.util.PermissionUtils
 
+@HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
         super.onCreate()

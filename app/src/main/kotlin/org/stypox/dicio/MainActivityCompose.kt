@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.dicio.skill.SkillInfo
@@ -36,6 +37,7 @@ import org.stypox.dicio.ui.nav.AppBarDrawerIcon
 import org.stypox.dicio.ui.theme.AppTheme
 import java.util.Locale
 
+@AndroidEntryPoint
 class MainActivityCompose : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,23 +54,6 @@ class MainActivityCompose : ComponentActivity() {
 fun DrawerWithScreen() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-    remember {
-        Sections.setLocale(LocaleListCompat.create(Locale.ENGLISH))
-        SkillHandler.setSkillContextAndroidAndLocale(context)
-        1
-    }
-    val inputEventsModule = remember {
-        InputEventsModule()
-    }
-    val stt = remember {
-        VoskInputDevice(context, OkHttpClient.Builder().build(), inputEventsModule)
-    }
-    val skillEvaluator = remember {
-        SkillEvaluator2(inputEventsModule, SkillHandler.skillContext) { true }
-    }
-    val interactionsState by skillEvaluator.state.collectAsState()
-    val sttState by stt.uiState.collectAsState()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -87,10 +72,6 @@ fun DrawerWithScreen() {
         }
     ) {
         MainScreen(
-            interactionLog = interactionsState,
-            sttState = sttState,
-            onSttClick = stt::onClick,
-            onManualUserInput = { inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(it))) },
             navigationIcon = {
                 AppBarDrawerIcon(
                     onDrawerClick = {

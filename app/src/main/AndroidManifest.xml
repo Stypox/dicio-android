@@ -75,6 +75,13 @@
                 <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
             </intent-filter>
         </activity>
+        <activity android:name="org.stypox.dicio.MainActivityCompose"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 </manifest>

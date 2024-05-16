@@ -27,8 +27,11 @@ import org.stypox.dicio.skills.weather.WeatherInfo
 import java.util.Locale
 import java.util.Objects
 import java.util.stream.Collectors
+import javax.inject.Inject
 
-object SkillHandler {
+class SkillHandler2 @Inject constructor(
+    private val skillContext: SkillContext
+) {
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
     val allSkillInfoList = listOf(
         WeatherInfo,
@@ -43,39 +46,6 @@ object SkillHandler {
     )
 
     private val fallbackSkillInfoList = listOf(TextFallbackInfo)
-
-    @SuppressLint("StaticFieldLeak") // releaseSkillContext() is called in MainActivity.onDestroy()
-    private var _skillContext: SkillContextImpl? = null
-    val skillContext: SkillContext get() = _skillContext!!
-
-    /**
-     * Sets the provided Android context, the preferences obtained from it, the current sections
-     * locale and the number parser formatter in the static skill context used throughout the app.
-     * Requires the sections locale to be ready. Has to be called before working with skills or
-     * skill infos.
-     * @param androidContext the android context to use in the skill context
-     */
-    fun setSkillContextAndroidAndLocale(androidContext: Context) {
-        _skillContext = SkillContextImpl(
-            android = androidContext,
-            preferences = PreferenceManager.getDefaultSharedPreferences(androidContext),
-            localeManager = LocaleManager(androidContext),
-        )
-    }
-
-    /**
-     * Sets the provided devices in the static skill context used throughout the app. Has to be
-     * called before requesting any skill output.
-     * @param speechOutputDevice the speech output device to use in the skill context
-     */
-    fun setSkillContextDevices(speechOutputDevice: SpeechOutputDevice?) {
-        _skillContext!!.speechOutputDevice = speechOutputDevice ?: NothingSpeechDevice()
-    }
-
-    // we want to release resources, so we set to null
-    fun releaseSkillContext() {
-        _skillContext = null
-    }
 
     fun getIsEnabledPreferenceKey(skillId: String): String {
         return "skills_handler_is_enabled_$skillId"

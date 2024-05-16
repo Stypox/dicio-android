@@ -1,5 +1,8 @@
 package org.stypox.dicio.ui.main
 
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -10,17 +13,28 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
+import org.dicio.skill.SkillContext
 import org.stypox.dicio.R
+import org.stypox.dicio.di.SkillContextImpl
+import org.stypox.dicio.io.input.InputEvent
+import org.stypox.dicio.ui.nav.AppBarDrawerIcon
 import org.stypox.dicio.ui.nav.SearchTopAppBar
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
@@ -28,9 +42,59 @@ import org.stypox.dicio.ui.util.SttStatesPreviews
 import kotlin.math.abs
 
 @Composable
+fun MainScreen(navigationIcon: @Composable () -> Unit) {
+    val channel = remember { Channel<Boolean>() }
+    val coroutineScope = rememberCoroutineScope()
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { isGranted ->
+        coroutineScope.launch {
+            channel.send(isGranted.values.all { it })
+        }
+    }
+    val context = LocalContext.current
+
+    suspend fun requestPermissions(permissions: Array<String>): Boolean {
+        if (
+            permissions.all {
+                ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+            }
+        ) {
+            // permissions already granted
+            return true
+        }
+
+        // some permission is not already granted, need to request it
+        launcher.launch(permissions)
+        return channel.receive()
+    }
+
+    val viewModel: MainScreenViewModel = hiltViewModel(
+        key = null,
+        creationCallback = { factory: MainScreenViewModel.Factory ->
+            factory.create(requestPermissions = ::requestPermissions)
+        }
+    )
+    val interactionsState by viewModel.skillEvaluator.state.collectAsState()
+    val sttState = viewModel.sttInputDevice?.uiState?.collectAsState()
+
+    MainScreen(
+        skillContext = viewModel.skillContext,
+        interactionLog = interactionsState,
+        sttState = sttState?.value,
+        onSttClick = viewModel.sttInputDevice?.let { it::onClick } ?: {},
+        onManualUserInput = {
+            viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(it)))
+        },
+        navigationIcon = navigationIcon,
+    )
+}
+
+@Composable
 fun MainScreen(
+    skillContext: SkillContext,
     interactionLog: InteractionLog,
-    sttState: SttState,
+    sttState: SttState?,
     onSttClick: () -> Unit,
     onManualUserInput: (String) -> Unit,
     navigationIcon: @Composable () -> Unit,
@@ -58,16 +122,19 @@ fun MainScreen(
         },
         content = { paddingValues ->
             InteractionList(
+                skillContext = skillContext,
                 interactionLog = interactionLog,
+                onConfirmedQuestionClick = { searchString = it },
                 modifier = Modifier.padding(paddingValues),
-                onConfirmedQuestionClick = { searchString = it }
             )
         },
         floatingActionButton = {
-            SttFab(
-                state = sttState,
-                onClick = onSttClick,
-            )
+            if (sttState != null) {
+                SttFab(
+                    state = sttState,
+                    onClick = onSttClick,
+                )
+            }
         },
         floatingActionButtonPosition = FabPosition.Center,
     )
@@ -81,6 +148,7 @@ private fun MainScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
 
     AppTheme(dynamicColor = false) {
         MainScreen(
+            skillContext = SkillContextImpl.newForPreviews(),
             interactionLog = interactionLog,
             sttState = sttStatesPreviews[i % sttStatesPreviews.size],
             onSttClick = { i += 1 },

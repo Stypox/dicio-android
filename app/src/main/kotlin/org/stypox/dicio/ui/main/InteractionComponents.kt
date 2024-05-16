@@ -3,6 +3,7 @@ package org.stypox.dicio.ui.main
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,26 +26,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.preference.PreferenceManager
+import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
 import org.dicio.skill.output.SkillOutput
+import org.stypox.dicio.di.LocaleManager
+import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.skills.SkillHandler
+import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SkillOutputPreviews
 import org.stypox.dicio.ui.util.UserInputPreviews
+import java.util.Locale
 
-@Preview
 @Composable
 fun InteractionList(
-    @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
+    skillContext: SkillContext,
+    interactionLog: InteractionLog,
+    onConfirmedQuestionClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onConfirmedQuestionClick: (String) -> Unit = {},
 ) {
     val interactions = interactionLog.interactions
     val pendingQuestion = interactionLog.pendingQuestion
@@ -64,7 +72,11 @@ fun InteractionList(
                         onClick = onConfirmedQuestionClick,
                     )
                 }
-                item { SkillAnswerCard(skillOutput = it.second) }
+                item {
+                    SkillAnswerCard {
+                        it.second.GraphicalOutput(ctx = skillContext)
+                    }
+                }
             }
         }
 
@@ -87,6 +99,20 @@ fun InteractionList(
         }
 
         item { Spacer(modifier = Modifier.height(84.dp)) }
+    }
+}
+
+@Preview
+@Composable
+fun InteractionListPreview(
+    @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
+) {
+    AppTheme(dynamicColor = false) {
+        InteractionList(
+            skillContext = SkillContextImpl.newForPreviews(),
+            interactionLog = interactionLog,
+            onConfirmedQuestionClick = {},
+        )
     }
 }
 
@@ -160,18 +186,24 @@ fun LoadingAnswerCard(@PreviewParameter(SkillInfoPreviews::class) skill: SkillIn
     }
 }
 
-@Preview
 @Composable
-fun SkillAnswerCard(@PreviewParameter(SkillOutputPreviews::class) skillOutput: SkillOutput) {
+fun SkillAnswerCard(content: @Composable BoxScope.() -> Unit) {
     MessageCard(containerColor = MaterialTheme.colorScheme.secondaryContainer) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            skillOutput.GraphicalOutput(ctx = SkillHandler.skillContext)
-        }
+                .padding(8.dp),
+            content = content,
+        )
+    }
+}
+
+@Preview
+@Composable
+fun SkillAnswerCardPreview(@PreviewParameter(SkillOutputPreviews::class) skillOutput: SkillOutput) {
+    SkillAnswerCard {
+        skillOutput.GraphicalOutput(ctx = SkillContextImpl.newForPreviews())
     }
 }
 
