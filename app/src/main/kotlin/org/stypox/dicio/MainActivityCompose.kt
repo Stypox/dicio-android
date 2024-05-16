@@ -1,6 +1,9 @@
 package org.stypox.dicio
 
+import android.content.Intent
+import android.content.Intent.ACTION_ASSIST
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -12,40 +15,70 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import org.dicio.skill.SkillInfo
-import org.stypox.dicio.eval.SkillEvaluator2
-import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.io.input.InputEventsModule
-import org.stypox.dicio.io.input.vosk.VoskInputDevice
-import org.stypox.dicio.skills.SkillHandler
-import org.stypox.dicio.ui.main.InteractionLog
+import org.stypox.dicio.di.LocaleManager
+import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.ui.main.MainScreen
 import org.stypox.dicio.ui.nav.AppBarDrawerIcon
 import org.stypox.dicio.ui.theme.AppTheme
+import java.time.Instant
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivityCompose : ComponentActivity() {
+
+    var sttInputDevice: SttInputDevice? = null
+        @Inject set
+
+    private var nextAssistAllowed = Instant.MIN
+
+    /**
+     * Automatically loads the LLM and the STT when the [ACTION_ASSIST] intent is received. Applies
+     * a backoff of [INTENT_BACKOFF_MILLIS], since during testing Android would send the assist
+     * intent to the app twice in a row.
+     */
+    private fun onAssistIntentReceived() {
+        val now = Instant.now()
+        if (nextAssistAllowed < now) {
+            nextAssistAllowed = now.plusMillis(INTENT_BACKOFF_MILLIS)
+            Log.d(TAG, "Received assist intent")
+            sttInputDevice?.tryLoad(thenStartListening = true)
+        } else {
+            Log.w(TAG, "Ignoring duplicate assist intent")
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+
+        if (intent.action == ACTION_ASSIST) {
+            onAssistIntentReceived()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent?.action == ACTION_ASSIST) {
+            onAssistIntentReceived()
+        }
+
         setContent {
             AppTheme {
                 DrawerWithScreen()
             }
         }
+    }
+
+    companion object {
+        private const val INTENT_BACKOFF_MILLIS = 100L
+        private val TAG = MainActivityCompose::class.simpleName
     }
 }
 
