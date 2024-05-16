@@ -11,7 +11,7 @@ class IOFragment : PreferenceFragmentCompat() {
         addPreferencesFromResource(R.xml.pref_io)
         findPreference<Preference>(getString(R.string.pref_key_language))
             ?.setOnPreferenceChangeListener { _, _ ->
-                VoskInputDevice.deleteCurrentModel(requireContext())
+                //VoskInputDevice.deleteCurrentModel(requireContext())
                 activity?.recreate()
                 true
             }

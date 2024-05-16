@@ -29,10 +29,18 @@ import org.vosk.android.SpeechService
  * fields to the UI, such as [SpeechService].
  */
 sealed class VoskState {
+
+    /**
+     * The model is not available for the current locale
+     */
+    data object NotAvailable : VoskState()
+
     /**
      * The model is not present on disk, neither in unzipped and in zipped form.
      */
-    data object NotDownloaded : VoskState()
+    data class NotDownloaded(
+        val modelUrl: String
+    ) : VoskState()
 
     data class Downloading(
         val currentBytes: Long,
@@ -40,6 +48,7 @@ sealed class VoskState {
     ) : VoskState()
 
     data class ErrorDownloading(
+        val modelUrl: String,
         val throwable: Throwable
     ) : VoskState()
 
@@ -94,7 +103,8 @@ sealed class VoskState {
      */
     fun toUiState(): SttState {
         return when (this) {
-            NotDownloaded -> SttState.NotDownloaded
+            NotAvailable -> SttState.NotAvailable
+            is NotDownloaded -> SttState.NotDownloaded
             is Downloading -> SttState.Downloading(currentBytes, totalBytes)
             is ErrorDownloading -> SttState.ErrorDownloading(throwable)
             Downloaded -> SttState.Downloaded

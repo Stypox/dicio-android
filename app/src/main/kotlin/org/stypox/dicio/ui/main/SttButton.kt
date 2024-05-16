@@ -43,6 +43,7 @@ import org.stypox.dicio.ui.main.SttState.Listening
 import org.stypox.dicio.ui.main.SttState.Loaded
 import org.stypox.dicio.ui.main.SttState.Loading
 import org.stypox.dicio.ui.main.SttState.NoMicrophonePermission
+import org.stypox.dicio.ui.main.SttState.NotAvailable
 import org.stypox.dicio.ui.main.SttState.NotDownloaded
 import org.stypox.dicio.ui.main.SttState.NotLoaded
 import org.stypox.dicio.ui.main.SttState.Unzipping
@@ -105,14 +106,15 @@ private fun SttFabImpl(state: SttState, onClick: () -> Unit) {
 private fun sttFabText(state: SttState): String {
     return when (state) {
         NoMicrophonePermission -> stringResource(R.string.grant_microphone_permission)
-        NotDownloaded -> stringResource(R.string.download_stt)
+        NotAvailable -> stringResource(R.string.stt_not_available)
+        NotDownloaded -> stringResource(R.string.stt_download)
         is Downloading -> loadingProgressString(
             LocalContext.current,
             state.currentBytes,
             state.totalBytes,
         )
         is ErrorDownloading -> stringResource(R.string.error_downloading)
-        Downloaded -> stringResource(R.string.unzip_stt)
+        Downloaded -> stringResource(R.string.stt_unzip)
         is Unzipping -> stringResource(R.string.unzipping)
         is ErrorUnzipping -> stringResource(R.string.error_unzipping)
         NotLoaded -> ""
@@ -127,6 +129,7 @@ private fun sttFabText(state: SttState): String {
 private fun SttFabIcon(state: SttState, contentDescription: String) {
     when (state) {
         NoMicrophonePermission -> Icon(Icons.Default.Warning, contentDescription)
+        NotAvailable -> Icon(Icons.Default.Warning, contentDescription)
         NotDownloaded -> Icon(Icons.Default.Download, contentDescription)
         is Downloading -> LoadingProgress(state.currentBytes, state.totalBytes)
         is ErrorDownloading -> Icon(Icons.Default.Error, contentDescription)

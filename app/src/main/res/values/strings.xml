@@ -18,8 +18,9 @@
     <string name="error_downloading">Error downloading</string>
     <string name="unzipping">Unzipping…</string>
     <string name="download">Download</string>
-    <string name="download_stt">Download Speech to Text</string>
-    <string name="unzip_stt">Unzip Speech to Text</string>
+    <string name="stt_not_available">Speech to Text not available</string>
+    <string name="stt_download">Download Speech to Text</string>
+    <string name="stt_unzip">Unzip Speech to Text</string>
     <string name="listening">Listening…</string>
     <string name="start_listening">Start listening</string>
     <string name="downloaded">Downloaded</string>

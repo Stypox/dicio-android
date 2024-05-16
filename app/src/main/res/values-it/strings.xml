@@ -144,6 +144,7 @@
     <string name="stt_service">Servizio di riconoscimento vocale</string>
     <string name="skill_name_current_time">Ora corrente</string>
     <string name="skill_sentence_example_current_time">Che ora è?</string>
-    <string name="download_stt">Scarica riconoscitore vocale</string>
-    <string name="unzip_stt">Estrai riconoscitore vocale</string>
+    <string name="stt_not_available">Riconoscitore vocale non disponibile</string>
+    <string name="stt_download">Scarica riconoscitore vocale</string>
+    <string name="stt_unzip">Estrai riconoscitore vocale</string>
 </resources>

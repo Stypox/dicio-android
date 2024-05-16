@@ -33,6 +33,11 @@ sealed class SttState {
     data object NoMicrophonePermission : SttState()
 
     /**
+     * The STT engine cannot be made available, e.g. because the current language is not supported
+     */
+    data object NotAvailable : SttState()
+
+    /**
      * The model is not present on disk, neither in unzipped and in zipped form.
      */
     data object NotDownloaded : SttState()

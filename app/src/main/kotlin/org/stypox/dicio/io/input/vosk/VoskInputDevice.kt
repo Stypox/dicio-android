@@ -21,6 +21,7 @@ package org.stypox.dicio.io.input.vosk
 
 import android.content.Context
 import android.util.Log
+import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.stypox.dicio.io.input.vosk.VoskState.Downloaded
 import org.stypox.dicio.io.input.vosk.VoskState.Downloading
@@ -43,10 +44,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
+import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
 import org.stypox.dicio.ui.main.SttState
+import org.stypox.dicio.util.LocaleUtils
 import org.vosk.BuildConfig
 import org.vosk.LibVosk
 import org.vosk.LogLevel
@@ -66,6 +70,7 @@ class VoskInputDevice @Inject constructor(
     @ApplicationContext appContext: Context,
     private val okHttpClient: OkHttpClient,
     private val inputEventsModule: InputEventsModule,
+    localeManager: LocaleManager,
 ) : SttInputDevice {
 
     private val _state: MutableStateFlow<VoskState>
@@ -76,15 +81,36 @@ class VoskInputDevice @Inject constructor(
 
     private val filesDir: File = appContext.filesDir
     private val cacheDir: File = appContext.cacheDir
-    private val modelUrl: String =
-        "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
-    private val modelZipFile: File get() = File(filesDir, "model.zip")
+    private val modelZipFile: File get() = File(filesDir, "vosk-model.zip")
+    private val sameModelUrlCheck: File get() = File(filesDir, "vosk-model-url")
     private val modelDirectory: File get() = File(filesDir, "vosk-model")
     private val modelExistFileCheck: File get() = File(modelDirectory, "ivector")
 
 
     init {
+        val modelUrl = try {
+            val localeResolutionResult = LocaleUtils.resolveSupportedLocale(
+                LocaleListCompat.create(localeManager.locale),
+                MODEL_URLS.keys
+            )
+            MODEL_URLS[localeResolutionResult.supportedLocaleString]
+        } catch (e: LocaleUtils.UnsupportedLocaleException) {
+            null
+        }
+
+        // the model url may change if the user changes app language, or in case of model updates
+        val modelUrlChanged = try {
+            sameModelUrlCheck.readText() != modelUrl
+        } catch (e: IOException) {
+            // modelUrlCheck file does not exist
+            true
+        }
+
         val initialState = when {
+            // if the modelUrl is null, then the current locale is not supported by any Vosk model
+            modelUrl == null -> NotAvailable
+            // if the model url changed, the model needs to be re-downloaded
+            modelUrlChanged -> NotDownloaded(modelUrl)
             // if the model zip file exists, it means that the app was interrupted after the
             // download finished (because the file is downloaded in the cache, and is moved to its
             // actual position only after it finishes downloading), but before the unzip process
@@ -95,7 +121,7 @@ class VoskInputDevice @Inject constructor(
             modelExistFileCheck.isDirectory -> NotLoaded
             // if the both the model zip file and the model directory do not exist, then the model
             // has not been downloaded yet
-            else -> NotDownloaded
+            else -> NotDownloaded(modelUrl)
         }
         _state = MutableStateFlow(initialState)
         _uiState = MutableStateFlow(initialState.toUiState())
@@ -131,9 +157,10 @@ class VoskInputDevice @Inject constructor(
         // toggleThenStartListening() and in load() to ensure the button click is not lost nor has
         // any unwanted behavior if the state changes right after checking its value in this switch.
         when (val s = _state.value) {
-            is NotDownloaded -> download()
+            is NotAvailable -> {} // nothing to do
+            is NotDownloaded -> download(s.modelUrl)
             is Downloading -> {} // wait for download to finish
-            is ErrorDownloading -> download() // retry
+            is ErrorDownloading -> download(s.modelUrl) // retry
             is Downloaded -> unzip()
             is Unzipping -> {} // wait for unzipping to finish
             is ErrorUnzipping -> unzip() // retry
@@ -149,7 +176,7 @@ class VoskInputDevice @Inject constructor(
      * Downloads the model zip file. Sets the state to [Downloading], and periodically updates it
      * with downloading progress, until either [ErrorDownloading] or [Downloaded] are set as state.
      */
-    private fun download() {
+    private fun download(modelUrl: String) {
         _state.value = Downloading(0, 0)
 
         scope.launch(Dispatchers.IO) {
@@ -164,9 +191,15 @@ class VoskInputDevice @Inject constructor(
                 ) { currentBytes, totalBytes ->
                     _state.value = Downloading(currentBytes, totalBytes)
                 }
+
+                // now that the zip file with the correct model url is in place, we can safely
+                // update the model url saved to disk, since even if the app were closed after this
+                // step, the correct .zip will be extracted afterwards, even if modelExistFileCheck
+                // already exists
+                sameModelUrlCheck.writeText(modelUrl)
             } catch (e: IOException) {
                 Log.e(TAG, "Can't download Vosk model", e)
-                _state.value = ErrorDownloading(e)
+                _state.value = ErrorDownloading(modelUrl, e)
                 return@launch
             }
 
@@ -319,5 +352,35 @@ class VoskInputDevice @Inject constructor(
         private const val SAMPLE_RATE = 44100.0f
         private const val ALTERNATIVE_COUNT = 5
         private val TAG = VoskInputDevice::class.simpleName
+
+        /**
+         * All small models from [Vosk](https://alphacephei.com/vosk/models)
+         */
+        val MODEL_URLS = mapOf(
+            "en" to "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip",
+            "en-in" to "https://alphacephei.com/vosk/models/vosk-model-small-en-in-0.4.zip",
+            "cn" to "https://alphacephei.com/vosk/models/vosk-model-small-cn-0.22.zip",
+            "ru" to "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
+            "fr" to "https://alphacephei.com/vosk/models/vosk-model-small-fr-0.22.zip",
+            "de" to "https://alphacephei.com/vosk/models/vosk-model-small-de-0.15.zip",
+            "es" to "https://alphacephei.com/vosk/models/vosk-model-small-es-0.42.zip",
+            "pt" to "https://alphacephei.com/vosk/models/vosk-model-small-pt-0.3.zip",
+            "tr" to "https://alphacephei.com/vosk/models/vosk-model-small-tr-0.3.zip",
+            "vn" to "https://alphacephei.com/vosk/models/vosk-model-small-vn-0.3.zip",
+            "it" to "https://alphacephei.com/vosk/models/vosk-model-small-it-0.22.zip",
+            "nl" to "https://alphacephei.com/vosk/models/vosk-model-small-nl-0.22.zip",
+            "ca" to "https://alphacephei.com/vosk/models/vosk-model-small-ca-0.4.zip",
+            "fa" to "https://alphacephei.com/vosk/models/vosk-model-small-fa-0.4.zip",
+            "ph" to "https://alphacephei.com/vosk/models/vosk-model-tl-ph-generic-0.6.zip",
+            "uk" to "https://alphacephei.com/vosk/models/vosk-model-small-uk-v3-nano.zip",
+            "kz" to "https://alphacephei.com/vosk/models/vosk-model-small-kz-0.15.zip",
+            "ja" to "https://alphacephei.com/vosk/models/vosk-model-small-ja-0.22.zip",
+            "eo" to "https://alphacephei.com/vosk/models/vosk-model-small-eo-0.42.zip",
+            "hi" to "https://alphacephei.com/vosk/models/vosk-model-small-hi-0.22.zip",
+            "cs" to "https://alphacephei.com/vosk/models/vosk-model-small-cs-0.4-rhasspy.zip",
+            "pl" to "https://alphacephei.com/vosk/models/vosk-model-small-pl-0.22.zip",
+            "uz" to "https://alphacephei.com/vosk/models/vosk-model-small-uz-0.22.zip",
+            "ko" to "https://alphacephei.com/vosk/models/vosk-model-small-ko-0.22.zip",
+        )
     }
 }
