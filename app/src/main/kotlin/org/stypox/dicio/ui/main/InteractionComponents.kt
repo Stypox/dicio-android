@@ -89,15 +89,19 @@ fun InteractionList(
                 }
             }
             interaction.questionsAnswers.forEach {
-                countedItem(canBeAnchor = true) {
-                    ConfirmedQuestionCard(
-                        userInput = it.first,
-                        onClick = onConfirmedQuestionClick,
-                    )
+                if (it.question != null) {
+                    // can be null if this QA contains only an error output
+                    // (and therefore the error was not caused by the input, but e.g. by the STT)
+                    countedItem(canBeAnchor = true) {
+                        ConfirmedQuestionCard(
+                            userInput = it.question,
+                            onClick = onConfirmedQuestionClick,
+                        )
+                    }
                 }
-                countedItem(canBeAnchor = false) {
+                countedItem(canBeAnchor = it.question == null) {
                     SkillAnswerCard {
-                        it.second.GraphicalOutput(ctx = skillContext)
+                        it.answer.GraphicalOutput(ctx = skillContext)
                     }
                 }
             }

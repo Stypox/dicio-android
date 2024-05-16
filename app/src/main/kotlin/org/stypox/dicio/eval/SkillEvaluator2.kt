@@ -19,6 +19,7 @@ import org.stypox.dicio.skills.SkillHandler2
 import org.stypox.dicio.ui.main.Interaction
 import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
+import org.stypox.dicio.ui.main.QuestionAnswer
 
 class SkillEvaluator2(
     scope: CoroutineScope,
@@ -164,11 +165,11 @@ class SkillEvaluator2(
 
     private fun addInteractionFromPending(skillOutput: SkillOutput) {
         val log = _state.value
-        val pendingUserInput = log.pendingQuestion?.userInput ?: ""
+        val pendingUserInput = log.pendingQuestion?.userInput
         val pendingContinuesLastInteraction = log.pendingQuestion?.continuesLastInteraction
             ?: skillRanker.hasAnyBatches()
         val pendingSkill = log.pendingQuestion?.skillBeingEvaluated
-        val questionAnswer = Pair(pendingUserInput, skillOutput)
+        val questionAnswer = QuestionAnswer(pendingUserInput, skillOutput)
 
         _state.value = log.copy(
             interactions = log.interactions.toMutableList().also { inters ->

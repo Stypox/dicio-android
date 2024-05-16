@@ -18,6 +18,7 @@ import org.stypox.dicio.skills.weather.WeatherInfo
 import org.stypox.dicio.ui.main.Interaction
 import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
+import org.stypox.dicio.ui.main.QuestionAnswer
 import org.stypox.dicio.ui.main.SttState
 import java.io.IOException
 
@@ -64,13 +65,13 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
             Interaction(
                 skill = NavigationInfo,
                 questionsAnswers = listOf(
-                    Pair("Take me to Paris", NavigationOutput("Paris"))
+                    QuestionAnswer("Take me to Paris", NavigationOutput("Paris"))
                 )
             ),
             Interaction(
                 skill = TimerInfo,
                 questionsAnswers = listOf(
-                    Pair("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput() })
+                    QuestionAnswer("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput() })
                 )
             )
         ),
@@ -85,8 +86,8 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
             Interaction(
                 skill = TelephoneInfo,
                 questionsAnswers = listOf(
-                    Pair("call mom", ConfirmCallOutput("Mom", "1234567890")),
-                    Pair("yes", ConfirmedCallOutput("1234567890")),
+                    QuestionAnswer("call mom", ConfirmCallOutput("Mom", "1234567890")),
+                    QuestionAnswer("yes", ConfirmedCallOutput("1234567890")),
                 )
             )
         ),
