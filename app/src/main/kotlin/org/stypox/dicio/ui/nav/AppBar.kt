@@ -271,30 +271,51 @@ private fun SearchTopAppBarExpanded(
     onSearch: (String) -> Unit,
     hint: String,
 ) {
+    // if setSearchString(null) were called without first setting exiting=true, the onValueChange
+    // below would call setSearchString() one last time with the old input, causing the search to
+    // reopen right away
+    var exiting by remember { mutableStateOf(false) }
+    fun exitSearch() {
+        exiting = true
+        setSearchString(null)
+    }
+
     TopAppBar(
         title = {
             AppBarTextField(
                 value = searchString,
-                onValueChange = { setSearchString(it) },
+                onValueChange = {
+                    if (!exiting) {
+                        setSearchString(it)
+                    }
+                },
                 hint = hint,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = {
                     onSearch(searchString)
-                    setSearchString(null)
+                    exitSearch()
                 }),
                 modifier = Modifier.onKeyEvent {
                     if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                         onSearch(searchString)
-                        setSearchString(null)
+                        exitSearch()
                         return@onKeyEvent true
                     }
                     return@onKeyEvent false
                 },
             )
         },
-        navigationIcon = { AppBarBackIcon { setSearchString(null) } },
+        navigationIcon = {
+            AppBarBackIcon {
+                exitSearch()
+            }
+        },
         actions = {
-            IconButton(onClick = { setSearchString("") }) {
+            IconButton(
+                onClick = {
+                    setSearchString("")
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Clear,
                     contentDescription = stringResource(R.string.clear)
@@ -305,7 +326,7 @@ private fun SearchTopAppBarExpanded(
 
     BackHandler {
         // this will only be triggered if the user presses back when the keyboard is already closed
-        setSearchString(null)
+        exitSearch()
     }
 }
 
