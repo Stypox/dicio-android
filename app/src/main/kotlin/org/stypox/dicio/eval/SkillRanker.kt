@@ -153,7 +153,13 @@ class SkillRanker(
                 return skillFromBatch
             }
         }
-        return defaultBatch.getBest(input, inputWords, normalizedWordKeys)
+
+        val skillFromBatch = defaultBatch.getBest(input, inputWords, normalizedWordKeys)
+        if (skillFromBatch != null) {
+            // found a matching skill in the default batch: remove all other skill batches
+            removeAllBatches()
+        }
+        return skillFromBatch
     }
 
     fun getFallbackSkill(
