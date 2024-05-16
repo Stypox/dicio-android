@@ -160,7 +160,7 @@ class SkillEvaluator2(
 
     private fun addErrorInteractionFromPending(throwable: Throwable) {
         Log.e(TAG, "Error while evaluating skills", throwable)
-        addInteractionFromPending(ErrorSkillOutput(throwable))
+        addInteractionFromPending(ErrorSkillOutput(throwable, true))
     }
 
     private fun addInteractionFromPending(skillOutput: SkillOutput) {

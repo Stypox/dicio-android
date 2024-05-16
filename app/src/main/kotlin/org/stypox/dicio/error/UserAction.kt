@@ -10,5 +10,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class UserAction(val message: String) : Parcelable {
     STT_SERVICE_SPEECH_TO_TEXT("Stt service speech to text"),
+    GENERIC_EVALUATION("Evaluation"),
     SKILL_EVALUATION("Skill evaluation");
 }
