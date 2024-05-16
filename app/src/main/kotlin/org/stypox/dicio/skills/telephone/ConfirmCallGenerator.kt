@@ -23,6 +23,7 @@ class ConfirmCallGenerator(private val number: String) :
         fun call(context: Context, number: String?) {
             val callIntent = Intent(Intent.ACTION_CALL)
             callIntent.data = Uri.parse("tel:$number")
+            callIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(callIntent)
         }
     }
