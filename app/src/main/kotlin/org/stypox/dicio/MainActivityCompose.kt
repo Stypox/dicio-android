@@ -33,10 +33,24 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivityCompose : ComponentActivity() {
 
+    @Inject
+    lateinit var localeManager: LocaleManager
     var sttInputDevice: SttInputDevice? = null
         @Inject set
 
     private var nextAssistAllowed = Instant.MIN
+
+    /**
+     * Sets the locale according to value calculated by the injected [LocaleManager].
+     */
+    private fun setLocale() {
+        Locale.setDefault(localeManager.locale)
+        for (resources in sequenceOf(resources, applicationContext.resources)) {
+            val configuration = resources.configuration
+            configuration.setLocale(localeManager.locale)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+        }
+    }
 
     /**
      * Automatically loads the LLM and the STT when the [ACTION_ASSIST] intent is received. Applies
@@ -64,6 +78,7 @@ class MainActivityCompose : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLocale()
 
         if (intent?.action == ACTION_ASSIST) {
             onAssistIntentReceived()
