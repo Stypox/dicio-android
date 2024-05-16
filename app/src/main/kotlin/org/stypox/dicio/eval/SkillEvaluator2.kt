@@ -10,18 +10,15 @@ import kotlinx.coroutines.withContext
 import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SkillOutput
 import org.dicio.skill.util.WordExtractor
-import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
-import org.stypox.dicio.skills.SkillHandler
 import org.stypox.dicio.skills.SkillHandler2
 import org.stypox.dicio.ui.main.Interaction
 import org.stypox.dicio.ui.main.InteractionLog
 import org.stypox.dicio.ui.main.PendingQuestion
-import javax.inject.Inject
 
 class SkillEvaluator2(
     scope: CoroutineScope,
@@ -74,6 +71,9 @@ class SkillEvaluator2(
                 _state.value = _state.value.copy(
                     pendingQuestion = PendingQuestion(
                         userInput = event.utterance,
+                        // the next input can be a continuation of the last interaction only if the
+                        // last skill invocation provided some skill batches (which are the only way
+                        // to continue an interaction/conversation)
                         continuesLastInteraction = skillRanker.hasAnyBatches(),
                         skillBeingEvaluated = null,
                     )
@@ -83,17 +83,19 @@ class SkillEvaluator2(
     }
 
     private suspend fun evaluateMatchingSkill(utterances: List<String>) {
-        val (chosenInput, chosenSkill) = try {
+        val (chosenInput, chosenSkill, isFallback) = try {
             utterances.firstNotNullOfOrNull { input: String ->
                 val inputWords = WordExtractor.extractWords(input)
                 val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                skillRanker.getBest(input, inputWords, normalizedWords)?.let { Pair(input, it) }
+                skillRanker.getBest(input, inputWords, normalizedWords)
+                    ?.let { Triple(input, it, false) }
             } ?: run {
                 val inputWords = WordExtractor.extractWords(utterances[0])
                 val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                Pair(
+                Triple(
                     utterances[0],
-                    skillRanker.getFallbackSkill(utterances[0], inputWords, normalizedWords)
+                    skillRanker.getFallbackSkill(utterances[0], inputWords, normalizedWords),
+                    true
                 )
             }
         } catch (throwable: Throwable) {
@@ -102,13 +104,13 @@ class SkillEvaluator2(
         }
         val skillInfo = chosenSkill.correspondingSkillInfo
 
-        val prevLog = _state.value
-        val continuesLastInteraction = prevLog.pendingQuestion?.continuesLastInteraction == true &&
-                prevLog.interactions.lastOrNull()?.skill === skillInfo
-        _state.value = prevLog.copy(
+        _state.value = _state.value.copy(
             pendingQuestion = PendingQuestion(
                 userInput = chosenInput,
-                continuesLastInteraction = continuesLastInteraction,
+                // the skill ranker would have discarded all batches, if the chosen skill was not
+                // the continuation of the last interaction (since continuing an
+                // interaction/conversation is done through the stack of batches)
+                continuesLastInteraction = skillRanker.hasAnyBatches(),
                 skillBeingEvaluated = chosenSkill.correspondingSkillInfo,
             )
         )
@@ -138,8 +140,10 @@ class SkillEvaluator2(
 
             val nextSkills = output.getNextSkills(skillContext)
             if (nextSkills.isEmpty()) {
-                // current conversation has ended, reset to the default batch of skills
-                skillRanker.removeAllBatches()
+                if (!isFallback) {
+                    // current conversation has ended, reset to the default batch of skills
+                    skillRanker.removeAllBatches()
+                }
             } else {
                 skillRanker.addBatchToTop(skillContext, nextSkills)
                 sttInputDevice?.tryLoad(true)
