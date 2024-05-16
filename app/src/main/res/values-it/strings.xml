@@ -3,6 +3,8 @@
     <string name="drawer_open">Apri il pannello di navigazione</string>
     <string name="drawer_close">Chiudi il pannello di navigazione</string>
     <string name="drawer_header_subtitle">Posso aiutarti?</string>
+    <string name="back">Indietro</string>
+    <string name="clear">Svuota</string>
     <string name="share">Condividi</string>
     <string name="copied_to_clipboard">Copiato negli appunti</string>
     <string name="text_input_hint">Chiedimi qualsiasi cosa…</string>
@@ -23,6 +25,7 @@
     <string name="eval_no_match">Non ho capito, potresti ripetere?</string>
     <string name="skill_lyrics_song_not_found">Non ho trovato il brano %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Ecco %1$s di %2$s</string>
+    <string name="skill_open_could_not_understand">Non ho capito l\'app</string>
     <string name="skill_open_unknown_app">L\'app %1$s è sconosciuta</string>
     <string name="skill_open_opening">Apro %1$s…</string>
     <string name="skill_search_here_is_what_i_found">Ecco cosa ho trovato</string>
@@ -49,6 +52,12 @@
     <string name="vosk_model_extracting">Estraggo il modello di Vosk…</string>
     <string name="vosk_model_extraction_error">Non è stato possibile estrarre il modello di Vosk</string>
     <string name="vosk_model_ready">Il modello di Vosk è pronto</string>
+    <string name="grant_microphone_permission">Permetti accesso al microfono</string>
+    <string name="error_loading">Errore nel caricare</string>
+    <string name="error_unzipping">Errore nell\'estrarre</string>
+    <string name="error_downloading">Errore nel download</string>
+    <string name="unzipping">Estrazione…</string>
+    <string name="download">Scarica</string>
     <string name="listening">Sto ascoltando…</string>
     <string name="pref_search_engine">Motore di ricerca</string>
     <string name="skill_name_search">Ricerca</string>
@@ -66,6 +75,9 @@
     <string name="skill_sentence_example_weather">Che tempo fa a Roma?</string>
     <string name="skill_sentence_example_lyrics">Qual è la canzone che fa il cielo è sempre più blu\?</string>
     <string name="skill_sentence_example_open">Apri NewPipe</string>
+    <string name="start_listening">Ascolta</string>
+    <string name="downloaded">Scaricato</string>
+    <string name="loaded">Caricato</string>
     <string name="here_is_what_i_can_do">Ecco cosa posso fare!</string>
     <string name="skill_name_calculator">Calcolatrice</string>
     <string name="skill_sentence_example_calculator">Quanto fa cinque per quattro meno un milione?</string>
@@ -132,4 +144,6 @@
     <string name="stt_service">Servizio di riconoscimento vocale</string>
     <string name="skill_name_current_time">Ora corrente</string>
     <string name="skill_sentence_example_current_time">Che ora è?</string>
+    <string name="download_stt">Scarica riconoscitore vocale</string>
+    <string name="unzip_stt">Estrai riconoscitore vocale</string>
 </resources>

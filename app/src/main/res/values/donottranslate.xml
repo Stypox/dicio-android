@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources translatable="false">
-    <string name="error_report_channel_id">dicioErrorReport</string>
+    <string name="error_report_channel_id" translatable="false">dicioErrorReport</string>
 </resources>
