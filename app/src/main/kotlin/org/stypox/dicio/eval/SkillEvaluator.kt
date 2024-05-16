@@ -402,7 +402,7 @@ class SkillEvaluator(
             skillRanker.removeAllBatches()
             graphicalOutputDevice.addDivider()
         } else {
-            skillRanker.addBatchToTop(nextSkills)
+            skillRanker.addBatchToTop(SkillHandler.skillContext, nextSkills)
             speechOutputDevice.runWhenFinishedSpeaking {
                 activity.runOnUiThread { primaryInputDevice.tryToGetInput(false) }
             }

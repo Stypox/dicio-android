@@ -1,6 +1,7 @@
 package org.stypox.dicio.eval
 
 import org.dicio.skill.Skill
+import org.dicio.skill.SkillContext
 import org.dicio.skill.chain.InputRecognizer.Specificity
 import org.dicio.skill.util.CleanableUp
 import org.stypox.dicio.skills.SkillHandler
@@ -117,10 +118,10 @@ class SkillRanker(
     private var defaultBatch: SkillBatch = SkillBatch(defaultSkillBatch)
     private val batches: Stack<SkillBatch> = Stack()
 
-    fun addBatchToTop(skillBatch: List<Skill>) {
+    fun addBatchToTop(skillContext: SkillContext, skillBatch: List<Skill>) {
         for (skill in skillBatch) {
             // set the context to the enqueued skills
-            skill.setContext(SkillHandler.skillContext)
+            skill.setContext(skillContext)
         }
         batches.push(SkillBatch(skillBatch))
     }

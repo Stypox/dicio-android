@@ -1,5 +1,6 @@
 package org.stypox.dicio.eval
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,7 @@ import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
+import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.skills.SkillHandler
 import org.stypox.dicio.skills.SkillHandler2
 import org.stypox.dicio.ui.main.Interaction
@@ -22,13 +24,13 @@ import org.stypox.dicio.ui.main.PendingQuestion
 import javax.inject.Inject
 
 class SkillEvaluator2(
-    private val inputEventsModule: InputEventsModule,
+    scope: CoroutineScope,
     private val skillContext: SkillContext,
     skillHandler: SkillHandler2,
+    private val inputEventsModule: InputEventsModule,
+    private val sttInputDevice: SttInputDevice?,
     private val requestPermissions: suspend (Array<String>) -> Boolean,
 ) {
-
-    private val scope = CoroutineScope(Dispatchers.Default)
 
     private val _state = MutableStateFlow(
         InteractionLog(
@@ -44,7 +46,7 @@ class SkillEvaluator2(
     )
 
     init {
-        scope.launch {
+        scope.launch(Dispatchers.Default) {
             // receive input events
             inputEventsModule.events.collect(::processInputEvent)
         }
@@ -126,15 +128,21 @@ class SkillEvaluator2(
             }
 
             addInteractionFromPending(output)
-            // TODO speak speech result
+            output.getSpeechOutput(skillContext).let {
+                if (it.isNotBlank()) {
+                    withContext (Dispatchers.Main) {
+                        skillContext.speechOutputDevice.speak(it)
+                    }
+                }
+            }
 
             val nextSkills = output.getNextSkills(skillContext)
             if (nextSkills.isEmpty()) {
                 // current conversation has ended, reset to the default batch of skills
                 skillRanker.removeAllBatches()
             } else {
-                skillRanker.addBatchToTop(nextSkills)
-                // TODO try to get input
+                skillRanker.addBatchToTop(skillContext, nextSkills)
+                sttInputDevice?.tryLoad(true)
             }
 
         } catch (throwable: Throwable) {
@@ -146,6 +154,7 @@ class SkillEvaluator2(
     }
 
     private fun addErrorInteractionFromPending(throwable: Throwable) {
+        Log.e(TAG, "Error while evaluating skills", throwable)
         addInteractionFromPending(ErrorSkillOutput(throwable))
     }
 
@@ -175,5 +184,9 @@ class SkillEvaluator2(
             },
             pendingQuestion = null,
         )
+    }
+
+    companion object {
+        val TAG = SkillEvaluator2::class.simpleName
     }
 }

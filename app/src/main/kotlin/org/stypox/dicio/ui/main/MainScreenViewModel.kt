@@ -2,6 +2,7 @@ package org.stypox.dicio.ui.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -32,9 +33,11 @@ class MainScreenViewModel @AssistedInject constructor(
     }
 
     val skillEvaluator = SkillEvaluator2(
-        inputEventsModule = inputEventsModule,
+        scope = viewModelScope,
         skillContext = skillContext,
         skillHandler = skillHandler,
+        inputEventsModule = inputEventsModule,
+        sttInputDevice = sttInputDevice,
         requestPermissions = requestPermissions,
     )
 }
