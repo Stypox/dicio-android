@@ -58,7 +58,7 @@ class Contact(val name: String, val distance: Int, private val id: String) {
                     val id = contactCursor.getString(contactIdColumnIndex)
                     if (name != null) {
                         val distance = StringUtils.contactStringDistance(name, userContactName)
-                        if (distance < -7) {
+                        if (distance < 0) {
                             contacts.add(Contact(name, distance, id))
                         }
                     }
