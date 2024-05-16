@@ -14,7 +14,7 @@ import org.stypox.dicio.util.StringUtils
 class OpenGenerator : OutputGenerator<StandardResult>() {
     override fun generate(data: StandardResult): SkillOutput {
         val userAppName = data.getCapturingGroup(open.what)?.trim { it <= ' ' }
-        val packageManager: PackageManager = ctx().android!!.packageManager
+        val packageManager: PackageManager = ctx().android.packageManager
         val applicationInfo = userAppName?.let { getMostSimilarApp(packageManager, it) }
 
         if (applicationInfo != null) {
@@ -23,7 +23,7 @@ class OpenGenerator : OutputGenerator<StandardResult>() {
             launchIntent.action = Intent.ACTION_MAIN
             launchIntent.addCategory(Intent.CATEGORY_LAUNCHER)
             launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            ctx().android!!.startActivity(launchIntent)
+            ctx().android.startActivity(launchIntent)
         }
 
         return OpenOutput(

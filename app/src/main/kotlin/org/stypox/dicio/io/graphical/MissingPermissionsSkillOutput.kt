@@ -16,7 +16,7 @@ class MissingPermissionsSkillOutput(
         ctx.getString(
             R.string.eval_missing_permissions,
             ctx.getString(skill.nameResource),
-            PermissionUtils.getCommaJoinedPermissions(ctx.android!!, skill)
+            PermissionUtils.getCommaJoinedPermissions(ctx.android, skill)
         )
 
     @Composable

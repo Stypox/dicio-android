@@ -7,7 +7,7 @@ import org.stypox.dicio.Sentences_en.telephone
 
 class TelephoneGenerator : OutputGenerator<StandardResult>() {
     override fun generate(data: StandardResult): SkillOutput {
-        val contentResolver = ctx().android!!.contentResolver
+        val contentResolver = ctx().android.contentResolver
         val userContactName = data.getCapturingGroup(telephone.who)!!.trim { it <= ' ' }
         val contacts = Contact.getFilteredSortedContacts(contentResolver, userContactName)
         val validContacts = ArrayList<Pair<String, List<String>>>()

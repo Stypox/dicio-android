@@ -11,7 +11,7 @@ class NavigationGenerator : OutputGenerator<String?>() {
         if (data.isNullOrBlank()) {
             val uriGeoSimple = String.format(Locale.ENGLISH, "geo:0,0?q=%s", data)
             val launchIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uriGeoSimple))
-            ctx().android!!.startActivity(launchIntent)
+            ctx().android.startActivity(launchIntent)
         }
 
         return NavigationOutput(data)

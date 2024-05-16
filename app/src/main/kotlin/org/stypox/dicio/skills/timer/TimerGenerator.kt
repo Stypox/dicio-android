@@ -64,10 +64,10 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
             onExpiredCallback = { theName ->
                 // initialize ringtone when the timer has expired (play will be called right after)
                 ringtone = RingtoneManager.getActualDefaultRingtoneUri(
-                    ctx().android!!, RingtoneManager.TYPE_ALARM
+                    ctx().android, RingtoneManager.TYPE_ALARM
                 )
                     ?.let {
-                        RingtoneManager.getRingtone(ctx().android!!, it)
+                        RingtoneManager.getRingtone(ctx().android, it)
                     }
                     ?.also {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -81,7 +81,7 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
                     // we could not load a ringtone, so we can announce via speech instead
                     ctx().speechOutputDevice!!.speak(
                         formatStringWithName(
-                            ctx().android!!,
+                            ctx().android,
                             theName,
                             R.string.skill_timer_expired,
                             R.string.skill_timer_expired_name
@@ -109,12 +109,12 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
     private fun cancelTimer(name: String?): SkillOutput {
         val message: String
         if (SET_TIMERS.isEmpty()) {
-            message = ctx().android!!
+            message = ctx().android
                 .getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             message = if (SET_TIMERS.size == 1) {
                 formatStringWithName(
-                    ctx().android!!,
+                    ctx().android,
                     SET_TIMERS[0].name,
                     R.string.skill_timer_canceled,
                     R.string.skill_timer_canceled_name
@@ -136,10 +136,10 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         } else {
             val setTimer = getSetTimerWithSimilarName(name)
             if (setTimer == null) {
-                message = ctx().android!!
+                message = ctx().android
                     .getString(R.string.skill_timer_no_active_name, name)
             } else {
-                message = ctx().android!!
+                message = ctx().android
                     .getString(R.string.skill_timer_canceled_name, setTimer.name)
                 setTimer.cancel()
                 SET_TIMERS.remove(setTimer)
