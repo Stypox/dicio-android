@@ -1,6 +1,5 @@
 package org.stypox.dicio.ui.main
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -13,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
@@ -23,29 +25,32 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.preference.PreferenceManager
+import kotlinx.coroutines.launch
 import org.dicio.skill.SkillContext
 import org.dicio.skill.SkillInfo
 import org.dicio.skill.output.SkillOutput
-import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SkillContextImpl
-import org.stypox.dicio.skills.SkillHandler
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SkillOutputPreviews
 import org.stypox.dicio.ui.util.UserInputPreviews
-import java.util.Locale
 
 @Composable
 fun InteractionList(
@@ -54,25 +59,43 @@ fun InteractionList(
     onConfirmedQuestionClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var totalItemCount = 0
+    var lastAnchorIndex = 0
+    fun LazyListScope.countedItem(
+        canBeAnchor: Boolean,
+        content: @Composable LazyItemScope.() -> Unit,
+    ) {
+        if (canBeAnchor) {
+            lastAnchorIndex = totalItemCount
+        }
+        item(content = content)
+        totalItemCount += 1
+    }
+
     val interactions = interactionLog.interactions
     val pendingQuestion = interactionLog.pendingQuestion
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        state = listState,
     ) {
         interactions.forEachIndexed { index, interaction ->
             if (index != 0) {
-                item { Spacer(modifier = Modifier.height(16.dp)) }
+                countedItem(canBeAnchor = false) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
             interaction.questionsAnswers.forEach {
-                item {
+                countedItem(canBeAnchor = true) {
                     ConfirmedQuestionCard(
                         userInput = it.first,
                         onClick = onConfirmedQuestionClick,
                     )
                 }
-                item {
+                countedItem(canBeAnchor = false) {
                     SkillAnswerCard {
                         it.second.GraphicalOutput(ctx = skillContext)
                     }
@@ -82,23 +105,53 @@ fun InteractionList(
 
         if (pendingQuestion != null) {
             if (interactions.isNotEmpty() && !pendingQuestion.continuesLastInteraction) {
-                item { Spacer(modifier = Modifier.height(16.dp)) }
+                countedItem(canBeAnchor = false) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
 
             if (pendingQuestion.skillBeingEvaluated == null) {
-                item { PendingQuestionCard(userInput = pendingQuestion.userInput) }
+                countedItem(canBeAnchor = true) {
+                    PendingQuestionCard(userInput = pendingQuestion.userInput)
+                }
+                countedItem(canBeAnchor = false) {
+                    // still include a spacer in place of the LoadingAnswerCard, so that when the
+                    // pending question first appears and the LaunchedEffect below scrolls to it,
+                    // there is enough space for the loading card below the question card that will
+                    // only appear after the pending question has been confirmed
+                    Spacer(modifier = Modifier.height(72.dp))
+                }
             } else {
-                item {
+                countedItem(canBeAnchor = true) {
                     ConfirmedQuestionCard(
                         userInput = pendingQuestion.userInput,
                         onClick = onConfirmedQuestionClick,
                     )
                 }
-                item { LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated) }
+                countedItem(canBeAnchor = false) {
+                    LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated)
+                }
             }
         }
 
-        item { Spacer(modifier = Modifier.height(84.dp)) }
+        countedItem(canBeAnchor = false) {
+            Spacer(modifier = Modifier.height(84.dp))
+        }
+    }
+
+    // TODO check if this causes performance problems
+    var prevHasPending by rememberSaveable { mutableStateOf(false) }
+    var prevInteractionCount by rememberSaveable { mutableIntStateOf(0) }
+    val newHasPending = pendingQuestion != null
+    val newInteractionCount = interactions.size
+    LaunchedEffect(key1 = newHasPending, key2 = newInteractionCount) {
+        if ((!prevHasPending && newHasPending) || newInteractionCount > prevInteractionCount) {
+            scope.launch {
+                listState.scrollToItem(lastAnchorIndex)
+            }
+        }
+        prevHasPending = newHasPending
+        prevInteractionCount = newInteractionCount
     }
 }
 
