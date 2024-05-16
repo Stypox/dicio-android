@@ -85,7 +85,7 @@ class MainActivityCompose : ComponentActivity() {
         }
 
         setContent {
-            AppTheme {
+            AppTheme(dynamicColor = false) {
                 DrawerWithScreen()
             }
         }
