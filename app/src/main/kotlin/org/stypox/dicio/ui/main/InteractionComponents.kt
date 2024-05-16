@@ -145,7 +145,7 @@ fun ConfirmedQuestionCard(
 ) {
     MessageCard(
         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-        modifier = Modifier.clickable { onClick(userInput) },
+        onClick = { onClick(userInput) },
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -210,14 +210,16 @@ fun SkillAnswerCardPreview(@PreviewParameter(SkillOutputPreviews::class) skillOu
 @Composable
 fun MessageCard(
     containerColor: Color,
-    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        content = content,
-    )
+    val colors = CardDefaults.cardColors(containerColor = containerColor)
+    val modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp)
+    if (onClick == null) {
+        Card(colors = colors, modifier = modifier, content = content)
+    } else {
+        Card(onClick = onClick, modifier = modifier, colors = colors, content = content)
+    }
 }
