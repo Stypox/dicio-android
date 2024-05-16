@@ -27,7 +27,6 @@ class SkillEvaluator2(
     skillHandler: SkillHandler2,
     private val inputEventsModule: InputEventsModule,
     private val sttInputDevice: SttInputDevice?,
-    private val requestPermissions: suspend (Array<String>) -> Boolean,
 ) {
 
     private val _state = MutableStateFlow(
@@ -42,6 +41,9 @@ class SkillEvaluator2(
         skillHandler.standardSkillBatch,
         skillHandler.fallbackSkill,
     )
+
+    // must be kept up to date even when the activity is recreated, for this reason it is `var`
+    var permissionRequester: suspend (Array<String>) -> Boolean = { false }
 
     init {
         scope.launch(Dispatchers.Default) {
@@ -118,7 +120,7 @@ class SkillEvaluator2(
 
         try {
             val permissions = skillInfo.neededPermissions.toTypedArray()
-            if (permissions.isNotEmpty() && !requestPermissions(permissions)) {
+            if (permissions.isNotEmpty() && !permissionRequester(permissions)) {
                 // permissions were not granted, show message
                 addInteractionFromPending(MissingPermissionsSkillOutput(skillInfo))
                 return

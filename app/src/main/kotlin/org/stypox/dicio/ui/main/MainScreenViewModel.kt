@@ -12,12 +12,10 @@ import org.stypox.dicio.eval.SkillEvaluator2
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.skills.SkillHandler2
+import javax.inject.Inject
 
-@HiltViewModel(
-    assistedFactory = MainScreenViewModel.Factory::class
-)
-class MainScreenViewModel @AssistedInject constructor(
-    @Assisted("requestPermissions") requestPermissions: suspend (Array<String>) -> Boolean,
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(
     application: Application,
     val skillContext: SkillContext,
     skillHandler: SkillHandler2,
@@ -25,19 +23,11 @@ class MainScreenViewModel @AssistedInject constructor(
     val sttInputDevice: SttInputDevice?,
 ) : AndroidViewModel(application) {
 
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            @Assisted("requestPermissions") requestPermissions: suspend (Array<String>) -> Boolean,
-        ): MainScreenViewModel
-    }
-
     val skillEvaluator = SkillEvaluator2(
         scope = viewModelScope,
         skillContext = skillContext,
         skillHandler = skillHandler,
         inputEventsModule = inputEventsModule,
         sttInputDevice = sttInputDevice,
-        requestPermissions = requestPermissions,
     )
 }

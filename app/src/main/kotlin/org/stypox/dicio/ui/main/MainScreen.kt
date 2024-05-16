@@ -1,6 +1,7 @@
 package org.stypox.dicio.ui.main
 
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
@@ -34,7 +35,6 @@ import org.dicio.skill.SkillContext
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.ui.nav.AppBarDrawerIcon
 import org.stypox.dicio.ui.nav.SearchTopAppBar
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
@@ -69,12 +69,10 @@ fun MainScreen(navigationIcon: @Composable () -> Unit) {
         return channel.receive()
     }
 
-    val viewModel: MainScreenViewModel = hiltViewModel(
-        key = null,
-        creationCallback = { factory: MainScreenViewModel.Factory ->
-            factory.create(requestPermissions = ::requestPermissions)
-        }
-    )
+    val viewModel: MainScreenViewModel = hiltViewModel()
+    // keep assigning permissionRequester at every recomposition because `launcher` changes when
+    // the activity is recreated (no rememberSaveable is available)
+    viewModel.skillEvaluator.permissionRequester = ::requestPermissions
     val interactionsState by viewModel.skillEvaluator.state.collectAsState()
     val sttState = viewModel.sttInputDevice?.uiState?.collectAsState()
 
