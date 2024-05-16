@@ -25,6 +25,7 @@ import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.ui.main.MainScreen
 import org.stypox.dicio.ui.nav.AppBarDrawerIcon
+import org.stypox.dicio.ui.nav.DrawerContent
 import org.stypox.dicio.ui.theme.AppTheme
 import java.time.Instant
 import java.util.Locale
@@ -106,18 +107,8 @@ fun DrawerWithScreen() {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
-                Text("Drawer title", modifier = Modifier.padding(16.dp))
-                HorizontalDivider()
-                NavigationDrawerItem(
-                    label = { Text(text = "Drawer Item") },
-                    selected = false,
-                    onClick = {
-
-                    }
-                )
-            }
-        }
+            DrawerContent()
+        },
     ) {
         MainScreen(
             navigationIcon = {
