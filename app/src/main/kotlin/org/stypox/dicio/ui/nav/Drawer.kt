@@ -1,5 +1,7 @@
 package org.stypox.dicio.ui.nav
 
+import android.content.Intent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,11 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.RecordVoiceOver
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,22 +25,50 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.stypox.dicio.R
+import org.stypox.dicio.io.input.stt_service.SttServiceActivity
+import org.stypox.dicio.settings.SettingsActivity
 
 @Preview
 @Composable
-fun DrawerContent() {
+fun DrawerContent(closeDrawer: () -> Unit = {}) {
+    val context = LocalContext.current
     ModalDrawerSheet(
-        modifier = Modifier.widthIn(max = 256.dp)
+        modifier = Modifier.widthIn(max = 280.dp)
     ) {
         DrawerHeader(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(12.dp)
+        )
+
+        DrawerItem(
+            icon = Icons.Default.Settings,
+            label = R.string.settings,
+            onClick = {
+                val intent = Intent(context, SettingsActivity::class.java)
+                context.startActivity(intent)
+                closeDrawer()
+            },
+            modifier = Modifier.padding(horizontal = 12.dp),
+        )
+
+        DrawerItem(
+            icon = Icons.Default.RecordVoiceOver,
+            label = R.string.stt_service,
+            onClick = {
+                val intent = Intent(context, SttServiceActivity::class.java)
+                context.startActivity(intent)
+                closeDrawer()
+            },
+            modifier = Modifier.padding(horizontal = 12.dp),
         )
     }
 }
@@ -77,4 +111,31 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+@Composable
+fun DrawerItem(
+    icon: ImageVector,
+    @StringRes label: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    NavigationDrawerItem(
+        icon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = stringResource(label),
+            )
+        },
+        label = {
+            Text(
+                text = stringResource(label),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        selected = false,
+        onClick = onClick,
+        modifier = modifier,
+    )
 }

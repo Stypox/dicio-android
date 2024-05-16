@@ -107,7 +107,13 @@ fun DrawerWithScreen() {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent()
+            DrawerContent(
+                closeDrawer = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                }
+            )
         },
     ) {
         MainScreen(
