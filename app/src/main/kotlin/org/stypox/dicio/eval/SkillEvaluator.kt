@@ -19,8 +19,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import org.dicio.skill.Skill
-import org.dicio.skill.output.SpeechOutputDevice
+import kotlinx.coroutines.withContext
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SpeechOutputDevice
 import org.dicio.skill.util.CleanableUp
 import org.dicio.skill.util.WordExtractor
 import org.stypox.dicio.MainActivity
@@ -50,7 +51,7 @@ class SkillEvaluator(
     private var partialInputView: View? = null
     private var hasAddedPartialInputView = false
     private val scope = CoroutineScope(Dispatchers.Default)
-    private var skillNeedingPermissions: Skill? = null
+    private var skillNeedingPermissions: SkillWithResult<*>? = null
 
     init {
         setupInputDeviceListeners()
@@ -99,14 +100,13 @@ class SkillEvaluator(
      * to be called from the main thread
      */
     fun onSkillRequestPermissionsResult(grantResults: IntArray) {
-        val skill: Skill = skillNeedingPermissions ?: return // return should be unreachable
+        val skill = skillNeedingPermissions ?: return // return should be unreachable
         // make sure this skill is not reprocessed (also should never happen, but who knows)
         skillNeedingPermissions = null
         if (PermissionUtils.areAllPermissionsGranted(*grantResults)) {
             scope.launch {
                 try {
-                    skill.processInput()
-                    activity.runOnUiThread { generateOutput(skill) }
+                    generateOutput(skill)
                 } catch (throwable: Throwable) {
                     activity.runOnUiThread { onError(throwable) }
                 }
@@ -115,8 +115,8 @@ class SkillEvaluator(
             // permissions were not granted, show a message
             val message = activity.getString(
                 R.string.eval_missing_permissions,
-                activity.getString(skill.correspondingSkillInfo.nameResource),
-                PermissionUtils.getCommaJoinedPermissions(activity, skill.correspondingSkillInfo)
+                activity.getString(skill.skill.correspondingSkillInfo.nameResource),
+                PermissionUtils.getCommaJoinedPermissions(activity, skill.skill.correspondingSkillInfo)
             )
             speechOutputDevice.speak(message)
             graphicalOutputDevice.display(
@@ -311,7 +311,7 @@ class SkillEvaluator(
     //////////////////////
     // Skill evaluation //
     //////////////////////
-    private class InputSkillPair constructor(val input: String, val skill: Skill) {
+    private class InputSkillPair constructor(val input: String, val skill: SkillWithResult<*>) {
         var permissionsToRequest: Array<String>? = null
     }
     private class SkillProcessInputError(val choseInputSkill: InputSkillPair, cause: Throwable)
@@ -323,14 +323,14 @@ class SkillEvaluator(
                 inputs.firstNotNullOfOrNull { input: String ->
                     val inputWords = WordExtractor.extractWords(input)
                     val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                    skillRanker.getBest(input, inputWords, normalizedWords)
+                    skillRanker.getBest(SkillHandler.skillContext, input, inputWords, normalizedWords)
                         ?.let { InputSkillPair(input, it) }
                 } ?: run {
                     val inputWords = WordExtractor.extractWords(inputs[0])
                     val normalizedWords = WordExtractor.normalizeWords(inputWords)
                     InputSkillPair(
                         inputs[0],
-                        skillRanker.getFallbackSkill(inputs[0], inputWords, normalizedWords)
+                        skillRanker.getFallbackSkill(SkillHandler.skillContext, inputs[0], inputWords, normalizedWords)
                     )
                 }
             } catch (throwable: Throwable) {
@@ -339,12 +339,9 @@ class SkillEvaluator(
             }
 
             try {
-                val permissions = chosen.skill.correspondingSkillInfo.neededPermissions
+                val permissions = chosen.skill.skill.correspondingSkillInfo.neededPermissions
                     .toTypedArray()
-                if (PermissionUtils.checkPermissions(activity, *permissions)) {
-                    // skill's output will be generated below, so process input now
-                    chosen.skill.processInput()
-                } else {
+                if (!PermissionUtils.checkPermissions(activity, *permissions)) {
                     // before executing this skill needs some permissions, don't process input now
                     chosen.permissionsToRequest = permissions
                 }
@@ -356,12 +353,11 @@ class SkillEvaluator(
                 return@launch
             }
 
-            activity.runOnUiThread { onChosenSkill(chosen) }
+            onChosenSkill(chosen)
         }
     }
 
-    @UiThread
-    private fun onChosenSkill(chosen: InputSkillPair) {
+    private suspend fun onChosenSkill(chosen: InputSkillPair) {
         displayUserInput(chosen.input)
         chosen.permissionsToRequest?.also { permissionsToRequest ->
             // request permissions; when done process input in onSkillRequestPermissionsResult
@@ -373,25 +369,25 @@ class SkillEvaluator(
         } ?: generateOutput(chosen.skill)
     }
 
-    @UiThread
-    private fun generateOutput(skill: Skill) {
-        val nextSkills: List<Skill>?
+    private suspend fun generateOutput(skill: SkillWithResult<*>) {
+        val nextSkills: List<Skill<*>>?
         try {
-            val output = skill.generateOutput()
+            val output = skill.generateOutput(SkillHandler.skillContext)
 
-            speechOutputDevice.speak(output.getSpeechOutput(skill.ctx()))
+            withContext(Dispatchers.Main) {
+                speechOutputDevice.speak(output.getSpeechOutput(SkillHandler.skillContext))
 
-            val composeView = ComposeView(activity)
-            composeView.apply {
-                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-                setContent {
-                    output.GraphicalOutput(skill.ctx())
+                val composeView = ComposeView(activity)
+                composeView.apply {
+                    setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+                    setContent {
+                        output.GraphicalOutput(SkillHandler.skillContext)
+                    }
                 }
+                graphicalOutputDevice.display(composeView)
             }
-            graphicalOutputDevice.display(composeView)
 
-            nextSkills = output.getNextSkills(skill.ctx())
-            skill.cleanup() // cleanup the input that was set
+            nextSkills = output.getNextSkills(SkillHandler.skillContext)
         } catch (t: Throwable) {
             onError(t)
             return
@@ -400,9 +396,9 @@ class SkillEvaluator(
         if (nextSkills.isEmpty()) {
             // current conversation has ended, reset to the default batch of skills
             skillRanker.removeAllBatches()
-            graphicalOutputDevice.addDivider()
+            activity.runOnUiThread { graphicalOutputDevice.addDivider() }
         } else {
-            skillRanker.addBatchToTop(SkillHandler.skillContext, nextSkills)
+            skillRanker.addBatchToTop(nextSkills)
             speechOutputDevice.runWhenFinishedSpeaking {
                 activity.runOnUiThread { primaryInputDevice.tryToGetInput(false) }
             }

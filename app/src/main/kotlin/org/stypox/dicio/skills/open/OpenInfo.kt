@@ -1,11 +1,9 @@
 package org.stypox.dicio.skills.open
 
 import androidx.fragment.app.Fragment
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.chain.ChainSkill
-import org.dicio.skill.standard.StandardRecognizer
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.open
@@ -18,12 +16,8 @@ object OpenInfo : SkillInfo(
         return Sections.isSectionAvailable(open)
     }
 
-    override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(
-            OpenInfo,
-            StandardRecognizer(Sections.getSection(open))
-        )
-            .output(OpenGenerator())
+    override fun build(context: SkillContext): Skill<*> {
+        return OpenSkill(OpenInfo, Sections.getSection(open))
     }
 
     override val preferenceFragment: Fragment? = null

@@ -2,11 +2,10 @@ package org.stypox.dicio.io.speech
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
-import android.speech.tts.TextToSpeech.OnInitListener
 import android.speech.tts.UtteranceProgressListener
 import android.widget.Toast
 import androidx.annotation.StringRes
-import org.dicio.skill.output.SpeechOutputDevice
+import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.R
 import java.util.Locale
 

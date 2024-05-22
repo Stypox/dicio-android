@@ -2,8 +2,8 @@ package org.stypox.dicio.ui.util
 
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.skills.calculator.CalculatorInfo
 import org.stypox.dicio.skills.fallback.text.TextFallbackOutput
 import org.stypox.dicio.skills.lyrics.LyricsInfo

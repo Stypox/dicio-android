@@ -5,48 +5,58 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.StringRes
-import org.dicio.skill.chain.OutputGenerator
-import org.dicio.skill.output.SkillOutput
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
+import org.dicio.skill.standard.StandardResult
 import org.stypox.dicio.R
 import org.stypox.dicio.util.StringUtils
 import org.stypox.dicio.util.getString
 import java.time.Duration
 
 // TODO cleanup this skill and use a service to manage timers
-class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
-    enum class Action {
-        SET, CANCEL, QUERY // TODO add action to stop playing ringtone, if one is playing
-    }
+class TimerSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData) :
+    StandardRecognizerSkill(correspondingSkillInfo, data) {
 
-    class Data(val action: Action, val duration: Duration?, val name: String?)
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
+        val duration = scoreResult.getCapturingGroup("duration")?.let {
+            ctx.parserFormatter!!.extractDuration(it).first?.toJavaDuration()
+        }
+        val name = scoreResult.getCapturingGroup("name")
 
-    override fun generate(data: Data): SkillOutput {
-        return when (data.action) {
-            Action.SET -> {
-                if (data.duration == null) {
-                    TimerOutput.SetAskDuration { setTimer(it, data.name) }
+        return when (scoreResult.sentenceId) {
+            "cancel" -> {
+                if (name == null && SET_TIMERS.size > 1) {
+                    TimerOutput.ConfirmCancel { cancelTimer(ctx, null) }
                 } else {
-                    setTimer(data.duration, data.name)
+                    cancelTimer(ctx, name)
                 }
             }
-            Action.CANCEL -> {
-                if (data.name == null && SET_TIMERS.size > 1) {
-                    TimerOutput.ConfirmCancel { cancelTimer(null) }
+            "query" -> queryTimer(ctx, name)
+            else -> { // "set"
+                if (duration == null) {
+                    TimerOutput.SetAskDuration { setTimer(ctx, it, name) }
                 } else {
-                    cancelTimer(data.name)
+                    setTimer(ctx, duration, name)
                 }
             }
-            Action.QUERY -> queryTimer(data.name)
         }
     }
 
-    private fun setTimer(
+    private suspend fun setTimer(
+        ctx: SkillContext,
         duration: Duration,
-        name: String?
+        name: String?,
     ): SkillOutput {
         var ringtone: Ringtone? = null
 
-        val setTimer = SetTimer(duration, name,
+        val setTimer = withContext(Dispatchers.Main) { SetTimer(
+            duration = duration,
+            name = name,
             onMillisTickCallback = { milliseconds ->
                 if (milliseconds < 0 && ringtone?.isPlaying == false) {
                     ringtone?.play()
@@ -54,9 +64,9 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
             },
             onSecondsTickCallback = { seconds ->
                 if (seconds <= 5) {
-                    ctx().speechOutputDevice!!.speak(
-                        ctx()
-                            .parserFormatter!!.pronounceNumber(seconds.toDouble())
+                    ctx.speechOutputDevice.speak(
+                        ctx.parserFormatter!!
+                            .pronounceNumber(seconds.toDouble())
                             .get()
                     )
                 }
@@ -64,10 +74,10 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
             onExpiredCallback = { theName ->
                 // initialize ringtone when the timer has expired (play will be called right after)
                 ringtone = RingtoneManager.getActualDefaultRingtoneUri(
-                    ctx().android, RingtoneManager.TYPE_ALARM
+                    ctx.android, RingtoneManager.TYPE_ALARM
                 )
                     ?.let {
-                        RingtoneManager.getRingtone(ctx().android, it)
+                        RingtoneManager.getRingtone(ctx.android, it)
                     }
                     ?.also {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -79,9 +89,9 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
 
                 if (ringtone == null) {
                     // we could not load a ringtone, so we can announce via speech instead
-                    ctx().speechOutputDevice!!.speak(
+                    ctx.speechOutputDevice.speak(
                         formatStringWithName(
-                            ctx().android,
+                            ctx.android,
                             theName,
                             R.string.skill_timer_expired,
                             R.string.skill_timer_expired_name
@@ -95,7 +105,7 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
                 // removed from setTimers list
                 SET_TIMERS.removeIf { setTimer -> setTimer === timerToCancel }
             }
-        )
+        ) }
 
         SET_TIMERS.add(setTimer)
 
@@ -106,21 +116,21 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         )
     }
 
-    private fun cancelTimer(name: String?): SkillOutput {
+    private fun cancelTimer(ctx: SkillContext, name: String?): SkillOutput {
         val message: String
         if (SET_TIMERS.isEmpty()) {
-            message = ctx().android
+            message = ctx.android
                 .getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             message = if (SET_TIMERS.size == 1) {
                 formatStringWithName(
-                    ctx().android,
+                    ctx.android,
                     SET_TIMERS[0].name,
                     R.string.skill_timer_canceled,
                     R.string.skill_timer_canceled_name
                 )
             } else {
-                ctx().getString(R.string.skill_timer_all_canceled)
+                ctx.getString(R.string.skill_timer_all_canceled)
             }
 
             // cancel all timers (copying the SET_TIMERS list, since cancel() is going to remove
@@ -136,10 +146,10 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         } else {
             val setTimer = getSetTimerWithSimilarName(name)
             if (setTimer == null) {
-                message = ctx().android
+                message = ctx.android
                     .getString(R.string.skill_timer_no_active_name, name)
             } else {
-                message = ctx().android
+                message = ctx.android
                     .getString(R.string.skill_timer_canceled_name, setTimer.name)
                 setTimer.cancel()
                 SET_TIMERS.remove(setTimer)
@@ -149,9 +159,9 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         return TimerOutput.Cancel(message)
     }
 
-    private fun queryTimer(name: String?): SkillOutput {
+    private fun queryTimer(ctx: SkillContext, name: String?): SkillOutput {
         val message = if (SET_TIMERS.isEmpty()) {
-            ctx().getString(R.string.skill_timer_no_active)
+            ctx.getString(R.string.skill_timer_no_active)
         } else if (name == null) {
             // no name provided by the user: query the last timer, but adapt the message if only one
             val lastTimer = SET_TIMERS[SET_TIMERS.size - 1]
@@ -161,7 +171,7 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
                 R.string.skill_timer_query_last
 
             formatStringWithName(
-                ctx(),
+                ctx,
                 lastTimer.name,
                 lastTimer.lastTickMillis,
                 noNameQueryString,
@@ -171,11 +181,11 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
         } else {
             val setTimer = getSetTimerWithSimilarName(name)
             if (setTimer == null) {
-                ctx().getString(R.string.skill_timer_no_active_name, name)
+                ctx.getString(R.string.skill_timer_no_active_name, name)
             } else {
-                ctx().getString(
+                ctx.getString(
                     R.string.skill_timer_query_name, setTimer.name,
-                    getFormattedDuration(ctx().parserFormatter!!, setTimer.lastTickMillis, true)
+                    getFormattedDuration(ctx.parserFormatter!!, setTimer.lastTickMillis, true)
                 )
             }
         }
@@ -201,6 +211,6 @@ class TimerGenerator : OutputGenerator<TimerGenerator.Data>() {
 
     companion object {
         val SET_TIMERS: MutableList<SetTimer> = ArrayList()
-        val TAG: String = TimerGenerator::class.simpleName!!
+        val TAG: String = TimerSkill::class.simpleName!!
     }
 }

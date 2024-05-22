@@ -1,8 +1,8 @@
 package org.stypox.dicio.io.graphical
 
 import androidx.compose.runtime.Composable
-import org.dicio.skill.SkillContext
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
 
 /**
  * A [SkillOutput] where the graphical output is just a headline text with the speech output.

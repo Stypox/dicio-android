@@ -5,19 +5,11 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
+import org.dicio.skill.skill.Skill
 import org.dicio.skill.chain.InputRecognizer
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.util.WordExtractor.extractWords
 import org.dicio.skill.util.WordExtractor.normalizeWords
-
-object TestSkillInfo : SkillInfo("", 0, 0, 0, false) {
-    override fun isAvailable(context: SkillContext) = TODO()
-    override fun build(context: SkillContext) = TODO()
-    override val preferenceFragment get() = TODO()
-}
 
 private class TestSkill(specificity: InputRecognizer.Specificity, val score: Float) :
     Skill(TestSkillInfo, specificity) {
@@ -38,7 +30,7 @@ private class TestSkill(specificity: InputRecognizer.Specificity, val score: Flo
 
     // useless for this test
     override fun processInput() {}
-    override fun generateOutput(): SkillOutput = TODO()
+    override suspend fun generateOutput(): SkillOutput = TODO()
     override fun cleanup() {}
 }
 

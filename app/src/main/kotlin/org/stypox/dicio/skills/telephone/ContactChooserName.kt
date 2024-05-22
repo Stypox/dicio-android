@@ -1,53 +1,45 @@
 package org.stypox.dicio.skills.telephone
 
-import org.dicio.skill.Skill
-import org.dicio.skill.chain.InputRecognizer.Specificity
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.skill.Specificity
 import org.stypox.dicio.util.StringUtils
 
 class ContactChooserName internal constructor(private val contacts: List<Pair<String, String>>) :
     // use a low specificity to prefer the index-based contact chooser
-    Skill(TelephoneInfo, Specificity.LOW) {
+    Skill<Pair<String, String>?>(TelephoneInfo, Specificity.LOW) {
 
-    private var input: String? = null
-    private var bestContact: Pair<String, String>? = null
-
-    override fun setInput(
+    override fun score(
+        ctx: SkillContext,
         input: String,
         inputWords: List<String>,
         normalizedWordKeys: List<String>
-    ) {
-        this.input = input
-    }
+    ): Pair<Float, Pair<String, String>?> {
+        val trimmedInput = input.trim { it <= ' ' }
 
-    override fun score(): Float {
-        val input = input?.trim { it <= ' ' } ?: return 0.0f
-
-        bestContact = contacts
+        val bestContact = contacts
             .map { nameNumberPair ->
                 Pair(
                     nameNumberPair,
-                    StringUtils.contactStringDistance(input, nameNumberPair.first)
+                    StringUtils.contactStringDistance(trimmedInput, nameNumberPair.first)
                 )
             }
             .filter { pair -> pair.second < -7 }
             .minByOrNull { a -> a.second }
             ?.first
 
-        return if (bestContact == null) 0.0f else 1.0f
+        return Pair(
+            if (bestContact == null) 0.0f else 1.0f,
+            bestContact
+        )
     }
 
-    override fun processInput() {}
-    override fun generateOutput(): SkillOutput {
-        return bestContact?.let {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Pair<String, String>?): SkillOutput {
+        return scoreResult?.let {
             ConfirmCallOutput(it.first, it.second)
         }
             // impossible situation
             ?: ConfirmedCallOutput(null)
-    }
-
-    override fun cleanup() {
-        super.cleanup()
-        bestContact = null
     }
 }

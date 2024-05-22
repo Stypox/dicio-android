@@ -3,11 +3,8 @@ package org.stypox.dicio.ui.main
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.dicio.skill.SkillContext
+import org.dicio.skill.context.SkillContext
 import org.stypox.dicio.eval.SkillEvaluator2
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice

@@ -1,6 +1,10 @@
 package org.stypox.dicio.skills.weather
 
-import org.dicio.skill.chain.IntermediateProcessor
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.dicio.skill.standard.StandardResult
 import org.stypox.dicio.R
 import org.stypox.dicio.Sentences_en.weather
@@ -10,14 +14,15 @@ import org.stypox.dicio.util.getString
 import java.io.FileNotFoundException
 import java.util.Locale
 
-class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherGenerator.Data>() {
-    override fun process(data: StandardResult): WeatherGenerator.Data {
-        var city = data.getCapturingGroup(weather.where)
+class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData) :
+    StandardRecognizerSkill(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
+        var city = scoreResult.getCapturingGroup(weather.where)
             ?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
 
         if (city.isNullOrEmpty()) {
-            city = ctx().preferences!!.getString(
-                ctx().getString(R.string.pref_key_weather_default_city), ""
+            city = ctx.preferences.getString(
+                ctx.getString(R.string.pref_key_weather_default_city), ""
             )?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
         }
 
@@ -25,21 +30,25 @@ class OpenWeatherMapProcessor : IntermediateProcessor<StandardResult, WeatherGen
             city = ConnectionUtils.getPageJson(IP_INFO_URL).getString("city")
         }
 
+        if (city.isNullOrEmpty()) {
+            return WeatherOutput.Failed(city = city ?: "")
+        }
+
         val weatherData = try {
             ConnectionUtils.getPageJson(
                 "$WEATHER_API_URL?APPID=$API_KEY&units=metric&lang=" +
-                        ctx().locale!!.language.lowercase(Locale.getDefault()) +
+                        ctx.locale.language.lowercase(Locale.getDefault()) +
                         "&q=" + ConnectionUtils.urlEncode(city)
             )
         } catch (ignored: FileNotFoundException) {
-            return WeatherGenerator.Data.Failed(city = city)
+            return WeatherOutput.Failed(city = city)
         }
 
         val weatherObject = weatherData.getJSONArray("weather").getJSONObject(0)
         val mainObject = weatherData.getJSONObject("main")
         val windObject = weatherData.getJSONObject("wind")
 
-        return WeatherGenerator.Data.Success(
+        return WeatherOutput.Success(
             city = weatherData.getString("name"),
             description = weatherObject.getString("description")
                 .apply { this[0].uppercaseChar() + this.substring(1) },

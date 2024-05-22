@@ -9,9 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.util.getString
@@ -25,8 +25,8 @@ class TelephoneOutput(
         ctx.getString(R.string.skill_telephone_found_contacts, contacts.size)
     }
 
-    override fun getNextSkills(ctx: SkillContext): List<Skill> {
-        val result = mutableListOf<Skill>(
+    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> {
+        val result = mutableListOf<Skill<*>>(
             ContactChooserName(
                 // when saying the name, there is no way to distinguish between
                 // different numbers, so just use the first one

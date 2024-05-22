@@ -42,9 +42,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews

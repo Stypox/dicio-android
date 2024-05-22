@@ -2,11 +2,9 @@ package org.stypox.dicio.skills.telephone
 
 import android.Manifest
 import androidx.fragment.app.Fragment
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.chain.ChainSkill
-import org.dicio.skill.standard.StandardRecognizer
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.telephone
@@ -20,12 +18,8 @@ object TelephoneInfo : SkillInfo(
         return Sections.isSectionAvailable(telephone) && Sections.isSectionAvailable(util_yes_no)
     }
 
-    override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(
-            TelephoneInfo,
-            StandardRecognizer(Sections.getSection(telephone))
-        )
-            .output(TelephoneGenerator())
+    override fun build(context: SkillContext): Skill<*> {
+        return TelephoneSkill(TelephoneInfo, Sections.getSection(telephone))
     }
 
     override val preferenceFragment: Fragment? = null

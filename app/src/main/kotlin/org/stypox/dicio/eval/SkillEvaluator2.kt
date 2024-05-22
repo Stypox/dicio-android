@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.dicio.skill.SkillContext
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.util.WordExtractor
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
@@ -90,14 +90,15 @@ class SkillEvaluator2(
             utterances.firstNotNullOfOrNull { input: String ->
                 val inputWords = WordExtractor.extractWords(input)
                 val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                skillRanker.getBest(input, inputWords, normalizedWords)
+                skillRanker.getBest(skillContext, input, inputWords, normalizedWords)
                     ?.let { Triple(input, it, false) }
             } ?: run {
                 val inputWords = WordExtractor.extractWords(utterances[0])
                 val normalizedWords = WordExtractor.normalizeWords(inputWords)
                 Triple(
                     utterances[0],
-                    skillRanker.getFallbackSkill(utterances[0], inputWords, normalizedWords),
+                    skillRanker.getFallbackSkill(
+                        skillContext, utterances[0], inputWords, normalizedWords),
                     true
                 )
             }
@@ -105,7 +106,7 @@ class SkillEvaluator2(
             addErrorInteractionFromPending(throwable)
             return
         }
-        val skillInfo = chosenSkill.correspondingSkillInfo
+        val skillInfo = chosenSkill.skill.correspondingSkillInfo
 
         _state.value = _state.value.copy(
             pendingQuestion = PendingQuestion(
@@ -114,7 +115,7 @@ class SkillEvaluator2(
                 // the continuation of the last interaction (since continuing an
                 // interaction/conversation is done through the stack of batches)
                 continuesLastInteraction = skillRanker.hasAnyBatches(),
-                skillBeingEvaluated = chosenSkill.correspondingSkillInfo,
+                skillBeingEvaluated = chosenSkill.skill.correspondingSkillInfo,
             )
         )
 
@@ -126,11 +127,7 @@ class SkillEvaluator2(
                 return
             }
 
-            chosenSkill.processInput()
-            val output = withContext (Dispatchers.Main) {
-                // call generateOutput() on the main thread
-                chosenSkill.generateOutput()
-            }
+            val output = chosenSkill.generateOutput(skillContext)
 
             addInteractionFromPending(output)
             output.getSpeechOutput(skillContext).let {
@@ -148,15 +145,13 @@ class SkillEvaluator2(
                     skillRanker.removeAllBatches()
                 }
             } else {
-                skillRanker.addBatchToTop(skillContext, nextSkills)
+                skillRanker.addBatchToTop(nextSkills)
                 sttInputDevice?.tryLoad(true)
             }
 
         } catch (throwable: Throwable) {
             addErrorInteractionFromPending(throwable)
             return
-        } finally {
-            chosenSkill.cleanup()
         }
     }
 

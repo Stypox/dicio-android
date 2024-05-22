@@ -3,14 +3,11 @@ package org.stypox.dicio.skills
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.DrawableRes
-import androidx.preference.PreferenceManager
-import org.dicio.numbers.ParserFormatter
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.output.SpeechOutputDevice
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.R
-import org.stypox.dicio.Sections
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.io.speech.NothingSpeechDevice
@@ -24,7 +21,6 @@ import org.stypox.dicio.skills.search.SearchInfo
 import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.weather.WeatherInfo
-import java.util.Locale
 import java.util.Objects
 import java.util.stream.Collectors
 
@@ -80,17 +76,15 @@ object SkillHandler {
         return "skills_handler_is_enabled_$skillId"
     }
 
-    val standardSkillBatch: List<Skill>
+    val standardSkillBatch: List<Skill<*>>
         get() = enabledSkillInfoList.stream()
             .map(::buildSkillFromInfo)
             .collect(Collectors.toList())
-    val fallbackSkill: Skill
+    val fallbackSkill: Skill<*>
         get() = buildSkillFromInfo(Objects.requireNonNull(fallbackSkillInfoList[0]))
 
-    private fun buildSkillFromInfo(skillInfo: SkillInfo): Skill {
-        val skill = skillInfo.build(skillContext)
-        skill.setContext(skillContext)
-        return skill
+    private fun buildSkillFromInfo(skillInfo: SkillInfo): Skill<*> {
+        return skillInfo.build(skillContext)
     }
 
     val availableSkillInfoList: List<SkillInfo>

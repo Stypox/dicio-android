@@ -21,7 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import org.dicio.skill.output.SpeechOutputDevice
+import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillRanker
 import org.stypox.dicio.io.input.InputDevice

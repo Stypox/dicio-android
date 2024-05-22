@@ -1,9 +1,9 @@
 package org.stypox.dicio.skills.fallback.text
 
 import androidx.preference.PreferenceFragmentCompat
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 
 object TextFallbackInfo :
@@ -12,8 +12,8 @@ object TextFallbackInfo :
         return true
     }
 
-    override fun build(context: SkillContext): Skill {
-        return TextFallback()
+    override fun build(context: SkillContext): Skill<*> {
+        return TextFallbackSkill(TextFallbackInfo)
     }
 
     override val preferenceFragment: PreferenceFragmentCompat? = null

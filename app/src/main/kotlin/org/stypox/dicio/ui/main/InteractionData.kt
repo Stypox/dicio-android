@@ -1,7 +1,7 @@
 package org.stypox.dicio.ui.main
 
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
 
 data class QuestionAnswer(
     val question: String?,

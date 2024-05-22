@@ -1,11 +1,9 @@
 package org.stypox.dicio.skills.calculator
 
 import androidx.fragment.app.Fragment
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.chain.ChainSkill
-import org.dicio.skill.standard.StandardRecognizer
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.calculator
@@ -18,13 +16,8 @@ object CalculatorInfo : SkillInfo(
         return Sections.isSectionAvailable(calculator) && context.parserFormatter != null
     }
 
-    override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(
-            CalculatorInfo,
-            StandardRecognizer(Sections.getSection(calculator))
-        )
-            .process(CalculatorProcessor())
-            .output(CalculatorGenerator())
+    override fun build(context: SkillContext): Skill<*> {
+        return CalculatorSkill(CalculatorInfo, Sections.getSection(calculator))
     }
 
     override val preferenceFragment: Fragment? = null

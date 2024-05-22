@@ -5,20 +5,17 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LongState
 import org.dicio.numbers.ParserFormatter
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.chain.ChainSkill
-import org.dicio.skill.chain.InputRecognizer
-import org.dicio.skill.chain.OutputGenerator
-import org.dicio.skill.output.SkillOutput
-import org.dicio.skill.standard.StandardRecognizer
-import org.dicio.skill.standard.StandardResult
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.skill.Specificity
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.skills.fallback.text.TextFallbackOutput
+import org.stypox.dicio.util.RecognizeYesNoSkill
 import org.stypox.dicio.util.getString
 import java.text.DecimalFormatSymbols
 import java.time.Duration
@@ -47,46 +44,42 @@ sealed class TimerOutput : SkillOutput {
     }
 
     class SetAskDuration(
-        private val onGotDuration: (Duration) -> SkillOutput,
+        private val onGotDuration: suspend (Duration) -> SkillOutput,
     ) : TimerOutput(), HeadlineSpeechSkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_how_much_time)
 
-        override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(object : Skill(
-            TimerInfo,
-            InputRecognizer.Specificity.HIGH,
-        ) {
-            private var input: String? = null
-            private var duration: Duration? = null
+        override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
+            object : Skill<Duration?>(TimerInfo, Specificity.HIGH) {
+                override fun score(
+                    ctx: SkillContext,
+                    input: String,
+                    inputWords: List<String>,
+                    normalizedWordKeys: List<String>
+                ): Pair<Float, Duration?> {
+                    val duration = ctx.parserFormatter!!
+                        .extractDuration(input)
+                        .first
+                        ?.toJavaDuration()
 
-            override fun setInput(
-                input: String,
-                inputWords: List<String>,
-                normalizedWordKeys: List<String>
-            ) {
-                this.input = input
-            }
+                    return Pair(
+                        if (duration == null) 0.0f else 1.0f,
+                        duration
+                    )
+                }
 
-            override fun score(): Float {
-                duration = ctx().parserFormatter!!
-                    .extractDuration(input!!)
-                    .first
-                    ?.toJavaDuration()
-                return if (duration == null) 0.0f else 1.0f
-            }
-
-            override fun processInput() {}
-            override fun generateOutput(): SkillOutput {
-                return duration?.let { onGotDuration(it) }
-                    ?: TextFallbackOutput()
-            }
-
-            override fun cleanup() {
-                super.cleanup()
-                input = null
-                duration = null
-            }
-        })
+                override suspend fun generateOutput(
+                    ctx: SkillContext,
+                    scoreResult: Duration?
+                ): SkillOutput {
+                    return if (scoreResult == null) {
+                        // impossible situation
+                        TextFallbackOutput()
+                    } else {
+                        onGotDuration(scoreResult)
+                    }
+                }
+            })
     }
 
     class Cancel(
@@ -101,19 +94,17 @@ sealed class TimerOutput : SkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_confirm_cancel)
 
-        override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(
-            ChainSkill.Builder(
-                TimerInfo,
-                StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no))
-            ).output(object : OutputGenerator<StandardResult>() {
-                override fun generate(data: StandardResult): SkillOutput {
-                    if ("yes" == data.sentenceId) {
-                        return onConfirm()
+        override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
+            object : RecognizeYesNoSkill(TimerInfo,
+                                         Sections.getSection(SectionsGenerated.util_yes_no)) {
+                override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
+                    return if (scoreResult) {
+                        onConfirm()
+                    } else {
+                        Cancel(ctx.getString(R.string.skill_timer_none_canceled))
                     }
-
-                    return Cancel(ctx().getString(R.string.skill_timer_none_canceled))
                 }
-            })
+            }
         )
     }
 

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import org.dicio.skill.SkillInfo
+import org.dicio.skill.skill.SkillInfo
 
 object PermissionUtils {
     private val TAG = PermissionUtils::class.java.simpleName

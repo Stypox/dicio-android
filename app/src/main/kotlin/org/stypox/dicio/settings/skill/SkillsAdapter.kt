@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import org.dicio.skill.SkillInfo
+import org.dicio.skill.skill.SkillInfo
 
 class SkillsAdapter(
     private val fragment: Fragment,

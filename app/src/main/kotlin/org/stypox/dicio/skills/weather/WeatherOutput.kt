@@ -15,38 +15,48 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import org.dicio.skill.SkillContext
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.Headline
+import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.util.getString
 import org.stypox.dicio.util.lowercaseCapitalized
 import java.util.Locale
 
-class WeatherOutput(
-    private val data: WeatherGenerator.Data,
-) : SkillOutput {
-    override fun getSpeechOutput(ctx: SkillContext): String = when (data) {
-        is WeatherGenerator.Data.Success -> ctx.getString(
-            R.string.skill_weather_in_city_there_is_description, data.city, data.description
+sealed class WeatherOutput : SkillOutput {
+    data class Success(
+        val city: String,
+        val description: String,
+        val iconUrl: String,
+        val temp: Double,
+        val tempMin: Double,
+        val tempMax: Double,
+        val windSpeed: Double,
+    ) : WeatherOutput() {
+        override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
+            R.string.skill_weather_in_city_there_is_description, city, description
         )
-        is WeatherGenerator.Data.Failed -> ctx.getString(
-            R.string.skill_weather_could_not_find_city, data.city
-        )
+
+        @Composable
+        override fun GraphicalOutput(ctx: SkillContext) {
+            CurrentWeatherRow(data = this)
+        }
+
     }
 
-    @Composable
-    override fun GraphicalOutput(ctx: SkillContext) {
-        when (data) {
-            is WeatherGenerator.Data.Success -> CurrentWeatherRow(data = data)
-            is WeatherGenerator.Data.Failed -> Headline(text = getSpeechOutput(ctx))
-        }
+    data class Failed(
+        val city: String
+    ) : WeatherOutput(), HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
+            R.string.skill_weather_could_not_find_city, city
+        )
     }
 }
 
 
 @Composable
-fun CurrentWeatherRow(data: WeatherGenerator.Data.Success) {
+fun CurrentWeatherRow(data: WeatherOutput.Success) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,

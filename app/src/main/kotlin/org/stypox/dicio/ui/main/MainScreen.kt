@@ -1,7 +1,6 @@
 package org.stypox.dicio.ui.main
 
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
@@ -31,7 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
-import org.dicio.skill.SkillContext
+import org.dicio.skill.context.SkillContext
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.io.input.InputEvent

@@ -12,7 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
-import org.dicio.skill.SkillInfo
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.MainActivity
 import org.stypox.dicio.R
 import org.stypox.dicio.skills.SkillHandler

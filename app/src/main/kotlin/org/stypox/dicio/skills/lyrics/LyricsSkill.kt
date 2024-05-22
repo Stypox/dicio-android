@@ -1,6 +1,10 @@
 package org.stypox.dicio.skills.lyrics
 
-import org.dicio.skill.chain.IntermediateProcessor
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.dicio.skill.standard.StandardResult
 import org.json.JSONArray
 import org.json.JSONObject
@@ -13,17 +17,22 @@ import org.unbescape.javascript.JavaScriptEscape
 import org.unbescape.json.JsonEscape
 import java.util.regex.Pattern
 
-class GeniusProcessor : IntermediateProcessor<StandardResult, LyricsGenerator.Data>() {
-    @Throws(Exception::class)
-    override fun process(data: StandardResult): LyricsGenerator.Data {
-        val songName: String = data.getCapturingGroup(lyrics.song)!!.trim { it <= ' ' }
+class LyricsSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
+    : StandardRecognizerSkill(correspondingSkillInfo, data) {
+
+    /**
+     * This connects to Genius to get lyrics information.
+     * More services could be added in the future.
+     */
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
+        val songName: String = scoreResult.getCapturingGroup(lyrics.song)!!.trim { it <= ' ' }
         val search: JSONObject = ConnectionUtils.getPageJson(
             GENIUS_SEARCH_URL + ConnectionUtils.urlEncode(songName) + "&count=1"
         )
         val searchHits: JSONArray = search.getJSONObject("response").getJSONArray("sections")
             .getJSONObject(0).getJSONArray("hits")
         if (searchHits.length() == 0) {
-            return LyricsGenerator.Data.Failed(title = songName)
+            return LyricsOutput.Failed(title = songName)
         }
 
         val song: JSONObject = searchHits.getJSONObject(0).getJSONObject("result")
@@ -36,7 +45,7 @@ class GeniusProcessor : IntermediateProcessor<StandardResult, LyricsGenerator.Da
         val elements = lyricsDocument.select("div[class=rg_embed_body]")
         elements.select("br").append("{#%)")
 
-        return LyricsGenerator.Data.Success(
+        return LyricsOutput.Success(
             title = song.getString("title"),
             artist = song.getJSONObject("primary_artist").getString("name"),
             lyrics = RegexUtils.replaceAll(NEWLINE_PATTERN, elements.text(), "\n"),

@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.SkillInfo
-import org.dicio.skill.chain.ChainSkill
-import org.dicio.skill.standard.StandardRecognizer
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.weather
@@ -21,13 +19,8 @@ object WeatherInfo : SkillInfo(
         return Sections.isSectionAvailable(weather)
     }
 
-    override fun build(context: SkillContext): Skill {
-        return ChainSkill.Builder(
-            WeatherInfo,
-            StandardRecognizer(Sections.getSection(weather))
-        )
-            .process(OpenWeatherMapProcessor())
-            .output(WeatherGenerator())
+    override fun build(context: SkillContext): Skill<*> {
+        return WeatherSkill(WeatherInfo, Sections.getSection(weather))
     }
 
     override val preferenceFragment: Fragment

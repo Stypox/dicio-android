@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.datastore.core.DataStore
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.dicio.numbers.ParserFormatter
-import org.dicio.skill.SkillContext
-import org.dicio.skill.output.SpeechOutputDevice
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
-import org.stypox.dicio.settings.datastore.UserSettings
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton

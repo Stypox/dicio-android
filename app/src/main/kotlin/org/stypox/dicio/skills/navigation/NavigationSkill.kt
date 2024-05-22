@@ -1,16 +1,25 @@
 package org.stypox.dicio.skills.navigation
 
+import android.content.Intent
+import android.net.Uri
 import org.dicio.numbers.unit.Number
-import org.dicio.skill.chain.IntermediateProcessor
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.dicio.skill.standard.StandardResult
 import org.stypox.dicio.Sentences_en.navigation
+import java.util.Locale
 
-class NavigationProcessor : IntermediateProcessor<StandardResult, String?>() {
-    @Throws(Exception::class)
-    override fun process(data: StandardResult): String? {
-        val placeToNavigate: String = data.getCapturingGroup(navigation.where) ?: return null
-        val npf = ctx().parserFormatter
-        return if (npf == null) {
+class NavigationSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
+    : StandardRecognizerSkill(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
+        val placeToNavigate: String = scoreResult.getCapturingGroup(navigation.where)
+            ?: return NavigationOutput(null)
+
+        val npf = ctx.parserFormatter
+        val cleanPlaceToNavigate = if (npf == null) {
             // No number parser available, feed the spoken input directly to the map application.
             placeToNavigate.trim { it <= ' ' }
         } else {
@@ -45,5 +54,12 @@ class NavigationProcessor : IntermediateProcessor<StandardResult, String?>() {
             }
             placeToNavigateSB.toString().trim { it <= ' ' }
         }
+
+        val uriGeoSimple = String.format(Locale.ENGLISH, "geo:0,0?q=%s", cleanPlaceToNavigate)
+        val launchIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uriGeoSimple))
+        launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        ctx.android.startActivity(launchIntent)
+
+        return NavigationOutput(cleanPlaceToNavigate)
     }
 }

@@ -6,16 +6,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.dicio.skill.Skill
-import org.dicio.skill.SkillContext
-import org.dicio.skill.chain.ChainSkill
-import org.dicio.skill.output.SkillOutput
-import org.dicio.skill.standard.StandardRecognizer
+import org.dicio.skill.skill.Skill
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Body
 import org.stypox.dicio.io.graphical.Headline
+import org.stypox.dicio.util.RecognizeYesNoSkill
 import org.stypox.dicio.util.getString
 
 class ConfirmCallOutput(
@@ -25,12 +24,18 @@ class ConfirmCallOutput(
     override fun getSpeechOutput(ctx: SkillContext): String =
         ctx.getString(R.string.skill_telephone_confirm_call, name)
 
-    override fun getNextSkills(ctx: SkillContext): List<Skill> = listOf(
-        ChainSkill.Builder(
-            TelephoneInfo,
-            StandardRecognizer(Sections.getSection(SectionsGenerated.util_yes_no))
-        )
-            .output(ConfirmCallGenerator(number))
+    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
+        object : RecognizeYesNoSkill(TelephoneInfo,
+                                     Sections.getSection(SectionsGenerated.util_yes_no)) {
+            override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
+                return if (scoreResult) {
+                    TelephoneSkill.call(ctx.android, number)
+                    ConfirmedCallOutput(number)
+                } else {
+                    ConfirmedCallOutput(null)
+                }
+            }
+        }
     )
 
     @Composable

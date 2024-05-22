@@ -5,16 +5,21 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import org.dicio.skill.chain.OutputGenerator
-import org.dicio.skill.output.SkillOutput
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.dicio.skill.standard.StandardResult
 import org.stypox.dicio.Sentences_en.open
 import org.stypox.dicio.util.StringUtils
 
-class OpenGenerator : OutputGenerator<StandardResult>() {
-    override fun generate(data: StandardResult): SkillOutput {
-        val userAppName = data.getCapturingGroup(open.what)?.trim { it <= ' ' }
-        val packageManager: PackageManager = ctx().android.packageManager
+class OpenSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
+    : StandardRecognizerSkill(correspondingSkillInfo, data) {
+
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
+        val userAppName = scoreResult.getCapturingGroup(open.what)?.trim { it <= ' ' }
+        val packageManager: PackageManager = ctx.android.packageManager
         val applicationInfo = userAppName?.let { getMostSimilarApp(packageManager, it) }
 
         if (applicationInfo != null) {
@@ -23,7 +28,7 @@ class OpenGenerator : OutputGenerator<StandardResult>() {
             launchIntent.action = Intent.ACTION_MAIN
             launchIntent.addCategory(Intent.CATEGORY_LAUNCHER)
             launchIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            ctx().android.startActivity(launchIntent)
+            ctx.android.startActivity(launchIntent)
         }
 
         return OpenOutput(
