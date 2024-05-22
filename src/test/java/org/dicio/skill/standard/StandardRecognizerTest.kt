@@ -3,15 +3,16 @@ package org.dicio.skill.standard
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.floats.plusOrMinus
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
-import org.dicio.skill.chain.InputRecognizer.Specificity
+import org.dicio.skill.MockSkillContext
+import org.dicio.skill.skill.Specificity
 import org.dicio.skill.standard.word.CapturingGroup
 import org.dicio.skill.standard.word.DiacriticsInsensitiveWord
 import org.dicio.skill.standard.word.DiacriticsSensitiveWord
+import org.dicio.skill.mockStandardRecognizerSkill
 import org.dicio.skill.util.WordExtractor.extractWords
 import org.dicio.skill.util.WordExtractor.normalizeWords
 import java.util.Collections
@@ -21,15 +22,12 @@ private const val FLOAT_EQUALS_DELTA: Float = 0.0001f
 
 class StandardRecognizerTest : StringSpec({
     "specificity" {
-        val sr = StandardRecognizer(
-            StandardRecognizerData(Specificity.HIGH)
-        )
+        val sr = mockStandardRecognizerSkill(StandardRecognizerData(Specificity.HIGH))
         sr.specificity shouldBeSameInstanceAs Specificity.HIGH
-        sr.cleanup()
     }
 
     "\"mood\" section from the README of the sentences compiler" {
-        val sr = StandardRecognizer(section_mood)
+        val sr = mockStandardRecognizerSkill(section_mood)
         sr.specificity shouldBeSameInstanceAs Specificity.HIGH
 
         assertRecognized(sr, "how are you", "", 1.0f, 1.0f, emptyMap())
@@ -45,7 +43,7 @@ class StandardRecognizerTest : StringSpec({
     }
 
     "\"GPS navigation\" section from the README of the sentences compiler" {
-        val sr = StandardRecognizer(section_GPS_navigation)
+        val sr = mockStandardRecognizerSkill(section_GPS_navigation)
         sr.specificity shouldBeSameInstanceAs Specificity.MEDIUM
 
         val place = Collections.singletonMap("place", "a")
@@ -83,7 +81,7 @@ class StandardRecognizerTest : StringSpec({
     }
 
     "smaller capturing group should be preferred" {
-        val sr = StandardRecognizer(section_hello)
+        val sr = mockStandardRecognizerSkill(section_hello)
         sr.specificity shouldBeSameInstanceAs Specificity.LOW
 
         val guys = Collections.singletonMap("hi", "guys")
@@ -101,17 +99,14 @@ class StandardRecognizerTest : StringSpec({
 
 
 private fun assertRecognized(
-    sr: StandardRecognizer, input: String,
+    sr: StandardRecognizerSkill, input: String,
     sentenceId: String,
     a: Float, b: Float,
     capturingGroups: Map<String, String>
 ) {
     val inputWords = extractWords(input)
     val normalizedInputWords = normalizeWords(inputWords)
-    sr.setInput(input, inputWords, normalizedInputWords)
-    val score = sr.score()
-    val result = sr.result
-    sr.cleanup()
+    val (score, result) = sr.score(MockSkillContext, input, inputWords, normalizedInputWords)
     result.sentenceId shouldBe sentenceId
 
     if (a == b) {

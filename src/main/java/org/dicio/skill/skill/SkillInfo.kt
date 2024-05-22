@@ -1,8 +1,9 @@
-package org.dicio.skill
+package org.dicio.skill.skill
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import org.dicio.skill.context.SkillContext
 
 /**
  * Constructor for [SkillInfo], providing basic information about a skill
@@ -57,12 +58,11 @@ abstract class SkillInfo(
     abstract fun isAvailable(context: SkillContext): Boolean
 
     /**
-     * Builds an instance of the [Skill] this [SkillInfo] object represents. There is no need to
-     * call [Skill.setContext]  on the built skill, as that has to be done by the caller.
+     * Builds an instance of the [Skill] this [SkillInfo] object represents.
      * @param context the skill context with useful resources, see [SkillContext]
      * @return a skill
      */
-    abstract fun build(context: SkillContext): Skill
+    abstract fun build(context: SkillContext): Skill<*>
 
     /**
      * Provides a custom preferences screen for this skill, allowing the user to customize it to

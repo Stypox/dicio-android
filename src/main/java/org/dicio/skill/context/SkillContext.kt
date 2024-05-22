@@ -1,9 +1,8 @@
-package org.dicio.skill
+package org.dicio.skill.context
 
 import android.content.Context
 import android.content.SharedPreferences
 import org.dicio.numbers.ParserFormatter
-import org.dicio.skill.output.SpeechOutputDevice
 import java.util.Locale
 
 /**
@@ -19,7 +18,8 @@ interface SkillContext {
 
     /**
      * The Android shared preferences, useful for user customization, also see
-     * [SkillInfo.hasPreferences] and [SkillInfo.preferenceFragment].
+     * [org.dicio.skill.skill.SkillInfo.hasPreferences] and
+     * [org.dicio.skill.skill.SkillInfo.preferenceFragment].
      */
     val preferences: SharedPreferences
 

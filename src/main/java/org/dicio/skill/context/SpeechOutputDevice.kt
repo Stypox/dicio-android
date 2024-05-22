@@ -1,4 +1,4 @@
-package org.dicio.skill.output
+package org.dicio.skill.context
 
 import org.dicio.skill.util.CleanableUp
 
