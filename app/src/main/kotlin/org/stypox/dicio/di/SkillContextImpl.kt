@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.datastore.core.DataStore
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.SkillContext
 import org.dicio.skill.output.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
+import org.stypox.dicio.settings.datastore.UserSettings
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,9 +19,11 @@ import javax.inject.Singleton
 @Singleton
 class SkillContextImpl @Inject constructor(
     @ApplicationContext override val android: Context,
-    override val preferences: SharedPreferences,
     private val localeManager: LocaleManager,
 ) : SkillContext {
+    override val preferences: SharedPreferences
+        get() = PreferenceManager.getDefaultSharedPreferences(android)
+
     override val locale: Locale
         get() = localeManager.locale
 
@@ -47,7 +51,6 @@ class SkillContextImpl @Inject constructor(
         @Composable
         fun newForPreviews(): SkillContext = SkillContextImpl(
             LocalContext.current,
-            PreferenceManager.getDefaultSharedPreferences(LocalContext.current),
             LocaleManager(LocalContext.current),
         )
     }

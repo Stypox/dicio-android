@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "theme.proto";
+import "language.proto";
+import "input_device.proto";
+import "speech_output_device.proto";
+
+option java_package = "org.stypox.dicio.settings.datastore";
+option java_multiple_files = true;
+
+message UserSettings {
+    Theme theme = 1;
+    Language language = 2;
+    InputDevice input_device = 3;
+    SpeechOutputDevice speech_output_device = 4;
+    bool auto_finish_stt_service = 5;
+}

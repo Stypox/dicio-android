@@ -3,6 +3,8 @@ import org.dicio.sentences_compiler.compiler.CompilerBase
 import org.dicio.sentences_compiler.compiler.CompilerToJava
 import org.dicio.sentences_compiler.main.SentencesCompiler
 import org.dicio.sentences_compiler.util.CompilerError
+import org.gradle.configurationcache.extensions.capitalized
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
@@ -25,6 +27,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.plugin.parcelize)
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.google.dagger.hilt.android)
+    alias(libs.plugins.com.google.protobuf)
 }
 
 android {
@@ -84,6 +87,39 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
+protobuf {
+    protoc {
+        libs.protobuf.protoc.get().toString()
+    }
+    plugins {
+        generateProtoTasks {
+            all().forEach {
+                it.builtins {
+                    create("kotlin") {
+                        option("lite")
+                    }
+                    create("java") {
+                        option("lite")
+                    }
+                }
+            }
+        }
+    }
+}
+
+// workaround for https://github.com/google/ksp/issues/1590
+// remove when not needed anymore
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        afterEvaluate {
+            val capName = variant.name.capitalized()
+            tasks.getByName<KotlinCompile>("ksp${capName}Kotlin") {
+                setSource(tasks.getByName("generate${capName}Proto").outputs)
+            }
+        }
+    }
+}
+
 dependencies {
     // Desugaring
     coreLibraryDesugaring(libs.desugar.jdk.libs)
@@ -119,6 +155,11 @@ dependencies {
     androidTestAnnotationProcessor(libs.hilt.android.compiler)
     testImplementation(libs.hilt.android.testing)
     testAnnotationProcessor(libs.hilt.android.compiler)
+
+    // Protobuf and Datastore
+    implementation(libs.protobuf.kotlin.lite)
+    implementation(libs.protobuf.java.lite)
+    implementation(libs.datastore)
 
     // Vosk
     implementation(libs.jna) { artifact { type = "aar" } }

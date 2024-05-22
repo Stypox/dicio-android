@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_package = "org.stypox.dicio.settings.datastore";
+option java_multiple_files = true;
+
+// keep this list ordered alphabetically, even if this implies
+// not having it ordered by enum value
+enum Language {
+  LANGUAGE_SYSTEM = 0;
+  LANGUAGE_CS = 1; // Czech
+  LANGUAGE_DE = 2; // German
+  LANGUAGE_EN = 3; // English
+  LANGUAGE_EN_IN = 4; // Indian English
+  LANGUAGE_ES = 5; // Spanish
+  LANGUAGE_EL = 6; // Greek
+  LANGUAGE_FR = 7; // French
+  LANGUAGE_IT = 8; // Italian
+  LANGUAGE_RU = 9; // Russian
+  LANGUAGE_SL = 10; // Slovene
+}

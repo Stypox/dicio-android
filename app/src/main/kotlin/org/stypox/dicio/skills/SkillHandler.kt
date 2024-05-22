@@ -58,7 +58,6 @@ object SkillHandler {
     fun setSkillContextAndroidAndLocale(androidContext: Context) {
         _skillContext = SkillContextImpl(
             android = androidContext,
-            preferences = PreferenceManager.getDefaultSharedPreferences(androidContext),
             localeManager = LocaleManager(androidContext),
         )
     }

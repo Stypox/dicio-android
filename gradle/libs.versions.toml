@@ -6,6 +6,7 @@ coilCompose = "2.6.0"
 composeBom = "2024.05.00"
 composeKotlinCompilerExtension = "1.5.13"
 constraintlayout = "2.1.4"
+datastore = "1.1.1"
 desugar_jdk_libs = "2.0.4"
 dicioNumbers = "219cd77023368ff3e4c616ba4a338a8462e2f5b6"
 dicioSentencesCompiler = "ae228425c4071448ec09c6026b5b3a80e5744818"
@@ -23,6 +24,8 @@ material = "1.12.0"
 okhttp = "4.12.0"
 picasso = "2.71828"
 preferenceKtx = "1.2.1"
+protobufPlugin = "0.9.4"
+protoc = "4.26.1"
 unbescape = "1.1.6.RELEASE"
 voskAndroid = "0.3.32"
 
@@ -38,6 +41,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 debug-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 debug-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
@@ -59,6 +63,9 @@ okhttp = { module = "com.squareup.okhttp3:okhttp" }
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtx" }
+protobuf-java-lite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protoc" }
+protobuf-kotlin-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protoc" }
+protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 test-android-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 unbescape = { module = "org.unbescape:unbescape", version.ref = "unbescape" }
 vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
@@ -69,3 +76,4 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 org-jetbrains-kotlin-plugin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
+com-google-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
