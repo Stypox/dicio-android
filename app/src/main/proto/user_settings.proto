@@ -14,4 +14,5 @@ message UserSettings {
     InputDevice input_device = 3;
     SpeechOutputDevice speech_output_device = 4;
     bool auto_finish_stt_service = 5;
+    map<string, bool> enabled_skills = 6;
 }

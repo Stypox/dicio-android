@@ -38,6 +38,7 @@ import org.stypox.dicio.ui.nav.SearchTopAppBar
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SttStatesPreviews
+import org.stypox.dicio.util.PermissionUtils
 import kotlin.math.abs
 
 @Composable
@@ -54,11 +55,7 @@ fun MainScreen(navigationIcon: @Composable () -> Unit) {
     val context = LocalContext.current
 
     suspend fun requestPermissions(permissions: Array<String>): Boolean {
-        if (
-            permissions.all {
-                ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-            }
-        ) {
+        if (PermissionUtils.checkPermissions(context, *permissions)) {
             // permissions already granted
             return true
         }

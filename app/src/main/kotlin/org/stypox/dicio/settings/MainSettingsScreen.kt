@@ -1,9 +1,12 @@
 package org.stypox.dicio.settings
 
 import android.app.Application
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -23,16 +26,17 @@ import org.stypox.dicio.settings.datastore.SpeechOutputDevice
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettingsSerializer
 import org.stypox.dicio.settings.ui.SettingsCategoryTitle
+import org.stypox.dicio.settings.ui.SettingsItem
 import org.stypox.dicio.ui.theme.AppTheme
 
 
 @Composable
-fun SettingsScreen(viewModel: SettingsScreenViewModel = hiltViewModel()) {
+fun MainSettingsScreen(viewModel: MainSettingsViewModel = hiltViewModel()) {
     val settings by viewModel.settingsFlow
         .collectAsState(initial = UserSettingsSerializer.defaultValue)
 
     LazyColumn {
-        item { SettingsCategoryTitle(stringResource(R.string.pref_appearance)) }
+        item { SettingsCategoryTitle(stringResource(R.string.pref_general)) }
         item {
             languageSetting().Render(
                 when (val language = settings.language) {
@@ -49,6 +53,16 @@ fun SettingsScreen(viewModel: SettingsScreenViewModel = hiltViewModel()) {
                     else -> theme
                 },
                 viewModel::setTheme,
+            )
+        }
+        item {
+            SettingsItem(
+                title = stringResource(R.string.pref_skills_title),
+                icon = Icons.Default.Extension,
+                description = stringResource(R.string.pref_skills_summary),
+                modifier = Modifier.clickable {
+                    // TODO open skill settings screen
+                }
             )
         }
 
@@ -89,16 +103,16 @@ fun SettingsScreen(viewModel: SettingsScreenViewModel = hiltViewModel()) {
 
 @Preview
 @Composable
-private fun SettingsScreenPreview() {
+private fun MainSettingsScreenPreview() {
     AppTheme {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            SettingsScreen(
-                SettingsScreenViewModel(
+            MainSettingsScreen(
+                MainSettingsViewModel(
                     application = Application(),
                     dataStore = dataStore("pre", UserSettingsSerializer)
-                        .getValue(LocalContext.current, SettingsScreenViewModel::settingsFlow)
+                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow)
                 )
             )
         }

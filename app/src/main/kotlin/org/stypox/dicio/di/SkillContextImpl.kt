@@ -7,6 +7,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.dicio.numbers.ParserFormatter
+import org.dicio.numbers.lang.en.EnglishFormatter
+import org.dicio.numbers.lang.en.EnglishParser
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
@@ -47,9 +49,17 @@ class SkillContextImpl @Inject constructor(
 
     companion object {
         @Composable
-        fun newForPreviews(): SkillContext = SkillContextImpl(
-            LocalContext.current,
-            LocaleManager(LocalContext.current),
-        )
+        fun newForPreviews(): SkillContext {
+            val localeManager = LocaleManager(LocalContext.current)
+            val res = SkillContextImpl(
+                LocalContext.current,
+                localeManager,
+            )
+            res.lastParserFormatter = Pair(
+                null,
+                localeManager.locale
+            )
+            return res
+        }
     }
 }

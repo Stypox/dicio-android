@@ -14,7 +14,7 @@ import org.stypox.dicio.settings.datastore.UserSettings
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsScreenViewModel @Inject constructor(
+class MainSettingsViewModel @Inject constructor(
     application: Application,
     private val dataStore: DataStore<UserSettings>
 ) : AndroidViewModel(application) {
