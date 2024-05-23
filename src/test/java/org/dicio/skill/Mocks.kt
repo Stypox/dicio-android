@@ -2,6 +2,7 @@ package org.dicio.skill
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.ui.graphics.painter.Painter
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillOutput
@@ -20,10 +21,12 @@ object MockSkillContext : SkillContext {
     override val speechOutputDevice: SpeechOutputDevice get() = mocked()
 }
 
-object MockSkillInfo : SkillInfo("", 0, 0, 0, false) {
-    override fun isAvailable(context: SkillContext) = mocked()
-    override fun build(context: SkillContext) = mocked()
-    override val preferenceFragment get() = mocked()
+object MockSkillInfo : SkillInfo("") {
+    override fun name(context: Context): String = mocked()
+    override fun sentenceExample(context: Context): String = mocked()
+    override val icon: Painter get() = mocked()
+    override fun isAvailable(ctx: SkillContext) = mocked()
+    override fun build(ctx: SkillContext) = mocked()
 }
 
 fun mockStandardRecognizerSkill(data: StandardRecognizerData) = object : StandardRecognizerSkill(

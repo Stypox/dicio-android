@@ -18,8 +18,7 @@ interface SkillContext {
 
     /**
      * The Android shared preferences, useful for user customization, also see
-     * [org.dicio.skill.skill.SkillInfo.hasPreferences] and
-     * [org.dicio.skill.skill.SkillInfo.preferenceFragment].
+     * [org.dicio.skill.skill.SkillInfo.renderSettings].
      */
     val preferences: SharedPreferences
 
