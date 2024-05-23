@@ -68,11 +68,11 @@ private fun MainSettingsScreen(
     viewModel: MainSettingsViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val settings by viewModel.settingsFlow
-        .collectAsState(initial = UserSettingsSerializer.defaultValue)
+    val settingsState = viewModel.settingsFlow.collectAsState(initial = null)
+    val settings = settingsState.value ?: return // do not render until settings are loaded
 
     LazyColumn(modifier) {
-        item { SettingsCategoryTitle(stringResource(R.string.pref_general), topPadding = 0.dp) }
+        item { SettingsCategoryTitle(stringResource(R.string.pref_general), topPadding = 4.dp) }
         item {
             languageSetting().Render(
                 when (val language = settings.language) {
