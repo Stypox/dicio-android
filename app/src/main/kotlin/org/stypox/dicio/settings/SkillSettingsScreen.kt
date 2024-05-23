@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -93,7 +94,7 @@ fun SkillSettingsItem(
             expanded = expanded,
             toggleExpanded = if (canExpand) { -> expanded = !expanded } else null,
             skill = skill,
-            enabled = enabled,
+            enabled = enabled && isAvailable,
             setEnabled = setEnabled,
             isAvailable = isAvailable,
         )
@@ -140,10 +141,16 @@ private fun SkillSettingsItemHeader(
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        val maybeDisabledColor = if (isAvailable) {
+            LocalContentColor.current
+        } else {
+            LocalContentColor.current.copy(alpha = 0.8f)
+        }
         Icon(
             painter = painterResource(skill.iconResource),
             contentDescription = stringResource(skill.nameResource),
             modifier = Modifier.size(32.dp),
+            tint = maybeDisabledColor,
         )
         Checkbox(
             checked = enabled,
@@ -155,6 +162,7 @@ private fun SkillSettingsItemHeader(
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
             modifier = Modifier.weight(1.0f),
+            color = maybeDisabledColor,
         )
         if (toggleExpanded != null) {
             IconButton(onClick = toggleExpanded) {
