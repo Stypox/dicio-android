@@ -3,6 +3,7 @@ package org.stypox.dicio.settings.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +36,7 @@ import org.stypox.dicio.R
 
 interface SettingWithValue<T> {
     @Composable
-    abstract fun Render(
+    fun Render(
         value: T,
         onValueChange: (T) -> Unit,
     )
@@ -124,19 +126,19 @@ class ListSetting<T>(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.extraLarge,
             ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp),
+                )
                 LazyColumn(
-                    modifier = Modifier.padding(12.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
                 ) {
-                    item {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleLarge,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 12.dp, end = 12.dp, bottom = 8.dp),
-                        )
-                    }
                     items(possibleValues) {
                         ListSettingChooserDialogItem(
                             name = it.name,
@@ -147,6 +149,15 @@ class ListSetting<T>(
                                 onDismissRequest()
                             }
                         )
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                ) {
+                    Spacer(modifier = Modifier.weight(1.0f))
+                    TextButton(onClick = onDismissRequest) {
+                        Text(stringResource(android.R.string.cancel))
                     }
                 }
             }
@@ -174,6 +185,8 @@ fun ListSettingChooserDialogItem(
         )
         Text(
             text = name,
+            style = MaterialTheme.typography.bodyMedium,
+            lineHeight = MaterialTheme.typography.bodyMedium.fontSize * 1.1,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1.0f)
@@ -201,7 +214,7 @@ private fun ListSettingChooserDialogPreview() {
         title = "List of things",
         possibleValues = listOf(
             ListSetting.Value(true, "True!", icon = Icons.Default.BookmarkAdded),
-            ListSetting.Value(false, "False :-(", icon = Icons.Default.BookmarkRemove),
+            ListSetting.Value(false, "False :-( ".repeat(20), icon = Icons.Default.BookmarkRemove),
         )
     ).ChooserDialog(true, {}, {})
 }

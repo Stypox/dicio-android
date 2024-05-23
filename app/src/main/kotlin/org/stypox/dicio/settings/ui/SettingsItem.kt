@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -49,15 +50,18 @@ fun SettingsItem(
             Spacer(modifier = Modifier.width(24.dp))
         }
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .weight(1.0f)
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
+                lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
                 fontWeight = FontWeight.Medium,
             )
             if (description != null) {
+                Spacer(modifier = Modifier.height(3.dp))
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
