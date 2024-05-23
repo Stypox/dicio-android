@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -58,7 +59,9 @@ fun SkillSettingsScreen(viewModel: SkillSettingsViewModel = hiltViewModel()) {
     val enabledSkills by viewModel.enabledSkills
         .collectAsState(initial = mapOf())
 
-    LazyColumn {
+    LazyColumn(
+        contentPadding = PaddingValues(top = 4.dp, bottom = 4.dp)
+    ) {
         items(skills) { skill ->
             SkillSettingsItem(
                 skill = skill,
@@ -79,52 +82,21 @@ fun SkillSettingsItem(
 ) {
     val canExpand = isAvailable && (skill.hasPreferences || skill.neededPermissions.isNotEmpty())
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val expandedAnimation by animateFloatAsState(
-        label = "skill ${skill.id} card expanded",
-        targetValue = if (expanded) 180f else 0f
-    )
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp)
             .animateContentSize()
     ) {
-        Row(
-            modifier = Modifier
-                .let { if (canExpand) it.clickable { expanded = !expanded } else it }
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(skill.iconResource),
-                contentDescription = stringResource(skill.nameResource),
-                modifier = Modifier.size(32.dp),
-            )
-            Checkbox(
-                checked = enabled,
-                onCheckedChange = setEnabled,
-                enabled = isAvailable,
-            )
-            Text(
-                text = stringResource(skill.nameResource),
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 1,
-                modifier = Modifier.weight(1.0f),
-            )
-            if (canExpand) {
-                IconButton(onClick = { expanded = !expanded }) {
-                    Icon(
-                        modifier = Modifier.rotate(expandedAnimation),
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = stringResource(
-                            if (expanded) R.string.reduce else R.string.expand
-                        )
-                    )
-                }
-            }
-        }
-
+        SkillSettingsItemHeader(
+            expanded = expanded,
+            toggleExpanded = if (canExpand) { -> expanded = !expanded } else null,
+            skill = skill,
+            enabled = enabled,
+            setEnabled = setEnabled,
+            isAvailable = isAvailable,
+        )
 
         if (!isAvailable) {
             Text(
@@ -137,63 +109,122 @@ fun SkillSettingsItem(
 
         } else if (expanded) {
             if (skill.neededPermissions.isNotEmpty()) {
-                var allPermissionsGranted by remember { mutableStateOf(true) }
-                val context = LocalContext.current
-                LaunchedEffect(skill.neededPermissions) {
-                    allPermissionsGranted = PermissionUtils
-                        .checkPermissions(context, *skill.neededPermissions.toTypedArray())
-                }
-
-                val needingPermissionsString = if (LocalInspectionMode.current) {
-                    "Requires these permissions: directly call contacts, whatever 123, test"
-                } else {
-                    stringResource(
-                        R.string.pref_skill_missing_permissions,
-                        PermissionUtils.getCommaJoinedPermissions(LocalContext.current, skill)
-                    )
-                }
-
-                if (allPermissionsGranted) {
-                    Text(
-                        text = needingPermissionsString,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                    )
-
-                } else {
-                    val launcher = rememberLauncherForActivityResult(
-                        ActivityResultContracts.RequestMultiplePermissions()
-                    ) { isGranted ->
-                        allPermissionsGranted = isGranted.values.all { it }
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-                    ) {
-                        Text(
-                            text = needingPermissionsString,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                                .weight(1.0f)
-                                .padding(end = 8.dp),
-                        )
-
-                        TextButton(
-                            onClick = { launcher.launch(skill.neededPermissions.toTypedArray()) },
-                        ) {
-                            Text(text = stringResource(R.string.pref_skill_grant_permissions))
-                        }
-                    }
-                }
+                SkillSettingsItemPermissionLine(skill)
             }
 
             if (skill.hasPreferences) {
                 // TODO
                 Text(text = "This skill has preferences TODO")
+            }
+        }
+    }
+}
+
+@Composable
+private fun SkillSettingsItemHeader(
+    expanded: Boolean,
+    toggleExpanded: (() -> Unit)?,
+    skill: SkillInfo,
+    enabled: Boolean,
+    setEnabled: (Boolean) -> Unit,
+    isAvailable: Boolean,
+) {
+    val expandedAnimation by animateFloatAsState(
+        label = "skill ${skill.id} card expanded",
+        targetValue = if (expanded) 180f else 0f
+    )
+
+    Row(
+        modifier = Modifier
+            .let { if (toggleExpanded != null) it.clickable(onClick = toggleExpanded) else it }
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            painter = painterResource(skill.iconResource),
+            contentDescription = stringResource(skill.nameResource),
+            modifier = Modifier.size(32.dp),
+        )
+        Checkbox(
+            checked = enabled,
+            onCheckedChange = setEnabled,
+            enabled = isAvailable,
+        )
+        Text(
+            text = stringResource(skill.nameResource),
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
+            modifier = Modifier.weight(1.0f),
+        )
+        if (toggleExpanded != null) {
+            IconButton(onClick = toggleExpanded) {
+                Icon(
+                    modifier = Modifier.rotate(expandedAnimation),
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = stringResource(
+                        if (expanded) R.string.reduce else R.string.expand
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SkillSettingsItemPermissionLine(@PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo) {
+    var allPermissionsGranted by remember { mutableStateOf(true) }
+    val context = LocalContext.current
+    LaunchedEffect(skill.neededPermissions) {
+        allPermissionsGranted = PermissionUtils
+            .checkPermissions(context, *skill.neededPermissions.toTypedArray())
+    }
+
+    val needingPermissionsString = if (LocalInspectionMode.current) {
+        // getCommaJoinedPermissions doesn't work inside @Preview
+        "Requires these permissions: directly call contacts, whatever 123, test"
+    } else {
+        stringResource(
+            R.string.pref_skill_missing_permissions,
+            PermissionUtils.getCommaJoinedPermissions(LocalContext.current, skill)
+        )
+    }
+
+    if (allPermissionsGranted) {
+        Text(
+            text = needingPermissionsString,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+        )
+
+    } else {
+        val launcher = rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { isGranted ->
+            allPermissionsGranted = isGranted.values.all { it }
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        ) {
+            Text(
+                text = needingPermissionsString,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f)
+                    .padding(end = 8.dp),
+            )
+
+            TextButton(
+                onClick = { launcher.launch(skill.neededPermissions.toTypedArray()) },
+            ) {
+                Text(text = stringResource(R.string.pref_skill_grant_permissions))
             }
         }
     }
