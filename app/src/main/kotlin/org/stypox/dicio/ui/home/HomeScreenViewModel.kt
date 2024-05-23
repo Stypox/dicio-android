@@ -1,4 +1,4 @@
-package org.stypox.dicio.ui.main
+package org.stypox.dicio.ui.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -12,7 +12,7 @@ import org.stypox.dicio.skills.SkillHandler2
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(
+class HomeScreenViewModel @Inject constructor(
     application: Application,
     val skillContext: SkillContext,
     skillHandler: SkillHandler2,

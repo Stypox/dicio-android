@@ -4,11 +4,19 @@ import android.app.Application
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,16 +35,44 @@ import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettingsSerializer
 import org.stypox.dicio.settings.ui.SettingsCategoryTitle
 import org.stypox.dicio.settings.ui.SettingsItem
+import org.stypox.dicio.ui.nav.SkillSettings
 import org.stypox.dicio.ui.theme.AppTheme
 
 
 @Composable
-fun MainSettingsScreen(viewModel: MainSettingsViewModel = hiltViewModel()) {
+fun MainSettingsScreen(
+    navigationIcon: @Composable () -> Unit,
+    navigateToSkillSettings: () -> Unit,
+    viewModel: MainSettingsViewModel = hiltViewModel(),
+) {
+    Scaffold(
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            TopAppBar(
+                title = { Text(stringResource(R.string.settings)) },
+                navigationIcon = navigationIcon
+            )
+        }
+    ) {
+        MainSettingsScreen(
+            navigateToSkillSettings = navigateToSkillSettings,
+            viewModel = viewModel,
+            modifier = Modifier.padding(it),
+        )
+    }
+}
+
+@Composable
+private fun MainSettingsScreen(
+    navigateToSkillSettings: () -> Unit,
+    viewModel: MainSettingsViewModel,
+    modifier: Modifier = Modifier,
+) {
     val settings by viewModel.settingsFlow
         .collectAsState(initial = UserSettingsSerializer.defaultValue)
 
-    LazyColumn {
-        item { SettingsCategoryTitle(stringResource(R.string.pref_general)) }
+    LazyColumn(modifier) {
+        item { SettingsCategoryTitle(stringResource(R.string.pref_general), topPadding = 0.dp) }
         item {
             languageSetting().Render(
                 when (val language = settings.language) {
@@ -60,9 +96,7 @@ fun MainSettingsScreen(viewModel: MainSettingsViewModel = hiltViewModel()) {
                 title = stringResource(R.string.pref_skills_title),
                 icon = Icons.Default.Extension,
                 description = stringResource(R.string.pref_skills_summary),
-                modifier = Modifier.clickable {
-                    // TODO open skill settings screen
-                }
+                modifier = Modifier.clickable(onClick = navigateToSkillSettings)
             )
         }
 
@@ -109,7 +143,35 @@ private fun MainSettingsScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             MainSettingsScreen(
-                MainSettingsViewModel(
+                navigateToSkillSettings = {},
+                viewModel = MainSettingsViewModel(
+                    application = Application(),
+                    dataStore = dataStore("pre", UserSettingsSerializer)
+                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow)
+                ),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun MainSettingsScreenWithTopBarPreview() {
+    AppTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            MainSettingsScreen(
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                navigateToSkillSettings = {},
+                viewModel = MainSettingsViewModel(
                     application = Application(),
                     dataStore = dataStore("pre", UserSettingsSerializer)
                         .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow)

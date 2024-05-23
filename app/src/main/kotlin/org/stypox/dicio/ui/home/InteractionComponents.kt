@@ -1,4 +1,4 @@
-package org.stypox.dicio.ui.main
+package org.stypox.dicio.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -19,8 +19,10 @@ jna = "5.14.0"
 jsoup = "1.17.2"
 kotest = "5.8.1"
 kotlin = "1.9.23"
+kotlin-serialization = "1.6.3"
 ksp = "1.9.23-1.0.20"
 material = "1.12.0"
+navigation = "2.8.0-beta01"
 okhttp = "4.12.0"
 picasso = "2.71828"
 preferenceKtx = "1.2.1"
@@ -58,7 +60,9 @@ jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
+navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 okhttp = { module = "com.squareup.okhttp3:okhttp" }
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
@@ -74,6 +78,7 @@ vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAnd
 com-android-application = { id = "com.android.application", version.ref = "gradle" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 com-google-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }

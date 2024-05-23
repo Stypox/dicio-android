@@ -16,10 +16,10 @@ import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.skills.SkillHandler2
-import org.stypox.dicio.ui.main.Interaction
-import org.stypox.dicio.ui.main.InteractionLog
-import org.stypox.dicio.ui.main.PendingQuestion
-import org.stypox.dicio.ui.main.QuestionAnswer
+import org.stypox.dicio.ui.home.Interaction
+import org.stypox.dicio.ui.home.InteractionLog
+import org.stypox.dicio.ui.home.PendingQuestion
+import org.stypox.dicio.ui.home.QuestionAnswer
 
 class SkillEvaluator2(
     scope: CoroutineScope,

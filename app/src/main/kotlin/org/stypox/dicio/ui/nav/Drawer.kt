@@ -1,6 +1,5 @@
 package org.stypox.dicio.ui.nav
 
-import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,13 +11,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,20 +22,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.stypox.dicio.R
-import org.stypox.dicio.io.input.stt_service.SttServiceActivity
-import org.stypox.dicio.settings.SettingsActivity
 
-@Preview
 @Composable
-fun DrawerContent(closeDrawer: () -> Unit = {}) {
-    val context = LocalContext.current
+fun DrawerContent(
+    onSettingsClick: () -> Unit,
+    onSpeechToTextServiceClick: () -> Unit,
+    closeDrawer: () -> Unit,
+) {
     ModalDrawerSheet(
         modifier = Modifier.widthIn(max = 280.dp)
     ) {
@@ -53,8 +48,7 @@ fun DrawerContent(closeDrawer: () -> Unit = {}) {
             icon = Icons.Default.Settings,
             label = R.string.settings,
             onClick = {
-                val intent = Intent(context, SettingsActivity::class.java)
-                context.startActivity(intent)
+                onSettingsClick()
                 closeDrawer()
             },
             modifier = Modifier.padding(horizontal = 12.dp),
@@ -64,13 +58,18 @@ fun DrawerContent(closeDrawer: () -> Unit = {}) {
             icon = Icons.Default.RecordVoiceOver,
             label = R.string.stt_service,
             onClick = {
-                val intent = Intent(context, SttServiceActivity::class.java)
-                context.startActivity(intent)
+                onSpeechToTextServiceClick()
                 closeDrawer()
             },
             modifier = Modifier.padding(horizontal = 12.dp),
         )
     }
+}
+
+@Preview
+@Composable
+private fun DrawerContentPreview() {
+    DrawerContent(onSettingsClick = {}, onSpeechToTextServiceClick = {}, closeDrawer = {})
 }
 
 @Preview

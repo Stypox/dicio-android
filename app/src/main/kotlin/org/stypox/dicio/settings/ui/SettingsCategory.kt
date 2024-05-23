@@ -15,16 +15,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsCategoryTitle(title: String) {
+fun SettingsCategoryTitle(title: String, topPadding: Dp = 16.dp) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp)
+            .padding(start = 16.dp, top = topPadding, end = 16.dp, bottom = 8.dp)
     )
 }
 

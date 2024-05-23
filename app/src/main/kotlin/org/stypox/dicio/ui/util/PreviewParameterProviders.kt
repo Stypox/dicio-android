@@ -15,11 +15,11 @@ import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.timer.TimerOutput
 import org.stypox.dicio.skills.weather.WeatherInfo
-import org.stypox.dicio.ui.main.Interaction
-import org.stypox.dicio.ui.main.InteractionLog
-import org.stypox.dicio.ui.main.PendingQuestion
-import org.stypox.dicio.ui.main.QuestionAnswer
-import org.stypox.dicio.ui.main.SttState
+import org.stypox.dicio.ui.home.Interaction
+import org.stypox.dicio.ui.home.InteractionLog
+import org.stypox.dicio.ui.home.PendingQuestion
+import org.stypox.dicio.ui.home.QuestionAnswer
+import org.stypox.dicio.ui.home.SttState
 import java.io.IOException
 
 

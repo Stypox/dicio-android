@@ -19,7 +19,7 @@
 
 package org.stypox.dicio.io.input.vosk
 
-import org.stypox.dicio.ui.main.SttState
+import org.stypox.dicio.ui.home.SttState
 import org.vosk.android.SpeechService
 
 /**

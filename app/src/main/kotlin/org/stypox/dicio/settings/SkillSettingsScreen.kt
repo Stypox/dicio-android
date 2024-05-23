@@ -14,16 +14,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -54,14 +58,37 @@ import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.util.PermissionUtils
 
+
 @Composable
-fun SkillSettingsScreen(viewModel: SkillSettingsViewModel = hiltViewModel()) {
+fun SkillSettingsScreen(
+    navigationIcon: @Composable () -> Unit,
+    viewModel: SkillSettingsViewModel = hiltViewModel(),
+) {
+    Scaffold(
+        topBar = {
+            @OptIn(ExperimentalMaterial3Api::class)
+            TopAppBar(
+                title = { Text(stringResource(R.string.pref_skills_title)) },
+                navigationIcon = navigationIcon
+            )
+        }
+    ) {
+        SkillSettingsScreen(viewModel = viewModel, modifier = Modifier.padding(it))
+    }
+}
+
+@Composable
+fun SkillSettingsScreen(
+    viewModel: SkillSettingsViewModel,
+    modifier: Modifier = Modifier,
+) {
     val skills = viewModel.skills
     val enabledSkills by viewModel.enabledSkills
         .collectAsState(initial = mapOf())
 
     LazyColumn(
-        contentPadding = PaddingValues(top = 4.dp, bottom = 4.dp)
+        contentPadding = PaddingValues(top = 4.dp, bottom = 4.dp),
+        modifier = modifier,
     ) {
         items(skills) { skill ->
             SkillSettingsItem(
@@ -268,3 +295,32 @@ private fun SkillSettingsScreenPreview() {
         }
     }
 }
+
+@Preview
+@Composable
+private fun SkillSettingsScreenWithTopBarPreview() {
+    AppTheme {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SkillSettingsScreen(
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                SkillSettingsViewModel(
+                    application = Application(),
+                    dataStore = dataStore("pre", UserSettingsSerializer)
+                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow),
+                    skillContext = SkillContextImpl.newForPreviews(),
+                    skillHandler = SkillHandler2(SkillContextImpl.newForPreviews()),
+                )
+            )
+        }
+    }
+}
+

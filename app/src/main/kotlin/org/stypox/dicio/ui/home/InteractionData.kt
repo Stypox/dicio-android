@@ -1,4 +1,4 @@
-package org.stypox.dicio.ui.main
+package org.stypox.dicio.ui.home
 
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput

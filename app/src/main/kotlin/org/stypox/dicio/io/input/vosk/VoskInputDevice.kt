@@ -49,7 +49,7 @@ import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
-import org.stypox.dicio.ui.main.SttState
+import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.util.LocaleUtils
 import org.vosk.BuildConfig
 import org.vosk.LibVosk

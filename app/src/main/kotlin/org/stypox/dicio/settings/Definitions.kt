@@ -1,7 +1,7 @@
 package org.stypox.dicio.settings
 
-import android.view.inputmethod.InputMethod
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.BreakfastDining
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.ColorLens
@@ -12,11 +12,8 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Minimize
 import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.material.icons.filled.SendTimeExtension
 import androidx.compose.material.icons.filled.SpeakerPhone
-import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.stypox.dicio.R
 import org.stypox.dicio.settings.datastore.InputDevice
@@ -126,7 +123,7 @@ fun speechOutputDevice() = ListSetting(
 @Composable
 fun sttAutoFinish() = BooleanSetting(
     title = stringResource(R.string.pref_stt_auto_finish_title),
-    icon = Icons.Default.SendTimeExtension,
+    icon = Icons.AutoMirrored.Filled.Send,
     descriptionOff = stringResource(R.string.pref_stt_auto_finish_summary_off),
     descriptionOn = stringResource(R.string.pref_stt_auto_finish_summary_on),
 )
