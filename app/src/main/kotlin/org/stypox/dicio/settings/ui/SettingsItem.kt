@@ -1,4 +1,4 @@
-package org.stypox.dicio.settings.components
+package org.stypox.dicio.settings.ui
 
 import android.graphics.Color
 import androidx.compose.foundation.clickable
