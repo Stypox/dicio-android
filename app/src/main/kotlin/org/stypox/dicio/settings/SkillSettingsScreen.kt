@@ -109,7 +109,8 @@ fun SkillSettingsItem(
     enabled: Boolean,
     setEnabled: (Boolean) -> Unit
 ) {
-    val canExpand = isAvailable && (skill.hasPreferences || skill.neededPermissions.isNotEmpty())
+    val canExpand = isAvailable &&
+            (skill.renderSettings != null || skill.neededPermissions.isNotEmpty())
     var expanded by rememberSaveable { mutableStateOf(false) }
 
     Card(
@@ -141,10 +142,7 @@ fun SkillSettingsItem(
                 SkillSettingsItemPermissionLine(skill)
             }
 
-            if (skill.hasPreferences) {
-                // TODO
-                Text(text = "This skill has preferences TODO")
-            }
+            skill.renderSettings?.invoke()
         }
     }
 }
@@ -175,8 +173,8 @@ private fun SkillSettingsItemHeader(
             LocalContentColor.current.copy(alpha = 0.8f)
         }
         Icon(
-            painter = painterResource(skill.iconResource),
-            contentDescription = stringResource(skill.nameResource),
+            painter = skill.icon(),
+            contentDescription = skill.name(LocalContext.current),
             modifier = Modifier
                 .padding(start = 12.dp)
                 .size(24.dp),
@@ -188,7 +186,7 @@ private fun SkillSettingsItemHeader(
             enabled = isAvailable,
         )
         Text(
-            text = stringResource(skill.nameResource),
+            text = skill.name(LocalContext.current),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Medium,
             maxLines = 1,

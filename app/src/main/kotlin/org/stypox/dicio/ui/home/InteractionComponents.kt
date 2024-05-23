@@ -232,7 +232,7 @@ fun LoadingAnswerCard(@PreviewParameter(SkillInfoPreviews::class) skill: SkillIn
                 .padding(16.dp)
         ) {
             Icon(
-                painter = painterResource(id = skill.iconResource),
+                painter = skill.icon(),
                 contentDescription = null,
                 tint = ProgressIndicatorDefaults.circularColor,
                 modifier = Modifier.size(40.dp)

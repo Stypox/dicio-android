@@ -1,5 +1,11 @@
 package org.stypox.dicio.skills.timer
 
+import android.content.Context
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Timer
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.fragment.app.Fragment
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
@@ -9,19 +15,24 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.timer
 import org.stypox.dicio.SectionsGenerated.util_yes_no
 
-object TimerInfo : SkillInfo(
-    "timer", R.string.skill_name_timer, R.string.skill_sentence_example_timer,
-    R.drawable.ic_timer_white, false
-) {
-    override fun isAvailable(context: SkillContext): Boolean {
+object TimerInfo : SkillInfo("timer") {
+    override fun name(context: Context) =
+        context.getString(R.string.skill_name_timer)
+
+    override fun sentenceExample(context: Context) =
+        context.getString(R.string.skill_sentence_example_timer)
+
+    @Composable
+    override fun icon() =
+        rememberVectorPainter(Icons.Default.Timer)
+
+    override fun isAvailable(ctx: SkillContext): Boolean {
         return Sections.isSectionAvailable(timer)
                 && Sections.isSectionAvailable(util_yes_no)
-                && context.parserFormatter != null
+                && ctx.parserFormatter != null
     }
 
-    override fun build(context: SkillContext): Skill<*> {
+    override fun build(ctx: SkillContext): Skill<*> {
         return TimerSkill(TimerInfo, Sections.getSection(timer))
     }
-
-    override val preferenceFragment: Fragment? = null
 }

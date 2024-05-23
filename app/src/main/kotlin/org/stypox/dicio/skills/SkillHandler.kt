@@ -105,7 +105,6 @@ object SkillHandler {
 
     @DrawableRes
     fun getSkillIconResource(skillInfo: SkillInfo): Int {
-        @DrawableRes val skillIconResource = skillInfo.iconResource
-        return if (skillIconResource == 0) R.drawable.ic_extension_white else skillIconResource
+        return R.drawable.ic_extension_white
     }
 }

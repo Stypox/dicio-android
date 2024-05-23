@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
@@ -40,7 +41,7 @@ class SkillItemHolder(
         val context = fragment.requireContext()
         currentSkillInfoId = skillInfo.id
         expanded = false
-        checkBox.setText(skillInfo.nameResource)
+        checkBox.setText(skillInfo.name(context))
         // the correct tint is set in the xml
         iconImageView.setImageResource(SkillHandler.getSkillIconResource(skillInfo))
         hidePermissionsViews()
@@ -77,7 +78,7 @@ class SkillItemHolder(
                 grantPermissionsTextView.visibility = View.GONE
             }
         }
-        if (skillInfo.hasPreferences || skillInfo.neededPermissions.isNotEmpty()) {
+        if (skillInfo.renderSettings != null || skillInfo.neededPermissions.isNotEmpty()) {
             showExpandButton(fragment, skillInfo)
         } else {
             expandImageView.visibility = View.GONE
@@ -147,21 +148,16 @@ class SkillItemHolder(
     }
 
     private fun showFragmentInHolderIfNeeded(fragment: Fragment, skillInfo: SkillInfo) {
-        if (!skillInfo.hasPreferences) {
-            return
-        }
-        val skillFragment = skillInfo.preferenceFragment ?: return
+        val renderSettings = skillInfo.renderSettings ?: return
 
-        val frame = FrameLayout(fragment.requireContext())
-        frame.id = View.generateViewId()
+        val composeView = ComposeView(fragment.requireContext())
+        composeView.id = View.generateViewId()
         fragmentHolder.addView(
-            frame, FrameLayout.LayoutParams.MATCH_PARENT,
+            composeView, FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
-        fragment.childFragmentManager
-            .beginTransaction()
-            .add(frame.id, skillFragment, currentSkillInfoId)
-            .commit()
+
+        composeView.setContent(renderSettings)
     }
 
     private fun currentFragmentTag(): String {

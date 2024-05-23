@@ -25,7 +25,7 @@ class MissingPermissionsSkillOutput(
     override fun getSpeechOutput(ctx: SkillContext): String =
         ctx.getString(
             R.string.eval_missing_permissions,
-            ctx.getString(skill.nameResource),
+            skill.name(ctx.android),
             PermissionUtils.getCommaJoinedPermissions(ctx.android, skill)
         )
 
@@ -35,7 +35,7 @@ class MissingPermissionsSkillOutput(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(id = skill.iconResource),
+                painter = skill.icon(),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(8.dp)

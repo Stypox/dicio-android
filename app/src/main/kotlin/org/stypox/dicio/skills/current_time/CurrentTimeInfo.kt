@@ -1,24 +1,33 @@
 package org.stypox.dicio.skills.current_time
 
-import androidx.fragment.app.Fragment
-import org.dicio.skill.skill.Skill
+import android.content.Context
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Watch
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.current_time
 
-object CurrentTimeInfo : SkillInfo(
-    "current_time", R.string.skill_name_current_time,
-    R.string.skill_sentence_example_current_time, R.drawable.ic_watch_white, false
-) {
-    override fun isAvailable(context: SkillContext): Boolean {
+object CurrentTimeInfo : SkillInfo("current_time") {
+    override fun name(context: Context) =
+        context.getString(R.string.skill_name_current_time)
+
+    override fun sentenceExample(context: Context) =
+        context.getString(R.string.skill_sentence_example_current_time)
+
+    @Composable
+    override fun icon() =
+        rememberVectorPainter(Icons.Default.Watch)
+
+    override fun isAvailable(ctx: SkillContext): Boolean {
         return Sections.isSectionAvailable(current_time)
     }
 
-    override fun build(context: SkillContext): Skill<*> {
+    override fun build(ctx: SkillContext): Skill<*> {
         return CurrentTimeSkill(CurrentTimeInfo, Sections.getSection(current_time))
     }
-
-    override val preferenceFragment: Fragment? = null
 }

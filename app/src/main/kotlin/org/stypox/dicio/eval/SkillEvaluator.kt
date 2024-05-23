@@ -70,9 +70,9 @@ class SkillEvaluator(
             (skillInfoItem.findViewById<View>(R.id.skillIconImageView) as AppCompatImageView)
                 .setImageResource(SkillHandler.getSkillIconResource(skillInfo))
             (skillInfoItem.findViewById<View>(R.id.skillName) as AppCompatTextView)
-                .setText(skillInfo.nameResource)
+                .setText(skillInfo.name(activity))
             (skillInfoItem.findViewById<View>(R.id.skillSentenceExample) as AppCompatTextView)
-                .setText(skillInfo.sentenceExampleResource)
+                .setText(skillInfo.sentenceExample(activity))
             skillItemsLayout.addView(skillInfoItem)
         }
         graphicalOutputDevice.displayTemporary(initialPanel)
@@ -115,7 +115,7 @@ class SkillEvaluator(
             // permissions were not granted, show a message
             val message = activity.getString(
                 R.string.eval_missing_permissions,
-                activity.getString(skill.skill.correspondingSkillInfo.nameResource),
+                skill.skill.correspondingSkillInfo.name(activity),
                 PermissionUtils.getCommaJoinedPermissions(activity, skill.skill.correspondingSkillInfo)
             )
             speechOutputDevice.speak(message)

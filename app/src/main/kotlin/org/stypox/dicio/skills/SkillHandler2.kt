@@ -67,10 +67,4 @@ class SkillHandler2 @Inject constructor(
 
     val enabledSkillInfoListShuffled: List<SkillInfo>
         get() = enabledSkillInfoList.shuffled()
-
-    @DrawableRes
-    fun getSkillIconResource(skillInfo: SkillInfo): Int {
-        @DrawableRes val skillIconResource = skillInfo.iconResource
-        return if (skillIconResource == 0) R.drawable.ic_extension_white else skillIconResource
-    }
 }

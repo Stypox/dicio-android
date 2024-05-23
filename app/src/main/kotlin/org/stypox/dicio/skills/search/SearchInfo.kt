@@ -1,6 +1,12 @@
 package org.stypox.dicio.skills.search
 
+import android.content.Context
 import android.os.Bundle
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Directions
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceFragmentCompat
 import org.dicio.skill.skill.Skill
@@ -10,24 +16,22 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.search
 
-object SearchInfo : SkillInfo(
-    "search", R.string.skill_name_search, R.string.skill_sentence_example_search,
-    R.drawable.ic_search_white, true
-) {
-    override fun isAvailable(context: SkillContext): Boolean {
+object SearchInfo : SkillInfo("search") {
+    override fun name(context: Context) =
+        context.getString(R.string.skill_name_search)
+
+    override fun sentenceExample(context: Context) =
+        context.getString(R.string.skill_sentence_example_search)
+
+    @Composable
+    override fun icon() =
+        rememberVectorPainter(Icons.Default.Search)
+
+    override fun isAvailable(ctx: SkillContext): Boolean {
         return Sections.isSectionAvailable(search)
     }
 
-    override fun build(context: SkillContext): Skill<*> {
+    override fun build(ctx: SkillContext): Skill<*> {
         return SearchSkill(SearchInfo, Sections.getSection(search))
-    }
-
-    override val preferenceFragment: Fragment
-        get() = Preferences()
-
-    class Preferences : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            addPreferencesFromResource(R.xml.pref_search)
-        }
     }
 }
