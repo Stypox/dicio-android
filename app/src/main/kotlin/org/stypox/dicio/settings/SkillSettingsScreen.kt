@@ -43,6 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -165,7 +166,7 @@ private fun SkillSettingsItemHeader(
     Row(
         modifier = Modifier
             .let { if (toggleExpanded != null) it.clickable(onClick = toggleExpanded) else it }
-            .padding(8.dp),
+            .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val maybeDisabledColor = if (isAvailable) {
@@ -176,7 +177,9 @@ private fun SkillSettingsItemHeader(
         Icon(
             painter = painterResource(skill.iconResource),
             contentDescription = stringResource(skill.nameResource),
-            modifier = Modifier.size(32.dp),
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .size(24.dp),
             tint = maybeDisabledColor,
         )
         Checkbox(
@@ -187,6 +190,7 @@ private fun SkillSettingsItemHeader(
         Text(
             text = stringResource(skill.nameResource),
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Medium,
             maxLines = 1,
             modifier = Modifier.weight(1.0f),
             color = maybeDisabledColor,
