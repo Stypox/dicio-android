@@ -65,7 +65,7 @@
     <string name="skill_timer_no_active">Tak ada timer aktif</string>
     <string name="microphone_error">Tidak dapat mengakses mikrofon, mungkin mikrofon sudah digunakan atau izin tidak diberikan.</string>
     <string name="pref_theme">Tema</string>
-    <string name="pref_input_method_summary">Pilih layanan yang digunakan untuk berbicara ke Dicio - %1$s</string>
+    <string name="pref_input_method_summary">Pilih layanan yang digunakan untuk berbicara ke Dicio</string>
     <string name="vosk_model_notification_title">Model Vosk</string>
     <string name="vosk_model_notification_description">Bahasa: %1$s</string>
     <string name="vosk_model_extracting">Mengekstrak model Vosk…</string>
@@ -81,9 +81,9 @@
 \nVersi OS:</string>
     <string name="pref_appearance">Tampilan</string>
     <string name="pref_skills">Keterampilan</string>
-    <string name="pref_theme_summary">Pilih set warna aplikasi - %1$s</string>
+    <string name="pref_theme_summary">Pilih set warna aplikasi</string>
     <string name="pref_theme_light">Cerah</string>
-    <string name="pref_speech_output_method_summary">Pilih layanan yang harus Dicio gunakan untuk berbicara ke Anda - %1$s</string>
+    <string name="pref_speech_output_method_summary">Pilih layanan yang harus Dicio gunakan untuk berbicara ke Anda</string>
     <string name="pref_speech_output_method_toast">Toast (pesan popup)</string>
     <string name="pref_speech_output_method_snackbar">Snackbar (pesan di bawah)</string>
     <string name="pref_speech_output_method_nothing">Tidak ada</string>

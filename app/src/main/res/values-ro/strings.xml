@@ -26,7 +26,7 @@
     <string name="pref_io">Metode de intrare și de ieșire</string>
     <string name="pref_language_system">Foloseste limba systemului</string>
     <string name="pref_input_method">Metoda de introducere</string>
-    <string name="pref_input_method_summary">Alege serviciul pe care il folosesti sa vorbesti cu Dicio - %1$s</string>
+    <string name="pref_input_method_summary">Alege serviciul pe care il folosesti sa vorbesti cu Dicio</string>
     <string name="pref_input_method_text">Cutie de text</string>
     <string name="pref_input_method_vosk">Vosk recunoastere vocala offline</string>
     <string name="pref_speech_output_method">Metoda de ieșire a vorbirii</string>
@@ -72,15 +72,15 @@
     <string name="skill_timer_none_canceled">OK, nici un temporizator a fost anulat</string>
     <string name="listening">Ascultand…</string>
     <string name="action_voice_input">Introducere cu voce</string>
-    <string name="pref_theme_summary">Alege setul de culoare a aplicatiei - %1$s</string>
+    <string name="pref_theme_summary">Alege setul de culoare a aplicatiei</string>
     <string name="skill_name_telephone">Telefon</string>
     <string name="android_tts_unsupported_language">Limba pe care o folosesti nu este suportata de Android text to speech engine</string>
     <string name="pref_search_engine">Motor de cautare</string>
     <string name="vosk_model_extraction_error">Extractarea modelului Vosk dintr-un Zip a esuat</string>
     <string name="settings">Setari</string>
     <string name="pref_appearance">Aparenta</string>
-    <string name="pref_speech_output_method_summary">Alege serviciul pe care Dicio ar trebui sa il foloseasca ca sa vorbeasca cu tine - %1$s</string>
-    <string name="pref_language_summary">Ce limba ar trebui Dicio sa foloseasca ca sa te asculte si sa iti dea raspunsuri\? - %1$s</string>
+    <string name="pref_speech_output_method_summary">Alege serviciul pe care Dicio ar trebui sa il foloseasca ca sa vorbeasca cu tine</string>
+    <string name="pref_language_summary">Ce limba ar trebui Dicio sa foloseasca ca sa te asculte si sa iti dea raspunsuri\?</string>
     <string name="skill_name_lyrics">Versuri de muzica</string>
     <string name="pref_speech_output_method_nothing">Nimic</string>
     <string name="pref_skill_missing_permissions">Cere aceste permisiuni: %1$s</string>

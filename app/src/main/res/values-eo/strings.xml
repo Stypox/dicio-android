@@ -35,15 +35,15 @@
     <string name="pref_theme">Etoso</string>
     <string name="error_report_channel_name">Sciigo pri erara raporto</string>
     <string name="error_report_channel_description">Sciigoj por raporti erarojn</string>
-    <string name="pref_theme_summary">Elektu la koloraro de la apo - %1$s</string>
+    <string name="pref_theme_summary">Elektu la koloraro de la apo</string>
     <string name="pref_input_method">Eniga metodo</string>
     <string name="pref_input_method_text">Tekstujo</string>
-    <string name="pref_input_method_summary">Elektu la servon por paroli kun Dicio - %1$s</string>
+    <string name="pref_input_method_summary">Elektu la servon por paroli kun Dicio</string>
     <string name="pref_input_method_vosk">Vosk eksterreta parolrekonilo</string>
     <string name="pref_speech_output_method_android">Androida tekst-al-parolo sistemo</string>
     <string name="pref_speech_output_method_nothing">Nenio</string>
     <string name="pref_speech_output_method">Metodo de eligo de parolado</string>
-    <string name="pref_speech_output_method_summary">Elektu la servon, kiun Dicio uzu por paroli kun vi - %1$s</string>
+    <string name="pref_speech_output_method_summary">Elektu la servon, kiun Dicio uzu por paroli kun vi</string>
     <string name="pref_speech_output_method_toast">Toast (ŝprucmesaĝo)</string>
     <string name="pref_skill_not_available">Tiu ĉi kapablo ne estas uzebla en via lingvo. Kontribuoj estas bonvenaj!</string>
     <string name="pref_skill_missing_permissions">Bezonas ĉi tiujn permesojn: %1$s</string>
@@ -86,7 +86,7 @@
     <string name="pref_theme_dark">Malhela</string>
     <string name="pref_language">Lingvo</string>
     <string name="skill_timer_none_canceled">Okej, tempumilo estis nuligita</string>
-    <string name="pref_language_summary">Kiun lingvon Dicio uzu por aŭskulti vin kaj doni respondojn\? - %1$s</string>
+    <string name="pref_language_summary">Kiun lingvon Dicio uzu por aŭskulti vin kaj doni respondojn\?</string>
     <string name="eval_missing_permissions">La kapablo \"%1$s\" bezonas ĉi tiujn permesojn por funkcii: %2$s</string>
     <string name="pref_weather_default_city">Defaŭlta urbo</string>
     <string name="pref_search_engine">Serĉilo</string>

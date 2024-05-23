@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ColumnScope.SettingsCategory(title: String, content: @Composable ColumnScope.() -> Unit) {
+fun SettingsCategoryTitle(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleLarge,
@@ -26,27 +26,25 @@ fun ColumnScope.SettingsCategory(title: String, content: @Composable ColumnScope
             .fillMaxWidth()
             .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp)
     )
-    content()
 }
 
 @Preview
 @Composable
 private fun SettingsCategoryPreview() {
     Column {
-        SettingsCategory(title = "Notifications") {
-            SettingsItem(
-                title = "Enable notifications",
-                icon = Icons.Default.Notifications,
-                description = "You should enable this option to receive download progress",
-                content = {
-                    Checkbox(checked = true, onCheckedChange = {})
-                },
-            )
-            SettingsItem(
-                title = "More options",
-                icon = Icons.Default.SettingsApplications,
-            )
-        }
+        SettingsCategoryTitle("Notifications")
+        SettingsItem(
+            title = "Enable notifications",
+            icon = Icons.Default.Notifications,
+            description = "You should enable this option to receive download progress",
+            content = {
+                Checkbox(checked = true, onCheckedChange = {})
+            },
+        )
+        SettingsItem(
+            title = "More options",
+            icon = Icons.Default.SettingsApplications,
+        )
     }
 }
 
@@ -54,27 +52,25 @@ private fun SettingsCategoryPreview() {
 @Composable
 private fun MultipleSettingsCategoryPreview() {
     Column {
-        SettingsCategory(title = "Notifications") {
-            SettingsItem(
-                title = "Enable notifications",
-                icon = Icons.Default.Notifications,
-                description = "You should enable this option to receive download progress",
-                content = {
-                    Checkbox(checked = true, onCheckedChange = {})
-                },
-            )
-        }
+        SettingsCategoryTitle("Notifications")
+        SettingsItem(
+            title = "Enable notifications",
+            icon = Icons.Default.Notifications,
+            description = "You should enable this option to receive download progress",
+            content = {
+                Checkbox(checked = true, onCheckedChange = {})
+            },
+        )
 
-        SettingsCategory(title = "Miscellaneous") {
-            SettingsItem(
-                title = "Login",
-                icon = Icons.AutoMirrored.Filled.Login,
-                description = "Click here to login into the app",
-            )
-            SettingsItem(
-                title = "More options",
-                icon = Icons.Default.SettingsApplications,
-            )
-        }
+        SettingsCategoryTitle("Miscellaneous")
+        SettingsItem(
+            title = "Login",
+            icon = Icons.AutoMirrored.Filled.Login,
+            description = "Click here to login into the app",
+        )
+        SettingsItem(
+            title = "More options",
+            icon = Icons.Default.SettingsApplications,
+        )
     }
 }

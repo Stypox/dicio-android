@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_weather_default_city">Voreinstellung Stadt</string>
-    <string name="pref_input_method_summary">Wähle den Dienst, der verwendet werden soll, um mit Dicio zu kommunizieren - %1$s</string>
+    <string name="pref_input_method_summary">Wähle den Dienst, der verwendet werden soll, um mit Dicio zu kommunizieren</string>
     <string name="vosk_model_extraction_error">Vosk Modells konnte aus dem Zip-Archiv nicht entpackt werden</string>
     <string name="vosk_model_downloading">Lade Vosk Modell herunter…</string>
     <string name="text_input_hint">Frag mich irgendetwas…</string>
@@ -38,17 +38,17 @@
     <string name="pref_speech_output_method_snackbar">Benachrichtigungsfeld unten</string>
     <string name="pref_speech_output_method_toast">Benachrichtigung</string>
     <string name="pref_speech_output_method_android">Android Text zu Sprache Maschine</string>
-    <string name="pref_speech_output_method_summary">Wähle den Dienst den Dicio verwenden soll, um zu dir zu sprechen - %1$s</string>
+    <string name="pref_speech_output_method_summary">Wähle den Dienst den Dicio verwenden soll, um zu dir zu sprechen</string>
     <string name="pref_speech_output_method">Sprachausgabemethode</string>
     <string name="pref_input_method_vosk">Vosk offline spracherkennung</string>
     <string name="pref_input_method_text">Text Feld</string>
     <string name="pref_input_method">Eingabe methode</string>
     <string name="pref_language_system">Verwende Sprache des Systems</string>
-    <string name="pref_language_summary">Auf welcher Sprache sollte Dicio lauschen und antworten\? - %1$s</string>
+    <string name="pref_language_summary">Auf welcher Sprache sollte Dicio lauschen und antworten\?</string>
     <string name="pref_language">Sprache</string>
     <string name="pref_theme_dark">Dunkel</string>
     <string name="pref_theme_light">Hell</string>
-    <string name="pref_theme_summary">Wähle das Farbthema - %1$s</string>
+    <string name="pref_theme_summary">Wähle das Farbthema</string>
     <string name="microphone_error">Bekomme keinen Zugriff auf das Mikrofon, entweder wird es bereits von etwas Anderem verwendet oder der entsprechende Zugriff wurde verweigert.</string>
     <string name="pref_theme">Thema</string>
     <string name="pref_skills">Fähigkeiten</string>

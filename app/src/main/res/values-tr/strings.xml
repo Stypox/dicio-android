@@ -31,11 +31,11 @@
     <string name="here_is_what_i_can_do">İşte yapabileceklerim!</string>
     <string name="vosk_model_downloading">Vosk modeli indiriliyor…</string>
     <string name="vosk_model_download_error">Vosk modeli indirilemedi</string>
-    <string name="pref_theme_summary">Uygulama renk setini seçin - %1$s</string>
-    <string name="pref_language_summary">Dicio sizi dinlemek ve cevaplar vermek için hangi dili kullanmalıdır\? - %1$s</string>
+    <string name="pref_theme_summary">Uygulama renk setini seçin</string>
+    <string name="pref_language_summary">Dicio sizi dinlemek ve cevaplar vermek için hangi dili kullanmalıdır\?</string>
     <string name="pref_input_method_vosk">Vosk çevrimdışı konuşma tanıma</string>
     <string name="pref_speech_output_method">Konuşma çıkışı yöntemi</string>
-    <string name="pref_speech_output_method_summary">Dicio\'nun sizinle konuşmak için kullanması gereken hizmeti seçin - %1$s</string>
+    <string name="pref_speech_output_method_summary">Dicio\'nun sizinle konuşmak için kullanması gereken hizmeti seçin</string>
     <string name="pref_speech_output_method_android">Android metin okuma motoru</string>
     <string name="pref_speech_output_method_toast">Tost (açılır mesaj)</string>
     <string name="pref_speech_output_method_snackbar">Çerez çubuğu (alttaki mesaj)</string>
@@ -61,7 +61,7 @@
     <string name="skill_open_unknown_app">Bilinmeyen uygulama %1$s</string>
     <string name="skill_open_opening">%1$s Açılıyor…</string>
     <string name="pref_input_method">Giriş yöntemi</string>
-    <string name="pref_input_method_summary">Dicio ile konuşmak için kullanılacak hizmeti seçin - %1$s</string>
+    <string name="pref_input_method_summary">Dicio ile konuşmak için kullanılacak hizmeti seçin</string>
     <string name="skill_sentence_example_open">NewPipe\'ı aç</string>
     <string name="pref_language_system">Sistem dilini kullan</string>
     <string name="pref_input_method_text">Metin kutusu</string>

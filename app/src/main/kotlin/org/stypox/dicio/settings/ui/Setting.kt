@@ -2,7 +2,6 @@ package org.stypox.dicio.settings.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,37 +32,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.stypox.dicio.R
 
-abstract class Setting(
-    protected val title: String,
-    protected val icon: ImageVector? = null,
-    protected val description: String? = null,
-) {
+interface SettingWithValue<T> {
     @Composable
-    abstract fun ColumnScope.Render()
+    abstract fun Render(
+        value: T,
+        onValueChange: (T) -> Unit,
+    )
 }
 
-abstract class SettingWithValue<T>(
-    title: String,
-    icon: ImageVector? = null,
-    description: String? = null,
-    protected val value: T,
-    protected val onValueChange: (T) -> Unit,
-) : Setting(title, icon, description)
-
 class BooleanSetting(
-    title: String,
-    icon: ImageVector? = null,
-    description: String? = null,
-    value: Boolean,
-    onValueChange: (Boolean) -> Unit,
-) : SettingWithValue<Boolean>(title, icon, description, value, onValueChange) {
+    private val title: String,
+    private val icon: ImageVector? = null,
+    private val descriptionOff: String? = null,
+    private val descriptionOn: String? = null,
+) : SettingWithValue<Boolean> {
     @Composable
-    override fun ColumnScope.Render() {
+    override fun Render(
+        value: Boolean,
+        onValueChange: (Boolean) -> Unit,
+    ) {
         SettingsItem(
             modifier = Modifier.clickable { onValueChange(!value) },
             title = title,
             icon = icon,
-            description = description,
+            description = if (value) descriptionOn else descriptionOff,
             content = {
                 Switch(
                     checked = value,
@@ -75,13 +67,11 @@ class BooleanSetting(
 }
 
 class ListSetting<T>(
-    title: String,
-    icon: ImageVector? = null,
-    description: String? = null,
-    value: T,
-    onValueChange: (T) -> Unit,
+    private val title: String,
+    private val icon: ImageVector? = null,
+    private val description: String? = null,
     private val possibleValues: List<Value<T>>,
-) : SettingWithValue<T>(title, icon, description, value, onValueChange) {
+) : SettingWithValue<T> {
     data class Value<T>(
         val value: T,
         val name: String,
@@ -89,7 +79,10 @@ class ListSetting<T>(
     )
 
     @Composable
-    override fun ColumnScope.Render() {
+    override fun Render(
+        value: T,
+        onValueChange: (T) -> Unit,
+    ) {
         var dialogOpen by rememberSaveable { mutableStateOf(false) }
 
         val currentValueName = possibleValues.firstOrNull { it.value == value }?.name
@@ -112,12 +105,20 @@ class ListSetting<T>(
         )
 
         if (dialogOpen) {
-            ChooserDialog { dialogOpen = false }
+            ChooserDialog(
+                value = value,
+                onValueChange = onValueChange,
+                onDismissRequest = { dialogOpen = false }
+            )
         }
     }
 
     @Composable
-    fun ChooserDialog(onDismissRequest: () -> Unit) {
+    fun ChooserDialog(
+        value: T,
+        onValueChange: (T) -> Unit,
+        onDismissRequest: () -> Unit,
+    ) {
         Dialog(onDismissRequest = onDismissRequest) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -198,11 +199,9 @@ private fun ListSettingChooserDialogItemPreview() {
 private fun ListSettingChooserDialogPreview() {
     ListSetting(
         title = "List of things",
-        value = true,
-        onValueChange = {},
         possibleValues = listOf(
             ListSetting.Value(true, "True!", icon = Icons.Default.BookmarkAdded),
             ListSetting.Value(false, "False :-(", icon = Icons.Default.BookmarkRemove),
         )
-    ).ChooserDialog {}
+    ).ChooserDialog(true, {}, {})
 }

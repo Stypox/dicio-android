@@ -42,9 +42,9 @@
     <string name="eval_network_error">خطأ في الشبكة</string>
     <string name="pref_weather_default_city_using_ip_info">اختر المدينة المستعملة للحصول على الطقس عندما لا تحدد مدينة بوضوح. السلوك الحالي هو الحصول علي الموقع من عنوان بروتوكول الانترنت.</string>
     <string name="pref_speech_output_method_nothing">لا شيء</string>
-    <string name="pref_speech_output_method_summary">اختر الخدمة التي يجب إن يستعملها Dicio للكلام معك - %1$s</string>
+    <string name="pref_speech_output_method_summary">اختر الخدمة التي يجب إن يستعملها Dicio للكلام معك</string>
     <string name="pref_input_method_vosk">خاصية ڤوسك للتعرف على الكلام بلا انترنت</string>
-    <string name="pref_input_method_summary">اختر الخدمات التي تريد أن تستعملها للكلام مع Dicio - %1$s</string>
+    <string name="pref_input_method_summary">اختر الخدمات التي تريد أن تستعملها للكلام مع Dicio</string>
     <string name="listening">أستمع الآن…</string>
     <string name="action_voice_input">إدخال صوت</string>
     <string name="action_text_input">إدخال كلام</string>
@@ -54,8 +54,8 @@
     <string name="pref_speech_output_method">طريقة إخراج الكلام</string>
     <string name="pref_input_method_text">صندوق النص</string>
     <string name="pref_input_method">طريقة الإدخال</string>
-    <string name="pref_language_summary">ما اللغة التي يجب أن يستعملها Dicio للاستماع إليك وإعطاء الأجوبة؟ - %1$s</string>
-    <string name="pref_theme_summary">اختر لون التطبيق - %1$s</string>
+    <string name="pref_language_summary">ما اللغة التي يجب أن يستعملها Dicio للاستماع إليك وإعطاء الأجوبة؟</string>
+    <string name="pref_theme_summary">اختر لون التطبيق</string>
     <string name="pref_io">طرق الإدخال والإخراج</string>
     <string name="android_tts_unsupported_language">اللغة الخالية غير مدعومة من محرك أندرويد لتحويل النص إلى كلام</string>
     <string name="vosk_model_ready">موديل ڤوسك جاهز</string>
