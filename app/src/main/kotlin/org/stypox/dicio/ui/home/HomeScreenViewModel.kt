@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.dicio.skill.context.SkillContext
 import org.stypox.dicio.eval.SkillEvaluator2
+import org.stypox.dicio.eval.SkillHandler2
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
-import org.stypox.dicio.skills.SkillHandler2
 import javax.inject.Inject
 
 @HiltViewModel

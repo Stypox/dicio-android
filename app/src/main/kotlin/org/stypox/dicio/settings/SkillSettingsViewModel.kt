@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.settings.datastore.UserSettings
-import org.stypox.dicio.skills.SkillHandler2
+import org.stypox.dicio.eval.SkillHandler2
 import javax.inject.Inject
 
 

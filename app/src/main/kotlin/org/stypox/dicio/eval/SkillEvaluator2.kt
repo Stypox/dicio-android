@@ -15,7 +15,6 @@ import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
-import org.stypox.dicio.skills.SkillHandler2
 import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.PendingQuestion
@@ -24,7 +23,7 @@ import org.stypox.dicio.ui.home.QuestionAnswer
 class SkillEvaluator2(
     scope: CoroutineScope,
     private val skillContext: SkillContext,
-    skillHandler: SkillHandler2,
+    private val skillHandler: SkillHandler2,
     private val inputEventsModule: InputEventsModule,
     private val sttInputDevice: SttInputDevice?,
 ) {
@@ -37,10 +36,8 @@ class SkillEvaluator2(
     )
     val state: StateFlow<InteractionLog> = _state
 
-    private val skillRanker = SkillRanker(
-        skillHandler.standardSkillBatch,
-        skillHandler.fallbackSkill,
-    )
+    private val skillRanker: SkillRanker
+        get() = skillHandler.skillRanker.value
 
     // must be kept up to date even when the activity is recreated, for this reason it is `var`
     var permissionRequester: suspend (Array<String>) -> Boolean = { false }
