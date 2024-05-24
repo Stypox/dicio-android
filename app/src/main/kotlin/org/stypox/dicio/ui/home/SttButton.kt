@@ -45,6 +45,7 @@ import org.stypox.dicio.ui.home.SttState.Loading
 import org.stypox.dicio.ui.home.SttState.NoMicrophonePermission
 import org.stypox.dicio.ui.home.SttState.NotAvailable
 import org.stypox.dicio.ui.home.SttState.NotDownloaded
+import org.stypox.dicio.ui.home.SttState.NotInitialized
 import org.stypox.dicio.ui.home.SttState.NotLoaded
 import org.stypox.dicio.ui.home.SttState.Unzipping
 import org.stypox.dicio.ui.util.LoadingProgress
@@ -109,6 +110,7 @@ private fun SttFabImpl(state: SttState, onClick: () -> Unit) {
 private fun sttFabText(state: SttState): String {
     return when (state) {
         NoMicrophonePermission -> stringResource(R.string.grant_microphone_permission)
+        NotInitialized -> ""
         NotAvailable -> stringResource(R.string.stt_not_available)
         NotDownloaded -> stringResource(R.string.stt_download)
         is Downloading -> loadingProgressString(
@@ -132,6 +134,7 @@ private fun sttFabText(state: SttState): String {
 private fun SttFabIcon(state: SttState, contentDescription: String) {
     when (state) {
         NoMicrophonePermission -> Icon(Icons.Default.Warning, contentDescription)
+        NotInitialized -> SmallCircularProgressIndicator()
         NotAvailable -> Icon(Icons.Default.Warning, contentDescription)
         NotDownloaded -> Icon(Icons.Default.Download, contentDescription)
         is Downloading -> LoadingProgress(state.currentBytes, state.totalBytes)
