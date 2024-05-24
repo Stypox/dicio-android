@@ -34,10 +34,11 @@ sealed class InputEvent {
 
     /**
      * The actual final user input ready to be used. May contain more than one utterance
-     * alternative, but the [utterances] list is sorted by confidence.
+     * alternative, but the [utterances] list is sorted by confidence. Every item in [utterances]
+     * is an utterance with its score from 1.0 (best) to 0.0 (worst).
      */
     data class Final(
-        val utterances: List<String>
+        val utterances: List<Pair<String, Float>>
     ) : InputEvent()
 
     /**

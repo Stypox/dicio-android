@@ -92,24 +92,28 @@ internal class VoskListener(
         }
     }
 
-    private fun utterancesFromJson(jsonResult: JSONObject): List<String> {
-        if (jsonResult.has("alternatives")) {
-            // the "alternatives" array will exist only if setMaxAlternatives is called when
-            // creating `SpeechService`'s `Recognizer`
-            val size: Int = jsonResult.getJSONArray("alternatives").length()
-            val inputs = ArrayList<String>()
-            for (i in 0 until size) {
-                val text = jsonResult.getJSONArray("alternatives")
-                    .getJSONObject(i).getString("text")
-                if (text.isNotEmpty()) {
-                    inputs.add(text)
-                }
+    private fun utterancesFromJson(jsonResult: JSONObject): List<Pair<String, Float>> {
+        return jsonResult.optJSONArray("alternatives")
+            ?.takeIf { array -> array.length() > 0 }
+            ?.let { array ->
+                val maxConfidence = array.optJSONObject(0)?.optDouble("confidence")?.toFloat()
+                    ?: return@let null
+
+                return (0 until array.length())
+                    .mapNotNull { i -> array.optJSONObject(i) }
+                    .map {
+                        Pair(
+                            // for some reason the texts returned by Vosk start with " "
+                            it.getString("text").removePrefix(" "),
+                            // the values for confidence provided by Vosk are not from 0.0 to 1.0
+                            it.getDouble("confidence").toFloat() / maxConfidence
+                        )
+                    }
             }
-            return inputs
-        } else {
-            // alternatives are disabled, so there is just one possible user input
-            return Collections.singletonList(jsonResult.getString("text"))
-        }
+            ?: (jsonResult.optString("text")
+                .takeIf { it.isNotBlank() }
+                ?.let { listOf(Pair(it.removePrefix(" "), 1.0f)) })
+            ?: listOf()
     }
 
     /**

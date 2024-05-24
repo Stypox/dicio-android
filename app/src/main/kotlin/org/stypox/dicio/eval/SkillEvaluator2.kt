@@ -57,12 +57,12 @@ class SkillEvaluator2(
             is InputEvent.Final -> {
                 _state.value = _state.value.copy(
                     pendingQuestion = PendingQuestion(
-                        userInput = event.utterances[0],
+                        userInput = event.utterances[0].first,
                         continuesLastInteraction = skillRanker.hasAnyBatches(),
                         skillBeingEvaluated = null,
                     )
                 )
-                evaluateMatchingSkill(event.utterances)
+                evaluateMatchingSkill(event.utterances.map { it.first })
             }
             InputEvent.None -> {
                 _state.value = _state.value.copy(pendingQuestion = null)

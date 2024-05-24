@@ -83,7 +83,7 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
             viewModel.sttInputDevice?.onClick(viewModel.inputEventsModule::tryEmitEvent)
         },
         onManualUserInput = {
-            viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(it)))
+            viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(Pair(it, 1.0f))))
         },
         navigationIcon = navigationIcon,
     )
