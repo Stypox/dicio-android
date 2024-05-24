@@ -71,12 +71,15 @@ fun SttFab(state: SttState, onClick: () -> Unit) {
         microphonePermissionGranted = isGranted
     }
 
+    // the NoMicrophonePermission state should override any other state, except for the NotAvailable
+    // state which indicates that the STT engine can't be made available for this locale
+    val useNoMicPermState = !microphonePermissionGranted && state != NotAvailable
     SttFabImpl(
-        state = if (microphonePermissionGranted) state else NoMicrophonePermission,
-        onClick = if (microphonePermissionGranted)
-            onClick
+        state = if (useNoMicPermState) NoMicrophonePermission else state,
+        onClick = if (useNoMicPermState)
+            { -> launcher.launch(Manifest.permission.RECORD_AUDIO) }
         else
-            { -> launcher.launch(Manifest.permission.RECORD_AUDIO) },
+            onClick,
     )
 }
 
