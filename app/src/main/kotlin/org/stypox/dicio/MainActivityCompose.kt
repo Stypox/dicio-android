@@ -77,6 +77,9 @@ class MainActivityCompose : ComponentActivity() {
 
         if (intent?.action == ACTION_ASSIST) {
             onAssistIntentReceived()
+        } else {
+            // load the input device, without starting to listen
+            sttInputDevice?.tryLoad(null)
         }
 
         enableEdgeToEdge()
