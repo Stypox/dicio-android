@@ -91,7 +91,7 @@ private fun NetworkErrorNotSkillPreview() {
     ErrorSkillOutput(
         IOException("Whatever error"),
         false,
-    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews())
+    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews(LocalContext.current))
 }
 
 @Preview
@@ -100,7 +100,7 @@ private fun NetworkErrorFromSkillPreview() {
     ErrorSkillOutput(
         IOException(),
         true,
-    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews())
+    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews(LocalContext.current))
 }
 
 @Preview
@@ -109,7 +109,7 @@ private fun OtherErrorNotSkillPreview() {
     ErrorSkillOutput(
         Exception("Whatever error"),
         false,
-    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews())
+    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews(LocalContext.current))
 }
 
 @Preview
@@ -118,5 +118,5 @@ private fun OtherErrorFromSkillPreview() {
     ErrorSkillOutput(
         Exception(),
         true,
-    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews())
+    ).GraphicalOutput(ctx = SkillContextImpl.newForPreviews(LocalContext.current))
 }

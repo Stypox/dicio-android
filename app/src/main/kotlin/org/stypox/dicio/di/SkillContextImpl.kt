@@ -1,14 +1,11 @@
 package org.stypox.dicio.di
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.dicio.numbers.ParserFormatter
-import org.dicio.numbers.lang.en.EnglishFormatter
-import org.dicio.numbers.lang.en.EnglishParser
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
@@ -25,19 +22,19 @@ class SkillContextImpl @Inject constructor(
         get() = PreferenceManager.getDefaultSharedPreferences(android)
 
     override val locale: Locale
-        get() = localeManager.locale
+        get() = localeManager.locale.value
 
     private var lastParserFormatter: Pair<ParserFormatter?, Locale>? = null
     override val parserFormatter: ParserFormatter?
         get() {
-            val locale = localeManager.locale
+            val currentLocale = locale
 
-            if (lastParserFormatter?.second?.equals(locale) != true) {
+            if (lastParserFormatter?.second?.equals(currentLocale) != true) {
                 lastParserFormatter = try {
-                    Pair(ParserFormatter(locale), locale)
+                    Pair(ParserFormatter(currentLocale), currentLocale)
                 } catch (ignored: IllegalArgumentException) {
                     // current locale is not supported by dicio-numbers
-                    Pair(null, locale)
+                    Pair(null, currentLocale)
                 }
             }
 
@@ -48,16 +45,16 @@ class SkillContextImpl @Inject constructor(
         internal set
 
     companion object {
-        @Composable
-        fun newForPreviews(): SkillContext {
-            val localeManager = LocaleManager(LocalContext.current)
+        fun newForPreviews(context: Context): SkillContextImpl {
+            val localeManager = LocaleManager.newForPreviews(context)
             val res = SkillContextImpl(
-                LocalContext.current,
+                context,
                 localeManager,
             )
+            @SuppressLint("StateFlowValueCalledInComposition")
             res.lastParserFormatter = Pair(
                 null,
-                localeManager.locale
+                localeManager.locale.value
             )
             return res
         }

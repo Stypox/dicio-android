@@ -41,20 +41,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.datastore.dataStore
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
-import org.stypox.dicio.settings.datastore.UserSettingsSerializer
-import org.stypox.dicio.skills.SkillHandler2
+import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
+import org.stypox.dicio.eval.SkillHandler2
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.util.PermissionUtils
@@ -288,10 +286,9 @@ private fun SkillSettingsScreenPreview() {
             SkillSettingsScreen(
                 SkillSettingsViewModel(
                     application = Application(),
-                    dataStore = dataStore("pre", UserSettingsSerializer)
-                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow),
-                    skillContext = SkillContextImpl.newForPreviews(),
-                    skillHandler = SkillHandler2(SkillContextImpl.newForPreviews()),
+                    dataStore = newDataStoreForPreviews(LocalContext.current),
+                    skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
+                    skillHandler = SkillHandler2.newForPreviews(LocalContext.current),
                 )
             )
         }
@@ -316,10 +313,9 @@ private fun SkillSettingsScreenWithTopBarPreview() {
                 },
                 SkillSettingsViewModel(
                     application = Application(),
-                    dataStore = dataStore("pre", UserSettingsSerializer)
-                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow),
-                    skillContext = SkillContextImpl.newForPreviews(),
-                    skillHandler = SkillHandler2(SkillContextImpl.newForPreviews()),
+                    dataStore = newDataStoreForPreviews(LocalContext.current),
+                    skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
+                    skillHandler = SkillHandler2.newForPreviews(LocalContext.current),
                 )
             )
         }

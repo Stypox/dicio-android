@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.dataStore
 import androidx.datastore.dataStoreFile
 import androidx.datastore.migrations.SharedPreferencesMigration
 import androidx.preference.PreferenceManager
@@ -12,8 +13,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.stypox.dicio.settings.MainSettingsViewModel
 import javax.inject.Singleton
-import org.stypox.dicio.settings.datastore.UserSettings
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -81,6 +82,11 @@ class UserSettingsModule {
                     )
                     .build()
             }
+        }
+
+        fun newDataStoreForPreviews(context: Context): DataStore<UserSettings> {
+            return dataStore("preview_settings.pb", UserSettingsSerializer)
+                .getValue(context, MainSettingsViewModel::settingsFlow)
         }
     }
 }

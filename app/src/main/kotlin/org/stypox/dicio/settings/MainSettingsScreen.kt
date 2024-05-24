@@ -32,10 +32,9 @@ import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
 import org.stypox.dicio.settings.datastore.Theme
-import org.stypox.dicio.settings.datastore.UserSettingsSerializer
+import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
 import org.stypox.dicio.settings.ui.SettingsCategoryTitle
 import org.stypox.dicio.settings.ui.SettingsItem
-import org.stypox.dicio.ui.nav.SkillSettings
 import org.stypox.dicio.ui.theme.AppTheme
 
 
@@ -146,8 +145,7 @@ private fun MainSettingsScreenPreview() {
                 navigateToSkillSettings = {},
                 viewModel = MainSettingsViewModel(
                     application = Application(),
-                    dataStore = dataStore("pre", UserSettingsSerializer)
-                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow)
+                    dataStore = newDataStoreForPreviews(LocalContext.current),
                 ),
             )
         }
@@ -173,8 +171,7 @@ private fun MainSettingsScreenWithTopBarPreview() {
                 navigateToSkillSettings = {},
                 viewModel = MainSettingsViewModel(
                     application = Application(),
-                    dataStore = dataStore("pre", UserSettingsSerializer)
-                        .getValue(LocalContext.current, MainSettingsViewModel::settingsFlow)
+                    dataStore = newDataStoreForPreviews(LocalContext.current)
                 )
             )
         }

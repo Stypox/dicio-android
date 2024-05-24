@@ -32,6 +32,11 @@ import org.vosk.android.SpeechService
 sealed class VoskState {
 
     /**
+     * The VoskInputDevice has not been initialized yet (waiting for a locale to be available)
+     */
+    data object NotInitialized : VoskState()
+
+    /**
      * The model is not available for the current locale
      */
     data object NotAvailable : VoskState()
@@ -105,6 +110,7 @@ sealed class VoskState {
      */
     fun toUiState(): SttState {
         return when (this) {
+            NotInitialized -> SttState.NotInitialized
             NotAvailable -> SttState.NotAvailable
             is NotDownloaded -> SttState.NotDownloaded
             is Downloading -> SttState.Downloading(currentBytes, totalBytes)

@@ -35,7 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -166,7 +166,7 @@ fun InteractionListPreview(
 ) {
     AppTheme(dynamicColor = false) {
         InteractionList(
-            skillContext = SkillContextImpl.newForPreviews(),
+            skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
             interactionLog = interactionLog,
             onConfirmedQuestionClick = {},
         )
@@ -260,7 +260,7 @@ fun SkillAnswerCard(content: @Composable BoxScope.() -> Unit) {
 @Composable
 fun SkillAnswerCardPreview(@PreviewParameter(SkillOutputPreviews::class) skillOutput: SkillOutput) {
     SkillAnswerCard {
-        skillOutput.GraphicalOutput(ctx = SkillContextImpl.newForPreviews())
+        skillOutput.GraphicalOutput(ctx = SkillContextImpl.newForPreviews(LocalContext.current))
     }
 }
 

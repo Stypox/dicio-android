@@ -19,33 +19,19 @@ import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.ui.nav.Navigation
 import org.stypox.dicio.ui.theme.AppTheme
+import org.stypox.dicio.util.LocaleAwareActivity2
 import java.time.Instant
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivityCompose : ComponentActivity() {
+class MainActivityCompose : LocaleAwareActivity2() {
 
-    @Inject
-    lateinit var localeManager: LocaleManager
     @Inject
     lateinit var inputEventsModule: InputEventsModule
     var sttInputDevice: SttInputDevice? = null
         @Inject set
 
     private var nextAssistAllowed = Instant.MIN
-
-    /**
-     * Sets the locale according to value calculated by the injected [LocaleManager].
-     */
-    private fun setLocale() {
-        Locale.setDefault(localeManager.locale)
-        for (resources in sequenceOf(resources, applicationContext.resources)) {
-            val configuration = resources.configuration
-            configuration.setLocale(localeManager.locale)
-            resources.updateConfiguration(configuration, resources.displayMetrics)
-        }
-    }
 
     /**
      * Automatically loads the LLM and the STT when the [ACTION_ASSIST] intent is received. Applies
@@ -73,7 +59,6 @@ class MainActivityCompose : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setLocale()
 
         if (intent?.action == ACTION_ASSIST) {
             onAssistIntentReceived()
@@ -84,7 +69,7 @@ class MainActivityCompose : ComponentActivity() {
 
         enableEdgeToEdge()
 
-        setContent {
+        localeAwareSetContent {
             AppTheme(dynamicColor = false) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

@@ -39,8 +39,10 @@ import org.stypox.dicio.util.getDestinationFile
 import org.stypox.dicio.util.useEntries
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -48,6 +50,7 @@ import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
+import org.stypox.dicio.io.input.vosk.VoskState.NotInitialized
 import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.util.LocaleUtils
 import org.vosk.BuildConfig
@@ -60,6 +63,7 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Locale
 import java.util.zip.ZipInputStream
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -71,10 +75,11 @@ class VoskInputDevice @Inject constructor(
     localeManager: LocaleManager,
 ) : SttInputDevice {
 
-    private val _state: MutableStateFlow<VoskState>
-    private val _uiState: MutableStateFlow<SttState>
-    override val uiState: StateFlow<SttState>
+    private val _state: MutableStateFlow<VoskState> = MutableStateFlow(NotInitialized)
+    private val _uiState: MutableStateFlow<SttState> = MutableStateFlow(NotInitialized.toUiState())
+    override val uiState: StateFlow<SttState> = _uiState
 
+    private var operationsJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.Default)
 
     private val filesDir: File = appContext.filesDir
@@ -86,9 +91,23 @@ class VoskInputDevice @Inject constructor(
 
 
     init {
+        scope.launch {
+            _state.collect { _uiState.value = it.toUiState() }
+        }
+        scope.launch {
+            // perform initialization every time the locale changes
+            localeManager.locale.collect { init(it) }
+        }
+    }
+
+    private suspend fun init(locale: Locale) {
+        // interrupt whatever was happening before
+        deinit()
+
+        // choose the model url based on the locale
         val modelUrl = try {
             val localeResolutionResult = LocaleUtils.resolveSupportedLocale(
-                LocaleListCompat.create(localeManager.locale),
+                LocaleListCompat.create(locale),
                 MODEL_URLS.keys
             )
             MODEL_URLS[localeResolutionResult.supportedLocaleString]
@@ -121,14 +140,53 @@ class VoskInputDevice @Inject constructor(
             // has not been downloaded yet
             else -> NotDownloaded(modelUrl)
         }
-        _state = MutableStateFlow(initialState)
-        _uiState = MutableStateFlow(initialState.toUiState())
-        uiState = _uiState
-        scope.launch {
-            _state.collect { _uiState.value = it.toUiState() }
-        }
+
+        _state.emit(initialState)
     }
 
+    private suspend fun deinit() {
+        val prevState = _state.getAndUpdate { NotInitialized }
+        when (prevState) {
+            // either interrupt the current
+            is Downloading -> operationsJob?.cancel()
+            is Unzipping -> operationsJob?.cancel()
+            is Loading -> {
+                operationsJob?.join()
+                when (val s = _state.getAndUpdate { NotInitialized }) {
+                    NotInitialized -> {} // everything is ok
+                    is Loaded -> {
+                        s.speechService.stop()
+                        s.speechService.shutdown()
+                    }
+                    is Listening -> {
+                        stopListening(s.speechService, s.eventListener, true)
+                        s.speechService.shutdown()
+                    }
+                    else -> {
+                        Log.w(TAG, "Unexpected state after loading: $s")
+                    }
+                }
+            }
+            is Loaded -> {
+                prevState.speechService.stop()
+                prevState.speechService.shutdown()
+            }
+            is Listening -> {
+                stopListening(prevState.speechService, prevState.eventListener, true)
+                prevState.speechService.shutdown()
+            }
+
+            // these are all
+            is NotInitialized,
+            is NotAvailable,
+            is NotDownloaded,
+            is ErrorDownloading,
+            is Downloaded,
+            is ErrorUnzipping,
+            is NotLoaded,
+            is ErrorLoading -> {}
+        }
+    }
 
     /**
      * Loads the model with [thenStartListeningEventListener] if the model is already downloaded
@@ -163,6 +221,7 @@ class VoskInputDevice @Inject constructor(
         // toggleThenStartListening() and in load() to ensure the button click is not lost nor has
         // any unwanted behavior if the state changes right after checking its value in this switch.
         when (val s = _state.value) {
+            is NotInitialized -> {} // wait for initialization to happen
             is NotAvailable -> {} // nothing to do
             is NotDownloaded -> download(s.modelUrl)
             is Downloading -> {} // wait for download to finish
@@ -185,7 +244,7 @@ class VoskInputDevice @Inject constructor(
     private fun download(modelUrl: String) {
         _state.value = Downloading(0, 0)
 
-        scope.launch(Dispatchers.IO) {
+        operationsJob = scope.launch(Dispatchers.IO) {
             try {
                 val request: Request = Request.Builder().url(modelUrl).build()
                 val response = okHttpClient.newCall(request).execute()
@@ -220,7 +279,7 @@ class VoskInputDevice @Inject constructor(
     private fun unzip() {
         _state.value = Unzipping(0, 0)
 
-        scope.launch {
+        operationsJob = scope.launch {
             unzipImpl()
         }
     }
@@ -286,7 +345,7 @@ class VoskInputDevice @Inject constructor(
     private fun load(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
         _state.value = Loading(thenStartListeningEventListener != null)
 
-        scope.launch {
+        operationsJob = scope.launch {
             val speechService: SpeechService
             try {
                 LibVosk.setLogLevel(if (BuildConfig.DEBUG) LogLevel.DEBUG else LogLevel.WARNINGS)
@@ -300,15 +359,21 @@ class VoskInputDevice @Inject constructor(
                 return@launch
             }
 
-            if (
-                thenStartListeningEventListener != null &&
-                !_state.compareAndSet(Loading(false), Loaded(speechService))
-            ) {
-                // If the state wasn't thenStartListening=false, then thenStartListening=true (which
-                // implies thenStartListeningEventListener != null but kotlin doesn't know it).
-                // compareAndSet() is used in conjunction with toggleThenStartListening() to ensure
-                // atomicity.
-                startListening(speechService, thenStartListeningEventListener)
+            if (!_state.compareAndSet(Loading(false), Loaded(speechService))) {
+                if (thenStartListeningEventListener != null &&
+                        // this will always be true except when the load() is begin joined by init()
+                        _state.value == Loading(true)) {
+                    // If the state wasn't thenStartListening=false, then thenStartListening=true
+                    // (which implies thenStartListeningEventListener != null but kotlin doesn't
+                    // know it). compareAndSet() is used in conjunction with
+                    // toggleThenStartListening() to ensure atomicity.
+                    startListening(speechService, thenStartListeningEventListener)
+                } else {
+                    // load() is begin joined by init(), which is reinitializing everything,
+                    // drop the speechService
+                    speechService.stop()
+                    speechService.shutdown()
+                }
             }
         }
     }

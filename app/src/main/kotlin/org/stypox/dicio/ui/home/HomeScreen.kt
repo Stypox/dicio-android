@@ -147,7 +147,7 @@ private fun HomeScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
 
     AppTheme(dynamicColor = false) {
         HomeScreen(
-            skillContext = SkillContextImpl.newForPreviews(),
+            skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
             interactionLog = interactionLog,
             sttState = sttStatesPreviews[i % sttStatesPreviews.size],
             onSttClick = { i += 1 },

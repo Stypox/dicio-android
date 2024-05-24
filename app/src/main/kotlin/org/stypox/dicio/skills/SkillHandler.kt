@@ -52,10 +52,7 @@ object SkillHandler {
      * @param androidContext the android context to use in the skill context
      */
     fun setSkillContextAndroidAndLocale(androidContext: Context) {
-        _skillContext = SkillContextImpl(
-            android = androidContext,
-            localeManager = LocaleManager(androidContext),
-        )
+        _skillContext = SkillContextImpl.newForPreviews(androidContext)
     }
 
     /**

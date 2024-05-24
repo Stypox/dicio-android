@@ -5,6 +5,7 @@ import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
 import androidx.preference.PreferenceManager
 import org.stypox.dicio.R
+import org.stypox.dicio.settings.datastore.Language
 import java.util.Locale
 
 object LocaleUtils {
@@ -103,6 +104,34 @@ object LocaleUtils {
                         languageCountry[1]
                     )
                 )
+            }
+        }
+    }
+
+    fun getAvailableLocalesFromLanguage(context: Context, language: Language): LocaleListCompat {
+        return when (language) {
+            Language.LANGUAGE_SYSTEM,
+            Language.UNRECOGNIZED -> {
+                ConfigurationCompat.getLocales(context.resources.configuration)
+            }
+            else -> {
+                val languageCountry = language
+                    .toString()
+                    .lowercase()
+                    .split("_".toRegex())
+                    .drop(1)
+                    .dropLastWhile { it.isEmpty() }
+                    .toTypedArray()
+                if (languageCountry.size == 1) {
+                    LocaleListCompat.create(Locale(languageCountry[0]))
+                } else {
+                    LocaleListCompat.create(
+                        Locale(
+                            languageCountry[0],
+                            languageCountry[1]
+                        )
+                    )
+                }
             }
         }
     }

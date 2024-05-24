@@ -33,6 +33,11 @@ sealed class SttState {
     data object NoMicrophonePermission : SttState()
 
     /**
+     * The STT engine has not been initialized yet (waiting for a locale to be available)
+     */
+    data object NotInitialized : SttState()
+
+    /**
      * The STT engine cannot be made available, e.g. because the current language is not supported
      */
     data object NotAvailable : SttState()
