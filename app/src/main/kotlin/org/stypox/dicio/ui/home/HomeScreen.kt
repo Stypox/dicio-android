@@ -79,7 +79,9 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
         skillContext = viewModel.skillContext,
         interactionLog = interactionsState,
         sttState = sttState?.value,
-        onSttClick = viewModel.sttInputDevice?.let { it::onClick } ?: {},
+        onSttClick = {
+            viewModel.sttInputDevice?.onClick(viewModel.inputEventsModule::tryEmitEvent)
+        },
         onManualUserInput = {
             viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(it)))
         },

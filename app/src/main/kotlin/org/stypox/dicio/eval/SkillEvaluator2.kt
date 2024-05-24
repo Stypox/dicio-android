@@ -146,7 +146,7 @@ class SkillEvaluator2(
                 }
             } else {
                 skillRanker.addBatchToTop(nextSkills)
-                sttInputDevice?.tryLoad(true)
+                sttInputDevice?.tryLoad(inputEventsModule::tryEmitEvent)
             }
 
         } catch (throwable: Throwable) {

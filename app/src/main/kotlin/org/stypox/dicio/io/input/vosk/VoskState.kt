@@ -19,6 +19,7 @@
 
 package org.stypox.dicio.io.input.vosk
 
+import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.ui.home.SttState
 import org.vosk.android.SpeechService
 
@@ -94,7 +95,8 @@ sealed class VoskState {
      * The model, stored in [SpeechService], is listening.
      */
     data class Listening(
-        internal val speechService: SpeechService
+        internal val speechService: SpeechService,
+        internal val eventListener: (InputEvent) -> Unit,
     ) : VoskState()
 
     /**

@@ -46,7 +46,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
 import org.stypox.dicio.ui.home.SttState
@@ -69,7 +68,6 @@ import javax.inject.Singleton
 class VoskInputDevice @Inject constructor(
     @ApplicationContext appContext: Context,
     private val okHttpClient: OkHttpClient,
-    private val inputEventsModule: InputEventsModule,
     localeManager: LocaleManager,
 ) : SttInputDevice {
 
@@ -133,15 +131,20 @@ class VoskInputDevice @Inject constructor(
 
 
     /**
-     * Loads the model with [thenStartListening] if the model is already downloaded but not loaded
-     * in RAM, or starts listening if [thenStartListening] is `true` and the model is already ready.
+     * Loads the model with [thenStartListeningEventListener] if the model is already downloaded
+     * but not loaded in RAM (which will then start listening if [thenStartListeningEventListener]
+     * is not `null` and pass events there), or starts listening if the model is already ready
+     * and [thenStartListeningEventListener] is not `null` and passes events there.
+     *
+     * @param thenStartListeningEventListener if not `null`, causes the [VoskInputDevice] to start
+     * listening after it has finished loading, and the received input events are sent there
      */
-    override fun tryLoad(thenStartListening: Boolean) {
+    override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
         val s = _state.value
         if (s == NotLoaded) {
-            load(thenStartListening)
-        } else if (thenStartListening && s is Loaded) {
-            startListening(s.speechService)
+            load(thenStartListeningEventListener)
+        } else if (thenStartListeningEventListener != null && s is Loaded) {
+            startListening(s.speechService, thenStartListeningEventListener)
         }
     }
 
@@ -149,8 +152,11 @@ class VoskInputDevice @Inject constructor(
      * If the model is not being downloaded/unzipped/loaded, or if there was an error in any of
      * those steps, downloads/unzips/loads the model. If the model is already loaded (or is being
      * loaded) toggles listening state.
+     *
+     * @param eventListener only used if this click causes Vosk to start listening, will receive all
+     * updates for this run
      */
-    override fun onClick() {
+    override fun onClick(eventListener: (InputEvent) -> Unit) {
         // the state can only be changed in the background by the jobs corresponding to Downloading,
         // Unzipping and Loading, but as can be seen below we don't do anything in case of
         // Downloading and Unzipping. For Loading however, special measures are taken in
@@ -164,11 +170,11 @@ class VoskInputDevice @Inject constructor(
             is Downloaded -> unzip()
             is Unzipping -> {} // wait for unzipping to finish
             is ErrorUnzipping -> unzip() // retry
-            is NotLoaded -> load(true)
-            is Loading -> toggleThenStartListening() // wait for loading to finish
-            is ErrorLoading -> load(true) // retry
-            is Loaded -> startListening(s.speechService)
-            is Listening -> stopListening(s.speechService, true)
+            is NotLoaded -> load(eventListener)
+            is Loading -> toggleThenStartListening(eventListener) // wait for loading to finish
+            is ErrorLoading -> load(eventListener) // retry
+            is Loaded -> startListening(s.speechService, eventListener)
+            is Listening -> stopListening(s.speechService, s.eventListener, true)
         }
     }
 
@@ -271,14 +277,14 @@ class VoskInputDevice @Inject constructor(
     }
 
     /**
-     * Loads the model, and initially sets the state to [Loading] with [initialThenStartListening],
-     * and later either sets the state to [Loaded] or calls [startListening] by checking the current
-     * state's [Loading.thenStartListening] (which might have changed from
-     * [initialThenStartListening] in the meantime, if the user clicked on the button while
-     * loading).
+     * Loads the model, and initially sets the state to [Loading] with [Loading.thenStartListening]
+     * = ([thenStartListeningEventListener] != `null`), and later either sets the state to [Loaded]
+     * or calls [startListening] by checking the current state's [Loading.thenStartListening]
+     * (which might have changed from ([thenStartListeningEventListener] != `null`) in the meantime,
+     * if the user clicked on the button while loading).
      */
-    private fun load(initialThenStartListening: Boolean) {
-        _state.value = Loading(initialThenStartListening)
+    private fun load(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
+        _state.value = Loading(thenStartListeningEventListener != null)
 
         scope.launch {
             val speechService: SpeechService
@@ -294,11 +300,15 @@ class VoskInputDevice @Inject constructor(
                 return@launch
             }
 
-            if (!_state.compareAndSet(Loading(false), Loaded(speechService))) {
-                // If the state wasn't thenStartListening=false, then thenStartListening=true.
+            if (
+                thenStartListeningEventListener != null &&
+                !_state.compareAndSet(Loading(false), Loaded(speechService))
+            ) {
+                // If the state wasn't thenStartListening=false, then thenStartListening=true (which
+                // implies thenStartListeningEventListener != null but kotlin doesn't know it).
                 // compareAndSet() is used in conjunction with toggleThenStartListening() to ensure
                 // atomicity.
-                startListening(speechService)
+                startListening(speechService, thenStartListeningEventListener)
             }
         }
     }
@@ -307,8 +317,12 @@ class VoskInputDevice @Inject constructor(
      * Atomically handles toggling the [Loading.thenStartListening] state, making sure that if in
      * the meantime the value is changed by [load], the user click is not wasted, and the state
      * machine does not end up in an inconsistent state.
+     *
+     * @param eventListener used only if the model has finished loading in the brief moment between
+     * when the state is first checked, but if the state was switched to [Loaded] (and not
+     * [Listening]), which means that this click should start listening.
      */
-    private fun toggleThenStartListening() {
+    private fun toggleThenStartListening(eventListener: (InputEvent) -> Unit) {
         if (
             !_state.compareAndSet(Loading(false), Loading(true)) &&
             !_state.compareAndSet(Loading(true), Loading(false))
@@ -317,8 +331,8 @@ class VoskInputDevice @Inject constructor(
             // first checked before calling this function, and when the checks above are performed
             Log.w(TAG, "Cannot toggle thenStartListening")
             when (val newValue = _state.value) {
-                is Loaded -> startListening(newValue.speechService)
-                is Listening -> stopListening(newValue.speechService, true)
+                is Loaded -> startListening(newValue.speechService, eventListener)
+                is Listening -> stopListening(newValue.speechService, newValue.eventListener, true)
                 is ErrorLoading -> {} // ignore the user's click
                 // the else should never happen, since load() only transitions from Loading(...) to
                 // one of Loaded, Listening or ErrorLoading
@@ -330,20 +344,27 @@ class VoskInputDevice @Inject constructor(
     /**
      * Starts the speech service listening, and changes the state to [Listening].
      */
-    private fun startListening(speechService: SpeechService) {
-        _state.value = Listening(speechService)
-        speechService.startListening(VoskListener(this, inputEventsModule, speechService))
+    private fun startListening(
+        speechService: SpeechService,
+        eventListener: (InputEvent) -> Unit,
+    ) {
+        _state.value = Listening(speechService, eventListener)
+        speechService.startListening(VoskListener(this, eventListener, speechService))
     }
 
     /**
      * Stops the speech service from listening, and changes the state to [Loaded]. This is
      * `internal` because it is used by [VoskListener].
      */
-    internal fun stopListening(speechService: SpeechService, sendNoneEvent: Boolean) {
+    internal fun stopListening(
+        speechService: SpeechService,
+        eventListener: (InputEvent) -> Unit,
+        sendNoneEvent: Boolean,
+    ) {
         _state.value = Loaded(speechService)
         speechService.stop()
         if (sendNoneEvent) {
-            inputEventsModule.tryEmitEvent(InputEvent.None)
+            eventListener(InputEvent.None)
         }
     }
 

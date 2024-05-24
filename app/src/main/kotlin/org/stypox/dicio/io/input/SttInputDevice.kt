@@ -6,7 +6,7 @@ import org.stypox.dicio.ui.home.SttState
 interface SttInputDevice {
     val uiState: StateFlow<SttState>
 
-    fun tryLoad(thenStartListening: Boolean)
+    fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?)
 
-    fun onClick()
+    fun onClick(eventListener: (InputEvent) -> Unit)
 }

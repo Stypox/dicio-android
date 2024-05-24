@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import org.stypox.dicio.di.LocaleManager
+import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.ui.nav.Navigation
 import org.stypox.dicio.ui.theme.AppTheme
@@ -27,6 +28,8 @@ class MainActivityCompose : ComponentActivity() {
 
     @Inject
     lateinit var localeManager: LocaleManager
+    @Inject
+    lateinit var inputEventsModule: InputEventsModule
     var sttInputDevice: SttInputDevice? = null
         @Inject set
 
@@ -54,7 +57,7 @@ class MainActivityCompose : ComponentActivity() {
         if (nextAssistAllowed < now) {
             nextAssistAllowed = now.plusMillis(INTENT_BACKOFF_MILLIS)
             Log.d(TAG, "Received assist intent")
-            sttInputDevice?.tryLoad(thenStartListening = true)
+            sttInputDevice?.tryLoad(inputEventsModule::tryEmitEvent)
         } else {
             Log.w(TAG, "Ignoring duplicate assist intent")
         }
