@@ -76,6 +76,7 @@ class SkillHandler2 @Inject constructor(
         _skillRanker.value = SkillRanker(
             allSkillInfoList
                 .filter { enabledSkills.getOrDefault(it.id, true) }
+                .filter { it.isAvailable(skillContext) }
                 .map(::buildSkillFromInfo),
             buildSkillFromInfo(fallbackSkillInfoList[0]),
         )
