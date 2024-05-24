@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="share">Поделиться</string>
-    <string name="text_input_hint">Спроси меня…</string>
+    <string name="text_input_hint">Спроси меня что-нибудь…</string>
     <string name="here_is_what_i_can_do">Вот что я могу!</string>
     <string name="action_voice_input">Голосовой ввод</string>
     <string name="listening">Слушаю…</string>
@@ -21,7 +21,7 @@
     <string name="pref_input_method">Метод ввода</string>
     <string name="pref_input_method_summary">Выберите сервис для разговора с Dicio - %1$s</string>
     <string name="pref_input_method_text">Текст</string>
-    <string name="pref_input_method_vosk">локальное распознавание речи Vosk</string>
+    <string name="pref_input_method_vosk">автономное распознавание речи Vosk</string>
     <string name="pref_speech_output_method">Метод вывода речи</string>
     <string name="pref_speech_output_method_summary">Выберите сервис, используемый Dicio для разговора с вами - %1$s</string>
     <string name="pref_speech_output_method_toast">Toast (всплывающие сообщения)</string>
@@ -34,9 +34,9 @@
     <string name="action_text_input">Текстовый ввод</string>
     <string name="drawer_header_subtitle">Чем могу помочь\?</string>
     <string name="copied_to_clipboard">Скопировано в буфер</string>
-    <string name="skill_name_search">Найди</string>
-    <string name="skill_sentence_example_search">Найди как кормить кота</string>
-    <string name="skill_sentence_example_weather">Какая погода в Риме\?</string>
+    <string name="skill_name_search">Поиск</string>
+    <string name="skill_sentence_example_search">Чем сегодня накормить кота</string>
+    <string name="skill_sentence_example_weather">Какая сейчас погода в Москве?</string>
     <string name="skill_name_lyrics">Тексты песен</string>
     <string name="skill_sentence_example_lyrics">Что за песня содержит белый снег, серый лёд\?</string>
     <string name="skill_name_open">Запуск приложений</string>
@@ -60,7 +60,7 @@
     <string name="pref_appearance">Внешний вид</string>
     <string name="pref_language">Язык</string>
     <string name="pref_speech_output_method_android">Android TTS</string>
-    <string name="pref_weather_default_city_using_ip_info">Укажите город, который будет использоваться для показаний погоды, если вы не называете город. Текущая настройка пытается определить город автоматически на основании вашего IP адреса.</string>
+    <string name="pref_weather_default_city_using_ip_info">Укажите город, который будет использоваться для показаний погоды по умолчанию. Если вы не называете город, то текущая настройка пытается определить город автоматически на основании вашего IP адреса.</string>
     <string name="skill_name_weather">Погода</string>
     <string name="pref_weather_default_city">Город по умолчанию</string>
     <string name="skill_fallback_name_text">Текстовое сообщение</string>
@@ -82,7 +82,7 @@
     <string name="skill_sentence_example_timer">Поставь секундомер на пять минут</string>
     <string name="skill_name_timer">Секундомер</string>
     <string name="skill_telephone_unknown_contact">Контакт не найдем, попробуйте ещё раз</string>
-    <string name="skill_telephone_found_contacts">Я нашёл %1$d контактов</string>
+    <string name="skill_telephone_found_contacts">Я нашёл %1$d контактов, какой из них использовать?</string>
     <string name="skill_telephone_confirm_call">Позвонить %1$s\?</string>
     <string name="skill_telephone_calling">Звоню %1$s…</string>
     <string name="skill_telephone_not_calling">ОК, я никому не звоню</string>
@@ -99,14 +99,42 @@
     <string name="skill_timer_none_canceled">ОК, ни один секундомер не сброшен</string>
     <string name="pref_skill_grant_permissions">Разрешить</string>
     <string name="eval_missing_permissions">Умению \"%1$s\" требуются следующие разрешения, что работать: %2$s</string>
-    <string name="android_tts_error">"Произошла ошибка при запуске  движка Android TTS"</string>
+    <string name="android_tts_error">Произошла ошибка при запуске движка Android TTS</string>
     <string name="pref_skill_missing_permissions">Требуются следующие разрешения%1$s</string>
     <string name="skill_timer_confirm_cancel">Вы уверены, что вы хотите остановить все секундомеры\?</string>
     <string name="skill_timer_expired_name">Секундомер %1$s завершил настроенное время!</string>
     <string name="skill_timer_set_name">ОК, секундомер %1$s завершит настроенное время через %2$s</string>
     <string name="skill_timer_set">ОК, секундомер завершит настроенное время через %1$s</string>
-    <string name="pref_skill_number_library_not_available">Библиотека анализирующая и форматирующая числа &lt;i&gt;dicio-numbers&lt;/i&gt; пока непереведенна на твой язык, что значит, все умения связанные с числами, длительностью и датами не доступны. Помоги, если можешь нажав сюда b&gt;Please contribute&lt;/b&gt;!</string>
+    <string name="pref_skill_number_library_not_available">Библиотека анализирующая и форматирующая числа <i>dicio-numbers</i> пока не переведенна на Ваш язык, что значит, все умения связанные с числами, длительностью и датами не доступны. Помогите, если можете, нажав сюда <b>Please contribute</b>!</string>
     <string name="error_report">Сообщить</string>
     <string name="error_sorry">К сожалению, произошла ошибка</string>
     <string name="error_title">Сообщение об ошибке</string>
+    <string name="skill_time_current_time">Сейчас %1$s</string>
+    <string name="error_report_channel_name">Уведомление с отчетом об ошибке</string>
+    <string name="pref_stt_auto_finish_title">Отправлять реультат работы сервиса преобразования речи в текст напрямую</string>
+    <string name="pref_stt_auto_finish_summary_on">Автоматически отправлять результат распознавания речи в запрашивающее приложение по завершению прослушивания</string>
+    <string name="skill_name_navigation">Навигация</string>
+    <string name="error_details_headline">Подробности:</string>
+    <string name="error_details_labels">Действие:
+\nЛокализация:
+\nGMT Время:
+\nПакет:
+\nВерсия:
+\nВерсия ОС:</string>
+    <string name="error_report_channel_description">Уведомления для сообщений об ошибках</string>
+    <string name="error_crash_log_headline">Лог ошибки:</string>
+    <string name="error_github_notice">Пожалуйста проверьте, существует ли уже ветка с обсуждением вашей ошибки. При создании повторных веток, вы отнимаете наше время, которое мы могли бы потратить на исправление причины возникновения ошибки.</string>
+    <string name="error_copy_formatted">Скопировать отформатированный отчет</string>
+    <string name="error_report_notification_title">Dicio столкнулся с ошибкой, нажмите чтобы сообщить о ней</string>
+    <string name="error_report_github">Сообщить на GitHub</string>
+    <string name="error_report_notification_toast">Произошла ошибка, смотрите уведомление</string>
+    <string name="pref_stt_auto_finish_summary_off">Ожидать ручного подтверждения перед отправкой результат распознавания речи в запрашивающее приложение</string>
+    <string name="stt_say_something">Скажите что-нибудь…</string>
+    <string name="stt_did_not_understand">Я Вас не понял, повторите пожалуйста</string>
+    <string name="stt_service">Сервис преобразования речи в текст</string>
+    <string name="skill_navigation_specify_where">Уточните, куда вы хотите построить маршрут</string>
+    <string name="skill_sentence_example_navigation">Построй маршрут в Международный аэропорт Ванкувера</string>
+    <string name="skill_navigation_navigating_to">Построение маршрута к %1$s</string>
+    <string name="skill_name_current_time">Текущее время</string>
+    <string name="skill_sentence_example_current_time">Который час?</string>
 </resources>
