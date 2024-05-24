@@ -1,7 +1,5 @@
 package org.stypox.dicio.ui.nav
 
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.interaction.MutableInteractionSource

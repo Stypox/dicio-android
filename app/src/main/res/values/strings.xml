@@ -9,7 +9,9 @@
     <string name="share">Share</string>
     <string name="open_with">Open with</string>
     <string name="no_app_to_open_intent">No app on your device can open this</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="done">Done</string>
     <string name="permission_denied">Permission denied</string>
     <string name="text_input_hint">Ask me anything…</string>
     <string name="grant_microphone_permission">Grant microphone permission</string>

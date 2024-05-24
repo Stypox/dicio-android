@@ -10,6 +10,7 @@ import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatDialog
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -22,23 +23,18 @@ import org.stypox.dicio.io.input.InputDevice
 import org.stypox.dicio.io.input.SpeechInputDevice
 import org.stypox.dicio.io.input.VoskInputDevice
 import org.stypox.dicio.util.BaseActivity
+import org.stypox.dicio.util.LocaleAwareActivity2
 import org.stypox.dicio.util.ShareUtils
 import org.stypox.dicio.util.ShareUtils.shareText
 import org.stypox.dicio.util.ThemeUtils
 
-class SttServiceActivity : BaseActivity() {
+class SttServiceActivity : LocaleAwareActivity2() {
     private var dialog: AppCompatDialog? = null
     private var speechInputDevice: SpeechInputDevice? = null
     private var binding: DialogSttServiceBinding? = null
     private var startedForSpeechResult = false
     private var speechExtras: Bundle? = null
     private var userInputHint: String? = null
-
-    override val themeFromPreferences: Int
-        get() = ThemeUtils.chooseThemeBasedOnPreferences(
-            this,
-            R.style.SttServiceLightAppTheme, R.style.SttServiceLightAppTheme
-        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -57,7 +57,7 @@ import org.stypox.dicio.ui.util.loadingProgressString
  * Calls [SttFabImpl] with the data from the view model, and handles the microhone permission.
  */
 @Composable
-fun SttFab(state: SttState, onClick: () -> Unit) {
+fun SttFab(state: SttState, onClick: () -> Unit, modifier: Modifier = Modifier) {
     var microphonePermissionGranted by remember { mutableStateOf(true) }
     val context = LocalContext.current
     LaunchedEffect(null) {
@@ -81,6 +81,7 @@ fun SttFab(state: SttState, onClick: () -> Unit) {
             { -> launcher.launch(Manifest.permission.RECORD_AUDIO) }
         else
             onClick,
+        modifier = modifier,
     )
 }
 
@@ -89,7 +90,7 @@ fun SttFab(state: SttState, onClick: () -> Unit) {
  * to perform corresponding actions (downloading/unzipping/loading/listening) when pressed.
  */
 @Composable
-private fun SttFabImpl(state: SttState, onClick: () -> Unit) {
+private fun SttFabImpl(state: SttState, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val text = sttFabText(state)
     var lastNonEmptyText by remember { mutableStateOf(text) }
     LaunchedEffect(text) {
@@ -103,6 +104,7 @@ private fun SttFabImpl(state: SttState, onClick: () -> Unit) {
         icon = { SttFabIcon(state, contentDescription = text) },
         onClick = onClick,
         expanded = text.isNotEmpty(),
+        modifier = modifier,
     )
 }
 
