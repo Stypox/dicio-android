@@ -30,10 +30,12 @@ class MainSettingsViewModel @Inject constructor(
         }
     }
 
-    fun setTheme(value: Theme) =
-        updateData { it.setTheme(value) }
     fun setLanguage(value: Language) =
         updateData { it.setLanguage(value) }
+    fun setTheme(value: Theme) =
+        updateData { it.setTheme(value) }
+    fun setDynamicColors(value: Boolean) =
+        updateData { it.setDynamicColors(value) }
     fun setInputDevice(value: InputDevice) =
         updateData { it.setInputDevice(value) }
     fun setSpeechOutputDevice(value: SpeechOutputDevice) =

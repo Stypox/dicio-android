@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.BreakfastDining
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.KeyboardAlt
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
@@ -56,6 +57,11 @@ fun themeSetting() = ListSetting(
             icon = Icons.Default.PhoneAndroid,
         ),
         ListSetting.Value(
+            value = Theme.THEME_SYSTEM_DARK_BLACK,
+            name = stringResource(R.string.pref_theme_system_dark_black),
+            icon = Icons.Default.PhoneAndroid,
+        ),
+        ListSetting.Value(
             value = Theme.THEME_LIGHT,
             name = stringResource(R.string.pref_theme_light),
             icon = Icons.Default.LightMode,
@@ -71,6 +77,14 @@ fun themeSetting() = ListSetting(
             icon = Icons.Default.DarkMode,
         ),
     ),
+)
+
+@Composable
+fun dynamicColors() = BooleanSetting(
+    title = stringResource(R.string.pref_dynamic_colors_title),
+    icon = Icons.Default.InvertColors,
+    descriptionOff = stringResource(R.string.pref_dynamic_colors_summary),
+    descriptionOn = stringResource(R.string.pref_dynamic_colors_summary),
 )
 
 @Composable
