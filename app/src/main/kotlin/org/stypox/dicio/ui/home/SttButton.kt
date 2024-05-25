@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -102,7 +103,12 @@ private fun SttFabImpl(state: SttState, onClick: () -> Unit, modifier: Modifier 
     }
 
     ExtendedFloatingActionButton(
-        text = { Text(lastNonEmptyText) },
+        text = {
+            Text(
+                text = lastNonEmptyText,
+                textAlign = TextAlign.Center,
+            )
+        },
         icon = { SttFabIcon(state, contentDescription = text) },
         onClick = onClick,
         expanded = text.isNotEmpty(),

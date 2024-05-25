@@ -1,6 +1,8 @@
 package org.stypox.dicio.io.input.stt_service
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -117,7 +119,10 @@ private fun SttServiceBottomSheet(
                 .fillMaxWidth(),
         )
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             SttServiceButton(
                 icon = Icons.Default.ContentCopy,
                 contentDescription = R.string.copy_to_clipboard,
@@ -127,23 +132,18 @@ private fun SttServiceBottomSheet(
                 },
             )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f)
-            )
-
-            SttFab(
-                state = sttState,
-                onClick = onSttClick,
-                modifier = Modifier.padding(16.dp),
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f)
-            )
+            // boxing the SttFab so that the Box can stretch as much as weight(1.0f) allows,
+            // but the nested SttFab will always be as small as possible
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.weight(1.0f)
+                    .padding(vertical = 16.dp),
+            ) {
+                SttFab(
+                    state = sttState,
+                    onClick = onSttClick,
+                )
+            }
 
             if (onDoneClicked == null) {
                 SttServiceButton(
