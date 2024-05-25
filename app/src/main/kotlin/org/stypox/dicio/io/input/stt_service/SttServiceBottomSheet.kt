@@ -4,9 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -27,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -41,10 +40,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import org.stypox.dicio.R
 import org.stypox.dicio.ui.home.SttFab
 import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.ui.theme.AppTheme
+import org.stypox.dicio.util.ShareUtils
 
 @Composable
 fun SttServiceBottomSheet(
@@ -52,16 +53,53 @@ fun SttServiceBottomSheet(
     onDoneClicked: ((List<Pair<String, Float>>) -> Unit)?,
     onDismissRequest: () -> Unit,
 ) {
-    var input by rememberSaveable { mutableStateOf("") }
+    val viewModel: SttServiceViewModel = hiltViewModel()
+    val textFieldValue = viewModel.textFieldValue.collectAsState()
+    val sttState = if (viewModel.sttInputDevice == null) {
+        SttState.NotAvailable
+    } else {
+        viewModel.sttInputDevice.uiState.collectAsState().value
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    ModalBottomSheet(onDismissRequest = onDismissRequest) {
+        SttServiceBottomSheet(
+            customHint = customHint,
+            onDoneClicked = if (onDoneClicked == null) {
+                null
+            } else { ->
+                onDoneClicked(viewModel.getUtterancesWithConfidence())
+            },
+            onDismissRequest = onDismissRequest,
+            sttState = sttState,
+            onSttClick = viewModel::onSttClick,
+            textFieldValue = textFieldValue.value,
+            onTextFieldChange = viewModel::setTextFieldValue,
+        )
+    }
+}
+
+@Composable
+private fun SttServiceBottomSheet(
+    customHint: String?,
+    onDoneClicked: (() -> Unit)?,
+    onDismissRequest: () -> Unit,
+    sttState: SttState,
+    onSttClick: () -> Unit,
+    textFieldValue: String,
+    onTextFieldChange: (String) -> Unit,
+) {
+    val context = LocalContext.current
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth(),
     ) {
         SttServiceTextField(
-            input = input,
-            onInputChange = { input = it },
+            value = textFieldValue,
+            onValueChange = onTextFieldChange,
             customHint = customHint,
+            enabled = sttState != SttState.Listening,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
@@ -71,34 +109,47 @@ fun SttServiceBottomSheet(
             SttServiceButton(
                 icon = Icons.Default.ContentCopy,
                 contentDescription = R.string.copy_to_clipboard,
-                onClick = { /*TODO*/ },
+                onClick = {
+                    ShareUtils.copyToClipboard(context, textFieldValue)
+                    onDismissRequest()
+                },
             )
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.0f))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f)
+            )
 
             SttFab(
-                state = SttState.Listening,
-                onClick = {},
-                modifier = Modifier.padding(16.dp)
+                state = sttState,
+                onClick = onSttClick,
+                modifier = Modifier.padding(16.dp),
             )
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.0f))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f)
+            )
 
             if (onDoneClicked == null) {
                 SttServiceButton(
                     icon = Icons.Default.Share,
                     contentDescription = R.string.share,
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        ShareUtils.shareText(context, "", textFieldValue)
+                        onDismissRequest()
+                    },
                 )
             } else {
                 SttServiceButton(
                     icon = Icons.Default.Done,
                     contentDescription = R.string.done,
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        onDoneClicked()
+                        onDismissRequest()
+                    },
                 )
             }
         }
@@ -107,14 +158,15 @@ fun SttServiceBottomSheet(
 
 @Composable
 private fun SttServiceTextField(
-    input: String,
-    onInputChange: (String) -> Unit,
+    value: String,
+    onValueChange: (String) -> Unit,
     customHint: String?,
+    enabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     TextField(
-        value = input,
-        onValueChange = onInputChange,
+        value = value,
+        onValueChange = onValueChange,
         placeholder = {
             Text(
                 text = customHint ?: stringResource(R.string.stt_say_something),
@@ -132,6 +184,7 @@ private fun SttServiceTextField(
             disabledIndicatorColor = Color.Transparent,
         ),
         textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+        enabled = enabled,
         modifier = modifier,
     )
 }
@@ -157,6 +210,8 @@ private fun SttServiceButton(
 @Preview
 @Composable
 private fun SttServiceBottomSheetPreview() {
+    var textFieldValue by rememberSaveable { mutableStateOf("") }
+
     AppTheme {
         @OptIn(ExperimentalMaterial3Api::class)
         BottomSheetScaffold(
@@ -165,6 +220,10 @@ private fun SttServiceBottomSheetPreview() {
                     customHint = null,
                     onDoneClicked = {},
                     onDismissRequest = {},
+                    sttState = SttState.NotAvailable,
+                    onSttClick = {},
+                    textFieldValue = textFieldValue,
+                    onTextFieldChange = { textFieldValue = it },
                 )
             },
             // make the preview always expanded
