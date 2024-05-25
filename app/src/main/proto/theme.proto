@@ -5,7 +5,8 @@ option java_multiple_files = true;
 
 enum Theme {
   THEME_SYSTEM = 0;
-  THEME_LIGHT = 1;
-  THEME_DARK = 2;
-  THEME_BLACK = 3;
+  THEME_SYSTEM_DARK_BLACK = 1;
+  THEME_LIGHT = 2;
+  THEME_DARK = 3;
+  THEME_BLACK = 4;
 }

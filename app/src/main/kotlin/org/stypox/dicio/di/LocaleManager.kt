@@ -60,6 +60,7 @@ class LocaleManager @Inject constructor(
     val locale: StateFlow<Locale>
 
     init {
+        // run blocking, because we can't start the app if we don't know the language
         var lastLanguage = runBlocking { dataStore.data.first().language }
 
         _locale = MutableStateFlow(setSectionsLocale(lastLanguage))

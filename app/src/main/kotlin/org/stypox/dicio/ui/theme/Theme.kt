@@ -2,6 +2,7 @@ package org.stypox.dicio.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import org.stypox.dicio.settings.datastore.Theme
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -259,33 +261,40 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun AppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    theme: Theme = Theme.THEME_SYSTEM,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable() () -> Unit
+    dynamicColors: Boolean = false,
+    content: @Composable () -> Unit
 ) {
-  val colorScheme = when {
-      dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-          val context = LocalContext.current
-          if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-      }
-      
-      darkTheme -> darkScheme
-      else -> lightScheme
-  }
-  val view = LocalView.current
-  if (!view.isInEditMode) {
-    SideEffect {
-      val window = (view.context as Activity).window
-      window.statusBarColor = colorScheme.primary.toArgb()
-      WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-    }
-  }
+    Log.e("CIAOOOOO", "theme=$theme + dynamicColors=$dynamicColors")
+    val colorScheme = if (dynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val darkTheme = when (theme) {
+            Theme.UNRECOGNIZED,
+            Theme.THEME_SYSTEM,
+            Theme.THEME_SYSTEM_DARK_BLACK -> isSystemInDarkTheme()
+            Theme.THEME_LIGHT -> false
+            Theme.THEME_DARK,
+            Theme.THEME_BLACK -> true
+        }
+        val context = LocalContext.current
+        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
 
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = AppTypography,
-    content = content
-  )
+    } else {
+        when (theme) {
+            Theme.UNRECOGNIZED,
+            Theme.THEME_SYSTEM -> if (isSystemInDarkTheme()) darkScheme else lightScheme
+            Theme.THEME_SYSTEM_DARK_BLACK ->
+                if (isSystemInDarkTheme()) highContrastDarkColorScheme else lightScheme
+            Theme.THEME_LIGHT -> lightScheme
+            Theme.THEME_DARK -> darkScheme
+            Theme.THEME_BLACK -> highContrastDarkColorScheme
+        }
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = AppTypography,
+        content = content
+    )
 }
 

@@ -140,7 +140,7 @@ private fun HomeScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
     val sttStatesPreviews = remember { SttStatesPreviews().values.toList() }
     var i by remember { mutableIntStateOf(abs(interactionLog.hashCode())) }
 
-    AppTheme(dynamicColor = false) {
+    AppTheme {
         HomeScreen(
             skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
             interactionLog = interactionLog,

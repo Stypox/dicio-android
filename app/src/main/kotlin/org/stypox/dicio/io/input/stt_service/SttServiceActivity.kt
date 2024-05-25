@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
-import org.stypox.dicio.util.LocaleAwareActivity2
+import org.stypox.dicio.util.BaseComposeActivity
 
 @AndroidEntryPoint
-class SttServiceActivity : LocaleAwareActivity2() {
+class SttServiceActivity : BaseComposeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class SttServiceActivity : LocaleAwareActivity2() {
             }
         }
 
-        localeAwareSetContent {
+        composeSetContent {
             SttServiceBottomSheet(
                 customHint = customHint,
                 onDoneClicked = if (startedForSpeechResult) { utterancesWithConfidence ->

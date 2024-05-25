@@ -164,7 +164,7 @@ fun InteractionList(
 fun InteractionListPreview(
     @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
 ) {
-    AppTheme(dynamicColor = false) {
+    AppTheme {
         InteractionList(
             skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
             interactionLog = interactionLog,
