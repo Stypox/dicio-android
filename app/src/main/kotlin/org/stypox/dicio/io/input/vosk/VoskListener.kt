@@ -109,6 +109,9 @@ internal class VoskListener(
                             it.getDouble("confidence").toFloat() / maxConfidence
                         )
                     }
+                    // empty results are not real results, so filter them out so that the listener
+                    // will be sent an "InputEvent.None" instead of a ".Final" with empty utterances
+                    .filter { it.first.isNotBlank() }
             }
             ?: (jsonResult.optString("text")
                 .takeIf { it.isNotBlank() }
