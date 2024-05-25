@@ -298,6 +298,17 @@ fun AppTheme(
             darkScheme
     }
 
+    // TODO: this does not work in dialogs for some reason
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val controller =
+                WindowCompat.getInsetsController((view.context as Activity).window, view)
+            controller.isAppearanceLightStatusBars = (themeType == LIGHT)
+            controller.isAppearanceLightNavigationBars = (themeType == LIGHT)
+        }
+    }
+
     MaterialTheme(
         colorScheme = colorScheme.let {
             if (themeType == BLACK) {
