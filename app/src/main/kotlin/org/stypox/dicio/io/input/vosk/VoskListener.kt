@@ -128,6 +128,7 @@ internal class VoskListener(
      * Called when an error occurs.
      */
     override fun onError(e: Exception) {
+        // TODO set error state in VoskInputDevice
         Log.e(TAG, "onError called", e)
         voskInputDevice.stopListening(speechService, eventListener, false)
         eventListener(InputEvent.Error(e))

@@ -53,6 +53,8 @@ import org.stypox.dicio.ui.util.SmallCircularProgressIndicator
 import org.stypox.dicio.ui.util.SttStatesPreviews
 import org.stypox.dicio.ui.util.loadingProgressString
 
+// TODO handle long click to report errors
+
 /**
  * Calls [SttFabImpl] with the data from the view model, and handles the microhone permission.
  */
