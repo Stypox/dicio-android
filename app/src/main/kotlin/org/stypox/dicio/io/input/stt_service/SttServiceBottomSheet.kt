@@ -4,9 +4,15 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Done
@@ -75,6 +81,11 @@ fun SttServiceBottomSheet(
             onSttClick = viewModel::onSttClick,
             textFieldValue = textFieldValue.value,
             onTextFieldChange = viewModel::setTextFieldValue,
+            modifier = Modifier.windowInsetsPadding(
+                WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal
+                )
+            ),
         )
     }
 }
@@ -88,12 +99,13 @@ private fun SttServiceBottomSheet(
     onSttClick: () -> Unit,
     textFieldValue: String,
     onTextFieldChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         SttServiceTextField(
             value = textFieldValue,
