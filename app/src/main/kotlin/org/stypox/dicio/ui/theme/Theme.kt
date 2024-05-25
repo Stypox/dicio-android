@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import org.stypox.dicio.settings.datastore.Theme
+import org.stypox.dicio.ui.theme.ThemeType.BLACK
+import org.stypox.dicio.ui.theme.ThemeType.DARK
+import org.stypox.dicio.ui.theme.ThemeType.LIGHT
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -259,6 +261,12 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+private enum class ThemeType {
+    LIGHT,
+    DARK,
+    BLACK,
+}
+
 @Composable
 fun AppTheme(
     theme: Theme = Theme.THEME_SYSTEM,
@@ -266,33 +274,41 @@ fun AppTheme(
     dynamicColors: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val themeType = when (theme) {
+        Theme.UNRECOGNIZED,
+        Theme.THEME_SYSTEM -> if (isSystemInDarkTheme()) DARK else LIGHT
+        Theme.THEME_SYSTEM_DARK_BLACK -> if (isSystemInDarkTheme()) BLACK else LIGHT
+        Theme.THEME_LIGHT -> LIGHT
+        Theme.THEME_DARK -> DARK
+        Theme.THEME_BLACK -> BLACK
+    }
+
     Log.e("CIAOOOOO", "theme=$theme + dynamicColors=$dynamicColors")
     val colorScheme = if (dynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val darkTheme = when (theme) {
-            Theme.UNRECOGNIZED,
-            Theme.THEME_SYSTEM,
-            Theme.THEME_SYSTEM_DARK_BLACK -> isSystemInDarkTheme()
-            Theme.THEME_LIGHT -> false
-            Theme.THEME_DARK,
-            Theme.THEME_BLACK -> true
-        }
         val context = LocalContext.current
-        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        if (themeType == LIGHT)
+            dynamicLightColorScheme(context)
+        else
+            dynamicDarkColorScheme(context)
 
     } else {
-        when (theme) {
-            Theme.UNRECOGNIZED,
-            Theme.THEME_SYSTEM -> if (isSystemInDarkTheme()) darkScheme else lightScheme
-            Theme.THEME_SYSTEM_DARK_BLACK ->
-                if (isSystemInDarkTheme()) highContrastDarkColorScheme else lightScheme
-            Theme.THEME_LIGHT -> lightScheme
-            Theme.THEME_DARK -> darkScheme
-            Theme.THEME_BLACK -> highContrastDarkColorScheme
-        }
+        if (themeType == LIGHT)
+            lightScheme
+        else
+            darkScheme
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = colorScheme.let {
+            if (themeType == BLACK) {
+                it.copy(
+                    background = Color.Black,
+                    surface = Color.Black,
+                )
+            } else {
+                it
+            }
+        },
         typography = AppTypography,
         content = content
     )
