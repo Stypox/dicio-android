@@ -8,13 +8,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Done
@@ -24,7 +26,6 @@ import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -44,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -71,8 +73,33 @@ fun SttServiceBottomSheet(
         viewModel.sttInputDevice.uiState.collectAsState().value
     }
 
+    // Calculate insets here instead of inside ModalBottomSheet, because on old APIs (tested on API
+    // 27) ModalBottomSheet seems to consume them and they become zero.
+    // Use `systemBars + displayCutout` instead of `safeDrawing` because `safeDrawing` also includes
+    // the `ime`, which is instead added as insets directly to the `ModalBottomSheet` window,
+    // since these insets are not really meant to be drawn under.
+    val insets = WindowInsets.systemBars.union(WindowInsets.displayCutout)
+        .only(
+            WindowInsetsSides.Horizontal.let {
+                // put the bottom insets to draw background under the navigation bars, but only
+                // if the keyboard is not open, because in that case the navigation bars would be
+                // below the keyboard and the keyboard insets are handled by ModalBottomSheet
+                if (WindowInsets.ime.getBottom(LocalDensity.current) > 0) {
+                    it
+                } else {
+                    it + WindowInsetsSides.Bottom
+                }
+            }
+        )
+        .asPaddingValues()
+
     @OptIn(ExperimentalMaterial3Api::class)
-    ModalBottomSheet(onDismissRequest = onDismissRequest) {
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+        // insets are applied on the content, to also draw the background under the navigation bars,
+        // except for the `ime` insets which are not meant to be drawn under
+        windowInsets = WindowInsets.ime,
+    ) {
         SttServiceBottomSheet(
             customHint = customHint,
             onDoneClicked = if (onDoneClicked == null) {
@@ -85,11 +112,7 @@ fun SttServiceBottomSheet(
             onSttClick = viewModel::onSttClick,
             textFieldValue = textFieldValue.value,
             onTextFieldChange = viewModel::setTextFieldValue,
-            modifier = Modifier.windowInsetsPadding(
-                WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal
-                )
-            ),
+            modifier = Modifier.padding(insets),
         )
     }
 }
@@ -138,7 +161,8 @@ private fun SttServiceBottomSheet(
             // but the nested SttFab will always be as small as possible
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.weight(1.0f)
+                modifier = Modifier
+                    .weight(1.0f)
                     .padding(vertical = 16.dp),
             ) {
                 SttFab(
