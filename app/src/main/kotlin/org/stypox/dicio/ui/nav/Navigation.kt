@@ -33,7 +33,16 @@ fun Navigation() {
             )
         }
     }
-    
+
+    // TODO this causes a crash when resuming a process from disk, the stacktrace is:
+    //
+    // java.lang.IllegalStateException: Restoring the Navigation back stack failed: destination
+    //         186859275 cannot be found from the current destination ComposeNavGraph(0x0)
+    //         startDestination={Destination(0x19acea6) route=org.stypox.dicio.ui.nav.Home}
+    //     at androidx.navigation.NavController.onGraphCreated(NavController.kt:1365)
+    //
+    // this is caused by a bug in the type-safe Compose Navigation library:
+    // https://issuetracker.google.com/issues/341801005
     NavHost(navController = navController, startDestination = Home) {
         composable<Home> {
             val context = LocalContext.current
