@@ -333,7 +333,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
             getString(R.string.pref_val_speech_output_method_snackbar) -> {
-                SnackbarSpeechDevice(findViewById(android.R.id.content))
+                ToastSpeechDevice(this)
+                //SnackbarSpeechDevice(findViewById(android.R.id.content))
             }
 
             getString(R.string.pref_val_speech_output_method_toast) -> {

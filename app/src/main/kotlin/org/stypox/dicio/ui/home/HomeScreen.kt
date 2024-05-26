@@ -10,6 +10,8 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -81,6 +83,9 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
             viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(Pair(it, 1.0f))))
         },
         navigationIcon = navigationIcon,
+        snackbarHost = {
+            SnackbarHost(hostState = viewModel.snackbarHostState)
+        },
     )
 }
 
@@ -92,6 +97,7 @@ fun HomeScreen(
     onSttClick: () -> Unit,
     onManualUserInput: (String) -> Unit,
     navigationIcon: @Composable () -> Unit,
+    snackbarHost: @Composable () -> Unit,
 ) {
     var searchString by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -131,6 +137,7 @@ fun HomeScreen(
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
+        snackbarHost = snackbarHost,
     )
 }
 
@@ -154,7 +161,8 @@ private fun HomeScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
                         contentDescription = null,
                     )
                 }
-            }
+            },
+            snackbarHost = {},
         )
     }
 }
