@@ -87,6 +87,10 @@
             <meta-data
                 android:name="com.android.systemui.action_assist_icon"
                 android:resource="@mipmap/ic_launcher" />
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
     </application>
 </manifest>

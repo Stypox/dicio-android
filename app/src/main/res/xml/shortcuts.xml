@@ -1,0 +1,13 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="stt_service"
+        android:enabled="true"
+        android:icon="@mipmap/ic_stt_service"
+        android:shortcutShortLabel="@string/stt_service"
+        android:shortcutLongLabel="@string/stt_service">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.stypox.dicio"
+            android:targetClass="org.stypox.dicio.io.input.stt_service.SttServiceActivity" />
+    </shortcut>
+</shortcuts>
