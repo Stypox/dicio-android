@@ -8,6 +8,8 @@ import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.HiltAndroidApp
 import org.stypox.dicio.util.PermissionUtils
 
+// IMPORTANT NOTE: beware of this nasty bug related to allowBackup=true
+// https://medium.com/@pablobaxter/what-happened-to-my-subclass-android-application-924c91bafcac
 @HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
@@ -15,7 +17,7 @@ class App : Application() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
             PermissionUtils.checkPermissions(this, Manifest.permission.POST_NOTIFICATIONS)
         ) {
-            initNotificationChannels();
+            initNotificationChannels()
         }
     }
 
