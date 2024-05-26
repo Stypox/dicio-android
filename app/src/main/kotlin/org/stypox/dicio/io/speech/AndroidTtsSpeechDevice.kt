@@ -3,6 +3,7 @@ package org.stypox.dicio.io.speech
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
 import org.dicio.skill.context.SpeechOutputDevice
@@ -19,7 +20,8 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
         textToSpeech = TextToSpeech(context) { status: Int ->
             if (status == TextToSpeech.SUCCESS) {
                 textToSpeech?.run {
-                    if (setLanguage(locale) >= 0) { // errors are -1 or -2
+                    val errorCode = setLanguage(locale)
+                    if (errorCode >= 0) { // errors are -1 or -2
                         initializedCorrectly = true
                         setOnUtteranceProgressListener(object :
                             UtteranceProgressListener() {
@@ -39,10 +41,12 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
                             }
                         })
                     } else {
+                        Log.e(TAG, "Unsupported language: $errorCode")
                         handleInitializationError(R.string.android_tts_unsupported_language)
                     }
                 }
             } else {
+                Log.e(TAG, "TTS error: $status")
                 handleInitializationError(R.string.android_tts_error)
             }
         }
@@ -85,5 +89,9 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
     private fun handleInitializationError(@StringRes errorString: Int) {
         Toast.makeText(context, errorString, Toast.LENGTH_SHORT).show()
         cleanup()
+    }
+
+    companion object {
+        val TAG: String = AndroidTtsSpeechDevice::class.simpleName!!
     }
 }

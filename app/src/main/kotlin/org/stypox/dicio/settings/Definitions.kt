@@ -113,7 +113,7 @@ fun speechOutputDevice() = ListSetting(
     description = stringResource(R.string.pref_speech_output_method_summary),
     possibleValues = listOf(
         ListSetting.Value(
-            value = SpeechOutputDevice.SPEECH_OUTPUT_DEVICE_ANDROID_STT,
+            value = SpeechOutputDevice.SPEECH_OUTPUT_DEVICE_ANDROID_TTS,
             name = stringResource(R.string.pref_speech_output_method_android),
             icon = Icons.Default.SpeakerPhone,
         ),

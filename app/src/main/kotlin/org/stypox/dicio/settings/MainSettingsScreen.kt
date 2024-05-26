@@ -124,7 +124,7 @@ private fun MainSettingsScreen(
                 when (val speechOutputDevice = settings.speechOutputDevice) {
                     SpeechOutputDevice.UNRECOGNIZED,
                     SpeechOutputDevice.SPEECH_OUTPUT_DEVICE_UNSET ->
-                        SpeechOutputDevice.SPEECH_OUTPUT_DEVICE_ANDROID_STT
+                        SpeechOutputDevice.SPEECH_OUTPUT_DEVICE_ANDROID_TTS
                     else -> speechOutputDevice
                 },
                 viewModel::setSpeechOutputDevice,

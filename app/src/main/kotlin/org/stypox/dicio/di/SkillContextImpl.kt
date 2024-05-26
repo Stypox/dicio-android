@@ -9,15 +9,28 @@ import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
+import org.stypox.dicio.settings.datastore.UserSettingsModule
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SkillContextImpl @Inject constructor(
-    @ApplicationContext override val android: Context,
+class SkillContextImpl private constructor(
+    override val android: Context,
     private val localeManager: LocaleManager,
+    // this constructor can take any SpeechOutputDevice to allow newForPreviews to provide
+    // NothingSpeechDevice
+    override val speechOutputDevice: SpeechOutputDevice,
 ) : SkillContext {
+
+    @Inject
+    constructor(
+        @ApplicationContext android: Context,
+        localeManager: LocaleManager,
+        speechOutputDevice: SpeechOutputDeviceWrapper,
+    ) : this(android, localeManager, speechOutputDevice as SpeechOutputDevice)
+
+
     override val preferences: SharedPreferences
         get() = PreferenceManager.getDefaultSharedPreferences(android)
 
@@ -41,15 +54,13 @@ class SkillContextImpl @Inject constructor(
             return lastParserFormatter?.first
         }
 
-    override var speechOutputDevice: SpeechOutputDevice = NothingSpeechDevice()
-        internal set
-
     companion object {
         fun newForPreviews(context: Context): SkillContextImpl {
             val localeManager = LocaleManager.newForPreviews(context)
             val res = SkillContextImpl(
                 context,
                 localeManager,
+                NothingSpeechDevice(),
             )
             @SuppressLint("StateFlowValueCalledInComposition")
             res.lastParserFormatter = Pair(

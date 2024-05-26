@@ -61,7 +61,7 @@ object SkillHandler {
      * @param speechOutputDevice the speech output device to use in the skill context
      */
     fun setSkillContextDevices(speechOutputDevice: SpeechOutputDevice?) {
-        _skillContext!!.speechOutputDevice = speechOutputDevice ?: NothingSpeechDevice()
+        //_skillContext!!.speechOutputDevice = speechOutputDevice ?: NothingSpeechDevice()
     }
 
     // we want to release resources, so we set to null
