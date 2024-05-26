@@ -15,11 +15,4 @@ class SkillContextModule {
     @Provides
     @Singleton
     fun provideSkillContext(skillContextImpl: SkillContextImpl): SkillContext = skillContextImpl
-
-    @Provides
-    @Singleton
-    fun provideSttInputDevice(voskInputDevice: VoskInputDevice): SttInputDevice? {
-        // TODO read from settings
-        return voskInputDevice
-    }
 }

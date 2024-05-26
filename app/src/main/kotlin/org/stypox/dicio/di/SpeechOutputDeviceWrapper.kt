@@ -46,6 +46,9 @@ class SpeechOutputDeviceWrapper @Inject constructor(
                 }
                 .distinctUntilChanged()
                 .collect { (setting, locale) ->
+                    // TODO avoid using locale here, but delegate listening to locale changes to
+                    //  AndroidTtsSpeechDevice, or in alternative make it so that
+                    //  SttInputDeviceWrapper works the same way
                     val prevDevice = wrappedSpeechDevice
                     wrappedSpeechDevice = when (setting) {
                         null,

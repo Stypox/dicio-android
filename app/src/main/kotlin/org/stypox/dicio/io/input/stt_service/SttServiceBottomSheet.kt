@@ -67,11 +67,7 @@ fun SttServiceBottomSheet(
 ) {
     val viewModel: SttServiceViewModel = hiltViewModel()
     val textFieldValue = viewModel.textFieldValue.collectAsState()
-    val sttState = if (viewModel.sttInputDevice == null) {
-        SttState.NotAvailable
-    } else {
-        viewModel.sttInputDevice.uiState.collectAsState().value
-    }
+    val sttState = viewModel.sttInputDevice.uiState.collectAsState().value ?: SttState.NotAvailable
 
     // Calculate insets here instead of inside ModalBottomSheet, because on old APIs (tested on API
     // 27) ModalBottomSheet seems to consume them and they become zero.

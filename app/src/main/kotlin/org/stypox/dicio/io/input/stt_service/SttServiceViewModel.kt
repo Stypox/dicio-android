@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import javax.inject.Inject
@@ -12,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SttServiceViewModel @Inject constructor(
     application: Application,
-    val sttInputDevice: SttInputDevice?,
+    val sttInputDevice: SttInputDeviceWrapper,
 ) : AndroidViewModel(application) {
 
     private val _textFieldValue = MutableStateFlow("")
@@ -24,7 +25,7 @@ class SttServiceViewModel @Inject constructor(
 
     init {
         // start listening right away when the SttServiceActivity is started
-        sttInputDevice?.tryLoad(this::onReceiveInputEvent)
+        sttInputDevice.tryLoad(this::onReceiveInputEvent)
     }
 
 
@@ -47,7 +48,7 @@ class SttServiceViewModel @Inject constructor(
     }
 
     fun onSttClick() {
-        sttInputDevice?.onClick(this::onReceiveInputEvent)
+        sttInputDevice.onClick(this::onReceiveInputEvent)
     }
 
     private fun onReceiveInputEvent(inputEvent: InputEvent) {

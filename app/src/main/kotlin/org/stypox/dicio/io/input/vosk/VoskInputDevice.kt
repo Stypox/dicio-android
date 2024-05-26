@@ -40,6 +40,7 @@ import org.stypox.dicio.util.useEntries
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
@@ -68,8 +69,7 @@ import java.util.zip.ZipInputStream
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class VoskInputDevice @Inject constructor(
+class VoskInputDevice constructor(
     @ApplicationContext appContext: Context,
     private val okHttpClient: OkHttpClient,
     localeManager: LocaleManager,
@@ -176,7 +176,7 @@ class VoskInputDevice @Inject constructor(
                 prevState.speechService.shutdown()
             }
 
-            // these are all
+            // these states are all resting states, so there is nothing to interrupt
             is NotInitialized,
             is NotAvailable,
             is NotDownloaded,
@@ -431,6 +431,12 @@ class VoskInputDevice @Inject constructor(
         if (sendNoneEvent) {
             eventListener(InputEvent.None)
         }
+    }
+
+    override suspend fun destroy() {
+        deinit()
+        // cancel everything
+        scope.cancel()
     }
 
     companion object {

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.stypox.dicio.di.SpeechOutputDeviceWrapper
+import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator2
 import org.stypox.dicio.eval.SkillHandler2
 import org.stypox.dicio.io.input.InputEventsModule
@@ -23,7 +24,7 @@ class HomeScreenViewModel @Inject constructor(
     val skillContext: SkillContext,
     skillHandler: SkillHandler2,
     val inputEventsModule: InputEventsModule,
-    val sttInputDevice: SttInputDevice?,
+    val sttInputDevice: SttInputDeviceWrapper,
     val speechOutputDevice: SpeechOutputDeviceWrapper,
     // this is always instantiated, but will do nothing if
     // it is not the speech device chosen by the user
@@ -60,9 +61,9 @@ class HomeScreenViewModel @Inject constructor(
 
         // stop speaking when the STT device starts listening
         viewModelScope.launch {
-            sttInputDevice?.uiState
-                ?.filter { it == SttState.Listening }
-                ?.collect { speechOutputDevice.stopSpeaking() }
+            sttInputDevice.uiState
+                .filter { it == SttState.Listening }
+                .collect { speechOutputDevice.stopSpeaking() }
         }
     }
 }

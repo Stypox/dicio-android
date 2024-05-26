@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.util.WordExtractor
+import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
@@ -25,7 +26,7 @@ class SkillEvaluator2(
     private val skillContext: SkillContext,
     private val skillHandler: SkillHandler2,
     private val inputEventsModule: InputEventsModule,
-    private val sttInputDevice: SttInputDevice?,
+    private val sttInputDevice: SttInputDeviceWrapper,
 ) {
 
     private val _state = MutableStateFlow(
@@ -143,7 +144,7 @@ class SkillEvaluator2(
                 }
             } else {
                 skillRanker.addBatchToTop(nextSkills)
-                sttInputDevice?.tryLoad(inputEventsModule::tryEmitEvent)
+                sttInputDevice.tryLoad(inputEventsModule::tryEmitEvent)
             }
 
         } catch (throwable: Throwable) {

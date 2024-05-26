@@ -9,4 +9,6 @@ interface SttInputDevice {
     fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?)
 
     fun onClick(eventListener: (InputEvent) -> Unit)
+
+    suspend fun destroy()
 }

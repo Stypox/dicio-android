@@ -70,14 +70,14 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
     // the activity is recreated (no rememberSaveable is available)
     viewModel.skillEvaluator.permissionRequester = ::requestPermissions
     val interactionsState by viewModel.skillEvaluator.state.collectAsState()
-    val sttState = viewModel.sttInputDevice?.uiState?.collectAsState()
+    val sttState = viewModel.sttInputDevice.uiState.collectAsState()
 
     HomeScreen(
         skillContext = viewModel.skillContext,
         interactionLog = interactionsState,
-        sttState = sttState?.value,
+        sttState = sttState.value,
         onSttClick = {
-            viewModel.sttInputDevice?.onClick(viewModel.inputEventsModule::tryEmitEvent)
+            viewModel.sttInputDevice.onClick(viewModel.inputEventsModule::tryEmitEvent)
         },
         onManualUserInput = {
             viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(Pair(it, 1.0f))))
@@ -93,6 +93,7 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
 fun HomeScreen(
     skillContext: SkillContext,
     interactionLog: InteractionLog,
+    // if the STT state is null, it means the user disabled the STT
     sttState: SttState?,
     onSttClick: () -> Unit,
     onManualUserInput: (String) -> Unit,
@@ -129,6 +130,7 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
+            // if the STT state is null, it means the user disabled the STT
             if (sttState != null) {
                 SttFab(
                     state = sttState,

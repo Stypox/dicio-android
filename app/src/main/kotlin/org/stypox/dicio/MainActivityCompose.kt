@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
+import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.ui.nav.Navigation
@@ -27,8 +28,8 @@ class MainActivityCompose : BaseComposeActivity() {
 
     @Inject
     lateinit var inputEventsModule: InputEventsModule
-    var sttInputDevice: SttInputDevice? = null
-        @Inject set
+    @Inject
+    lateinit var sttInputDevice: SttInputDeviceWrapper
 
     private var nextAssistAllowed = Instant.MIN
 
@@ -42,7 +43,7 @@ class MainActivityCompose : BaseComposeActivity() {
         if (nextAssistAllowed < now) {
             nextAssistAllowed = now.plusMillis(INTENT_BACKOFF_MILLIS)
             Log.d(TAG, "Received assist intent")
-            sttInputDevice?.tryLoad(inputEventsModule::tryEmitEvent)
+            sttInputDevice.tryLoad(inputEventsModule::tryEmitEvent)
         } else {
             Log.w(TAG, "Ignoring duplicate assist intent")
         }
@@ -63,7 +64,7 @@ class MainActivityCompose : BaseComposeActivity() {
             onAssistIntentReceived()
         } else {
             // load the input device, without starting to listen
-            sttInputDevice?.tryLoad(null)
+            sttInputDevice.tryLoad(null)
         }
 
         composeSetContent {
