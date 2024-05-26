@@ -22,6 +22,12 @@ class SttServiceViewModel @Inject constructor(
     private var lastTextFieldInput = ""
 
 
+    init {
+        // start listening right away when the SttServiceActivity is started
+        sttInputDevice?.tryLoad(this::onReceiveInputEvent)
+    }
+
+
     fun setTextFieldValue(value: String) {
         lastTextFieldInput = value
         _textFieldValue.value = value
