@@ -2,7 +2,6 @@ package org.stypox.dicio.ui.theme
 
 import android.app.Activity
 import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
@@ -283,7 +282,6 @@ fun AppTheme(
         Theme.THEME_BLACK -> BLACK
     }
 
-    Log.e("CIAOOOOO", "theme=$theme + dynamicColors=$dynamicColors")
     val colorScheme = if (dynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val context = LocalContext.current
         if (themeType == LIGHT)
