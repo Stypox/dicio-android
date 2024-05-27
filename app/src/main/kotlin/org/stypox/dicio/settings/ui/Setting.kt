@@ -2,6 +2,7 @@ package org.stypox.dicio.settings.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,17 +20,23 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import org.stypox.dicio.R
@@ -99,7 +106,7 @@ class ListSetting<T>(
                 description
             } else {
                 stringResource(
-                    id = R.string.settings_description_with_value,
+                    R.string.settings_description_with_value,
                     description,
                     currentValueName
                 )
@@ -151,14 +158,8 @@ class ListSetting<T>(
                         )
                     }
                 }
-                Row(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-                ) {
-                    Spacer(modifier = Modifier.weight(1.0f))
-                    TextButton(onClick = onDismissRequest) {
-                        Text(stringResource(android.R.string.cancel))
-                    }
+                TextButton(onClick = onDismissRequest) {
+                    Text(stringResource(android.R.string.cancel))
                 }
             }
         }
@@ -217,4 +218,113 @@ private fun ListSettingChooserDialogPreview() {
             ListSetting.Value(false, "False :-( ".repeat(20), icon = Icons.Default.BookmarkRemove),
         )
     ).ChooserDialog(true, {}, {})
+}
+
+class StringSetting(
+    private val title: String,
+    private val icon: ImageVector? = null,
+    private val description: String? = null,
+    private val descriptionWhenEmpty: String? = null,
+) : SettingWithValue<String> {
+    @Composable
+    override fun Render(value: String, onValueChange: (String) -> Unit) {
+        var dialogOpen by rememberSaveable { mutableStateOf(false) }
+
+        SettingsItem(
+            modifier = Modifier.clickable { dialogOpen = true },
+            title = title,
+            icon = icon,
+            description = if (value.isEmpty()) {
+                descriptionWhenEmpty ?: description
+            } else if (description == null) {
+                value
+            } else {
+                stringResource(
+                    R.string.settings_description_with_value,
+                    description,
+                    value
+                )
+            },
+        )
+
+        if (dialogOpen) {
+            EditDialog(
+                initialValue = value,
+                onValueChange = onValueChange,
+                onDismissRequest = { dialogOpen = false }
+            )
+        }
+    }
+
+    @Composable
+    fun EditDialog(
+        initialValue: String,
+        onValueChange: (String) -> Unit,
+        onDismissRequest: () -> Unit,
+    ) {
+        // only send value changes when the user presses ok
+        var value by rememberSaveable { mutableStateOf(initialValue) }
+
+        Dialog(onDismissRequest = onDismissRequest) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.extraLarge,
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 8.dp),
+                )
+
+                Box(
+                    contentAlignment = Alignment.TopCenter,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    val focusRequester = remember { FocusRequester() }
+                    TextField(
+                        value = value,
+                        onValueChange = { value = it },
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.focusRequester(focusRequester),
+                    )
+                    LaunchedEffect(null) {
+                        focusRequester.requestFocus()
+                    }
+                }
+
+                Row(
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
+                ) {
+                    TextButton(onClick = onDismissRequest) {
+                        Text(stringResource(android.R.string.cancel))
+                    }
+                    Spacer(modifier = Modifier.weight(1.0f))
+                    TextButton(
+                        onClick = {
+                            // only send value changes when the user presses ok
+                            onValueChange(value)
+                            onDismissRequest()
+                        }
+                    ) {
+                        Text(stringResource(android.R.string.ok))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ListSettingEditDialogPreview() {
+    StringSetting(
+        title = "List of things",
+        descriptionWhenEmpty = LoremIpsum(20).values.first()
+    ).EditDialog("Initial value", {}, {})
 }
