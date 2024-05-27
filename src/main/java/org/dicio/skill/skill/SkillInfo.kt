@@ -1,8 +1,6 @@
 package org.dicio.skill.skill
 
 import android.content.Context
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import org.dicio.skill.context.SkillContext

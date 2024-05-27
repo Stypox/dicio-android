@@ -1,26 +1,18 @@
 package org.dicio.skill.context
 
 import android.content.Context
-import android.content.SharedPreferences
 import org.dicio.numbers.ParserFormatter
 import java.util.Locale
 
 /**
  * An interface for providing access to various services and information to skills. Contains the
- * Android context, the Android shared preferences, the user locale, the parser/formatter and the
- * speech output device.
+ * Android context, the user locale, the parser/formatter and the speech output device.
  */
 interface SkillContext {
     /**
      * The Android context, useful for example to get resources, etc.
      */
     val android: Context
-
-    /**
-     * The Android shared preferences, useful for user customization, also see
-     * [org.dicio.skill.skill.SkillInfo.renderSettings].
-     */
-    val preferences: SharedPreferences
 
     /**
      * The current user locale, useful for example to customize web requests to get the correct

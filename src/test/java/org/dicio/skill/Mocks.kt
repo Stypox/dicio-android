@@ -1,7 +1,6 @@
 package org.dicio.skill
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.compose.ui.graphics.painter.Painter
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
@@ -15,7 +14,6 @@ import java.util.Locale
 
 object MockSkillContext : SkillContext {
     override val android: Context get() = mocked()
-    override val preferences: SharedPreferences get() = mocked()
     override val locale: Locale get() = mocked()
     override val parserFormatter: ParserFormatter get() = mocked()
     override val speechOutputDevice: SpeechOutputDevice get() = mocked()
