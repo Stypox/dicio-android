@@ -131,9 +131,6 @@ dependencies {
 
     // Android
     implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.constraintlayout)
-    implementation(libs.preference.ktx)
 
     // Compose (check out https://developer.android.com/jetpack/compose/bom/bom-mapping)
     implementation(libs.activity.compose)
@@ -177,7 +174,6 @@ dependencies {
     // Image loading
     implementation(libs.coil.compose)
     implementation(libs.accompanist.drawablepainter)
-    implementation(libs.picasso)
 
     // Miscellaneous
     implementation(libs.unbescape)
