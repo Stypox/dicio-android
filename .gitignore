@@ -8,6 +8,7 @@
 .externalNativeBuild
 /models
 /aars/build
+/checkouts
 
 # Fastlane
 fastlane/report.xml

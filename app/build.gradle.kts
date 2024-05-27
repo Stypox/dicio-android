@@ -14,7 +14,6 @@ import java.util.Collections
 buildscript {
     repositories {
         mavenCentral()
-        maven { url = java.net.URI("https://jitpack.io") }
     }
     dependencies {
         classpath(libs.dicio.sentences.compiler)

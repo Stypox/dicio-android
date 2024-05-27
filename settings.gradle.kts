@@ -1,3 +1,13 @@
+import me.champeau.gradle.igp.gitRepositories
+import org.eclipse.jgit.api.Git
+import java.io.FileInputStream
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardCopyOption
+import java.util.Properties
+
+include(":app")
+
 pluginManagement {
     repositories {
         google()
@@ -6,36 +16,104 @@ pluginManagement {
     }
 }
 
+plugins {
+    // not using version catalog because it is not available in settings.gradle.kts
+    id("me.champeau.includegit") version "0.1.6"
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven { url = java.net.URI("https://jitpack.io") }
     }
 }
 
-include(":app")
 
-// Uncomment these lines to use a local copy of the projects, instead of letting Gradle fetch them
-// from Jitpack. You may want to change the paths in `includeBuild()` if you don't have those
-// projects in the same folder as this project.
+// All of the code below handles depending on libraries from git repos, in particular dicio-numbers,
+// dicio-skill and dicio-sentences-compiler. The git commits to checkout can be updated here.
+// If you want to use a local copy of the projects (provided that you have cloned them in
+// `../dicio-*`), you can add `useLocalDicioLibraries=true` in `local.properties`.
 
-includeBuild("../dicio-skill") {
-    dependencySubstitution {
-        substitute(module("com.github.Stypox:dicio-skill")).using(project(":skill"))
+data class IncludeGitRepo(
+    val name: String,
+    val uri: String,
+    val projectPath: String,
+    val commit: String,
+)
+
+val includeGitRepos = listOf(
+    IncludeGitRepo(
+        name = "dicio-numbers",
+        uri = "https://github.com/Stypox/dicio-numbers",
+        projectPath = ":numbers",
+        commit = "3206f161e80b349168fedcc21a601e5ea9b05961",
+    ),
+    IncludeGitRepo(
+        name = "dicio-skill",
+        uri = "https://github.com/Stypox/dicio-skill",
+        projectPath = ":skill",
+        commit = "8006be8cd4752ff09f63d77846d08bdade779dc5",
+    ),
+    IncludeGitRepo(
+        name = "dicio-sentences-compiler",
+        uri = "https://github.com/Stypox/dicio-sentences-compiler",
+        projectPath = ":sentences_compiler",
+        commit = "6862bd9b351ca55a457fd3f88ad764d5b7e71543",
+    ),
+)
+
+val localProperties = Properties().apply {
+    try {
+        load(FileInputStream(File(rootDir, "local.properties")))
+    } catch (e: Throwable) {
+        println("Warning: can't read local.properties: $e")
     }
 }
 
-includeBuild("../dicio-numbers") {
-    dependencySubstitution {
-        substitute(module("com.github.Stypox:dicio-numbers")).using(project(":numbers"))
+if (localProperties.getOrDefault("useLocalDicioLibraries", "") == "true") {
+    for (repo in includeGitRepos) {
+        includeBuild("../${repo.name}") {
+            dependencySubstitution {
+                substitute(module("git.included.build:${repo.name}"))
+                    .using(project(repo.projectPath))
+            }
+        }
     }
-}
 
-includeBuild("../dicio-sentences-compiler") {
-    dependencySubstitution {
-        substitute(module("com.github.Stypox:dicio-sentences-compiler")).using(project(":sentences_compiler"))
+} else {
+    // if the repo has already been cloned, the gitRepositories plugin is buggy and doesn't
+    // fetch the remote repo before trying to checkout the commit (in case the commit has changed),
+    // so we need to do it manually
+    for (repo in includeGitRepos) {
+        val file = File("$rootDir/checkouts/${repo.name}")
+        if (file.isDirectory) {
+            Git.open(file).fetch().call()
+        }
+    }
+
+    gitRepositories {
+        for (repo in includeGitRepos) {
+            include(repo.name) {
+                uri.set(repo.uri)
+                commit.set(repo.commit)
+                autoInclude.set(false)
+                includeBuild("") {
+                    dependencySubstitution {
+                        substitute(module("git.included.build:${repo.name}"))
+                            .using(project(repo.projectPath))
+                    }
+                }
+            }
+        }
+    }
+
+    // the nested dicio-skill build needs access to the Android SDK,
+    // which is defined in local.properties but not passed to included builds
+    // https://github.com/gradle/gradle/issues/2534
+    val sdkDir = localProperties.getOrDefault("sdk.dir", "").toString()
+    if (sdkDir.isNotBlank()) {
+        File("$rootDir/checkouts/dicio-skill/local.properties")
+            .writeText("sdk.dir=$sdkDir")
     }
 }
-/**/
