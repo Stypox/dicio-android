@@ -9,7 +9,7 @@ import dagger.hilt.android.HiltAndroidApp
 import org.stypox.dicio.util.PermissionUtils
 
 // IMPORTANT NOTE: beware of this nasty bug related to allowBackup=true
-// https://medium.com/@pablobaxter/what-happened-to-my-subclass-android-application-924c91bafcac
+// https://medium.com/p/924c91bafcac
 @HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
