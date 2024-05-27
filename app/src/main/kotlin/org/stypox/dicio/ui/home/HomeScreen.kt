@@ -82,10 +82,10 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
         interactionLog = interactionsState.value,
         sttState = sttState.value,
         onSttClick = {
-            viewModel.sttInputDevice.onClick(viewModel.inputEventsModule::tryEmitEvent)
+            viewModel.sttInputDevice.onClick(viewModel.skillEvaluator::processInputEvent)
         },
         onManualUserInput = {
-            viewModel.inputEventsModule.tryEmitEvent(InputEvent.Final(listOf(Pair(it, 1.0f))))
+            viewModel.skillEvaluator.processInputEvent(InputEvent.Final(listOf(Pair(it, 1.0f))))
         },
         navigationIcon = navigationIcon,
         snackbarHost = {

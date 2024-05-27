@@ -23,10 +23,8 @@ import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.io.input.InputEventsModule
 import org.vosk.android.RecognitionListener
 import org.vosk.android.SpeechService
-import java.util.Collections
 
 
 /**

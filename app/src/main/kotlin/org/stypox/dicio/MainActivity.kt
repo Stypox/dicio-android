@@ -12,7 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import org.stypox.dicio.di.SttInputDeviceWrapper
-import org.stypox.dicio.io.input.InputEventsModule
+import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.ui.nav.Navigation
 import org.stypox.dicio.util.BaseActivity
 import java.time.Instant
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity() {
 
     @Inject
-    lateinit var inputEventsModule: InputEventsModule
+    lateinit var skillEvaluator: SkillEvaluator
     @Inject
     lateinit var sttInputDevice: SttInputDeviceWrapper
 
@@ -38,7 +38,7 @@ class MainActivity : BaseActivity() {
         if (nextAssistAllowed < now) {
             nextAssistAllowed = now.plusMillis(INTENT_BACKOFF_MILLIS)
             Log.d(TAG, "Received assist intent")
-            sttInputDevice.tryLoad(inputEventsModule::tryEmitEvent)
+            sttInputDevice.tryLoad(skillEvaluator::processInputEvent)
         } else {
             Log.w(TAG, "Ignoring duplicate assist intent")
         }

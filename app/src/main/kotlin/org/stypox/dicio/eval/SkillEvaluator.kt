@@ -14,19 +14,21 @@ import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.io.input.InputEventsModule
 import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.PendingQuestion
 import org.stypox.dicio.ui.home.QuestionAnswer
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SkillEvaluator(
-    scope: CoroutineScope,
+@Singleton
+class SkillEvaluator @Inject constructor(
     private val skillContext: SkillContext,
     private val skillHandler: SkillHandler,
-    private val inputEventsModule: InputEventsModule,
     private val sttInputDevice: SttInputDeviceWrapper,
 ) {
+
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     private val _state = MutableStateFlow(
         InteractionLog(
@@ -42,14 +44,13 @@ class SkillEvaluator(
     // must be kept up to date even when the activity is recreated, for this reason it is `var`
     var permissionRequester: suspend (Array<String>) -> Boolean = { false }
 
-    init {
-        scope.launch(Dispatchers.Default) {
-            // receive input events
-            inputEventsModule.events.collect(::processInputEvent)
+    fun processInputEvent(event: InputEvent) {
+        scope.launch {
+            suspendProcessInputEvent(event)
         }
     }
 
-    private suspend fun processInputEvent(event: InputEvent) {
+    private suspend fun suspendProcessInputEvent(event: InputEvent) {
         when (event) {
             is InputEvent.Error -> {
                 addErrorInteractionFromPending(event.throwable)
@@ -143,7 +144,7 @@ class SkillEvaluator(
                 }
             } else {
                 skillRanker.addBatchToTop(nextSkills)
-                sttInputDevice.tryLoad(inputEventsModule::tryEmitEvent)
+                sttInputDevice.tryLoad(this::processInputEvent)
             }
 
         } catch (throwable: Throwable) {
