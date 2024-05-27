@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.dataStore
 import androidx.datastore.dataStoreFile
 import androidx.datastore.migrations.SharedPreferencesMigration
 import androidx.preference.PreferenceManager
@@ -13,7 +12,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.stypox.dicio.settings.MainSettingsViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Singleton
 
 @Module
@@ -84,9 +84,19 @@ class UserSettingsModule {
             }
         }
 
-        fun newDataStoreForPreviews(context: Context): DataStore<UserSettings> {
-            return dataStore("preview_settings.pb", UserSettingsSerializer)
-                .getValue(context, MainSettingsViewModel::settingsFlow)
+        fun newDataStoreForPreviews(): DataStore<UserSettings> {
+            return object : DataStore<UserSettings> {
+                private val _data = MutableStateFlow(UserSettingsSerializer.defaultValue)
+                override val data: Flow<UserSettings> = _data
+
+                override suspend fun updateData(
+                    transform: suspend (t: UserSettings) -> UserSettings
+                ): UserSettings {
+                    val newData = transform(_data.value)
+                    _data.value = newData
+                    return newData
+                }
+            }
         }
     }
 }

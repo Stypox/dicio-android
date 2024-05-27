@@ -20,13 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.datastore.dataStore
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.stypox.dicio.R
 import org.stypox.dicio.settings.datastore.InputDevice
@@ -154,7 +151,7 @@ private fun MainSettingsScreenPreview() {
                 navigateToSkillSettings = {},
                 viewModel = MainSettingsViewModel(
                     application = Application(),
-                    dataStore = newDataStoreForPreviews(LocalContext.current),
+                    dataStore = newDataStoreForPreviews(),
                 ),
             )
         }
@@ -180,7 +177,7 @@ private fun MainSettingsScreenWithTopBarPreview() {
                 navigateToSkillSettings = {},
                 viewModel = MainSettingsViewModel(
                     application = Application(),
-                    dataStore = newDataStoreForPreviews(LocalContext.current)
+                    dataStore = newDataStoreForPreviews()
                 )
             )
         }

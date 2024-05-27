@@ -84,7 +84,7 @@ class LocaleManager @Inject constructor(
         fun newForPreviews(context: Context): LocaleManager {
             return LocaleManager(
                 context,
-                newDataStoreForPreviews(context),
+                newDataStoreForPreviews(),
             )
         }
     }

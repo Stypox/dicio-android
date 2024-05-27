@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
@@ -93,7 +92,7 @@ class SkillHandler2 @Inject constructor(
     companion object {
         fun newForPreviews(context: Context): SkillHandler2 {
             return SkillHandler2(
-                UserSettingsModule.newDataStoreForPreviews(context),
+                UserSettingsModule.newDataStoreForPreviews(),
                 LocaleManager.newForPreviews(context),
                 SkillContextImpl.newForPreviews(context),
             )

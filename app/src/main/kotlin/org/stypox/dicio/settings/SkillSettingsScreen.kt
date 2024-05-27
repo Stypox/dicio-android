@@ -286,7 +286,7 @@ private fun SkillSettingsScreenPreview() {
             SkillSettingsScreen(
                 SkillSettingsViewModel(
                     application = Application(),
-                    dataStore = newDataStoreForPreviews(LocalContext.current),
+                    dataStore = newDataStoreForPreviews(),
                     skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
                     skillHandler = SkillHandler2.newForPreviews(LocalContext.current),
                 )
@@ -313,7 +313,7 @@ private fun SkillSettingsScreenWithTopBarPreview() {
                 },
                 SkillSettingsViewModel(
                     application = Application(),
-                    dataStore = newDataStoreForPreviews(LocalContext.current),
+                    dataStore = newDataStoreForPreviews(),
                     skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
                     skillHandler = SkillHandler2.newForPreviews(LocalContext.current),
                 )
