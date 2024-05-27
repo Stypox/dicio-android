@@ -39,7 +39,7 @@ class UserSettingsModule {
     companion object {
         fun getSharedPreferencesMigration(context: Context): SharedPreferencesMigration<UserSettings> {
             return SharedPreferencesMigration(
-                { PreferenceManager.getDefaultSharedPreferences(context)}
+                { PreferenceManager.getDefaultSharedPreferences(context) }
             ) { prefs, userSettings ->
                 userSettings.toBuilder()
                     .setTheme(

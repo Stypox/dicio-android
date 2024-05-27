@@ -7,18 +7,33 @@ import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.dataStore
+import androidx.datastore.dataStoreFile
+import androidx.datastore.migrations.SharedPreferencesMigration
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import kotlinx.coroutines.launch
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.weather
+import org.stypox.dicio.settings.datastore.UserSettingsModule
+import org.stypox.dicio.settings.datastore.UserSettingsSerializer
 import org.stypox.dicio.settings.ui.SettingsItem
+import org.stypox.dicio.settings.ui.StringSetting
 
 object WeatherInfo : SkillInfo("weather") {
     override fun name(context: Context) =
@@ -39,11 +54,45 @@ object WeatherInfo : SkillInfo("weather") {
         return WeatherSkill(WeatherInfo, Sections.getSection(weather))
     }
 
+    // no need to use Hilt injection here, let DataStore take care of handling the singleton itself
+    internal val Context.weatherDataStore by dataStore(
+        fileName = "settings.pb",
+        serializer = SkillSettingsWeatherSerializer,
+        corruptionHandler = ReplaceFileCorruptionHandler {
+            SkillSettingsWeatherSerializer.defaultValue
+        },
+        produceMigrations = { context ->
+            listOf(
+                SharedPreferencesMigration(
+                    { PreferenceManager.getDefaultSharedPreferences(context) }
+                ) { prefs, skillSettingsWeather ->
+                    skillSettingsWeather.toBuilder()
+                        .setDefaultCity(prefs.getString("weather_default_city"))
+                        .build()
+                }
+            )
+        },
+    )
+
     override val renderSettings: @Composable () -> Unit get() = @Composable {
-        // TODO actually implement setting
-        SettingsItem(
+        val dataStore = LocalContext.current.weatherDataStore
+        val data by dataStore.data.collectAsState(SkillSettingsWeatherSerializer.defaultValue)
+        val scope = rememberCoroutineScope()
+
+        StringSetting(
             title = stringResource(R.string.pref_weather_default_city),
-            description = stringResource(R.string.pref_weather_default_city_using_ip_info),
+            descriptionWhenEmpty = stringResource(R.string.pref_weather_default_city_using_ip_info),
+        ).Render(
+            value = data.defaultCity,
+            onValueChange = { defaultCity ->
+                scope.launch {
+                    dataStore.updateData { skillSettingsWeather ->
+                        skillSettingsWeather.toBuilder()
+                            .setDefaultCity(defaultCity)
+                            .build()
+                    }
+                }
+            },
         )
     }
 }

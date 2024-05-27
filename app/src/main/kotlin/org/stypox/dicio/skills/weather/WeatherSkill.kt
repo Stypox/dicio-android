@@ -1,5 +1,6 @@
 package org.stypox.dicio.skills.weather
 
+import kotlinx.coroutines.flow.first
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
@@ -8,6 +9,7 @@ import org.dicio.skill.standard.StandardRecognizerSkill
 import org.dicio.skill.standard.StandardResult
 import org.stypox.dicio.R
 import org.stypox.dicio.Sentences_en.weather
+import org.stypox.dicio.skills.weather.WeatherInfo.weatherDataStore
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.StringUtils
 import org.stypox.dicio.util.getString
@@ -21,12 +23,11 @@ class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDa
             ?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
 
         if (city.isNullOrEmpty()) {
-            city = ctx.preferences.getString(
-                ctx.getString(R.string.pref_key_weather_default_city), ""
-            )?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
+            city = ctx.android.weatherDataStore.data.first().defaultCity
+                .let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
         }
 
-        if (city.isNullOrEmpty()) {
+        if (city.isEmpty()) {
             city = ConnectionUtils.getPageJson(IP_INFO_URL).getString("city")
         }
 
