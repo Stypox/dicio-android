@@ -1,6 +1,7 @@
 package org.dicio.skill
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
@@ -22,7 +23,7 @@ object MockSkillContext : SkillContext {
 object MockSkillInfo : SkillInfo("") {
     override fun name(context: Context): String = mocked()
     override fun sentenceExample(context: Context): String = mocked()
-    override val icon: Painter get() = mocked()
+    @Composable override fun icon(): Painter = mocked()
     override fun isAvailable(ctx: SkillContext) = mocked()
     override fun build(ctx: SkillContext) = mocked()
 }
