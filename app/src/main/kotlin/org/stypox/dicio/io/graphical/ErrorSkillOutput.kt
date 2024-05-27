@@ -3,8 +3,8 @@ package org.stypox.dicio.io.graphical
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,7 +64,7 @@ data class ErrorSkillOutput(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 val context = LocalContext.current
-                TextButton(
+                ElevatedButton(
                     onClick = {
                         ErrorUtils.openActivity(
                             context,
@@ -76,7 +76,7 @@ data class ErrorSkillOutput(
                                     UserAction.GENERIC_EVALUATION
                             )
                         )
-                    }
+                    },
                 ) {
                     Text(text = stringResource(R.string.error_report))
                 }
