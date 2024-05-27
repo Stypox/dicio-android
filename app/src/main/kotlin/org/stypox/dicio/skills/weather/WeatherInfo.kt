@@ -1,11 +1,8 @@
 package org.stypox.dicio.skills.weather
 
 import android.content.Context
-import android.os.Bundle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cloud
-import androidx.compose.material.icons.filled.LocationCity
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,26 +10,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.datastore.core.DataStore
-import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStore
-import androidx.datastore.dataStoreFile
 import androidx.datastore.migrations.SharedPreferencesMigration
-import androidx.fragment.app.Fragment
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import kotlinx.coroutines.launch
-import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.weather
-import org.stypox.dicio.settings.datastore.UserSettingsModule
-import org.stypox.dicio.settings.datastore.UserSettingsSerializer
-import org.stypox.dicio.settings.ui.SettingsItem
 import org.stypox.dicio.settings.ui.StringSetting
 
 object WeatherInfo : SkillInfo("weather") {
@@ -64,7 +51,8 @@ object WeatherInfo : SkillInfo("weather") {
         produceMigrations = { context ->
             listOf(
                 SharedPreferencesMigration(
-                    { PreferenceManager.getDefaultSharedPreferences(context) }
+                    context,
+                    context.packageName + "_preferences",
                 ) { prefs, skillSettingsWeather ->
                     skillSettingsWeather.toBuilder()
                         .setDefaultCity(prefs.getString("weather_default_city"))

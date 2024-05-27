@@ -1,14 +1,10 @@
 package org.stypox.dicio.skills.search
 
 import android.content.Context
-import android.os.Bundle
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceFragmentCompat
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import org.stypox.dicio.R
 import java.util.Locale
 
@@ -40,37 +39,6 @@ object ErrorUtils {
      */
     fun openActivity(context: Context, errorInfo: ErrorInfo) {
         context.startActivity(getErrorActivityIntent(context, errorInfo))
-    }
-
-    /**
-     * Show a bottom snackbar to the user, with a report button that opens the error activity.
-     * Use this method if the exception is not critical and it happens in a place where a root
-     * view is available.
-     *
-     * @param context   will be used to obtain the root view if it is an [Activity]; if no root
-     * view can be found an error notification is shown instead
-     * @param errorInfo the error info to be reported
-     */
-    fun showSnackbar(context: Context, errorInfo: ErrorInfo) {
-        val rootView = (context as? Activity)?.findViewById<View>(android.R.id.content)
-        showSnackbar(context, rootView, errorInfo)
-    }
-
-    /**
-     * Show a bottom snackbar to the user, with a report button that opens the error activity.
-     * Use this method if the exception is not critical and it happens in a place where a root
-     * view is available.
-     *
-     * @param fragment  will be used to obtain the root view if it has a connected [Activity]; if
-     * no root view can be found an error notification is shown instead
-     * @param errorInfo the error info to be reported
-     */
-    fun showSnackbar(fragment: Fragment, errorInfo: ErrorInfo) {
-        var rootView = fragment.view
-        if (rootView == null && fragment.activity != null) {
-            rootView = fragment.requireActivity().findViewById(android.R.id.content)
-        }
-        showSnackbar(fragment.requireContext(), rootView, errorInfo)
     }
 
     /**
@@ -114,22 +82,5 @@ object ErrorUtils {
         intent.putExtra(ErrorActivity.ERROR_INFO, errorInfo)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         return intent
-    }
-
-    private fun showSnackbar(
-        context: Context,
-        rootView: View?,
-        errorInfo: ErrorInfo
-    ) {
-        if (rootView == null) {
-            // fallback to showing a notification if no root view is available
-            createNotification(context, errorInfo)
-        } else {
-            Snackbar.make(rootView, R.string.error_sorry, Snackbar.LENGTH_LONG)
-                .setAction(
-                    context.getString(R.string.error_report).uppercase(Locale.getDefault())
-                ) { openActivity(context, errorInfo) }
-                .show()
-        }
     }
 }

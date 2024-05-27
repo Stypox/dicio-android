@@ -3,8 +3,6 @@ package org.stypox.dicio.util
 import android.content.Context
 import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
-import androidx.preference.PreferenceManager
-import org.stypox.dicio.R
 import org.stypox.dicio.settings.datastore.Language
 import java.util.Locale
 

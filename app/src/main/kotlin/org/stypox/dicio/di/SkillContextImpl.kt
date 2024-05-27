@@ -2,14 +2,11 @@ package org.stypox.dicio.di
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
-import org.stypox.dicio.settings.datastore.UserSettingsModule
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -6,7 +6,6 @@ import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import androidx.datastore.migrations.SharedPreferencesMigration
-import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,7 +38,8 @@ class UserSettingsModule {
     companion object {
         fun getSharedPreferencesMigration(context: Context): SharedPreferencesMigration<UserSettings> {
             return SharedPreferencesMigration(
-                { PreferenceManager.getDefaultSharedPreferences(context) }
+                context,
+                context.packageName + "_preferences",
             ) { prefs, userSettings ->
                 userSettings.toBuilder()
                     .setTheme(
