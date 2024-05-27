@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -19,7 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -35,12 +33,11 @@ import org.stypox.dicio.ui.theme.AppTheme
 import java.util.Locale
 
 @Composable
-private fun ErrorScreen(
-    userAction: UserAction,
+fun ErrorScreen(
+    errorInfo: ErrorInfo,
     locale: Locale,
     timestamp: String,
     osInfo: String,
-    stackTrace: String,
     onCopy: () -> Unit,
     onShare: () -> Unit,
     onReport: () -> Unit,
@@ -51,7 +48,7 @@ private fun ErrorScreen(
             @OptIn(ExperimentalMaterial3Api::class)
             TopAppBar(
                 title = {
-                    Text(text = stringResource(R.string.error_title))
+                    Text(text = stringResource(R.string.error_sorry))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -65,11 +62,10 @@ private fun ErrorScreen(
         }
     ) {
         ErrorScreen(
-            userAction = userAction,
+            errorInfo = errorInfo,
             locale = locale,
             timestamp = timestamp,
             osInfo = osInfo,
-            stackTrace = stackTrace,
             onCopy = onCopy,
             onShare = onShare,
             onReport = onReport,
@@ -80,26 +76,16 @@ private fun ErrorScreen(
 
 @Composable
 private fun ErrorScreen(
-    userAction: UserAction,
+    errorInfo: ErrorInfo,
     locale: Locale,
     timestamp: String,
     osInfo: String,
-    stackTrace: String,
     onCopy: () -> Unit,
     onShare: () -> Unit,
     onReport: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Text(
-            text = stringResource(R.string.error_sorry),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        )
-
         ButtonsSection(
             onCopy = onCopy,
             onShare = onShare,
@@ -108,7 +94,7 @@ private fun ErrorScreen(
         )
 
         DetailsSection(
-            userAction = userAction,
+            userAction = errorInfo.userAction,
             locale = locale,
             timestamp = timestamp,
             osInfo = osInfo,
@@ -116,7 +102,7 @@ private fun ErrorScreen(
         )
 
         StackTraceSection(
-            stackTrace = stackTrace,
+            stackTrace = errorInfo.stackTrace,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         )
     }
@@ -127,11 +113,10 @@ private fun ErrorScreen(
 private fun ErrorScreenPreview() {
     AppTheme {
         ErrorScreen(
-            userAction = UserAction.STT_SERVICE_SPEECH_TO_TEXT,
+            errorInfo = ErrorInfo(Exception(), UserAction.STT_SERVICE_SPEECH_TO_TEXT),
             locale = Locale.getDefault(),
             timestamp = "2024-05-27 08:52 ".repeat(10),
             osInfo = "Linux Android 14 - 34",
-            stackTrace = ExceptionUtils.getStackTraceString(Exception()),
             onCopy = {},
             onShare = {},
             onReport = {},
