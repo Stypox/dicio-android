@@ -3,6 +3,7 @@ package org.stypox.dicio.skills
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.DrawableRes
+import androidx.preference.PreferenceManager
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
@@ -92,8 +93,9 @@ object SkillHandler {
     val enabledSkillInfoList: List<SkillInfo>
         get() = allSkillInfoList.stream()
             .filter { skillInfo: SkillInfo ->
-                skillInfo.isAvailable(skillContext) && skillContext.preferences
-                    .getBoolean(getIsEnabledPreferenceKey(skillInfo.id), true)
+                skillInfo.isAvailable(skillContext) &&
+                        PreferenceManager.getDefaultSharedPreferences(skillContext.android)
+                            .getBoolean(getIsEnabledPreferenceKey(skillInfo.id), true)
             }
             .collect(Collectors.toList())
 

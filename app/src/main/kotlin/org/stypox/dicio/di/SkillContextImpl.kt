@@ -31,9 +31,6 @@ class SkillContextImpl private constructor(
     ) : this(android, localeManager, speechOutputDevice as SpeechOutputDevice)
 
 
-    override val preferences: SharedPreferences
-        get() = PreferenceManager.getDefaultSharedPreferences(android)
-
     override val locale: Locale
         get() = localeManager.locale.value
 
