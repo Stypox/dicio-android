@@ -1,12 +1,15 @@
 package org.stypox.dicio.error
 
+import android.Manifest
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
@@ -52,6 +55,13 @@ object ErrorUtils {
      * description
      */
     fun createNotification(context: Context, errorInfo: ErrorInfo) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED) {
+            // user did not grant notifications permission, open activity instead
+            openActivity(context, errorInfo)
+            return
+        }
+
         var pendingIntentFlags = PendingIntent.FLAG_UPDATE_CURRENT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             pendingIntentFlags = pendingIntentFlags or PendingIntent.FLAG_IMMUTABLE
@@ -69,6 +79,7 @@ object ErrorUtils {
                     getErrorActivityIntent(context, errorInfo), pendingIntentFlags
                 )
             )
+
         NotificationManagerCompat.from(context)
             .notify(ERROR_REPORT_NOTIFICATION_ID, notificationBuilder.build())
 
