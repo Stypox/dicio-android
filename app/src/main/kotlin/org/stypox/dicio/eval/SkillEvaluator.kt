@@ -144,7 +144,9 @@ class SkillEvaluator @Inject constructor(
                 }
             } else {
                 skillRanker.addBatchToTop(nextSkills)
-                sttInputDevice.tryLoad(this::processInputEvent)
+                skillContext.speechOutputDevice.runWhenFinishedSpeaking {
+                    sttInputDevice.tryLoad(this::processInputEvent)
+                }
             }
 
         } catch (throwable: Throwable) {
