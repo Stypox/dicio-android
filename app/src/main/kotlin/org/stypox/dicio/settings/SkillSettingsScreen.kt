@@ -52,7 +52,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
-import org.stypox.dicio.eval.SkillHandler2
+import org.stypox.dicio.eval.SkillHandler
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.util.PermissionUtils
@@ -288,7 +288,7 @@ private fun SkillSettingsScreenPreview() {
                     application = Application(),
                     dataStore = newDataStoreForPreviews(),
                     skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
-                    skillHandler = SkillHandler2.newForPreviews(LocalContext.current),
+                    skillHandler = SkillHandler.newForPreviews(LocalContext.current),
                 )
             )
         }
@@ -315,7 +315,7 @@ private fun SkillSettingsScreenWithTopBarPreview() {
                     application = Application(),
                     dataStore = newDataStoreForPreviews(),
                     skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
-                    skillHandler = SkillHandler2.newForPreviews(LocalContext.current),
+                    skillHandler = SkillHandler.newForPreviews(LocalContext.current),
                 )
             )
         }

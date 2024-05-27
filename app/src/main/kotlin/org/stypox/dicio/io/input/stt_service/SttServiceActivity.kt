@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
-import org.stypox.dicio.util.BaseComposeActivity
+import org.stypox.dicio.util.BaseActivity
 
 @AndroidEntryPoint
-class SttServiceActivity : BaseComposeActivity() {
+class SttServiceActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

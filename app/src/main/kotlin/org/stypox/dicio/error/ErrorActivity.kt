@@ -7,7 +7,7 @@ import androidx.core.content.IntentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import org.stypox.dicio.BuildConfig
 import org.stypox.dicio.R
-import org.stypox.dicio.util.BaseComposeActivity
+import org.stypox.dicio.util.BaseActivity
 import org.stypox.dicio.util.ShareUtils
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -18,7 +18,7 @@ import java.util.Locale
  * @implNote Taken with some modifications from NewPipe, file error/ErrorActivity.java
  */
 @AndroidEntryPoint
-class ErrorActivity : BaseComposeActivity() {
+class ErrorActivity : BaseActivity() {
 
     private lateinit var errorInfo: ErrorInfo
     private lateinit var locale: Locale

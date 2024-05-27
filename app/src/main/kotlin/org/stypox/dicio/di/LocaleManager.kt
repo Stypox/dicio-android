@@ -17,7 +17,6 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
-import org.stypox.dicio.util.LocaleAwareActivity
 import org.stypox.dicio.util.LocaleUtils
 import java.util.Locale
 import javax.inject.Inject
@@ -39,16 +38,12 @@ class LocaleManager @Inject constructor(
                 LocaleUtils.getAvailableLocalesFromLanguage(appContext, language)
             )
         } catch (e: LocaleUtils.UnsupportedLocaleException) {
-            Log.w(LocaleAwareActivity.TAG, "Current locale is not supported, defaulting to English", e)
+            Log.w(TAG, "Current locale is not supported, defaulting to English", e)
             try {
                 // TODO ask the user to manually choose a locale instead of defaulting to english
                 Sections.setLocale(LocaleListCompat.create(Locale.ENGLISH))
             } catch (e1: LocaleUtils.UnsupportedLocaleException) {
-                Log.wtf(
-                    LocaleAwareActivity.TAG,
-                    "COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!",
-                    e1,
-                )
+                Log.wtf(TAG, "COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!", e1)
                 error("COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!")
             }
         }

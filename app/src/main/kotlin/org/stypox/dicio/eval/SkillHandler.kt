@@ -28,8 +28,10 @@ import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.weather.WeatherInfo
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class SkillHandler2 @Inject constructor(
+@Singleton
+class SkillHandler @Inject constructor(
     private val dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
     private val skillContext: SkillContext,
@@ -90,8 +92,8 @@ class SkillHandler2 @Inject constructor(
     }
 
     companion object {
-        fun newForPreviews(context: Context): SkillHandler2 {
-            return SkillHandler2(
+        fun newForPreviews(context: Context): SkillHandler {
+            return SkillHandler(
                 UserSettingsModule.newDataStoreForPreviews(),
                 LocaleManager.newForPreviews(context),
                 SkillContextImpl.newForPreviews(context),

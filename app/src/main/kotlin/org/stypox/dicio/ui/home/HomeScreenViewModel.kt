@@ -11,10 +11,9 @@ import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.stypox.dicio.di.SpeechOutputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapper
-import org.stypox.dicio.eval.SkillEvaluator2
-import org.stypox.dicio.eval.SkillHandler2
+import org.stypox.dicio.eval.SkillEvaluator
+import org.stypox.dicio.eval.SkillHandler
 import org.stypox.dicio.io.input.InputEventsModule
-import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.speech.SnackbarSpeechDevice
 import javax.inject.Inject
 
@@ -22,7 +21,7 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     application: Application,
     val skillContext: SkillContext,
-    val skillHandler: SkillHandler2,
+    val skillHandler: SkillHandler,
     val inputEventsModule: InputEventsModule,
     val sttInputDevice: SttInputDeviceWrapper,
     val speechOutputDevice: SpeechOutputDeviceWrapper,
@@ -31,7 +30,7 @@ class HomeScreenViewModel @Inject constructor(
     snackbarSpeechDevice: SnackbarSpeechDevice,
 ) : AndroidViewModel(application) {
 
-    val skillEvaluator = SkillEvaluator2(
+    val skillEvaluator = SkillEvaluator(
         scope = viewModelScope,
         skillContext = skillContext,
         skillHandler = skillHandler,

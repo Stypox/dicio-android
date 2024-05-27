@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.settings.datastore.UserSettings
-import org.stypox.dicio.eval.SkillHandler2
+import org.stypox.dicio.eval.SkillHandler
 import javax.inject.Inject
 
 
@@ -19,7 +19,7 @@ class SkillSettingsViewModel @Inject constructor(
     application: Application,
     private val dataStore: DataStore<UserSettings>,
     val skillContext: SkillContext,
-    private val skillHandler: SkillHandler2,
+    private val skillHandler: SkillHandler,
 ) : AndroidViewModel(application) {
     val skills: List<SkillInfo> get() = skillHandler.allSkillInfoList
     val enabledSkills = dataStore.data.map { it.enabledSkillsMap }

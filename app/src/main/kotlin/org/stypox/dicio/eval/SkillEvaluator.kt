@@ -1,440 +1,191 @@
 package org.stypox.dicio.eval
 
-import android.app.Activity
-import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.annotation.UiThread
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.app.ActivityCompat
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.dicio.skill.skill.Skill
-import org.dicio.skill.context.SpeechOutputDevice
-import org.dicio.skill.util.CleanableUp
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.util.WordExtractor
-import org.stypox.dicio.MainActivity
-import org.stypox.dicio.R
-import org.stypox.dicio.error.ExceptionUtils
-import org.stypox.dicio.io.input.InputDevice
-import org.stypox.dicio.io.input.SpeechInputDevice.UnableToAccessMicrophoneException
-import org.stypox.dicio.io.input.ToolbarInputDevice
-import org.stypox.dicio.io.graphical.GraphicalOutputDevice
-import org.stypox.dicio.io.graphical.GraphicalOutputUtils
-import org.stypox.dicio.skills.SkillHandler
-import org.stypox.dicio.util.PermissionUtils
-import java.util.LinkedList
-import java.util.Queue
+import org.stypox.dicio.di.SttInputDeviceWrapper
+import org.stypox.dicio.io.graphical.ErrorSkillOutput
+import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
+import org.stypox.dicio.io.input.InputEvent
+import org.stypox.dicio.io.input.InputEventsModule
+import org.stypox.dicio.ui.home.Interaction
+import org.stypox.dicio.ui.home.InteractionLog
+import org.stypox.dicio.ui.home.PendingQuestion
+import org.stypox.dicio.ui.home.QuestionAnswer
 
 class SkillEvaluator(
-    private val skillRanker: SkillRanker,
-    val primaryInputDevice: InputDevice,
-    val secondaryInputDevice: ToolbarInputDevice?,
-    private val speechOutputDevice: SpeechOutputDevice,
-    private val graphicalOutputDevice: GraphicalOutputDevice,
-    private var activity: Activity
-) : CleanableUp {
+    scope: CoroutineScope,
+    private val skillContext: SkillContext,
+    private val skillHandler: SkillHandler,
+    private val inputEventsModule: InputEventsModule,
+    private val sttInputDevice: SttInputDeviceWrapper,
+) {
 
-    private var currentlyProcessingInput = false
-    private val queuedInputs: Queue<List<String>> = LinkedList()
-    private var partialInputView: View? = null
-    private var hasAddedPartialInputView = false
-    private val scope = CoroutineScope(Dispatchers.Default)
-    private var skillNeedingPermissions: SkillWithResult<*>? = null
+    private val _state = MutableStateFlow(
+        InteractionLog(
+            interactions = listOf(),
+            pendingQuestion = null,
+        )
+    )
+    val state: StateFlow<InteractionLog> = _state
+
+    private val skillRanker: SkillRanker
+        get() = skillHandler.skillRanker.value
+
+    // must be kept up to date even when the activity is recreated, for this reason it is `var`
+    var permissionRequester: suspend (Array<String>) -> Boolean = { false }
 
     init {
-        setupInputDeviceListeners()
-        setupOutputDevices()
-    }
-
-    ////////////////////
-    // Public methods //
-    ////////////////////
-    fun showInitialPanel() {
-        val initialPanel = GraphicalOutputUtils.inflate(activity, R.layout.initial_panel)
-        val skillItemsLayout = initialPanel.findViewById<LinearLayout>(R.id.skillItemsLayout)
-        for (skillInfo in SkillHandler.enabledSkillInfoListShuffled) {
-            val skillInfoItem =
-                GraphicalOutputUtils.inflate(activity, R.layout.initial_panel_skill_item)
-            (skillInfoItem.findViewById<View>(R.id.skillIconImageView) as AppCompatImageView)
-                .setImageResource(SkillHandler.getSkillIconResource(skillInfo))
-            (skillInfoItem.findViewById<View>(R.id.skillName) as AppCompatTextView)
-                .setText(skillInfo.name(activity))
-            (skillInfoItem.findViewById<View>(R.id.skillSentenceExample) as AppCompatTextView)
-                .setText(skillInfo.sentenceExample(activity))
-            skillItemsLayout.addView(skillInfoItem)
-        }
-        graphicalOutputDevice.displayTemporary(initialPanel)
-    }
-
-    override fun cleanup() {
-        cancelGettingInput()
-        skillRanker.cleanup()
-        primaryInputDevice.cleanup()
-        secondaryInputDevice?.cleanup()
-        speechOutputDevice.cleanup()
-        graphicalOutputDevice.cleanup()
-        scope.cancel()
-        skillNeedingPermissions = null
-        queuedInputs.clear()
-        partialInputView = null
-    }
-
-    fun cancelGettingInput() {
-        primaryInputDevice.cancelGettingInput()
-        secondaryInputDevice?.cancelGettingInput()
-    }
-
-    /**
-     * to be called from the main thread
-     */
-    fun onSkillRequestPermissionsResult(grantResults: IntArray) {
-        val skill = skillNeedingPermissions ?: return // return should be unreachable
-        // make sure this skill is not reprocessed (also should never happen, but who knows)
-        skillNeedingPermissions = null
-        if (PermissionUtils.areAllPermissionsGranted(*grantResults)) {
-            scope.launch {
-                try {
-                    generateOutput(skill)
-                } catch (throwable: Throwable) {
-                    activity.runOnUiThread { onError(throwable) }
-                }
-            }
-        } else {
-            // permissions were not granted, show a message
-            val message = activity.getString(
-                R.string.eval_missing_permissions,
-                skill.skill.correspondingSkillInfo.name(activity),
-                PermissionUtils.getCommaJoinedPermissions(activity, skill.skill.correspondingSkillInfo)
-            )
-            speechOutputDevice.speak(message)
-            graphicalOutputDevice.display(
-                GraphicalOutputUtils.buildDescription(activity, message)
-            )
-            graphicalOutputDevice.addDivider()
-            finishedProcessingInput()
+        scope.launch(Dispatchers.Default) {
+            // receive input events
+            inputEventsModule.events.collect(::processInputEvent)
         }
     }
 
-    ///////////
-    // Setup //
-    ///////////
-    private fun setupInputDeviceListeners() {
-        primaryInputDevice.setInputDeviceListener(object : InputDevice.InputDeviceListener {
-            override fun onTryingToGetInput() {
-                speechOutputDevice.stopSpeaking()
-                secondaryInputDevice?.cancelGettingInput()
+    private suspend fun processInputEvent(event: InputEvent) {
+        when (event) {
+            is InputEvent.Error -> {
+                addErrorInteractionFromPending(event.throwable)
             }
-
-            override fun onPartialInputReceived(input: String) {
-                displayPartialUserInput(input)
+            is InputEvent.Final -> {
+                _state.value = _state.value.copy(
+                    pendingQuestion = PendingQuestion(
+                        userInput = event.utterances[0].first,
+                        continuesLastInteraction = skillRanker.hasAnyBatches(),
+                        skillBeingEvaluated = null,
+                    )
+                )
+                evaluateMatchingSkill(event.utterances.map { it.first })
             }
-
-            override fun onInputReceived(input: List<String>) {
-                processInput(input)
+            InputEvent.None -> {
+                _state.value = _state.value.copy(pendingQuestion = null)
             }
-
-            override fun onNoInputReceived() {
-                handleNoInput()
+            is InputEvent.Partial -> {
+                _state.value = _state.value.copy(
+                    pendingQuestion = PendingQuestion(
+                        userInput = event.utterance,
+                        // the next input can be a continuation of the last interaction only if the
+                        // last skill invocation provided some skill batches (which are the only way
+                        // to continue an interaction/conversation)
+                        continuesLastInteraction = skillRanker.hasAnyBatches(),
+                        skillBeingEvaluated = null,
+                    )
+                )
             }
-
-            override fun onError(e: Throwable) {
-                this@SkillEvaluator.onError(e)
-            }
-        })
-
-        secondaryInputDevice?.setInputDeviceListener(object : InputDevice.InputDeviceListener {
-            override fun onTryingToGetInput() {
-                speechOutputDevice.stopSpeaking()
-                primaryInputDevice.cancelGettingInput()
-            }
-
-            override fun onPartialInputReceived(input: String) {
-                displayPartialUserInput(input)
-            }
-
-            override fun onInputReceived(input: List<String>) {
-                processInput(input)
-            }
-
-            override fun onNoInputReceived() {
-                handleNoInput()
-            }
-
-            override fun onError(e: Throwable) {
-                this@SkillEvaluator.onError(e)
-            }
-        })
-    }
-
-    private fun setupOutputDevices() {
-        // this adds a divider only if there are already some output views (can happen when
-        // reloading the skill evaluator)
-        graphicalOutputDevice.addDivider()
-    }
-
-    /////////////////////////////////////////
-    // Partial input and no input handling //
-    /////////////////////////////////////////
-    private fun displayPartialUserInput(input: String) {
-        hasAddedPartialInputView = true
-        val partialInputView = partialInputView ?:
-            GraphicalOutputUtils.inflate(activity, R.layout.user_input_partial)
-                .also { partialInputView = it }
-
-        val textView = partialInputView.findViewById<TextView>(R.id.userInput)
-        textView.text = input
-        graphicalOutputDevice.displayTemporary(partialInputView)
-    }
-
-    private fun handleNoInput() {
-        if (hasAddedPartialInputView) {
-            // remove temporary partial input view: no input was provided
-            graphicalOutputDevice.removeTemporary()
-            hasAddedPartialInputView = false
         }
     }
 
-    //////////////////////
-    // Input processing //
-    //////////////////////
-    private fun processInput(input: List<String>) {
-        hasAddedPartialInputView = false
-        queuedInputs.add(input)
-        tryToProcessQueuedInput()
-    }
-
-    private fun finishedProcessingInput() {
-        queuedInputs.poll() // current input has finished processing
-        currentlyProcessingInput = false
-        tryToProcessQueuedInput() // try to process next input, if present
-    }
-
-    private fun tryToProcessQueuedInput() {
-        if (currentlyProcessingInput) {
+    private suspend fun evaluateMatchingSkill(utterances: List<String>) {
+        val (chosenInput, chosenSkill, isFallback) = try {
+            utterances.firstNotNullOfOrNull { input: String ->
+                val inputWords = WordExtractor.extractWords(input)
+                val normalizedWords = WordExtractor.normalizeWords(inputWords)
+                skillRanker.getBest(skillContext, input, inputWords, normalizedWords)
+                    ?.let { Triple(input, it, false) }
+            } ?: run {
+                val inputWords = WordExtractor.extractWords(utterances[0])
+                val normalizedWords = WordExtractor.normalizeWords(inputWords)
+                Triple(
+                    utterances[0],
+                    skillRanker.getFallbackSkill(
+                        skillContext, utterances[0], inputWords, normalizedWords),
+                    true
+                )
+            }
+        } catch (throwable: Throwable) {
+            addErrorInteractionFromPending(throwable)
             return
         }
-        queuedInputs.peek()?.let {
-            currentlyProcessingInput = true
-            evaluateMatchingSkill(it)
+        val skillInfo = chosenSkill.skill.correspondingSkillInfo
+
+        _state.value = _state.value.copy(
+            pendingQuestion = PendingQuestion(
+                userInput = chosenInput,
+                // the skill ranker would have discarded all batches, if the chosen skill was not
+                // the continuation of the last interaction (since continuing an
+                // interaction/conversation is done through the stack of batches)
+                continuesLastInteraction = skillRanker.hasAnyBatches(),
+                skillBeingEvaluated = chosenSkill.skill.correspondingSkillInfo,
+            )
+        )
+
+        try {
+            val permissions = skillInfo.neededPermissions.toTypedArray()
+            if (permissions.isNotEmpty() && !permissionRequester(permissions)) {
+                // permissions were not granted, show message
+                addInteractionFromPending(MissingPermissionsSkillOutput(skillInfo))
+                return
+            }
+
+            val output = chosenSkill.generateOutput(skillContext)
+
+            addInteractionFromPending(output)
+            output.getSpeechOutput(skillContext).let {
+                if (it.isNotBlank()) {
+                    withContext (Dispatchers.Main) {
+                        skillContext.speechOutputDevice.speak(it)
+                    }
+                }
+            }
+
+            val nextSkills = output.getNextSkills(skillContext)
+            if (nextSkills.isEmpty()) {
+                if (!isFallback) {
+                    // current conversation has ended, reset to the default batch of skills
+                    skillRanker.removeAllBatches()
+                }
+            } else {
+                skillRanker.addBatchToTop(nextSkills)
+                sttInputDevice.tryLoad(inputEventsModule::tryEmitEvent)
+            }
+
+        } catch (throwable: Throwable) {
+            addErrorInteractionFromPending(throwable)
+            return
         }
     }
 
-    private fun displayUserInput(input: String) {
-        val userInputView = GraphicalOutputUtils.inflate(activity, R.layout.user_input)
-        val inputEditText = userInputView.findViewById<AppCompatEditText>(R.id.userInput)
-        inputEditText.setText(input)
-        inputEditText.addTextChangedListener(object : TextWatcher {
-            // `count` characters beginning at `start` replaced old text that had length `before`
-            var startIndex = 0
-            var countBefore = 0
-            var countAfter = 0
-            var ignore = false
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-            }
+    private fun addErrorInteractionFromPending(throwable: Throwable) {
+        Log.e(TAG, "Error while evaluating skills", throwable)
+        addInteractionFromPending(ErrorSkillOutput(throwable, true))
+    }
 
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                if (ignore) {
-                    return
-                }
-                startIndex = start
-                countBefore = before
-                countAfter = count
-            }
+    private fun addInteractionFromPending(skillOutput: SkillOutput) {
+        val log = _state.value
+        val pendingUserInput = log.pendingQuestion?.userInput
+        val pendingContinuesLastInteraction = log.pendingQuestion?.continuesLastInteraction
+            ?: skillRanker.hasAnyBatches()
+        val pendingSkill = log.pendingQuestion?.skillBeingEvaluated
+        val questionAnswer = QuestionAnswer(pendingUserInput, skillOutput)
 
-            override fun afterTextChanged(s: Editable) {
-                if (ignore) {
-                    return
-                }
-                if (countBefore == 0 && countAfter == 1) {
-                    // a single character has just been inserted, most probably from the keyboard,
-                    // so check if it is the Enter key (i.e. the newline '\n')
-                    if (s.length > startIndex && s[startIndex] == '\n') {
-                        s.delete(startIndex, startIndex + 1)
-                        if (s.toString().trim { it <= ' ' } != input.trim { it <= ' ' }) {
-                            processInput(listOf(s.toString()))
-                            inputEditText.setText(input) // restore original input
-                            inputEditText.clearFocus() // prevent focus problems
-                        }
-                    }
+        _state.value = log.copy(
+            interactions = log.interactions.toMutableList().also { inters ->
+                if (pendingContinuesLastInteraction && inters.isNotEmpty()) {
+                    inters[inters.size - 1] = inters[inters.size - 1].let { i -> i.copy(
+                        questionsAnswers = i.questionsAnswers.toMutableList()
+                            .apply { add(questionAnswer) }
+                    ) }
                 } else {
-                    // text was copy-pasted, so replace all newlines with spaces
-                    if (s.length < startIndex + countAfter) {
-                        return  // should be impossible, but just to be sure
-                    }
-
-                    // do all at once for performance and otherwise `s.replace` indices get messed
-                    val chars = CharArray(countAfter)
-                    s.getChars(startIndex, startIndex + countAfter, chars, 0)
-                    for (i in 0 until countAfter) {
-                        if (chars[i] == '\n') {
-                            chars[i] = ' '
-                        }
-                    }
-                    ignore = true // ignore the calls made to this listener by `s.replace`
-                    s.replace(startIndex, startIndex + countAfter, String(chars))
-                    ignore = false
-                }
-            }
-        })
-        userInputView.setOnClickListener {
-            // focus test pointer after last character
-            inputEditText.requestFocus()
-            val text = inputEditText.text
-            inputEditText.setSelection(text?.length ?: 0)
-
-            // open keyboard
-            val inputMethodManager =
-                activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(inputEditText, 0)
-        }
-        graphicalOutputDevice.display(userInputView)
-    }
-
-    //////////////////////
-    // Skill evaluation //
-    //////////////////////
-    private class InputSkillPair constructor(val input: String, val skill: SkillWithResult<*>) {
-        var permissionsToRequest: Array<String>? = null
-    }
-    private class SkillProcessInputError(val choseInputSkill: InputSkillPair, cause: Throwable)
-        : Exception(cause)
-
-    private fun evaluateMatchingSkill(inputs: List<String>) {
-        scope.launch {
-            val chosen = try {
-                inputs.firstNotNullOfOrNull { input: String ->
-                    val inputWords = WordExtractor.extractWords(input)
-                    val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                    skillRanker.getBest(SkillHandler.skillContext, input, inputWords, normalizedWords)
-                        ?.let { InputSkillPair(input, it) }
-                } ?: run {
-                    val inputWords = WordExtractor.extractWords(inputs[0])
-                    val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                    InputSkillPair(
-                        inputs[0],
-                        skillRanker.getFallbackSkill(SkillHandler.skillContext, inputs[0], inputWords, normalizedWords)
+                    inters.add(
+                        Interaction(
+                            skill = pendingSkill,
+                            questionsAnswers = listOf(questionAnswer)
+                        )
                     )
                 }
-            } catch (throwable: Throwable) {
-                activity.runOnUiThread { onError(throwable) }
-                return@launch
-            }
-
-            try {
-                val permissions = chosen.skill.skill.correspondingSkillInfo.neededPermissions
-                    .toTypedArray()
-                if (!PermissionUtils.checkPermissions(activity, *permissions)) {
-                    // before executing this skill needs some permissions, don't process input now
-                    chosen.permissionsToRequest = permissions
-                }
-            } catch (t: Throwable) {
-                // this allows displaying the error on the main thread in onError
-                activity.runOnUiThread {
-                    onError(SkillProcessInputError(chosen, t))
-                }
-                return@launch
-            }
-
-            onChosenSkill(chosen)
-        }
+            },
+            pendingQuestion = null,
+        )
     }
 
-    private suspend fun onChosenSkill(chosen: InputSkillPair) {
-        displayUserInput(chosen.input)
-        chosen.permissionsToRequest?.also { permissionsToRequest ->
-            // request permissions; when done process input in onSkillRequestPermissionsResult
-            // note: need to do this here on main thread
-            ActivityCompat.requestPermissions(
-                activity, permissionsToRequest, MainActivity.SKILL_PERMISSIONS_REQUEST_CODE
-            )
-            skillNeedingPermissions = chosen.skill
-        } ?: generateOutput(chosen.skill)
-    }
-
-    private suspend fun generateOutput(skill: SkillWithResult<*>) {
-        val nextSkills: List<Skill<*>>?
-        try {
-            val output = skill.generateOutput(SkillHandler.skillContext)
-
-            withContext(Dispatchers.Main) {
-                speechOutputDevice.speak(output.getSpeechOutput(SkillHandler.skillContext))
-
-                val composeView = ComposeView(activity)
-                composeView.apply {
-                    setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-                    setContent {
-                        output.GraphicalOutput(SkillHandler.skillContext)
-                    }
-                }
-                graphicalOutputDevice.display(composeView)
-            }
-
-            nextSkills = output.getNextSkills(SkillHandler.skillContext)
-        } catch (t: Throwable) {
-            onError(t)
-            return
-        }
-
-        if (nextSkills.isEmpty()) {
-            // current conversation has ended, reset to the default batch of skills
-            skillRanker.removeAllBatches()
-            activity.runOnUiThread { graphicalOutputDevice.addDivider() }
-        } else {
-            skillRanker.addBatchToTop(nextSkills)
-            speechOutputDevice.runWhenFinishedSpeaking {
-                activity.runOnUiThread { primaryInputDevice.tryToGetInput(false) }
-            }
-        }
-
-        finishedProcessingInput()
-    }
-
-    ///////////
-    // Error //
-    ///////////
-    private fun onError(wrappedThrowable: Throwable) {
-        wrappedThrowable.printStackTrace()
-
-        val t = if (wrappedThrowable is SkillProcessInputError) {
-            displayUserInput(wrappedThrowable.choseInputSkill.input)
-            wrappedThrowable.cause!!
-        } else {
-            wrappedThrowable
-        }
-
-        if (ExceptionUtils.hasAssignableCause(t, UnableToAccessMicrophoneException::class.java)) {
-            val message = activity.getString(R.string.microphone_error)
-            speechOutputDevice.speak(message)
-            graphicalOutputDevice.display(
-                GraphicalOutputUtils.buildDescription(activity, message)
-            )
-        } else if (ExceptionUtils.isNetworkError(t)) {
-            speechOutputDevice.speak(activity.getString(R.string.eval_network_error_description))
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildNetworkErrorMessage(activity))
-        } else {
-            skillRanker.removeAllBatches()
-            speechOutputDevice.speak(activity.getString(R.string.eval_fatal_error))
-            graphicalOutputDevice.display(GraphicalOutputUtils.buildErrorMessage(activity, t))
-        }
-        graphicalOutputDevice.addDivider()
-        finishedProcessingInput()
+    companion object {
+        val TAG = SkillEvaluator::class.simpleName
     }
 }

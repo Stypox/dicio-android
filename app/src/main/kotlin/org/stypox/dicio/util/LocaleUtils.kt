@@ -87,27 +87,6 @@ object LocaleUtils {
         throw UnsupportedLocaleException(locale)
     }
 
-    fun getAvailableLocalesFromPreferences(context: Context): LocaleListCompat {
-        val language = PreferenceManager.getDefaultSharedPreferences(context)
-            .getString(context.getString(R.string.pref_key_language), null)
-        return if (language == null || language.trim { it <= ' ' }.isEmpty()) {
-            ConfigurationCompat.getLocales(context.resources.configuration)
-        } else {
-            val languageCountry =
-                language.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (languageCountry.size == 1) {
-                LocaleListCompat.create(Locale(language))
-            } else {
-                LocaleListCompat.create(
-                    Locale(
-                        languageCountry[0],
-                        languageCountry[1]
-                    )
-                )
-            }
-        }
-    }
-
     fun getAvailableLocalesFromLanguage(context: Context, language: Language): LocaleListCompat {
         return when (language) {
             Language.LANGUAGE_SYSTEM,
