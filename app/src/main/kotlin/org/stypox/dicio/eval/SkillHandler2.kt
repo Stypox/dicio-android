@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
@@ -54,6 +55,10 @@ class SkillHandler2 @Inject constructor(
 
     private val scope = CoroutineScope(Dispatchers.Default)
 
+    // will be null when it has not been initialized yet
+    private val _enabledSkillsInfo: MutableStateFlow<List<SkillInfo>?> = MutableStateFlow(null)
+    val enabledSkillsInfo: StateFlow<List<SkillInfo>?> = _enabledSkillsInfo
+
     private val _skillRanker = MutableStateFlow(
         // an initial dummy value, will be overwritten directly by the launched job
         SkillRanker(listOf(), buildSkillFromInfo(fallbackSkillInfoList[0]))
@@ -67,19 +72,18 @@ class SkillHandler2 @Inject constructor(
                 .distinctUntilChanged()
                 .collectLatest { (_, enabledSkills) ->
                     // locale is not used here, because the skills directly use the sections locale
-                    updateSkillRanker(enabledSkills)
+
+                    val newEnabledSkillsInfo = allSkillInfoList
+                        .filter { enabledSkills.getOrDefault(it.id, true) }
+                        .filter { it.isAvailable(skillContext) }
+
+                    _enabledSkillsInfo.value = newEnabledSkillsInfo
+                    _skillRanker.value = SkillRanker(
+                        newEnabledSkillsInfo.map(::buildSkillFromInfo),
+                        buildSkillFromInfo(fallbackSkillInfoList[0]),
+                    )
                 }
         }
-    }
-
-    private fun updateSkillRanker(enabledSkills: Map<String, Boolean>) {
-        _skillRanker.value = SkillRanker(
-            allSkillInfoList
-                .filter { enabledSkills.getOrDefault(it.id, true) }
-                .filter { it.isAvailable(skillContext) }
-                .map(::buildSkillFromInfo),
-            buildSkillFromInfo(fallbackSkillInfoList[0]),
-        )
     }
 
     private fun buildSkillFromInfo(skillInfo: SkillInfo): Skill<*> {

@@ -1,7 +1,15 @@
 package org.stypox.dicio.ui.util
 
+import android.content.Context
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Extension
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.skills.calculator.CalculatorInfo
@@ -33,6 +41,13 @@ class UserInputPreviews : CollectionPreviewParameterProvider<String>(listOf(
 class SkillInfoPreviews : CollectionPreviewParameterProvider<SkillInfo>(listOf(
     WeatherInfo,
     CalculatorInfo,
+    object : SkillInfo("test") {
+        override fun name(context: Context) = "Long name lorem ipsum dolor sit amet, consectetur"
+        override fun sentenceExample(context: Context) = "Long sentence ".repeat(20)
+        @Composable override fun icon() = rememberVectorPainter(Icons.Default.Extension)
+        override fun isAvailable(ctx: SkillContext) = true
+        override fun build(ctx: SkillContext) = error("not-implemented preview-only")
+    },
 ))
 
 class SkillOutputPreviews : CollectionPreviewParameterProvider<SkillOutput>(listOf(

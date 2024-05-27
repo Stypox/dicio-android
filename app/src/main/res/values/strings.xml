@@ -28,6 +28,8 @@
     <string name="downloaded">Downloaded</string>
     <string name="loaded">Loaded</string>
     <string name="here_is_what_i_can_do">Here is what I can do!</string>
+    <string name="all_skills_disabled_title">All skills are disabled</string>
+    <string name="all_skills_disabled_description">Please enable some skills from settings, otherwise Dicio will not be able to do anything</string>
     <string name="action_text_input">Text input</string>
     <string name="action_voice_input">Voice input</string>
     <string name="microphone_error">Unable to access microphone, it is probably already in use or the relevant permission was denied.</string>

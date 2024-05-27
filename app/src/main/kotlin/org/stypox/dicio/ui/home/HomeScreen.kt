@@ -31,12 +31,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.ui.nav.SearchTopAppBar
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
+import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SttStatesPreviews
 import org.stypox.dicio.util.PermissionUtils
 import kotlin.math.abs
@@ -69,12 +71,15 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
     // keep assigning permissionRequester at every recomposition because `launcher` changes when
     // the activity is recreated (no rememberSaveable is available)
     viewModel.skillEvaluator.permissionRequester = ::requestPermissions
-    val interactionsState by viewModel.skillEvaluator.state.collectAsState()
+
+    val enabledSkillsInfo = viewModel.skillHandler.enabledSkillsInfo.collectAsState()
+    val interactionsState = viewModel.skillEvaluator.state.collectAsState()
     val sttState = viewModel.sttInputDevice.uiState.collectAsState()
 
     HomeScreen(
         skillContext = viewModel.skillContext,
-        interactionLog = interactionsState,
+        skills = enabledSkillsInfo.value,
+        interactionLog = interactionsState.value,
         sttState = sttState.value,
         onSttClick = {
             viewModel.sttInputDevice.onClick(viewModel.inputEventsModule::tryEmitEvent)
@@ -92,6 +97,8 @@ fun HomeScreen(navigationIcon: @Composable () -> Unit) {
 @Composable
 fun HomeScreen(
     skillContext: SkillContext,
+    // will be null when skills have not been initialized yet
+    skills: List<SkillInfo>?,
     interactionLog: InteractionLog,
     // if the STT state is null, it means the user disabled the STT
     sttState: SttState?,
@@ -124,6 +131,7 @@ fun HomeScreen(
         content = { paddingValues ->
             InteractionList(
                 skillContext = skillContext,
+                skills = skills,
                 interactionLog = interactionLog,
                 onConfirmedQuestionClick = { searchString = it },
                 modifier = Modifier.padding(paddingValues),
@@ -152,6 +160,7 @@ private fun HomeScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
     AppTheme {
         HomeScreen(
             skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
+            skills = SkillInfoPreviews().values.toList(),
             interactionLog = interactionLog,
             sttState = sttStatesPreviews[i % sttStatesPreviews.size],
             onSttClick = { i += 1 },

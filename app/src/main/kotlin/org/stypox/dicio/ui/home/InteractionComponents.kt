@@ -55,6 +55,8 @@ import org.stypox.dicio.ui.util.UserInputPreviews
 @Composable
 fun InteractionList(
     skillContext: SkillContext,
+    // will be null when skills have not been initialized yet
+    skills: List<SkillInfo>?,
     interactionLog: InteractionLog,
     onConfirmedQuestionClick: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -82,11 +84,16 @@ fun InteractionList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         state = listState,
     ) {
-        interactions.forEachIndexed { index, interaction ->
-            if (index != 0) {
-                countedItem(canBeAnchor = false) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+        countedItem(canBeAnchor = false) {
+            if (skills != null) {
+                // avoid showing anything if skills are null, i.e. not ready yet
+                WhatICanDo(skills = skills)
+            }
+        }
+
+        interactions.forEach { interaction ->
+            countedItem(canBeAnchor = false) {
+                Spacer(modifier = Modifier.height(16.dp))
             }
             interaction.questionsAnswers.forEach {
                 if (it.question != null) {
@@ -108,7 +115,7 @@ fun InteractionList(
         }
 
         if (pendingQuestion != null) {
-            if (interactions.isNotEmpty() && !pendingQuestion.continuesLastInteraction) {
+            if (interactions.isEmpty() || !pendingQuestion.continuesLastInteraction) {
                 countedItem(canBeAnchor = false) {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -167,6 +174,7 @@ fun InteractionListPreview(
     AppTheme {
         InteractionList(
             skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
+            skills = SkillInfoPreviews().values.toList(),
             interactionLog = interactionLog,
             onConfirmedQuestionClick = {},
         )

@@ -22,7 +22,7 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     application: Application,
     val skillContext: SkillContext,
-    skillHandler: SkillHandler2,
+    val skillHandler: SkillHandler2,
     val inputEventsModule: InputEventsModule,
     val sttInputDevice: SttInputDeviceWrapper,
     val speechOutputDevice: SpeechOutputDeviceWrapper,
