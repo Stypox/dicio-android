@@ -137,4 +137,21 @@
     <string name="skill_sentence_example_navigation">Naviguj do Brussele</string>
     <string name="skill_navigation_navigating_to">Navigovat do %1$s</string>
     <string name="skill_navigation_specify_where">Určete, kam chcete navigovat</string>
+    <string name="back">Zpět</string>
+    <string name="clear">Vymazat</string>
+    <string name="done">Hotovo</string>
+    <string name="grant_microphone_permission">Udělit oprávnění k mikrofonu</string>
+    <string name="copy_to_clipboard">Kopírovat do schránky</string>
+    <string name="stt_unzip">Rozbalit řeč na text</string>
+    <string name="error_loading">Chyba při načítání</string>
+    <string name="error_unzipping">Chyba při rozbalování</string>
+    <string name="error_downloading">Chyba při stahování</string>
+    <string name="unzipping">Rozbalování…</string>
+    <string name="stt_download">Stáhnout řeč na text</string>
+    <string name="download">Stáhnout</string>
+    <string name="stt_not_available">Řeč na text není dostupná</string>
+    <string name="start_listening">Začít poslouchat</string>
+    <string name="downloaded">Staženo</string>
+    <string name="loaded">Načteno</string>
+    <string name="all_skills_disabled_title">Všechny funkce jsou zakázány</string>
 </resources>
