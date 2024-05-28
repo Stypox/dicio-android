@@ -41,7 +41,7 @@
     <string name="pref_appearance">外观</string>
     <string name="pref_skills">技能</string>
     <string name="pref_theme">主题</string>
-    <string name="pref_theme_summary">选择应用色彩设置–%1$s</string>
+    <string name="pref_theme_summary">选择应用色彩设置</string>
     <string name="pref_theme_light">明亮</string>
     <string name="pref_theme_dark">深沉</string>
     <string name="pref_language">语言</string>
@@ -127,9 +127,9 @@
     <string name="microphone_error">无法使用麦克风，有可能正在被其他应用使用或者无使用权限。</string>
     <string name="android_tts_unsupported_language">安卓文本播报引擎不支持当前语言</string>
     <string name="error_github_notice">请先检查是否已有您的崩溃问题讨论议题。创建重复的议题入口，会浪费我们修复真正问题的时间。</string>
-    <string name="pref_language_summary">Dicio监听何种语言并提供应答？– %1$s</string>
-    <string name="pref_input_method_summary">选择用于和Dicio谈话的服务 – %1$s</string>
-    <string name="pref_speech_output_method_summary">选择Dicio用于和你交谈的服务 – %1$s</string>
+    <string name="pref_language_summary">Dicio监听何种语言并提供应答？</string>
+    <string name="pref_input_method_summary">选择用于和Dicio谈话的服务</string>
+    <string name="pref_speech_output_method_summary">选择Dicio用于和你交谈的服务</string>
     <string name="pref_skill_number_library_not_available">数字分析和格式化库<i>dicio-numbers</i>未翻译为您的语言，意味着数字，时间，日期均不可用。如果可以请点击这里进行<b>贡献</b>！</string>
     <string name="pref_weather_default_city_using_ip_info">设置默认城市天气。当前行为会根据IP获取位置信息。</string>
     <string name="skill_name_calculator">计算器</string>
