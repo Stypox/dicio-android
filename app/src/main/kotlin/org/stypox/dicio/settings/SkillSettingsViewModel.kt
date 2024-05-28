@@ -23,6 +23,7 @@ class SkillSettingsViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
     val skills: List<SkillInfo> get() = skillHandler.allSkillInfoList
     val enabledSkills = dataStore.data.map { it.enabledSkillsMap }
+    val numberLibraryNotAvailable = skillContext.parserFormatter == null
 
     fun setSkillEnabled(id: String, state: Boolean) {
         viewModelScope.launch {
