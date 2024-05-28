@@ -159,7 +159,11 @@ class ListSetting<T>(
                         )
                     }
                 }
-                TextButton(onClick = onDismissRequest) {
+                TextButton(
+                    onClick = onDismissRequest,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
                     Text(stringResource(android.R.string.cancel))
                 }
             }
@@ -302,7 +306,7 @@ class StringSetting(
 
                 Row(
                     modifier = Modifier
-                        .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     TextButton(onClick = onDismissRequest) {
                         Text(stringResource(android.R.string.cancel))
