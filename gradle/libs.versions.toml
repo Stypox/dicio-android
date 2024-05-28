@@ -42,7 +42,6 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 # update versions for dicio-* libraries in settings.gradle.kts (they are included via git)
 dicio-numbers = { module = "git.included.build:dicio-numbers" }
 dicio-sentences-compiler = { module = "git.included.build:dicio-sentences-compiler" }
-dicio-skill = { module = "git.included.build:dicio-skill" }
 exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
@@ -66,6 +65,7 @@ vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAnd
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "gradle" }
+com-android-library = { id = "com.android.library", version.ref = "gradle" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

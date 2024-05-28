@@ -7,6 +7,7 @@ import java.nio.file.StandardCopyOption
 import java.util.Properties
 
 include(":app")
+include(":skill")
 
 pluginManagement {
     repositories {
@@ -48,12 +49,6 @@ val includeGitRepos = listOf(
         uri = "https://github.com/Stypox/dicio-numbers",
         projectPath = ":numbers",
         commit = "3206f161e80b349168fedcc21a601e5ea9b05961",
-    ),
-    IncludeGitRepo(
-        name = "dicio-skill",
-        uri = "https://github.com/Stypox/dicio-skill",
-        projectPath = ":skill",
-        commit = "8006be8cd4752ff09f63d77846d08bdade779dc5",
     ),
     IncludeGitRepo(
         name = "dicio-sentences-compiler",
@@ -106,14 +101,5 @@ if (localProperties.getOrDefault("useLocalDicioLibraries", "") == "true") {
                 }
             }
         }
-    }
-
-    // the nested dicio-skill build needs access to the Android SDK,
-    // which is defined in local.properties but not passed to included builds
-    // https://github.com/gradle/gradle/issues/2534
-    val sdkDir = localProperties.getOrDefault("sdk.dir", "").toString()
-    if (sdkDir.isNotBlank()) {
-        File("$rootDir/checkouts/dicio-skill/local.properties")
-            .writeText("sdk.dir=$sdkDir")
     }
 }
