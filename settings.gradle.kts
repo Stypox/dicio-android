@@ -6,8 +6,11 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.util.Properties
 
+rootProject.name = "Dicio"
 include(":app")
 include(":skill")
+// we use includeBuild here since the plugin is a compile-time dependency
+includeBuild("sentences-compiler-plugin")
 
 pluginManagement {
     repositories {
