@@ -54,7 +54,7 @@
     <string name="eval_no_match">Не понимаю, не могли бы вы повторить\?</string>
     <string name="vosk_model_notification_description">Язык: %1$s</string>
     <string name="vosk_model_notification_title">модель Vosk</string>
-    <string name="pref_skills">Умения</string>
+    <string name="pref_skills_title">Умения</string>
     <string name="pref_theme">Тема</string>
     <string name="vosk_model_ready">Модель Vosk готова</string>
     <string name="pref_appearance">Внешний вид</string>

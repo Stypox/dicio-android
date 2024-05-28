@@ -22,7 +22,7 @@
     <string name="settings">Configurações</string>
     <string name="pref_io">Métodos de entrada e saída</string>
     <string name="pref_appearance">Aparência</string>
-    <string name="pref_skills">Habilidades</string>
+    <string name="pref_skills_title">Habilidades</string>
     <string name="pref_theme_summary">Escolha o conjunto de cores do app</string>
     <string name="pref_theme_light">Claro</string>
     <string name="pref_theme_dark">Escuro</string>

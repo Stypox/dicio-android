@@ -16,7 +16,7 @@
     <string name="settings">Ayarlar</string>
     <string name="pref_io">Giriş ve çıkış yöntemleri</string>
     <string name="pref_appearance">Görünüm</string>
-    <string name="pref_skills">Yetenekler</string>
+    <string name="pref_skills_title">Yetenekler</string>
     <string name="pref_theme">Tema</string>
     <string name="pref_theme_light">Açık</string>
     <string name="pref_theme_dark">Koyu</string>

@@ -33,7 +33,7 @@
     <string name="error_report_channel_description">Obvestila za prijavo napak</string>
     <string name="pref_io">Metode za vnos in izvoz podatkov</string>
     <string name="pref_appearance">Videz</string>
-    <string name="pref_skills">Sposobnosti</string>
+    <string name="pref_skills_title">Sposobnosti</string>
     <string name="pref_theme">Tema</string>
     <string name="pref_theme_summary">Izberite barvni set aplikacije</string>
     <string name="pref_theme_light">Svetel</string>

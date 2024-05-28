@@ -61,7 +61,7 @@
     <string name="skill_sentence_example_open">Obre una NewPipe</string>
     <string name="vosk_model_download_error">Ha fallat la baixada del model Vosk</string>
     <string name="vosk_model_extraction_error">Ha fallat l\'extracció del model Vosk</string>
-    <string name="pref_skills">Habilitats</string>
+    <string name="pref_skills_title">Habilitats</string>
     <string name="pref_language">Llengua</string>
     <string name="skill_sentence_example_lyrics">Quina és la cançó que fa «we will we will rock you»\?</string>
     <string name="pref_theme_dark">Fosc</string>

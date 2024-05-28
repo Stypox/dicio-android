@@ -21,7 +21,7 @@
     <string name="android_tts_unsupported_language">Dette sprog er ikke understøttet af Android tekst til tale</string>
     <string name="pref_io">Input og output metoder</string>
     <string name="pref_appearance">Udseende</string>
-    <string name="pref_skills">Færdigheder</string>
+    <string name="pref_skills_title">Færdigheder</string>
     <string name="pref_theme">Tema</string>
     <string name="pref_theme_summary">Vælg farvetema</string>
     <string name="pref_theme_light">Lys</string>

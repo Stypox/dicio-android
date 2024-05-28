@@ -31,7 +31,7 @@
 \nOS-versio:</string>
     <string name="pref_io">Enigo kaj eniga metodo</string>
     <string name="pref_appearance">Aspekto</string>
-    <string name="pref_skills">Kapabloj</string>
+    <string name="pref_skills_title">Kapabloj</string>
     <string name="pref_theme">Etoso</string>
     <string name="error_report_channel_name">Sciigo pri erara raporto</string>
     <string name="error_report_channel_description">Sciigoj por raporti erarojn</string>

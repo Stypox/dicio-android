@@ -35,7 +35,7 @@
     <string name="error_report_channel_description">Oznámení pro nahlášení chyb</string>
     <string name="pref_io">Způsoby vstupu a výstupu</string>
     <string name="pref_appearance">Vzhled</string>
-    <string name="pref_skills">Funkce</string>
+    <string name="pref_skills_title">Funkce</string>
     <string name="pref_theme">Motiv</string>
     <string name="pref_theme_summary">Vyberte barvy aplikace</string>
     <string name="pref_theme_light">Světlé</string>

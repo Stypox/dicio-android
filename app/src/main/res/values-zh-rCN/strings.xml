@@ -39,7 +39,7 @@
     <string name="error_report_channel_description">报告错误的通知</string>
     <string name="pref_io">输入输出方式</string>
     <string name="pref_appearance">外观</string>
-    <string name="pref_skills">技能</string>
+    <string name="pref_skills_title">技能</string>
     <string name="pref_theme">主题</string>
     <string name="pref_theme_summary">选择应用色彩设置</string>
     <string name="pref_theme_light">明亮</string>

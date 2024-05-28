@@ -51,7 +51,7 @@
     <string name="pref_theme_summary">Wähle das Farbthema</string>
     <string name="microphone_error">Bekomme keinen Zugriff auf das Mikrofon, entweder wird es bereits verwendet oder der entsprechende Zugriff wurde verweigert.</string>
     <string name="pref_theme">Thema</string>
-    <string name="pref_skills">Fähigkeiten</string>
+    <string name="pref_skills_title">Fähigkeiten</string>
     <string name="pref_appearance">Darstellung</string>
     <string name="pref_io">Ein und Ausgabe methoden</string>
     <string name="settings">Einstellungen</string>

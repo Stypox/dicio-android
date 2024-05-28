@@ -18,7 +18,7 @@
     <string name="vosk_model_ready">Model Vosk pregatit</string>
     <string name="vosk_model_notification_description">Limba: %1$s</string>
     <string name="android_tts_error">O eroare s-a intamplat in timp ce se initializa Android text to speech engine</string>
-    <string name="pref_skills">Abilitati</string>
+    <string name="pref_skills_title">Abilitati</string>
     <string name="pref_theme">Tema</string>
     <string name="pref_theme_light">Luminos</string>
     <string name="pref_theme_dark">Incetosat</string>

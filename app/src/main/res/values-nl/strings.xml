@@ -57,7 +57,7 @@
     <string name="error_report_channel_description">Meldingen om fouten te rapporteren</string>
     <string name="pref_io">Invoer- en uitvoermethodes</string>
     <string name="pref_appearance">Uiterlijk</string>
-    <string name="pref_skills">Vaardigheden</string>
+    <string name="pref_skills_title">Vaardigheden</string>
     <string name="pref_theme_summary">Kies de kleurenset voor de app</string>
     <string name="pref_theme_light">Licht</string>
     <string name="pref_theme_dark">Donker</string>

@@ -80,7 +80,7 @@
 \nVersi:
 \nVersi OS:</string>
     <string name="pref_appearance">Tampilan</string>
-    <string name="pref_skills">Keterampilan</string>
+    <string name="pref_skills_title">Keterampilan</string>
     <string name="pref_theme_summary">Pilih set warna aplikasi</string>
     <string name="pref_theme_light">Cerah</string>
     <string name="pref_speech_output_method_summary">Pilih layanan yang harus Dicio gunakan untuk berbicara ke Anda</string>

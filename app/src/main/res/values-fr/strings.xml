@@ -49,7 +49,7 @@
     <string name="pref_theme_light">Clair</string>
     <string name="pref_theme_summary">Choisissez le jeu de couleurs de l\'appli</string>
     <string name="pref_theme">Thème</string>
-    <string name="pref_skills">Compétences</string>
+    <string name="pref_skills_title">Compétences</string>
     <string name="pref_appearance">Apparence</string>
     <string name="android_tts_unsupported_language">La langue actuelle n\'est pas prise en charge par le moteur de synthèse vocale d\'Android</string>
     <string name="settings">Paramètres</string>

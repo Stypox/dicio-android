@@ -14,7 +14,7 @@
     <string name="vosk_model_unsupported_language">Δεν υπάρχει μοντέλο Vosk για τη συγκεκριμένη γλώσσα</string>
     <string name="vosk_model_extracting">Το μοντέλο Vosk εξάγεται…</string>
     <string name="vosk_model_download_error">Δεν ήταν δυνατή η λήψη του μοντέλου Vosk</string>
-    <string name="pref_skills">Δεξιότητες</string>
+    <string name="pref_skills_title">Δεξιότητες</string>
     <string name="pref_theme">Θέμα</string>
     <string name="pref_theme_summary">Επιλογή χρωματικής συλλογής</string>
     <string name="pref_theme_light">Φωτεινό</string>

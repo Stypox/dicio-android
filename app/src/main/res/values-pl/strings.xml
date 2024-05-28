@@ -13,7 +13,7 @@
     <string name="settings">Ustawienia</string>
     <string name="pref_io">Metody wejścia i wyjścia</string>
     <string name="pref_appearance">Wygląd</string>
-    <string name="pref_skills">Umiejętności</string>
+    <string name="pref_skills_title">Umiejętności</string>
     <string name="pref_theme">Motyw</string>
     <string name="pref_theme_summary">Wybierz zestaw kolorów</string>
     <string name="pref_theme_light">Jasny</string>

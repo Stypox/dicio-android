@@ -8,7 +8,7 @@
     <string name="vosk_model_notification_description">اللغة: %1$s</string>
     <string name="settings">الإعدادات</string>ing&gt;
     <string name="pref_appearance">المظهر</string>
-    <string name="pref_skills">المهارات</string>
+    <string name="pref_skills_title">المهارات</string>
     <string name="pref_theme">السمة</string>
     <string name="pref_theme_light">فاتح</string>
     <string name="pref_theme_dark">داكن</string>
