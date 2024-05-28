@@ -9,9 +9,9 @@
     <string name="permission_denied">Permissão negada</string>
     <string name="microphone_error">Sem acesso ao microfone, é provável que já esteja em uso ou a permissão necessária foi negada.</string>
     <string name="vosk_model_notification_title">Modelo Vosk</string>
-    <string name="vosk_model_downloading">Baixando o modelo Vosk…</string>
+    <string name="vosk_model_downloading">A descarregar o modelo Vosk…</string>
     <string name="vosk_model_extracting">Extraindo o modelo Vosk…</string>
-    <string name="vosk_model_download_error">O download do modelo Vosk falhou</string>
+    <string name="vosk_model_download_error">A descarga do modelo Vosk falhou</string>
     <string name="vosk_model_extraction_error">A extração do modelo Vosk do arquivo Zip falhou</string>
     <string name="vosk_model_ready">O modelo Vosk está pronto</string>
     <string name="settings">Definições</string>
@@ -129,4 +129,12 @@
     <string name="skill_sentence_example_current_time">Que horas são\?</string>
     <string name="stt_say_something">Fale alguma coisa…</string>
     <string name="stt_did_not_understand">Não estou conseguindo entender bem, por favor tente novamente</string>
+    <string name="skill_navigation_specify_where">Especifique para onde deseja navegar</string>
+    <string name="skill_sentence_example_navigation">Navegue ao aeroporto internacional de Vancouver</string>
+    <string name="pref_stt_auto_finish_summary_on">Enviar automaticamente o resultado da fala para a app solicitante ao terminar de ouvir</string>
+    <string name="pref_stt_auto_finish_title">Enviar diretamente o resultado do serviço de fala para texto</string>
+    <string name="stt_service">Serviço de fala para texto</string>
+    <string name="skill_name_navigation">Navegação</string>
+    <string name="pref_stt_auto_finish_summary_off">Aguardar confirmação manual antes de enviar o resultado da fala para a app solicitante</string>
+    <string name="skill_navigation_navigating_to">A navegar para %1$s</string>
 </resources>
