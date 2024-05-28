@@ -34,7 +34,7 @@
     <string name="pref_theme_dark">Gelap</string>
     <string name="pref_language_system">Gunakan bahasa sistem</string>
     <string name="error_report_notification_title">Dicio mengalami kesalahan, ketuk untuk melaporkan</string>
-    <string name="pref_language_summary">Bahasa apa yang harus Dicio gunakan untuk mendengarkan Anda dan memberikan jawaban\? %1$s</string>
+    <string name="pref_language_summary">Bahasa apa yang harus Dicio gunakan untuk mendengarkan Anda dan memberikan jawaban? %1$s</string>
     <string name="pref_input_method_vosk">Pengenalan ucapan luring Vosk</string>
     <string name="pref_speech_output_method_android">Mesin teks ke suara (text to speech) Android</string>
     <string name="error_report_channel_description">Notifikasi untuk melaporkan kesalahan</string>

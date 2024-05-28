@@ -42,7 +42,7 @@
     <string name="pref_input_method_summary">Velg tjeneste for å snakke med Dicio — %1$s</string>
     <string name="pref_input_method">Inndatametode</string>
     <string name="pref_language_system">Bruk systemspråk</string>
-    <string name="pref_language_summary">Hvilket språk skal Dicio bruke for å lytte til deg og tilby svar\? — %1$s</string>
+    <string name="pref_language_summary">Hvilket språk skal Dicio bruke for å lytte til deg og tilby svar? — %1$s</string>
     <string name="pref_language">Språk</string>
     <string name="pref_theme_dark">Mørk</string>
     <string name="pref_theme_light">Lys</string>
