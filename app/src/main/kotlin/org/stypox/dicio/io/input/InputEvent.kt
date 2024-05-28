@@ -24,13 +24,13 @@ package org.stypox.dicio.io.input
  * if [Partial] is issued at some point, one of [Final], [None] or [Error] should follow when input
  * finishes being produced.
  */
-sealed class InputEvent {
+sealed interface InputEvent {
     /**
      * Partial user input, e.g. while the user is talking.
      */
     data class Partial(
         val utterance: String
-    ) : InputEvent()
+    ) : InputEvent
 
     /**
      * The actual final user input ready to be used. May contain more than one utterance
@@ -39,18 +39,18 @@ sealed class InputEvent {
      */
     data class Final(
         val utterances: List<Pair<String, Float>>
-    ) : InputEvent()
+    ) : InputEvent
 
     /**
      * An input process was initiated (e.g. the user pressed on the STT button), but then nothing
      * was said.
      */
-    data object None : InputEvent()
+    data object None : InputEvent
 
     /**
      * Any error produced during the input process.
      */
     data class Error(
         val throwable: Throwable
-    ) : InputEvent()
+    ) : InputEvent
 }

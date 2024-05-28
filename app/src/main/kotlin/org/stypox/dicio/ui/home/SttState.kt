@@ -24,39 +24,39 @@ package org.stypox.dicio.ui.home
  * no implementation-defined fields. For this reason, if in the future another STT engine will be
  * used, this class and the whole UI layer could be kept the same.
  */
-sealed class SttState {
+sealed interface SttState {
     /**
      * Does not have a counterpart in [org.stypox.dicio.io.input.vosk.VoskState] and should never be
      * generated directly by a [org.stypox.dicio.io.input.SttInputDevice]. In fact, this is used
      * directly in the UI layer, since permission checks can only be done there.
      */
-    data object NoMicrophonePermission : SttState()
+    data object NoMicrophonePermission : SttState
 
     /**
      * The STT engine has not been initialized yet (waiting for a locale to be available)
      */
-    data object NotInitialized : SttState()
+    data object NotInitialized : SttState
 
     /**
      * The STT engine cannot be made available, e.g. because the current language is not supported
      */
-    data object NotAvailable : SttState()
+    data object NotAvailable : SttState
 
     /**
      * The model is not present on disk, neither in unzipped and in zipped form.
      */
-    data object NotDownloaded : SttState()
+    data object NotDownloaded : SttState
 
     data class Downloading(
         val currentBytes: Long,
         val totalBytes: Long,
-    ) : SttState()
+    ) : SttState
 
     data class ErrorDownloading(
         val throwable: Throwable
-    ) : SttState()
+    ) : SttState
 
-    data object Downloaded : SttState()
+    data object Downloaded : SttState
 
     /**
      * Vosk models are distributed in Zip files that need unzipping to be ready.
@@ -64,16 +64,16 @@ sealed class SttState {
     data class Unzipping(
         val currentBytes: Long,
         val totalBytes: Long,
-    ) : SttState()
+    ) : SttState
 
     data class ErrorUnzipping(
         val throwable: Throwable
-    ) : SttState()
+    ) : SttState
 
     /**
      * The model is present on disk, but was not loaded in RAM yet.
      */
-    data object NotLoaded : SttState()
+    data object NotLoaded : SttState
 
     /**
      * The model is being loaded, and [thenStartListening] indicates whether, once loading is
@@ -81,19 +81,19 @@ sealed class SttState {
      */
     data class Loading(
         val thenStartListening: Boolean
-    ) : SttState()
+    ) : SttState
 
     data class ErrorLoading(
         val throwable: Throwable
-    ) : SttState()
+    ) : SttState
 
     /**
      * The model is ready in RAM, and can start listening at any time.
      */
-    data object Loaded : SttState()
+    data object Loaded : SttState
 
     /**
      * The model is listening.
      */
-    data object Listening : SttState()
+    data object Listening : SttState
 }

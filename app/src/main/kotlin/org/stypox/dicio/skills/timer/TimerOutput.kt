@@ -21,12 +21,12 @@ import java.text.DecimalFormatSymbols
 import java.time.Duration
 import kotlin.math.absoluteValue
 
-sealed class TimerOutput : SkillOutput {
+sealed interface TimerOutput : SkillOutput {
     class Set(
         private val milliseconds: Long,
         private val lastTickMillis: LongState,
         private val name: String?
-    ) : TimerOutput() {
+    ) : TimerOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = formatStringWithName(
             ctx, name, milliseconds, R.string.skill_timer_set, R.string.skill_timer_set_name
         )
@@ -45,7 +45,7 @@ sealed class TimerOutput : SkillOutput {
 
     class SetAskDuration(
         private val onGotDuration: suspend (Duration) -> SkillOutput,
-    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+    ) : TimerOutput, HeadlineSpeechSkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_how_much_time)
 
@@ -84,13 +84,13 @@ sealed class TimerOutput : SkillOutput {
 
     class Cancel(
         private val speechOutput: String,
-    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+    ) : TimerOutput, HeadlineSpeechSkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = speechOutput
     }
 
     class ConfirmCancel(
         private val onConfirm: () -> SkillOutput,
-    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+    ) : TimerOutput, HeadlineSpeechSkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_confirm_cancel)
 
@@ -110,7 +110,7 @@ sealed class TimerOutput : SkillOutput {
 
     class Query(
         private val speechOutput: String,
-    ) : TimerOutput(), HeadlineSpeechSkillOutput {
+    ) : TimerOutput, HeadlineSpeechSkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = speechOutput
     }
 }

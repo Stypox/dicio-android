@@ -29,36 +29,36 @@ import org.vosk.android.SpeechService
  * [SttState] is symmetrical to this enum, except that it does not expose implementation-defined
  * fields to the UI, such as [SpeechService].
  */
-sealed class VoskState {
+sealed interface VoskState {
 
     /**
      * The VoskInputDevice has not been initialized yet (waiting for a locale to be available)
      */
-    data object NotInitialized : VoskState()
+    data object NotInitialized : VoskState
 
     /**
      * The model is not available for the current locale
      */
-    data object NotAvailable : VoskState()
+    data object NotAvailable : VoskState
 
     /**
      * The model is not present on disk, neither in unzipped and in zipped form.
      */
     data class NotDownloaded(
         val modelUrl: String
-    ) : VoskState()
+    ) : VoskState
 
     data class Downloading(
         val currentBytes: Long,
         val totalBytes: Long,
-    ) : VoskState()
+    ) : VoskState
 
     data class ErrorDownloading(
         val modelUrl: String,
         val throwable: Throwable
-    ) : VoskState()
+    ) : VoskState
 
-    data object Downloaded : VoskState()
+    data object Downloaded : VoskState
 
     /**
      * Vosk models are distributed in Zip files that need unzipping to be ready.
@@ -66,16 +66,16 @@ sealed class VoskState {
     data class Unzipping(
         val currentBytes: Long,
         val totalBytes: Long,
-    ) : VoskState()
+    ) : VoskState
 
     data class ErrorUnzipping(
         val throwable: Throwable
-    ) : VoskState()
+    ) : VoskState
 
     /**
      * The model is present on disk, but was not loaded in RAM yet.
      */
-    data object NotLoaded : VoskState()
+    data object NotLoaded : VoskState
 
     /**
      * The model is being loaded, and [thenStartListening] indicates whether once loading is
@@ -83,18 +83,18 @@ sealed class VoskState {
      */
     data class Loading(
         val thenStartListening: Boolean
-    ) : VoskState()
+    ) : VoskState
 
     data class ErrorLoading(
         val throwable: Throwable
-    ) : VoskState()
+    ) : VoskState
 
     /**
      * The model, stored in [SpeechService], is ready in RAM, and can start listening at any time.
      */
     data class Loaded(
         internal val speechService: SpeechService
-    ) : VoskState()
+    ) : VoskState
 
     /**
      * The model, stored in [SpeechService], is listening.
@@ -102,7 +102,7 @@ sealed class VoskState {
     data class Listening(
         internal val speechService: SpeechService,
         internal val eventListener: (InputEvent) -> Unit,
-    ) : VoskState()
+    ) : VoskState
 
     /**
      * Converts this [VoskState] to a [SttState], which is basically the same, except that

@@ -15,12 +15,12 @@ import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.io.graphical.Subtitle
 import org.stypox.dicio.util.getString
 
-sealed class LyricsOutput : SkillOutput {
+sealed interface LyricsOutput : SkillOutput {
     data class Success(
         val title: String,
         val artist: String,
         val lyrics: String,
-    ) : LyricsOutput() {
+    ) : LyricsOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
             R.string.skill_lyrics_found_song_by_artist, title, artist
         )
@@ -38,7 +38,7 @@ sealed class LyricsOutput : SkillOutput {
 
     data class Failed(
         val title: String,
-    ) : HeadlineSpeechSkillOutput, LyricsOutput() {
+    ) : HeadlineSpeechSkillOutput, LyricsOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
             R.string.skill_lyrics_song_not_found, title
         )

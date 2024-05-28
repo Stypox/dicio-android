@@ -24,7 +24,7 @@ import org.stypox.dicio.util.getString
 import org.stypox.dicio.util.lowercaseCapitalized
 import java.util.Locale
 
-sealed class WeatherOutput : SkillOutput {
+sealed interface WeatherOutput : SkillOutput {
     data class Success(
         val city: String,
         val description: String,
@@ -33,7 +33,7 @@ sealed class WeatherOutput : SkillOutput {
         val tempMin: Double,
         val tempMax: Double,
         val windSpeed: Double,
-    ) : WeatherOutput() {
+    ) : WeatherOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
             R.string.skill_weather_in_city_there_is_description, city, description
         )
@@ -47,7 +47,7 @@ sealed class WeatherOutput : SkillOutput {
 
     data class Failed(
         val city: String
-    ) : WeatherOutput(), HeadlineSpeechSkillOutput {
+    ) : WeatherOutput, HeadlineSpeechSkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
             R.string.skill_weather_could_not_find_city, city
         )
