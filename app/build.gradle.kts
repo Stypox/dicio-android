@@ -17,6 +17,7 @@ buildscript {
     }
     dependencies {
         classpath(libs.dicio.sentences.compiler)
+        classpath(libs.dicio.sentences.compiler.plugin)
     }
 }
 
@@ -28,6 +29,7 @@ plugins {
     alias(libs.plugins.com.google.devtools.ksp)
     alias(libs.plugins.com.google.dagger.hilt.android)
     alias(libs.plugins.com.google.protobuf)
+    alias(libs.plugins.dicio.sentences.compiler.plugin)
 }
 
 android {
