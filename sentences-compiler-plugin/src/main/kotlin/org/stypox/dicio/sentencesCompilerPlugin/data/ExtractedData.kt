@@ -26,5 +26,6 @@ data class RawSentence(
 data class ParsedSentence(
     val id: String,
     val file: File,
+    val rawConstructs: String,
     val constructs: SentenceConstructList,
 )

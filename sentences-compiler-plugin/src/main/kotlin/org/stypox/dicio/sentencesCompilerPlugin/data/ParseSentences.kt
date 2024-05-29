@@ -46,6 +46,7 @@ fun parseSentence(rawSentence: RawSentence): ParsedSentence {
     return ParsedSentence(
         id = rawSentence.id,
         file = rawSentence.file,
+        rawConstructs = rawSentence.rawConstructs,
         constructs = constructs,
     )
 }

@@ -31,7 +31,8 @@ open class SentencesCompilerTask : DefaultTask() {
         val outputDirFile = outputDir.get().asFile
 
         val rawData = extractDataFromFiles(logger, inputDirFile)
-        val parsedData = rawData.map { parseSentences(it) }
+        val parsedData = rawData.map(::parseSentences)
+        parsedData.forEach(::checkSentences)
 
         FileSpec.builder(PACKAGE_NAME, CLASS_NAME)
             .addFileComment(FILE_COMMENT + parsedData.toString())
