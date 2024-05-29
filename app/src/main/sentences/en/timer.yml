@@ -1,0 +1,9 @@
+set:
+  - timer|(ping me in) .duration.
+  - (set up?)|setup|start|create a? (.duration.? timer)|(timer for|of .duration. (called|named|(with the name) .name.)?)
+cancel:
+  - cancel|stop|disable|end|terminate the? (.name.? time<r|rs?>)|(time<r|rs?> called|named|(with the name) .name.)
+  - silence|(shut|turn off)|quiet|mute the? (.name.? time<r|rs?>|bell|alert|sound|ringtone)|(time<r|rs?>|bell|alert|sound|ringtone called|named|(with the name) .name.)
+query:
+  - how long|(much time) is left? on the? (.name.? time<r|rs?>)|(time<r|rs?> called|named|(with the name) .name.)
+  - when will|is the? (.name.? time<r|rs?>)|(time<r|rs?> called|named|(with the name) .name.) (going to)? expire
