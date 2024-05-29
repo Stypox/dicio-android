@@ -1,14 +1,14 @@
 package org.dicio.skill.standard2
 
 import org.dicio.skill.skill.Specificity
-import org.dicio.skill.standard2.component.Component
+import org.dicio.skill.standard2.construct.Construct
 import org.dicio.skill.standard2.helper.MatchHelper
 import org.dicio.skill.standard2.helper.cumulativeWeight
 
 open class StandardRecognizerData<out T>(
     val specificity: Specificity,
     private val converter: (StandardMatchResult) -> T,
-    private val component: Component,
+    private val construct: Construct,
 ) {
     fun score(input: String): Pair<Float, T> {
         val helper = MatchHelper(input)
@@ -16,7 +16,7 @@ open class StandardRecognizerData<out T>(
 
         val bestRes = (0..input.length)
             .map { start ->
-                val res = component.match(0, input.length, helper)
+                val res = construct.match(0, input.length, helper)
                 return@map res.copy(
                     userWeight = res.userWeight +
                             (cumulativeWeight[start] - cumulativeWeight[0]) +

@@ -1,8 +1,8 @@
-package org.dicio.skill.standard2.component
+package org.dicio.skill.standard2.construct
 
 import org.dicio.skill.standard2.StandardMatchResult
 import org.dicio.skill.standard2.helper.MatchHelper
 
-interface Component {
+interface Construct {
     fun match(start: Int, end: Int, ctx: MatchHelper): StandardMatchResult
 }

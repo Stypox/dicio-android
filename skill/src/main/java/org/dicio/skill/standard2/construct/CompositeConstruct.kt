@@ -1,26 +1,26 @@
-package org.dicio.skill.standard2.component
+package org.dicio.skill.standard2.construct
 
 import org.dicio.skill.standard2.StandardMatchResult
 import org.dicio.skill.standard2.helper.MatchHelper
 import org.dicio.skill.standard2.helper.cumulativeWeight
 
-data class CompositeComponent(
-    private val components: List<Component>
-) : Component {
+data class CompositeConstruct(
+    private val constructs: List<Construct>
+) : Construct {
     override fun match(start: Int, end: Int, ctx: MatchHelper): StandardMatchResult {
         val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
         val mem: Array<Array<StandardMatchResult?>> =
-            Array(end-start+1) { Array(components.size) { null } }
+            Array(end-start+1) { Array(constructs.size) { null } }
 
         fun dp(compStart: Int, j: Int): StandardMatchResult {
-            if (j >= components.size) {
+            if (j >= constructs.size) {
                 return StandardMatchResult.empty(compStart, false)
             }
             mem[compStart - start][j]?.let { return it }
 
             val result = (compStart..end)
                 .map { compEnd ->
-                    val compResult = components[j].match(compStart, compEnd, ctx)
+                    val compResult = constructs[j].match(compStart, compEnd, ctx)
                     val dpResult = dp(compEnd, j+1)
                     val skippedWordsWeight =
                         cumulativeWeight[compEnd] - cumulativeWeight[compResult.end]

@@ -1,14 +1,14 @@
-package org.dicio.skill.standard2.component
+package org.dicio.skill.standard2.construct
 
 import org.dicio.skill.standard2.StandardMatchResult
 import org.dicio.skill.standard2.helper.MatchHelper
 import org.dicio.skill.standard2.helper.cumulativeWeight
 import org.dicio.skill.standard2.helper.cumulativeWhitespace
 
-data class CapturingComponent(
+data class CapturingConstruct(
     private val name: String,
     private val weight: Float
-) : Component {
+) : Construct {
     override fun match(start: Int, end: Int, ctx: MatchHelper): StandardMatchResult {
         val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
         val cumulativeWhitespace = ctx.getOrTokenize("cumulativeWhitespace", ::cumulativeWhitespace)

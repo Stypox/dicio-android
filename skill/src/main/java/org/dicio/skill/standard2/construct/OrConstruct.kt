@@ -1,13 +1,13 @@
-package org.dicio.skill.standard2.component
+package org.dicio.skill.standard2.construct
 
 import org.dicio.skill.standard2.StandardMatchResult
 import org.dicio.skill.standard2.helper.MatchHelper
 
-data class OrComponent(
-    private val components: List<Component>
-) : Component {
+data class OrConstruct(
+    private val constructs: List<Construct>
+) : Construct {
     override fun match(start: Int, end: Int, ctx: MatchHelper): StandardMatchResult {
-        return components
+        return constructs
             .map { it.match(start, end, ctx) }
             .fold(null, StandardMatchResult::keepBest)
             // edge case when `components` is empty (should never happen, but this handles it well)

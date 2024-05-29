@@ -1,4 +1,4 @@
-package org.dicio.skill.standard2.component
+package org.dicio.skill.standard2.construct
 
 import org.dicio.skill.standard2.StandardMatchResult
 import org.dicio.skill.standard2.helper.MatchHelper
@@ -6,10 +6,10 @@ import org.dicio.skill.standard2.helper.findTokenStartingAt
 import org.dicio.skill.standard2.helper.splitWords
 
 
-data class WordComponent(
+data class WordConstruct(
     private val text: String,
     private val weight: Float,
-) : Component {
+) : Construct {
     override fun match(start: Int, end: Int, ctx: MatchHelper): StandardMatchResult {
         val token = ctx.getOrTokenize("splitWords", ::splitWords)
             .findTokenStartingAt(start)
