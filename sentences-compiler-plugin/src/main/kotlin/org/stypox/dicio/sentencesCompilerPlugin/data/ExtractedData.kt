@@ -1,6 +1,7 @@
 package org.stypox.dicio.sentencesCompilerPlugin.data
 
 import org.dicio.sentences_compiler.construct.SentenceConstructList
+import java.io.File
 
 data class RawExtractedData(
     val skills: List<SkillDefinition>,
@@ -14,10 +15,12 @@ data class ParsedExtractedData(
 
 data class RawSentence(
     val id: String,
+    val file: File,
     val rawConstructs: String,
 )
 
 data class ParsedSentence(
     val id: String,
+    val file: File,
     val constructs: SentenceConstructList,
 )

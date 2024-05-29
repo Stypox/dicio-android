@@ -55,7 +55,11 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): RawExtractedData {
             for ((sentenceId, parsedSentencesWithoutId) in parsedSentences) {
                 if (parsedSentencesWithoutId == null) continue
                 for (sentence in parsedSentencesWithoutId) {
-                    sentences.add(RawSentence(id = sentenceId, rawConstructs = sentence))
+                    sentences.add(RawSentence(
+                        id = sentenceId,
+                        file = file,
+                        rawConstructs = sentence,
+                    ))
                 }
             }
         }
