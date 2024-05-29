@@ -12,7 +12,7 @@ data class SkillDefinition(
     val sentences: List<SentenceDefinition>
 )
 
-enum class Specificity(@JsonValue val yamlValue: String) {
+enum class Specificity(@JsonValue val serializedValue: String) {
     HIGH("high"),
     MEDIUM("medium"),
     LOW("low"),
@@ -28,7 +28,7 @@ data class CaptureDefinition(
     val type: CaptureType
 )
 
-enum class CaptureType(@JsonValue val yamlValue: String) {
+enum class CaptureType(@JsonValue val serializedValue: String) {
     STRING("string"),
     DURATION("duration")
 }

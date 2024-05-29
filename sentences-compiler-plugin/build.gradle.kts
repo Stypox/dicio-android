@@ -42,4 +42,5 @@ dependencies {
     implementation(libs.kotlinpoet)
     implementation(libs.jackson.dataformat.yaml)
     implementation(libs.jackson.module.kotlin)
+    implementation(libs.dicio.sentences.compiler)
 }

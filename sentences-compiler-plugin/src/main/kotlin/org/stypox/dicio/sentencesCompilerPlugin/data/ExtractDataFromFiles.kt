@@ -6,54 +6,62 @@ import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginExce
 import org.stypox.dicio.sentencesCompilerPlugin.util.YML_EXT
 import java.io.File
 
-fun readDataFromFiles(logger: Logger, inputDirFile: File): SkillDefinitionsFile {
+fun extractDataFromFiles(logger: Logger, inputDirFile: File): RawExtractedData {
     val definitions: SkillDefinitionsFile =
         parseYamlFile(File(inputDirFile, SKILL_DEFINITIONS_FILE))
-    val languages = ArrayList<String>()
+    val languageToSentences = HashMap<String, List<RawSentence>>()
 
     for (lang in inputDirFile.listFiles { file -> file.isDirectory }!!) {
-        var langHasSkill = false
+        val sentences = ArrayList<RawSentence>()
         for (skill in definitions.skills) {
             val file = File(lang, skill.id + YML_EXT)
             if (!file.exists()) {
                 continue
             }
-            langHasSkill = true
 
-            val sentences: Map<String, List<String>?> = parseYamlFile(file)
+            val parsedSentences: Map<String, List<String>?> = parseYamlFile(file)
             val expectedSentenceIds = skill.sentences.map { it.id }.toSet()
-            if (!sentences.keys.containsAll(expectedSentenceIds)) {
+            if (!parsedSentences.keys.containsAll(expectedSentenceIds)) {
                 throw SentencesCompilerPluginException(
                     "Skill sentences file ${lang.name}/${
                         file.name
                     } is missing these sentence ids ${
-                        expectedSentenceIds - sentences.keys
+                        expectedSentenceIds - parsedSentences.keys
                     }: ${file.absolutePath}"
                 )
-            } else if (!expectedSentenceIds.containsAll(sentences.keys)) {
+            } else if (!expectedSentenceIds.containsAll(parsedSentences.keys)) {
                 throw SentencesCompilerPluginException(
                     "Skill sentences file ${lang.name}/${
                         file.name
                     } has these superfluous sentence ids ${
-                        sentences.keys - expectedSentenceIds
+                        parsedSentences.keys - expectedSentenceIds
                     }: ${file.absolutePath}"
                 )
             }
 
-            val emptySentences = sentences.filter { it.value.isNullOrEmpty() }.map { it.key }
+            val emptySentences = parsedSentences
+                .filter { it.value.isNullOrEmpty() }
+                .map { it.key }
             if (emptySentences.isNotEmpty()) {
-                throw SentencesCompilerPluginException(
-                    "Skill sentences file ${lang.name}/${
+                logger.error(
+                    "[Warning] Skill sentences file ${lang.name}/${
                         file.name
                     } has no sentence definitions for these sentence ids ${
                         emptySentences
                     }: ${file.absolutePath}"
                 )
             }
+
+            for ((sentenceId, parsedSentencesWithoutId) in parsedSentences) {
+                if (parsedSentencesWithoutId == null) continue
+                for (sentence in parsedSentencesWithoutId) {
+                    sentences.add(RawSentence(id = sentenceId, rawConstructs = sentence))
+                }
+            }
         }
 
-        if (langHasSkill) {
-            languages.add(lang.name)
+        if (sentences.isNotEmpty()) {
+            languageToSentences[lang.name] = sentences
         }
 
         // issue a warning for unknown files
@@ -67,5 +75,9 @@ fun readDataFromFiles(logger: Logger, inputDirFile: File): SkillDefinitionsFile 
             }
         }
     }
-    return definitions
+
+    return RawExtractedData(
+        skills = definitions.skills,
+        languageToSentences = languageToSentences,
+    )
 }

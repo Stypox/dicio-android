@@ -7,7 +7,7 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.stypox.dicio.sentencesCompilerPlugin.data.SkillDefinitionsFile
-import org.stypox.dicio.sentencesCompilerPlugin.data.readDataFromFiles
+import org.stypox.dicio.sentencesCompilerPlugin.data.extractDataFromFiles
 import org.stypox.dicio.sentencesCompilerPlugin.util.CLASS_NAME
 import org.stypox.dicio.sentencesCompilerPlugin.util.FILE_COMMENT
 import org.stypox.dicio.sentencesCompilerPlugin.util.PACKAGE_NAME
@@ -30,10 +30,10 @@ open class SentencesCompilerTask : DefaultTask() {
         val inputDirFile = inputDir.get().asFile
         val outputDirFile = outputDir.get().asFile
 
-        val definitions: SkillDefinitionsFile = readDataFromFiles(logger, inputDirFile)
+        val rawExtractedData = extractDataFromFiles(logger, inputDirFile)
 
         FileSpec.builder(PACKAGE_NAME, CLASS_NAME)
-            .addFileComment(FILE_COMMENT + definitions.toString())
+            .addFileComment(FILE_COMMENT + rawExtractedData.toString())
             .build()
             .writeTo(outputDirFile)
     }
