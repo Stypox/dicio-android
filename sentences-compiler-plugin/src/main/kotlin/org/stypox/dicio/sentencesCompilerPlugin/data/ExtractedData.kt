@@ -3,13 +3,17 @@ package org.stypox.dicio.sentencesCompilerPlugin.data
 import org.dicio.sentences_compiler.construct.SentenceConstructList
 import java.io.File
 
-data class RawExtractedData(
-    val skills: List<SkillDefinition>,
-    val languageToSentences: Map<String, List<RawSentence>>
+data class ExtractedSkill(
+    val id: String,
+    val specificity: Specificity,
+    val sentenceDefinitions: List<SentenceDefinition>,
+    val languageToSentences: Map<String, List<RawSentence>>,
 )
 
-data class ParsedExtractedData(
-    val skills: List<SkillDefinition>,
+data class ParsedSkill(
+    val id: String,
+    val specificity: Specificity,
+    val sentenceDefinitions: List<SentenceDefinition>,
     val languageToSentences: Map<String, List<ParsedSentence>>
 )
 

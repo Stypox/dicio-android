@@ -3,15 +3,16 @@ package org.stypox.dicio.sentencesCompilerPlugin.data
 import org.dicio.sentences_compiler.lexer.Tokenizer
 import org.dicio.sentences_compiler.parser.Parser
 import org.dicio.sentences_compiler.util.CompilerError
-import org.gradle.api.GradleException
 import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginException
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
 
-fun parseSentences(rawExtractedData: RawExtractedData): ParsedExtractedData {
-    return ParsedExtractedData(
-        skills = rawExtractedData.skills,
-        languageToSentences = rawExtractedData.languageToSentences
+fun parseSentences(extractedSkill: ExtractedSkill): ParsedSkill {
+    return ParsedSkill(
+        id = extractedSkill.id,
+        specificity = extractedSkill.specificity,
+        sentenceDefinitions = extractedSkill.sentenceDefinitions,
+        languageToSentences = extractedSkill.languageToSentences
             .mapValues { (_, sentences) ->
                 sentences.map(::parseSentence)
             }

@@ -6,18 +6,20 @@ import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginExce
 import org.stypox.dicio.sentencesCompilerPlugin.util.YML_EXT
 import java.io.File
 
-fun extractDataFromFiles(logger: Logger, inputDirFile: File): RawExtractedData {
-    val definitions: SkillDefinitionsFile =
-        parseYamlFile(File(inputDirFile, SKILL_DEFINITIONS_FILE))
-    val languageToSentences = HashMap<String, List<RawSentence>>()
+fun extractDataFromFiles(logger: Logger, inputDirFile: File): List<ExtractedSkill> {
+    val skills = parseYamlFile<SkillDefinitionsFile>(File(inputDirFile, SKILL_DEFINITIONS_FILE))
+        .skills
+        .map { Pair(it, HashMap<String, ArrayList<RawSentence>>()) }
+    val languages = ArrayList<String>()
 
     for (lang in inputDirFile.listFiles { file -> file.isDirectory }!!) {
-        val sentences = ArrayList<RawSentence>()
-        for (skill in definitions.skills) {
+        var langHasSkill = false
+        for ((skill, sentences) in skills) {
             val file = File(lang, skill.id + YML_EXT)
             if (!file.exists()) {
                 continue
             }
+            langHasSkill = true
 
             val parsedSentences: Map<String, List<String>?> = parseYamlFile(file)
             val expectedSentenceIds = skill.sentences.map { it.id }.toSet()
@@ -55,22 +57,26 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): RawExtractedData {
             for ((sentenceId, parsedSentencesWithoutId) in parsedSentences) {
                 if (parsedSentencesWithoutId == null) continue
                 for (sentence in parsedSentencesWithoutId) {
-                    sentences.add(RawSentence(
-                        id = sentenceId,
-                        file = file,
-                        rawConstructs = sentence,
-                    ))
+                    sentences
+                        .getOrPut(lang.name) { ArrayList() }
+                        .add(
+                            RawSentence(
+                                id = sentenceId,
+                                file = file,
+                                rawConstructs = sentence,
+                            )
+                        )
                 }
             }
         }
 
-        if (sentences.isNotEmpty()) {
-            languageToSentences[lang.name] = sentences
+        if (langHasSkill) {
+            languages.add(lang.name)
         }
 
         // issue a warning for unknown files
         for (file in lang.listFiles()!!) {
-            if (definitions.skills.all { it.id + YML_EXT != file.name }) {
+            if (skills.all { (skill, _) -> skill.id + YML_EXT != file.name }) {
                 logger.error(
                     "[Warning] Skill sentences file ${lang.name}/${
                         file.name
@@ -80,8 +86,13 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): RawExtractedData {
         }
     }
 
-    return RawExtractedData(
-        skills = definitions.skills,
-        languageToSentences = languageToSentences,
-    )
+    return skills
+        .map { (skill, languageToSentences) ->
+            ExtractedSkill(
+                id = skill.id,
+                specificity = skill.specificity,
+                sentenceDefinitions = skill.sentences,
+                languageToSentences = languageToSentences,
+            )
+        }
 }
