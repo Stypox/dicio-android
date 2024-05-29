@@ -20,6 +20,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.weather
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.settings.ui.StringSetting
 
 object WeatherInfo : SkillInfo("weather") {
@@ -34,11 +35,11 @@ object WeatherInfo : SkillInfo("weather") {
         rememberVectorPainter(Icons.Default.Cloud)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(weather)
+        return Sentences.Weather.data[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return WeatherSkill(WeatherInfo, Sections.getSection(weather))
+        return WeatherSkill(WeatherInfo, Sentences.Weather.data[ctx.locale.language]!!)
     }
 
     // no need to use Hilt injection here, let DataStore take care of handling the singleton itself

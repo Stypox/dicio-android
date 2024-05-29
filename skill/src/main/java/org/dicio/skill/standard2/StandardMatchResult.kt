@@ -30,6 +30,19 @@ data class StandardMatchResult(
         return (userMatched + refMatched) / (userWeight + refWeight)
     }
 
+    inline fun <reified T> getCapturingGroup(userInput: String, name: String): T? {
+        val result = capturingGroups[name] ?: return null
+        if (result is T) {
+            return result
+        }
+        if (T::class == String::class/* && result is Pair<Int, Int>*/) {
+            val (start, end) = result
+            return userInput.subSequence(start, end) as T
+        }
+        throw IllegalArgumentException("Capturing group \"$name\" has wrong type: expectedType=${
+            T::class.simpleName}, actualType=${result::class.simpleName}, actualValue=\"$result\"")
+    }
+
     companion object {
         fun empty(end: Int, canGrow: Boolean): StandardMatchResult {
             return StandardMatchResult(0.0f, 0.0f, 0.0f, 0.0f, end, canGrow, mapOf())

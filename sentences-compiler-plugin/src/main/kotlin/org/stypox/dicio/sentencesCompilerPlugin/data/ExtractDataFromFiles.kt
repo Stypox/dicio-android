@@ -6,20 +6,19 @@ import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginExce
 import org.stypox.dicio.sentencesCompilerPlugin.util.YML_EXT
 import java.io.File
 
-fun extractDataFromFiles(logger: Logger, inputDirFile: File): List<ExtractedSkill> {
+fun extractDataFromFiles(logger: Logger, inputDirFile: File): ExtractedData {
     val skills = parseYamlFile<SkillDefinitionsFile>(File(inputDirFile, SKILL_DEFINITIONS_FILE))
         .skills
         .map { Pair(it, HashMap<String, ArrayList<RawSentence>>()) }
     val languages = ArrayList<String>()
 
     for (lang in inputDirFile.listFiles { file -> file.isDirectory }!!) {
-        var langHasSkill = false
+        var langHasSentence = false
         for ((skill, sentences) in skills) {
             val file = File(lang, skill.id + YML_EXT)
             if (!file.exists()) {
                 continue
             }
-            langHasSkill = true
 
             val parsedSentences: Map<String, List<String>?> = parseYamlFile(file)
             val expectedSentenceIds = skill.sentences.map { it.id }.toSet()
@@ -55,7 +54,13 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): List<ExtractedSkil
             }
 
             for ((sentenceId, parsedSentencesWithoutId) in parsedSentences) {
-                if (parsedSentencesWithoutId == null) continue
+                if (parsedSentencesWithoutId == null) {
+                    continue // the warning was issued above
+                }
+
+                // only mark as true if there actually is a sentence for this language
+                langHasSentence = true
+
                 for (sentence in parsedSentencesWithoutId) {
                     sentences
                         .getOrPut(lang.name) { ArrayList() }
@@ -70,7 +75,7 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): List<ExtractedSkil
             }
         }
 
-        if (langHasSkill) {
+        if (langHasSentence) {
             languages.add(lang.name)
         }
 
@@ -86,13 +91,16 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): List<ExtractedSkil
         }
     }
 
-    return skills
-        .map { (skill, languageToSentences) ->
-            ExtractedSkill(
-                id = skill.id,
-                specificity = skill.specificity,
-                sentenceDefinitions = skill.sentences,
-                languageToSentences = languageToSentences,
-            )
-        }
+    return ExtractedData(
+        skills = skills
+            .map { (skill, languageToSentences) ->
+                ExtractedSkill(
+                    id = skill.id,
+                    specificity = skill.specificity,
+                    sentenceDefinitions = skill.sentences,
+                    languageToSentences = languageToSentences,
+                )
+            },
+        languages = languages,
+    )
 }

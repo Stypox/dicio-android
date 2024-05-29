@@ -4,23 +4,21 @@ import kotlinx.coroutines.flow.first
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
-import org.stypox.dicio.R
-import org.stypox.dicio.Sentences_en.weather
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.skills.weather.WeatherInfo.weatherDataStore
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.StringUtils
-import org.stypox.dicio.util.getString
 import java.io.FileNotFoundException
 import java.util.Locale
 
-class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData) :
-    StandardRecognizerSkill(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
-        var city = scoreResult.getCapturingGroup(weather.where)
-            ?.let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
+class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Sentences.Weather.Result>) :
+    StandardRecognizerSkill<Sentences.Weather.Result>(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Sentences.Weather.Result): SkillOutput {
+        var city = when (scoreResult) {
+            is Sentences.Weather.Result.Current -> scoreResult.where
+        }
 
         if (city.isNullOrEmpty()) {
             city = ctx.android.weatherDataStore.data.first().defaultCity

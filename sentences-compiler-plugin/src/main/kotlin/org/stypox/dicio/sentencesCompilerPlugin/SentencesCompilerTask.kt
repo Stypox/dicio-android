@@ -1,16 +1,15 @@
 package org.stypox.dicio.sentencesCompilerPlugin
 
-import com.squareup.kotlinpoet.FileSpec
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.stypox.dicio.sentencesCompilerPlugin.data.ParsedData
+import org.stypox.dicio.sentencesCompilerPlugin.data.checkSentences
 import org.stypox.dicio.sentencesCompilerPlugin.data.extractDataFromFiles
 import org.stypox.dicio.sentencesCompilerPlugin.data.parseSentences
-import org.stypox.dicio.sentencesCompilerPlugin.util.CLASS_NAME
-import org.stypox.dicio.sentencesCompilerPlugin.util.FILE_COMMENT
-import org.stypox.dicio.sentencesCompilerPlugin.util.PACKAGE_NAME
+import org.stypox.dicio.sentencesCompilerPlugin.gen.generateSkillSentencesKt
 import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginException
 
 open class SentencesCompilerTask : DefaultTask() {
@@ -31,12 +30,12 @@ open class SentencesCompilerTask : DefaultTask() {
         val outputDirFile = outputDir.get().asFile
 
         val rawData = extractDataFromFiles(logger, inputDirFile)
-        val parsedData = rawData.map(::parseSentences)
-        parsedData.forEach(::checkSentences)
+        val parsedData = ParsedData(
+            skills = rawData.skills.map(::parseSentences),
+            languages = rawData.languages
+        )
+        parsedData.skills.forEach(::checkSentences)
 
-        FileSpec.builder(PACKAGE_NAME, CLASS_NAME)
-            .addFileComment(FILE_COMMENT + parsedData.toString())
-            .build()
-            .writeTo(outputDirFile)
+        generateSkillSentencesKt(parsedData, outputDirFile)
     }
 }
