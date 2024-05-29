@@ -52,10 +52,6 @@ data class StandardMatchResult(
             return if (m1 == null || m2.score() > m1.score()) m2 else m1
         }
 
-        fun keepBest(m1: StandardMatchResult, m2: StandardMatchResult): StandardMatchResult {
-            return if (m2.score() > m1.score()) m2 else m1
-        }
-
         const val UM: Float = 2.0f;
         const val UW: Float = -1.1f;
         const val RM: Float = 2.0f;
