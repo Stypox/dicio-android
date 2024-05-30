@@ -67,7 +67,7 @@ for benchmark_file in ["current_time", "weather", "timer"]:
         add_line_to_incremental_graph_plots(benchmark_file, "increm", benchmark_dir, [v["size"] for v in data["incremental"]], [v["time"] / 1e9 for v in data["incremental"]])
 
 
-input_plots = {}
+#input_plots = {}
 
 plot_count = len(input_plots) + len(incremental_bar_plots) + len(incremental_graph_plots)
 plot_height = max(int(math.sqrt(plot_count) + 0.5), 1)
@@ -94,4 +94,10 @@ for i, (item_name, data) in enumerate(incremental_graph_plots.items()):
     print(f"{item_name} => O({np.exp(B):.2f}ⁿ)")
     plt.plot(list(range(xs[-1]+1)), [A * np.exp(B * v) for v in range(xs[-1]+1)], color="black", linewidth=1, linestyle='--')
 
-plt.show()
+plt.get_current_fig_manager().window.showMaximized()
+plt.show(block=False)
+plt.pause(0.01)
+plt.tight_layout()
+plt.pause(0.01)
+plt.tight_layout()
+plt.show(block=True)
