@@ -24,3 +24,8 @@ skills:
         captures:
           - id: name
             type: string
+
+  - id: current_time
+    specificity: high
+    sentences:
+      - id: query
