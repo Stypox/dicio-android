@@ -1,5 +1,9 @@
 package org.dicio.skill.standard2
 
+import org.dicio.skill.standard2.capture.Capture
+import org.dicio.skill.standard2.capture.NamedCapture
+import org.dicio.skill.standard2.capture.StringRangeCapture
+
 data class StandardMatchResult(
     val userMatched: Float,
     val userWeight: Float,
@@ -12,7 +16,9 @@ data class StandardMatchResult(
     val end: Int,
     val canGrow: Boolean,
 
-    val capturingGroups: List<Pair<String, Any>>?,
+    // will form a binary tree structure, where inner nodes are Pairs of subtrees,
+    // while the leaves are either Capture or StringRangeCapture
+    val capturingGroups: Any?,
 ) {
     fun score(): Float {
         return UM * userMatched +
@@ -30,20 +36,40 @@ data class StandardMatchResult(
         return (userMatched + refMatched) / (userWeight + refWeight)
     }
 
+    fun exploreCapturingGroupsTree(node: Any?, name: String): NamedCapture? {
+        return when (node) {
+            null ->
+                null
+
+            is Pair<*, *> ->
+                exploreCapturingGroupsTree(node.first, name)
+                    ?: exploreCapturingGroupsTree(node.second, name)
+
+            is NamedCapture ->
+                if (node.name == name) node else null
+
+            else ->
+                throw IllegalArgumentException(
+                    "Unexpected type found in capturing groups tree: type=${
+                        node::class.simpleName
+                    }, value=$node"
+                )
+        }
+    }
+
     inline fun <reified T> getCapturingGroup(userInput: String, name: String): T? {
-        val result = capturingGroups?.firstOrNull { (cgName, _) -> cgName == name }?.second
-            ?: return null
-        if (result is T) {
-            return result
+        val result = exploreCapturingGroupsTree(capturingGroups, name) ?: return null
+        return when {
+            result is Capture && result.value is T ->
+                result.value
+
+            result is StringRangeCapture && T::class == String::class ->
+                userInput.subSequence(result.start, result.end) as T
+
+            else ->
+                throw IllegalArgumentException("Capturing group \"$name\" has wrong type: expectedType=${
+                    T::class.simpleName}, actualType=${result::class.simpleName}, actualValue=\"$result\"")
         }
-        if (T::class == String::class && result is Pair<*, *>) {
-            val (start, end) = result
-            if (start is Int && end is Int) {
-                return userInput.subSequence(start, end) as T
-            }
-        }
-        throw IllegalArgumentException("Capturing group \"$name\" has wrong type: expectedType=${
-            T::class.simpleName}, actualType=${result::class.simpleName}, actualValue=\"$result\"")
     }
 
     companion object {

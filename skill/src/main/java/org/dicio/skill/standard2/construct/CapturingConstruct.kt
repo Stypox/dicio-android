@@ -1,6 +1,7 @@
 package org.dicio.skill.standard2.construct
 
 import org.dicio.skill.standard2.StandardMatchResult
+import org.dicio.skill.standard2.capture.StringRangeCapture
 import org.dicio.skill.standard2.helper.MatchHelper
 import org.dicio.skill.standard2.helper.cumulativeWeight
 import org.dicio.skill.standard2.helper.cumulativeWhitespace
@@ -22,7 +23,7 @@ data class CapturingConstruct(
             refWeight = weight,
             end = end,
             canGrow = end != helper.userInput.length,
-            capturingGroups = listOf(Pair(name, Pair(start, end))),
+            capturingGroups = StringRangeCapture(name, start, end),
         )
     }
 }

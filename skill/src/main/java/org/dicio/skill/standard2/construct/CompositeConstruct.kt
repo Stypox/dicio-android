@@ -42,7 +42,7 @@ data class CompositeConstruct(
                         } else if (dpResult.capturingGroups == null) {
                             compResult.capturingGroups
                         } else {
-                            dpResult.capturingGroups + compResult.capturingGroups
+                            Pair(dpResult.capturingGroups, compResult.capturingGroups)
                         }
                     )
                 }
