@@ -183,7 +183,7 @@ private fun generateGetOperator(resultType: ClassName): FunSpec {
  * e.g. "current_time" would turn into "CurrentTime"
  */
 private fun String.toPascalCase(): String {
-    return split("_").joinToString { it.uppercaseFirstChar() }
+    return split("_").joinToString(separator = "") { it.uppercaseFirstChar() }
 }
 
 /**
