@@ -57,7 +57,7 @@ fun generateOrList(orList: OrList): CodeBlock {
 
 fun generateOptionalConstruct(): CodeBlock {
     return CodeBlock.of(
-        "%T",
+        "%T()",
         ClassName("org.dicio.skill.standard2.construct", "OptionalConstruct")
     )
 }
