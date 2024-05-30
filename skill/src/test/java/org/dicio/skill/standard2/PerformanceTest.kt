@@ -9,13 +9,18 @@ import org.dicio.skill.standard2.construct.OptionalConstruct
 import org.dicio.skill.standard2.construct.OrConstruct
 import org.dicio.skill.standard2.construct.RegexWordConstruct
 import org.dicio.skill.standard2.construct.WordConstruct
+import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.Path
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeSource
 import kotlin.time.measureTime
 
+const val saveFolder = "benchmarks/current"
+
 class PerformanceTest : FunSpec({
-    benchmarkContext("current time", currentTimeData) {
+    benchmarkContext("current_time", currentTimeData) {
         warmup("test", "time", "what time", "current time")
         runBenchmarks("time", "what time is it?", "what's the time", "hey I would like to know what time it is")
         runIncrementalBenchmarks()
@@ -40,7 +45,9 @@ fun FunSpec.benchmarkContext(
     f: suspend BenchmarkRunner.() -> Unit
 ) {
     context(name) {
-        f(BenchmarkRunner(this, name, data))
+        val runner = BenchmarkRunner(this, name, data)
+        f(runner)
+        runner.saveJson()
     }
 }
 
@@ -49,6 +56,9 @@ class BenchmarkRunner(
     private val name: String,
     private val data: StandardRecognizerData<*>,
 ) {
+    private var incrementalJsonData = "[]"
+    private var benchmarksJsonData = ArrayList<String>()
+
     fun warmup(vararg inputs: String) {
         for (input in inputs) {
             data.score(input)
@@ -60,6 +70,11 @@ class BenchmarkRunner(
             funSpec.test("INPUT = $input") {
                 val time = getBenchmarkTime(input)
                 println("[$name] [$input] $time")
+                benchmarksJsonData.add("""{"input": "${
+                    input.replace("\\", "\\\\").replace("\"", "\\\"")
+                }", "time": ${
+                    time.inWholeNanoseconds
+                }}""")
             }
         }
     }
@@ -76,6 +91,10 @@ class BenchmarkRunner(
                 println("[$name] [$input] ${results.last()}")
                 input += if (input.length % 4 == 3) " " else "a"
             }
+
+            incrementalJsonData = "[${
+                results.joinToString { it.inWholeNanoseconds.toString() }
+            }]"
         }
     }
 
@@ -92,6 +111,14 @@ class BenchmarkRunner(
         }
 
         return startMark.elapsedNow() / times
+    }
+
+    fun saveJson() {
+        Files.createDirectories(Path(saveFolder))
+        File("$saveFolder/$name.json")
+            .writeText("""{"incremental": $incrementalJsonData, "benchmarks": [${
+                benchmarksJsonData.joinToString()
+            }]}""")
     }
 }
 
