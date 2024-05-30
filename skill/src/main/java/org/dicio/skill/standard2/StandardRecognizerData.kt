@@ -12,7 +12,7 @@ open class StandardRecognizerData<out T>(
 ) {
     fun score(input: String): Pair<Float, T> {
         val helper = MatchHelper(input)
-        val cumulativeWeight = helper.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
+        val cumulativeWeight = helper.cumulativeWeight
 
         var bestRes: Pair<String, StandardMatchResult>? = null
         for ((sentenceId, construct) in sentencesWithId) {

@@ -16,9 +16,9 @@ const val CHAR_WEIGHT = 0.1f
 const val PUNCTUATION_WEIGHT = 0.05f
 const val WHITESPACE_WEIGHT = 0.0f
 
-fun splitWords(ctx: MatchHelper): List<WordToken> {
+fun splitWords(userInput: String): List<WordToken> {
     val result: MutableList<WordToken> = ArrayList()
-    val matcher = WORD_PATTERN.matcher(ctx.userInput)
+    val matcher = WORD_PATTERN.matcher(userInput)
     while (matcher.find()) {
         // TODO remove diacritics?
         result.add(WordToken(matcher.start(), matcher.end(), matcher.group().lowercase()))
@@ -26,14 +26,13 @@ fun splitWords(ctx: MatchHelper): List<WordToken> {
     return result
 }
 
-fun cumulativeWeight(ctx: MatchHelper): FloatArray {
-    val words = ctx.getOrTokenize("splitWords", ::splitWords)
-    val result = FloatArray(ctx.userInput.length + 1)
+fun cumulativeWeight(userInput: String, words: List<WordToken>): FloatArray {
+    val result = FloatArray(userInput.length + 1)
     var lastEnd = 0
 
     for (word in words) {
         for (i in lastEnd..<word.start) {
-            result[i+1] = result[i] + getCharWeight(ctx.userInput[i])
+            result[i+1] = result[i] + getCharWeight(userInput[i])
         }
         for (i in word.start..<word.end) {
             result[i+1] = result[i] + WORD_WEIGHT / (word.end - word.start)
@@ -41,16 +40,16 @@ fun cumulativeWeight(ctx: MatchHelper): FloatArray {
         lastEnd = word.end
     }
 
-    for (i in lastEnd..<ctx.userInput.length) {
-        result[i+1] = result[i] + getCharWeight(ctx.userInput[i])
+    for (i in lastEnd..<userInput.length) {
+        result[i+1] = result[i] + getCharWeight(userInput[i])
     }
     return result
 }
 
-fun cumulativeWhitespace(ctx: MatchHelper): IntArray {
-    val result = IntArray(ctx.userInput.length + 1)
-    for (i in 0..<ctx.userInput.length) {
-        result[i+1] = result[i] + if (ctx.userInput[i].isWhitespace()) 1 else 0
+fun cumulativeWhitespace(userInput: String): IntArray {
+    val result = IntArray(userInput.length + 1)
+    for (i in userInput.indices) {
+        result[i+1] = result[i] + if (userInput[i].isWhitespace()) 1 else 0
     }
     return result
 }

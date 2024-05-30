@@ -10,7 +10,7 @@ data class CompositeConstruct(
     private var mem: Array<Array<MutableList<StandardMatchResult?>>> = arrayOf()
 
     override fun match(start: Int, end: Int, helper: MatchHelper): StandardMatchResult {
-        val cumulativeWeight = helper.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
+        val cumulativeWeight = helper.cumulativeWeight
 
         fun dp(compStart: Int, j: Int): StandardMatchResult {
             if (j >= constructs.size) {

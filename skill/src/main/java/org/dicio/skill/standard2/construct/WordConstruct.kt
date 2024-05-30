@@ -13,8 +13,7 @@ data class WordConstruct(
     private val weight: Float,
 ) : Construct {
     override fun match(start: Int, end: Int, helper: MatchHelper): StandardMatchResult {
-        val token = helper.getOrTokenize("splitWords", ::splitWords)
-            .findTokenStartingAt(start)
+        val token = helper.splitWords.findTokenStartingAt(start)
         return if (token == null || token.text != text) {
             // canGrow=false since even if end was bigger we wouldn't match anything more
             StandardMatchResult(0.0f, 0.0f, 0.0f, weight, start, false, null)

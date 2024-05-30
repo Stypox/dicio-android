@@ -10,8 +10,8 @@ data class CapturingConstruct(
     private val weight: Float
 ) : Construct {
     override fun match(start: Int, end: Int, helper: MatchHelper): StandardMatchResult {
-        val cumulativeWeight = helper.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
-        val cumulativeWhitespace = helper.getOrTokenize("cumulativeWhitespace", ::cumulativeWhitespace)
+        val cumulativeWeight = helper.cumulativeWeight
+        val cumulativeWhitespace = helper.cumulativeWhitespace
         val userWeight = cumulativeWeight[end] - cumulativeWeight[start]
         val whitespace = cumulativeWhitespace[end] - cumulativeWhitespace[start]
 
