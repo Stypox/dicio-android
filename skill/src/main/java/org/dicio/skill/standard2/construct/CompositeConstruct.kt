@@ -33,7 +33,13 @@ data class CompositeConstruct(
                         refWeight = compResult.refWeight + dpResult.refWeight,
                         end = dpResult.end,
                         canGrow = compResult.canGrow || dpResult.canGrow,
-                        capturingGroups = compResult.capturingGroups + dpResult.capturingGroups
+                        capturingGroups = if (compResult.capturingGroups == null) {
+                            dpResult.capturingGroups
+                        } else if (dpResult.capturingGroups == null) {
+                            compResult.capturingGroups
+                        } else {
+                            dpResult.capturingGroups + compResult.capturingGroups
+                        }
                     )
                 }
                 // it is impossible for the result to be null because the (compStart..end) range

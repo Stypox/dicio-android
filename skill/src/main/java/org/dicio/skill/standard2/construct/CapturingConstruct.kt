@@ -22,7 +22,7 @@ data class CapturingConstruct(
             refWeight = weight,
             end = end,
             canGrow = end != ctx.userInput.length,
-            capturingGroups = mapOf(name to Pair(start, end))
+            capturingGroups = listOf(Pair(name, Pair(start, end))),
         )
     }
 }

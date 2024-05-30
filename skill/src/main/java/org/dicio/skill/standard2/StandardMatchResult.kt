@@ -12,7 +12,7 @@ data class StandardMatchResult(
     val end: Int,
     val canGrow: Boolean,
 
-    val capturingGroups: Map<String, Pair<Int, Int>>,
+    val capturingGroups: List<Pair<String, Any>>?,
 ) {
     fun score(): Float {
         return UM * userMatched +
@@ -31,13 +31,16 @@ data class StandardMatchResult(
     }
 
     inline fun <reified T> getCapturingGroup(userInput: String, name: String): T? {
-        val result = capturingGroups[name] ?: return null
+        val result = capturingGroups?.firstOrNull { (cgName, _) -> cgName == name }?.second
+            ?: return null
         if (result is T) {
             return result
         }
-        if (T::class == String::class/* && result is Pair<Int, Int>*/) {
+        if (T::class == String::class && result is Pair<*, *>) {
             val (start, end) = result
-            return userInput.subSequence(start, end) as T
+            if (start is Int && end is Int) {
+                return userInput.subSequence(start, end) as T
+            }
         }
         throw IllegalArgumentException("Capturing group \"$name\" has wrong type: expectedType=${
             T::class.simpleName}, actualType=${result::class.simpleName}, actualValue=\"$result\"")
@@ -45,7 +48,7 @@ data class StandardMatchResult(
 
     companion object {
         fun empty(end: Int, canGrow: Boolean): StandardMatchResult {
-            return StandardMatchResult(0.0f, 0.0f, 0.0f, 0.0f, end, canGrow, mapOf())
+            return StandardMatchResult(0.0f, 0.0f, 0.0f, 0.0f, end, canGrow, null)
         }
 
         fun keepBest(m1: StandardMatchResult?, m2: StandardMatchResult): StandardMatchResult {
