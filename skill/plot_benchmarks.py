@@ -26,7 +26,7 @@ def fit_exp(xs, ys):
 
 
 benchmark_dirs = sorted(os.listdir("benchmarks/"))
-benchmark_dir_names = [benchmark_dir[:10] for benchmark_dir in benchmark_dirs]
+benchmark_dir_names = [benchmark_dir[4:14] for benchmark_dir in benchmark_dirs]
 colors = dict(zip(benchmark_dir_names, plt.colormaps.get_cmap('viridis').resampled(len(benchmark_dirs)).colors))
 print(benchmark_dirs)
 

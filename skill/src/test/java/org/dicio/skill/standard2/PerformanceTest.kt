@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeSource
 import kotlin.time.measureTime
 
-const val saveFolder = "benchmarks/current"
+const val saveFolder = "benchmarks/999_current"
 
 class PerformanceTest : FunSpec({
     benchmarkContext("current_time", currentTimeData) {
