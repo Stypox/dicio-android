@@ -7,16 +7,20 @@ import org.dicio.skill.standard2.helper.cumulativeWeight
 data class CompositeConstruct(
     private val constructs: List<Construct>
 ) : Construct {
+    private var mem: Array<Array<MutableList<StandardMatchResult?>>> = arrayOf()
+
     override fun match(start: Int, end: Int, helper: MatchHelper): StandardMatchResult {
         val cumulativeWeight = helper.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
-        val mem: Array<Array<StandardMatchResult?>> =
-            Array(end-start+1) { Array(constructs.size) { null } }
 
         fun dp(compStart: Int, j: Int): StandardMatchResult {
             if (j >= constructs.size) {
                 return StandardMatchResult.empty(compStart, false)
             }
-            mem[compStart - start][j]?.let { return it }
+            val memAtStart = mem[j][compStart]
+            if (memAtStart.size <= end - compStart) {
+                return memAtStart.last()!!
+            }
+            memAtStart[end - compStart]?.let { return it }
 
             val result = (compStart..end)
                 .map { compEnd ->
@@ -46,7 +50,12 @@ data class CompositeConstruct(
                 // is always non-empty (even if compStart == end), hence the !!
                 .fold(null, StandardMatchResult::keepBest)!!
 
-            mem[compStart - start][j] = result
+            mem[j][compStart][end - compStart] = result
+            if (!result.canGrow) {
+                for (i in end - compStart + 1..<mem[j][compStart].size) {
+                    mem[j][compStart].removeLast()
+                }
+            }
             return result
         }
 
@@ -54,10 +63,16 @@ data class CompositeConstruct(
     }
 
     override fun setupCache(helper: MatchHelper) {
+        mem = Array(constructs.size) {
+            Array(helper.userInput.length + 1) { i ->
+                MutableList(helper.userInput.length + 1 - i) { null }
+            }
+        }
         constructs.forEach { it.setupCache(helper) }
     }
 
     override fun destroyCache() {
+        mem = arrayOf()
         constructs.forEach { it.destroyCache() }
     }
 }
