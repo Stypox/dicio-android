@@ -26,8 +26,9 @@ def fit_exp(xs, ys):
 
 
 benchmark_dirs = sorted(os.listdir("benchmarks/"))
+benchmark_dir_names = [benchmark_dir[:10] for benchmark_dir in benchmark_dirs]
+colors = dict(zip(benchmark_dir_names, plt.colormaps.get_cmap('viridis').resampled(len(benchmark_dirs)).colors))
 print(benchmark_dirs)
-colors = dict(zip(benchmark_dirs, plt.colormaps.get_cmap('viridis').resampled(len(benchmark_dirs)).colors))
 
 
 input_plots = {}
@@ -56,15 +57,15 @@ def add_line_to_incremental_graph_plots(benchmark_file, item_name, benchmark_dir
 
 
 for benchmark_file in ["current_time", "weather", "timer"]:
-    for benchmark_dir in benchmark_dirs:
+    for benchmark_dir, benchmark_dir_name in zip(benchmark_dirs, benchmark_dir_names):
         data = json.load(open(os.path.join("benchmarks/", benchmark_dir, benchmark_file + ".json")))
 
-        add_item_to_incremental_bar_plots(benchmark_file, "increm", benchmark_dir, len(data["incremental"]))
+        add_item_to_incremental_bar_plots(benchmark_file, "increm", benchmark_dir_name, len(data["incremental"]))
 
         for benchmark in data["benchmarks"]:
-            add_item_to_input_plots(benchmark_file, str(len(benchmark["input"])) + "ch", benchmark_dir, benchmark["time"] / 1e9)
+            add_item_to_input_plots(benchmark_file, str(len(benchmark["input"])) + "ch", benchmark_dir_name, benchmark["time"] / 1e9)
 
-        add_line_to_incremental_graph_plots(benchmark_file, "increm", benchmark_dir, [v["size"] for v in data["incremental"]], [v["time"] / 1e9 for v in data["incremental"]])
+        add_line_to_incremental_graph_plots(benchmark_file, "increm", benchmark_dir_name, [v["size"] for v in data["incremental"]], [v["time"] / 1e9 for v in data["incremental"]])
 
 
 #input_plots = {}
