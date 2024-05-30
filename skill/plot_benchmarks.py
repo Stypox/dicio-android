@@ -60,7 +60,7 @@ for benchmark_file in ["current_time", "weather", "timer"]:
     for benchmark_dir, benchmark_dir_name in zip(benchmark_dirs, benchmark_dir_names):
         data = json.load(open(os.path.join("benchmarks/", benchmark_dir, benchmark_file + ".json")))
 
-        add_item_to_incremental_bar_plots(benchmark_file, "increm", benchmark_dir_name, len(data["incremental"]))
+        add_item_to_incremental_bar_plots(benchmark_file, "increm", benchmark_dir_name, data["incremental"][-1]["size"])
 
         for benchmark in data["benchmarks"]:
             add_item_to_input_plots(benchmark_file, str(len(benchmark["input"])) + "ch", benchmark_dir_name, benchmark["time"] / 1e9)
