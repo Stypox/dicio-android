@@ -7,8 +7,8 @@ import org.dicio.skill.standard2.helper.cumulativeWeight
 data class CompositeConstruct(
     private val constructs: List<Construct>
 ) : Construct {
-    override fun match(start: Int, end: Int, ctx: MatchHelper): StandardMatchResult {
-        val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
+    override fun match(start: Int, end: Int, helper: MatchHelper): StandardMatchResult {
+        val cumulativeWeight = helper.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
         val mem: Array<Array<StandardMatchResult?>> =
             Array(end-start+1) { Array(constructs.size) { null } }
 
@@ -20,7 +20,7 @@ data class CompositeConstruct(
 
             val result = (compStart..end)
                 .map { compEnd ->
-                    val compResult = constructs[j].match(compStart, compEnd, ctx)
+                    val compResult = constructs[j].match(compStart, compEnd, helper)
                     val dpResult = dp(compEnd, j+1)
                     val skippedWordsWeight =
                         cumulativeWeight[compEnd] - cumulativeWeight[compResult.end]
@@ -51,5 +51,13 @@ data class CompositeConstruct(
         }
 
         return dp(start, 0)
+    }
+
+    override fun setupCache(helper: MatchHelper) {
+        constructs.forEach { it.setupCache(helper) }
+    }
+
+    override fun destroyCache() {
+        constructs.forEach { it.destroyCache() }
     }
 }

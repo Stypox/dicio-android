@@ -16,6 +16,7 @@ open class StandardRecognizerData<out T>(
 
         var bestRes: Pair<String, StandardMatchResult>? = null
         for ((sentenceId, construct) in sentencesWithId) {
+            construct.setupCache(helper)
             val bestSentenceRes = (0..input.length)
                 .map { start ->
                     val res = construct.match(0, input.length, helper)
@@ -29,6 +30,7 @@ open class StandardRecognizerData<out T>(
                 // it is impossible for the result to be null because the (0..input.length) range
                 // is always non-empty (even if input.length == 0), hence the !!
                 .fold(null, StandardMatchResult::keepBest)!!
+            construct.destroyCache()
 
             if (bestRes == null || bestSentenceRes.score() > bestRes.second.score()) {
                 bestRes = Pair(sentenceId, bestSentenceRes)
