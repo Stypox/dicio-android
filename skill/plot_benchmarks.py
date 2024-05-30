@@ -78,6 +78,7 @@ assert plot_height * plot_width >= plot_count
 
 for i, (item_name, (benchmark_dirs, values)) in enumerate(input_plots.items()):
     plt.subplot(plot_height, plot_width, i + 1)
+    plt.yscale('log',base=10)
     plt.title(item_name, fontsize=9)
     plt.bar(benchmark_dirs, values, color=[colors[benchmark_dir] * 0.7 for benchmark_dir in benchmark_dirs])
 
