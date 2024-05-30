@@ -12,6 +12,8 @@ import org.dicio.skill.standard2.construct.WordConstruct
 import java.io.File
 import java.nio.file.Files
 import kotlin.io.path.Path
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeSource
@@ -81,18 +83,40 @@ class BenchmarkRunner(
 
     suspend fun runIncrementalBenchmarks() {
         funSpec.test("INCREMENTAL") {
-            val results = ArrayList<Duration>()
+            val maxDuration = 1.seconds
+            val wantedPoints = 20
+            val results = ArrayList<Pair<Int, Duration>>()
             var input = ""
+            results.add(Pair(0, measureTime { data.score(input) }))
 
-            do {
-                results.add(measureTime { data.score(input) })
+            var skipUntilSize = 1
+            // limit increment initially, since at small values the slope is not reliable
+            var maxIncrement = 1.0f
+            var prevIncrement = 1.0f
+            while (results.last().second < maxDuration) {
                 input += if (input.length % 4 == 3) " " else "a"
-            } while (results.last() < 1.seconds)
+                if (input.length >= skipUntilSize) {
+                    val (prevSize, prevTime) = results.last()
+                    val currSize = input.length
+                    val currTime = measureTime { data.score(input) }
+                    results.add(Pair(currSize, currTime))
+
+                    val dx = (currSize - prevSize).toFloat()
+                    val dy = (currTime - prevTime).inWholeNanoseconds * 1e-9f
+                    val rawIncrement = dx / dy *
+                            (maxDuration - currTime).inWholeNanoseconds * 1e-9f /
+                            max(1, wantedPoints - results.size)
+                    val newIncrement = max(1f, min(maxIncrement, rawIncrement))
+                    prevIncrement = (prevIncrement + newIncrement) / 2
+                    skipUntilSize += prevIncrement.toInt()
+                    maxIncrement *= 1.8f
+                }
+            }
 
             incrementalJsonData = "[${
-                results.mapIndexed { i, time ->
-                    """{"size": $i, "time": ${time.inWholeNanoseconds}}"""
-                }.joinToString()
+                results.joinToString { (size, time) ->
+                    """{"size": $size, "time": ${time.inWholeNanoseconds}}"""
+                }
             }]"
         }
     }
