@@ -81,19 +81,18 @@ class BenchmarkRunner(
 
     suspend fun runIncrementalBenchmarks() {
         funSpec.test("INCREMENTAL") {
-            val timeSource = TimeSource.Monotonic
-
-            val endMark = timeSource.markNow().plus(5.seconds)
             val results = ArrayList<Duration>()
             var input = ""
-            while (endMark.hasNotPassedNow()) {
+
+            do {
                 results.add(measureTime { data.score(input) })
-                println("[$name] [$input] ${results.last()}")
                 input += if (input.length % 4 == 3) " " else "a"
-            }
+            } while (results.last() < 1.seconds)
 
             incrementalJsonData = "[${
-                results.joinToString { it.inWholeNanoseconds.toString() }
+                results.mapIndexed { i, time ->
+                    """{"size": $i, "time": ${time.inWholeNanoseconds}}"""
+                }.joinToString()
             }]"
         }
     }
