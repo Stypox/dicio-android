@@ -35,11 +35,11 @@ object WeatherInfo : SkillInfo("weather") {
         rememberVectorPainter(Icons.Default.Cloud)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Weather.data[ctx.locale.language] != null
+        return Sentences.Weather[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return WeatherSkill(WeatherInfo, Sentences.Weather.data[ctx.locale.language]!!)
+        return WeatherSkill(WeatherInfo, Sentences.Weather[ctx.locale.language]!!)
     }
 
     // no need to use Hilt injection here, let DataStore take care of handling the singleton itself

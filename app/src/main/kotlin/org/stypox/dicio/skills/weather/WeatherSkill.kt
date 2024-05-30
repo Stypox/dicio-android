@@ -7,17 +7,18 @@ import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.standard2.StandardRecognizerData
 import org.dicio.skill.standard2.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences
+import org.stypox.dicio.sentences.Sentences.Weather
 import org.stypox.dicio.skills.weather.WeatherInfo.weatherDataStore
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.StringUtils
 import java.io.FileNotFoundException
 import java.util.Locale
 
-class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Sentences.Weather.Result>) :
-    StandardRecognizerSkill<Sentences.Weather.Result>(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Sentences.Weather.Result): SkillOutput {
+class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Weather>) :
+    StandardRecognizerSkill<Weather>(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Weather): SkillOutput {
         var city = when (scoreResult) {
-            is Sentences.Weather.Result.Current -> scoreResult.where
+            is Weather.Current -> scoreResult.where
         }
 
         if (city.isNullOrEmpty()) {

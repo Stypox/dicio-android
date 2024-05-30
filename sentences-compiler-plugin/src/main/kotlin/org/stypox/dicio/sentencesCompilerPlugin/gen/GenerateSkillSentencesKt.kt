@@ -49,17 +49,24 @@ fun generateSkillSentencesKt(parsedData: ParsedData, outputDirFile: File) {
 }
 
 private fun generateSkillObject(skill: ParsedSkill): TypeSpec {
-    return TypeSpec.objectBuilder(skill.id.toPascalCase())
-        .addType(generateResultInterface(skill))
-        .addFunction(generateResultFromMatchFunction(skill))
-        .addProperty(generateDataProperty(skill))
+    val skillInterfaceName = skill.id.toPascalCase()
+    val skillInterfaceClassName = ClassName("", skillInterfaceName)
+    return TypeSpec.interfaceBuilder(skillInterfaceName)
+        .addModifiers(KModifier.SEALED)
+        .addTypes(generateResultTypes(skill, skillInterfaceClassName))
+        .addType(
+            TypeSpec.companionObjectBuilder()
+                .addFunction(generateResultFromMatchFunction(skill, skillInterfaceClassName))
+                .addProperty(generateLanguageToDataProperty(skill, skillInterfaceClassName))
+                .addFunction(generateGetOperator(skillInterfaceClassName))
+                .build()
+        )
         .build()
 }
 
-private fun generateResultInterface(skill: ParsedSkill): TypeSpec {
+private fun generateResultTypes(skill: ParsedSkill, superinterface: ClassName): List<TypeSpec> {
     val nullableStringType = String::class.asTypeName().copy(nullable = true)
-    val resultInterf = TypeSpec.interfaceBuilder("Result")
-        .addModifiers(KModifier.SEALED)
+    val resultTypes = ArrayList<TypeSpec>()
 
     for (definition in skill.sentenceDefinitions) {
         val definitionResultCls = if (definition.captures.isEmpty()) {
@@ -82,40 +89,35 @@ private fun generateResultInterface(skill: ParsedSkill): TypeSpec {
                 })
         }
 
-        definitionResultCls
-            .addSuperinterface(ClassName("", "Result"))
-
-        resultInterf.addType(definitionResultCls.build())
+        definitionResultCls.addSuperinterface(superinterface)
+        resultTypes.add(definitionResultCls.build())
     }
 
-    return resultInterf.build()
+    return resultTypes
 }
 
-private fun generateResultFromMatchFunction(skill: ParsedSkill): FunSpec {
-    val resultClassName = ClassName("", "Result")
+private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: ClassName): FunSpec {
     val fromStandardResultFun = FunSpec.builder("fromStandardResult")
         .addParameter("input", String::class)
         .addParameter("sentenceId", String::class)
         .addParameter("matchResult", ClassName("org.dicio.skill.standard2", "StandardMatchResult"))
-        .returns(resultClassName)
+        .returns(returnType)
         .beginControlFlow("return when(sentenceId)")
 
     for (definition in skill.sentenceDefinitions) {
         val definitionClassName = definition.id.toPascalCase()
         if (definition.captures.isEmpty()) {
             fromStandardResultFun.addStatement(
-                "%S -> %T.$definitionClassName",
-                resultClassName,
+                "%S -> $definitionClassName",
                 definition.id
             )
         } else {
             fromStandardResultFun.addStatement(
-                "%S -> %T.$definitionClassName(${
+                "%S -> $definitionClassName(${
                     "matchResult.getCapturingGroup<%T>(input, %S),"
                         .repeat(definition.captures.size)
                 })",
                 definition.id,
-                resultClassName,
                 *definition.captures.flatMap { sequenceOf(String::class, it.id) }.toTypedArray()
             )
         }
@@ -126,18 +128,19 @@ private fun generateResultFromMatchFunction(skill: ParsedSkill): FunSpec {
     return fromStandardResultFun.build()
 }
 
-private fun generateDataProperty(skill: ParsedSkill): PropertySpec {
+private fun generateLanguageToDataProperty(skill: ParsedSkill, resultType: ClassName): PropertySpec {
     val standardRecognizerDataClassName =
         ClassName("org.dicio.skill.standard2", "StandardRecognizerData")
-            .parameterizedBy(ClassName("", "Result"))
+            .parameterizedBy(resultType)
     val dataProp = PropertySpec
         .builder(
-            "data",
+            "languageToData",
             Map::class.asTypeName().parameterizedBy(
                 String::class.asTypeName(),
                 standardRecognizerDataClassName
             )
         )
+        .addModifiers(KModifier.PRIVATE)
         .initializer(
             "mapOf(${"%S to %L,".repeat(skill.languageToSentences.size)})",
             *skill.languageToSentences.flatMap { (language, sentences) ->
@@ -161,6 +164,19 @@ private fun generateDataProperty(skill: ParsedSkill): PropertySpec {
         )
 
     return dataProp.build()
+}
+
+private fun generateGetOperator(resultType: ClassName): FunSpec {
+    return FunSpec.builder("get")
+        .addModifiers(KModifier.OPERATOR)
+        .addParameter("language", String::class)
+        .returns(
+            ClassName("org.dicio.skill.standard2", "StandardRecognizerData")
+                .parameterizedBy(resultType)
+                .copy(nullable = true)
+        )
+        .addCode("return languageToData[language]")
+        .build()
 }
 
 /**
