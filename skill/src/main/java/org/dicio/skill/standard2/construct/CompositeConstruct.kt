@@ -25,9 +25,17 @@ data class CompositeConstruct(
             val result = (compStart..end)
                 .map { compEnd ->
                     val compResult = constructs[j].match(compStart, compEnd, helper)
-                    val dpResult = dp(compEnd, j+1)
-                    val skippedWordsWeight =
-                        cumulativeWeight[compEnd] - cumulativeWeight[compResult.end]
+                    val skippedWordsWeight: Float
+                    val dpResult: StandardMatchResult
+
+                    if (constructs.getOrNull(j+1) is CapturingConstruct) {
+                        skippedWordsWeight = 0.0f
+                        dpResult = dp(compResult.end, j+1)
+                    } else {
+                        skippedWordsWeight =
+                            cumulativeWeight[compEnd] - cumulativeWeight[compResult.end]
+                        dpResult = dp(compEnd, j+1)
+                    }
 
                     return@map StandardMatchResult(
                         userMatched = compResult.userMatched + dpResult.userMatched,
