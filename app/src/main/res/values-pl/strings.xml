@@ -70,7 +70,7 @@
     <string name="skill_calculator_could_not_calculate">Nie potrafię przetworzyć twojego żądania</string>
     <string name="pref_language">Język</string>
     <string name="pref_language_summary">Jakiego języka powinien używać Dicio, by się z tobą porozumieć\?</string>
-    <string name="pref_input_method_text">Pole tekstowe</string>
+    <string name="pref_input_method_text">Tylko pole tekstowe</string>
     <string name="pref_input_method_summary">Wybierz usługę, z której będziesz korzystał, by rozmawiać z Dicio</string>
     <string name="pref_weather_default_city_using_ip_info">Wybierz miasto do celów prognozy pogody, gdy nie wskażesz konkretnej lokacji. Obecnie lokacja wybierana jest na bazie adresu IP.</string>
     <string name="skill_name_calculator">Kalkulator</string>
@@ -137,4 +137,22 @@
     <string name="skill_timer_set">OK, czasomierz wygaśnie za %1$s</string>
     <string name="skill_timer_set_name">OK, czasomierz %1$s wygaśnie za %2$s</string>
     <string name="skill_timer_canceled_name">Czasomierz %1$s został anulowany</string>
+    <string name="pref_skills_title">Umiejętności</string>
+    <string name="pref_theme_system">Użyj motywu systemowego</string>
+    <string name="pref_theme_system_dark_black">Użyj motywu systemowego (użyj wariantu Black dla ciemnego motywu)</string>
+    <string name="pref_skills_summary">Włączanie/wyłączanie umiejętności i dostosowywanie ich zachowania</string>
+    <string name="pref_dynamic_colors_summary">Użyj dynamicznych kolorów Material You dostarczonych przez system</string>
+    <string name="settings_description_with_value">%1$s — %2$s</string>
+    <string name="copy_to_clipboard">Kopiuj do schowka</string>
+    <string name="done">Gotowe</string>
+    <string name="grant_microphone_permission">Zgoda na korzystanie z mikrofonu</string>
+    <string name="error_unzipping">Błąd rozpakowywania</string>
+    <string name="error_downloading">Błąd pobierania</string>
+    <string name="unzipping">Rozpakowywanie…</string>
+    <string name="download">Pobierz</string>
+    <string name="stt_not_available">Funkcja zamiany mowy na tekst jest niedostępna</string>
+    <string name="downloaded">Pobrano</string>
+    <string name="loaded">Załadowane</string>
+    <string name="pref_general">Ogólne</string>
+    <string name="pref_dynamic_colors_title">Dynamiczne kolory</string>
 </resources>
