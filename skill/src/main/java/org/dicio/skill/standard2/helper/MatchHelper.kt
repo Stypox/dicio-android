@@ -4,6 +4,7 @@ data class MatchHelper(
     val userInput: String,
 ) {
     val splitWords = splitWords(userInput)
+    val splitWordsIndices = splitWordsIndices(userInput, splitWords)
     val cumulativeWeight = cumulativeWeight(userInput, splitWords)
     val cumulativeWhitespace = cumulativeWhitespace(userInput)
     private val tokenizations: MutableMap<String, Any> = HashMap()

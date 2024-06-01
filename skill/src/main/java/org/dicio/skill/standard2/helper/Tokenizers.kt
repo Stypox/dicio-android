@@ -26,6 +26,14 @@ fun splitWords(userInput: String): List<WordToken> {
     return result
 }
 
+fun splitWordsIndices(userInput: String, words: List<WordToken>): IntArray {
+    val result = IntArray(userInput.length + 1) { -1 }
+    words.forEachIndexed { index, word ->
+        result[word.start] = index
+    }
+    return result
+}
+
 fun cumulativeWeight(userInput: String, words: List<WordToken>): FloatArray {
     val result = FloatArray(userInput.length + 1)
     var lastEnd = 0
