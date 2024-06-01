@@ -1,7 +1,7 @@
 package org.dicio.skill.standard2
 
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.core.spec.style.scopes.FunSpecContainerScope
+import org.dicio.skill.benchmarkContext
 import org.dicio.skill.skill.Specificity
 import org.dicio.skill.standard2.construct.CapturingConstruct
 import org.dicio.skill.standard2.construct.CompositeConstruct
@@ -9,141 +9,26 @@ import org.dicio.skill.standard2.construct.OptionalConstruct
 import org.dicio.skill.standard2.construct.OrConstruct
 import org.dicio.skill.standard2.construct.RegexWordConstruct
 import org.dicio.skill.standard2.construct.WordConstruct
-import java.io.File
-import java.nio.file.Files
-import kotlin.io.path.Path
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.TimeSource
-import kotlin.time.measureTime
-
-const val saveFolder = "benchmarks/999_current"
 
 class PerformanceTest : FunSpec({
-    benchmarkContext("current_time", currentTimeData) {
+    benchmarkContext("current_time", currentTimeData::score) {
         warmup("test", "time", "what time", "current time")
         runBenchmarks("time", "what time is it?", "what's the time", "hey I would like to know what time it is")
         runIncrementalBenchmarks()
     }
 
-    benchmarkContext("weather", weatherData) {
+    benchmarkContext("weather", weatherData::score) {
         warmup("test", "weather", "cold", "weather in rome")
         runBenchmarks("weather", "what's the weather", "is it cold in budapest", "what is the weather in rome")
         runIncrementalBenchmarks()
     }
 
-    benchmarkContext("timer", timerData) {
+    benchmarkContext("timer", timerData::score) {
         warmup( "test", "timer", "timer 1s", "named a")
         runBenchmarks("set a timer", "set a timer of 5s", "set a timer named a")
         runIncrementalBenchmarks()
     }
 })
-
-fun FunSpec.benchmarkContext(
-    name: String,
-    data: StandardRecognizerData<*>,
-    f: suspend BenchmarkRunner.() -> Unit
-) {
-    context(name) {
-        val runner = BenchmarkRunner(this, name, data)
-        f(runner)
-        runner.saveJson()
-    }
-}
-
-class BenchmarkRunner(
-    private val funSpec: FunSpecContainerScope,
-    private val name: String,
-    private val data: StandardRecognizerData<*>,
-) {
-    private var incrementalJsonData = "[]"
-    private var benchmarksJsonData = ArrayList<String>()
-
-    fun warmup(vararg inputs: String) {
-        for (input in inputs) {
-            data.score(input)
-        }
-    }
-    
-    suspend fun runBenchmarks(vararg inputs: String) {
-        for (input in inputs) {
-            funSpec.test("INPUT = $input") {
-                val time = getBenchmarkTime(input)
-                println("[$name] [$input] $time")
-                benchmarksJsonData.add("""{"input": "${
-                    input.replace("\\", "\\\\").replace("\"", "\\\"")
-                }", "time": ${
-                    time.inWholeNanoseconds
-                }}""")
-            }
-        }
-    }
-
-    suspend fun runIncrementalBenchmarks() {
-        funSpec.test("INCREMENTAL") {
-            val maxDuration = 1.seconds
-            val wantedPoints = 20
-            val results = ArrayList<Pair<Int, Duration>>()
-            var input = ""
-            results.add(Pair(0, measureTime { data.score(input) }))
-
-            var skipUntilSize = 1
-            // limit increment initially, since at small values the slope is not reliable
-            var maxIncrement = 1.0f
-            var prevIncrement = 1.0f
-            while (results.last().second < maxDuration) {
-                input += if (input.length % 4 == 3) " " else "a"
-                if (input.length >= skipUntilSize) {
-                    val (prevSize, prevTime) = results.last()
-                    val currSize = input.length
-                    val currTime = measureTime { data.score(input) }
-                    results.add(Pair(currSize, currTime))
-
-                    val dx = (currSize - prevSize).toFloat()
-                    val dy = (currTime - prevTime).inWholeNanoseconds * 1e-9f
-                    val rawIncrement = dx / dy *
-                            (maxDuration - currTime).inWholeNanoseconds * 1e-9f /
-                            max(1, wantedPoints - results.size)
-                    val newIncrement = max(1f, min(maxIncrement, rawIncrement))
-                    prevIncrement = (prevIncrement + newIncrement) / 2
-                    skipUntilSize += prevIncrement.toInt()
-                    maxIncrement *= 1.8f
-                }
-            }
-
-            incrementalJsonData = "[${
-                results.joinToString { (size, time) ->
-                    """{"size": $size, "time": ${time.inWholeNanoseconds}}"""
-                }
-            }]"
-        }
-    }
-
-    private fun getBenchmarkTime(input: String): Duration {
-        val timeSource = TimeSource.Monotonic
-
-        // benchmark phase
-        val startMark = timeSource.markNow()
-        val endMark = startMark.plus(2.seconds)
-        var times = 0
-        while (endMark.hasNotPassedNow()) {
-            data.score(input)
-            times += 1
-        }
-
-        return startMark.elapsedNow() / times
-    }
-
-    fun saveJson() {
-        Files.createDirectories(Path(saveFolder))
-        File("$saveFolder/$name.json")
-            .writeText("""{"incremental": $incrementalJsonData, "benchmarks": [${
-                benchmarksJsonData.joinToString()
-            }]}""")
-    }
-}
 
 // @formatter:off
 val currentTimeData = StandardRecognizerData(Specificity.HIGH, { _,_,_ -> },

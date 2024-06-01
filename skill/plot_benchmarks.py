@@ -25,7 +25,7 @@ def fit_exp(xs, ys):
     return (np.exp(a), b)
 
 def fit_poly(xs, ys):
-    return (*np.polynomial.polynomial.polyfit(xs, ys, 3), 0)
+    return (*np.polynomial.polynomial.polyfit(xs, ys, 4),)
 
 
 benchmark_dirs = sorted(os.listdir("benchmarks/"))
