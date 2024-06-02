@@ -10,12 +10,6 @@ data class StandardMatchResult(
     val refMatched: Float,
     val refWeight: Float,
 
-    /**
-     * Exclusive index
-     */
-    val end: Int,
-    val canGrow: Boolean,
-
     // will form a binary tree structure, where inner nodes are Pairs of subtrees,
     // while the leaves are either Capture or StringRangeCapture
     val capturingGroups: Any?,
@@ -76,10 +70,59 @@ data class StandardMatchResult(
         }
     }
 
+    operator fun plus(other: StandardMatchResult): StandardMatchResult {
+        return StandardMatchResult(
+            userMatched = this.userMatched + other.userMatched,
+            userWeight = this.userWeight + other.userWeight,
+            refMatched = this.refMatched + other.refMatched,
+            refWeight = this.refWeight + other.refWeight,
+            capturingGroups = if (this.capturingGroups == null) {
+                other.capturingGroups
+            } else if (other.capturingGroups == null) {
+                this.capturingGroups
+            } else {
+                Pair(this.capturingGroups, other.capturingGroups)
+            }
+        )
+    }
+
+    fun plus(
+        userMatched: Float = 0.0f,
+        userWeight: Float = 0.0f,
+        refMatched: Float = 0.0f,
+        refWeight: Float = 0.0f,
+    ): StandardMatchResult {
+        return StandardMatchResult(
+            userMatched = this.userMatched + userMatched,
+            userWeight = this.userWeight + userWeight,
+            refMatched = this.refMatched + refMatched,
+            refWeight = this.refWeight + refWeight,
+            capturingGroups = this.capturingGroups,
+        )
+    }
+
+    fun plus(
+        userMatched: Float = 0.0f,
+        userWeight: Float = 0.0f,
+        refMatched: Float = 0.0f,
+        refWeight: Float = 0.0f,
+        capturingGroup: Any
+    ): StandardMatchResult {
+        return StandardMatchResult(
+            userMatched = this.userMatched + userMatched,
+            userWeight = this.userWeight + userWeight,
+            refMatched = this.refMatched + refMatched,
+            refWeight = this.refWeight + refWeight,
+            capturingGroups = if (this.capturingGroups == null) {
+                capturingGroup
+            } else {
+                Pair(this.capturingGroups, capturingGroup)
+            },
+        )
+    }
+
     companion object {
-        fun empty(end: Int, canGrow: Boolean): StandardMatchResult {
-            return StandardMatchResult(0.0f, 0.0f, 0.0f, 0.0f, end, canGrow, null)
-        }
+        val EMPTY = StandardMatchResult(0.0f, 0.0f, 0.0f, 0.0f, null)
 
         fun keepBest(m1: StandardMatchResult?, m2: StandardMatchResult): StandardMatchResult {
             return if (m1 == null || m2.score() > m1.score()) m2 else m1
