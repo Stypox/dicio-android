@@ -25,7 +25,7 @@ def fit_exp(xs, ys):
     return (np.exp(a), b)
 
 def fit_poly(xs, ys):
-    return (*np.polynomial.polynomial.polyfit(xs, ys, 4),)
+    return (*np.polynomial.polynomial.polyfit(xs, ys, 2), 0, 0)
 
 
 benchmark_dirs = sorted(os.listdir("benchmarks/"))
@@ -101,7 +101,7 @@ for i, (item_name, data) in enumerate(incremental_graph_plots.items()):
     # plt.plot(list(range(xs[-1]+1)), [A * np.exp(B * v) for v in range(xs[-1]+1)], color="black", linewidth=1, linestyle='--')
 
     a0, a1, a2, a3, a4 = fit_poly(xs, ys)
-    print(f"{item_name} => ({a4**(1/4)*1e3:.2f}n)⁴ + ({a3**(1/3)*1e3:.2f}n)³ + ({a2**(1/2)*1e3:.2f}n)²")
+    print(f"{item_name} => ({a4**(1/4)*1e4:.2f}n)⁴ + ({a3**(1/3)*1e4:.2f}n)³ + ({a2**(1/2)*1e4:.2f}n)² + ({a1*1e4:.2f}n)")
     plt.plot(list(range(xs[-1]+1)), [a4*v**4 + a3*v**3 + a2*v**2 + a1*v + a0 for v in range(xs[-1]+1)], color="black", linewidth=1, linestyle='--')
 
 plt.get_current_fig_manager().window.showMaximized()
