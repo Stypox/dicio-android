@@ -34,7 +34,10 @@ data class StandardMatchResult(
      */
     fun scoreIn01Range(): Float {
         // TODO choose better expression
-        return 0.5f * (userMatched / userWeight + refMatched / refWeight)
+        return 0.5f * (
+                (if (userWeight > 0.0f) userMatched / userWeight else 0.0f) +
+                (if (refWeight > 0.0f) refMatched / refWeight else 0.0f)
+        )
     }
 
     fun exploreCapturingGroupsTree(node: Any?, name: String): NamedCapture? {
