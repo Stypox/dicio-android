@@ -33,7 +33,8 @@ data class StandardMatchResult(
      * [[0, 1]] is needed, e.g. to compare with scores of other types.
      */
     fun scoreIn01Range(): Float {
-        return (userMatched + refMatched) / (userWeight + refWeight)
+        // TODO choose better expression
+        return 0.5f * (userMatched / userWeight + refMatched / refWeight)
     }
 
     fun exploreCapturingGroupsTree(node: Any?, name: String): NamedCapture? {
