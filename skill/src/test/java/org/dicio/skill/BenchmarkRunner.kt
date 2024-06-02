@@ -87,7 +87,7 @@ class BenchmarkRunner(
                     val newIncrement = max(1f, min(maxIncrement, rawIncrement))
                     prevIncrement = (prevIncrement + newIncrement) / 2
                     skipUntilSize += prevIncrement.toInt()
-                    maxIncrement *= 1.8f
+                    maxIncrement *= 3f
                 }
             }
 
