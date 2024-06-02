@@ -13,26 +13,25 @@ data class CapturingConstruct(
         val cumulativeWeight = helper.cumulativeWeight
         val cumulativeWhitespace = helper.cumulativeWhitespace
 
-        for (start in memToEnd.indices) {
-            val cumulativeWeightStart = cumulativeWeight[start]
-            val cumulativeWhitespaceStart = cumulativeWhitespace[start]
+        var lastCapturingGroupEnd: Int = helper.userInput.length
+        for (start in memToEnd.indices.reversed()) {
+            val userWeight = cumulativeWeight[lastCapturingGroupEnd] - cumulativeWeight[start]
+            val whitespace = cumulativeWhitespace[lastCapturingGroupEnd] - cumulativeWhitespace[start]
+            val ifContinuingCapturingGroup = memToEnd[lastCapturingGroupEnd].plus(
+                userMatched = userWeight,
+                userWeight = userWeight,
+                refMatched = if (whitespace == lastCapturingGroupEnd - start) 0.0f else weight,
+                refWeight = weight,
+                capturingGroup = StringRangeCapture(name, start, lastCapturingGroupEnd),
+            )
 
-            memToEnd[start] = (start..helper.userInput.length)
-                .map { end ->
-                    val userWeight = cumulativeWeight[end] - cumulativeWeightStart
-                    val whitespace = cumulativeWhitespace[end] - cumulativeWhitespaceStart
-
-                    memToEnd[end].plus(
-                        userMatched = userWeight,
-                        userWeight = userWeight,
-                        refMatched = if (whitespace == end - start) 0.0f else weight,
-                        refWeight = weight,
-                        capturingGroup = StringRangeCapture(name, start, end),
-                    )
-                }
-                // it is impossible for the result to be null because the (start..userInput.length)
-                // range is always non-empty (even if start == userInput.length), hence the !!
-                .fold(null, StandardMatchResult::keepBest)!!
+            val ifSkippingCapturingGroup = memToEnd[start].plus(refWeight = weight)
+            if (ifContinuingCapturingGroup.score() > ifSkippingCapturingGroup.score()) {
+                memToEnd[start] = ifContinuingCapturingGroup
+            } else {
+                lastCapturingGroupEnd = start
+                memToEnd[start] = ifSkippingCapturingGroup
+            }
         }
 
         normalizeMemToEnd(memToEnd, helper.cumulativeWeight)
