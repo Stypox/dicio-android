@@ -59,20 +59,21 @@ class BenchmarkRunner(
             val maxDuration = 1.seconds
             val wantedPoints = 20
             val results = ArrayList<Pair<Int, Duration>>()
-            var input = ""
-            results.add(Pair(0, measureTime { scoreFunction(input) }))
+            val input = StringBuilder()
+            results.add(Pair(0, measureTime { scoreFunction("") }))
 
             var skipUntilSize = 1
             // limit increment initially, since at small values the slope is not reliable
             var maxIncrement = 1.0f
             var prevIncrement = 1.0f
             while (results.last().second < maxDuration) {
-                input += if (input.length % 4 == 3) " " else "a"
+                input.append(if (input.length % 4 == 3) " " else "a")
                 if (input.length >= skipUntilSize) {
                     val (prevSize, prevTime) = results.last()
                     val currSize = input.length
                     val currTime = try {
-                        measureTime { scoreFunction(input) }
+                        val inputToString = input.toString()
+                        measureTime { scoreFunction(inputToString) }
                     } catch (e: StackOverflowError) {
                         break
                     }
