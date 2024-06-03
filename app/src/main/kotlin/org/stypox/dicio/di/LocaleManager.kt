@@ -2,7 +2,6 @@ package org.stypox.dicio.di
 
 import android.content.Context
 import android.util.Log
-import androidx.core.os.LocaleListCompat
 import androidx.datastore.core.DataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.stypox.dicio.Sections
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
@@ -32,16 +31,20 @@ class LocaleManager @Inject constructor(
     @ApplicationContext private val appContext: Context,
     dataStore: DataStore<UserSettings>,
 ) {
-    private fun setSectionsLocale(language: Language): Locale {
+    private fun getSentencesLocale(language: Language): LocaleUtils.LocaleResolutionResult {
         return try {
-            Sections.setLocale(
-                LocaleUtils.getAvailableLocalesFromLanguage(appContext, language)
+            LocaleUtils.resolveSupportedLocale(
+                LocaleUtils.getAvailableLocalesFromLanguage(appContext, language),
+                Sentences.languages
             )
         } catch (e: LocaleUtils.UnsupportedLocaleException) {
             Log.w(TAG, "Current locale is not supported, defaulting to English", e)
             try {
                 // TODO ask the user to manually choose a locale instead of defaulting to english
-                Sections.setLocale(LocaleListCompat.create(Locale.ENGLISH))
+                LocaleUtils.LocaleResolutionResult(
+                    availableLocale = Locale.ENGLISH,
+                    supportedLocaleString = "en",
+                )
             } catch (e1: LocaleUtils.UnsupportedLocaleException) {
                 Log.wtf(TAG, "COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!", e1)
                 error("COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!")
@@ -53,13 +56,18 @@ class LocaleManager @Inject constructor(
     private val scope = CoroutineScope(Dispatchers.Default)
     private val _locale: MutableStateFlow<Locale>
     val locale: StateFlow<Locale>
+    private val _sentencesLanguage: MutableStateFlow<String>
+    val sentencesLanguage: StateFlow<String>
 
     init {
         // run blocking, because we can't start the app if we don't know the language
         var lastLanguage = runBlocking { dataStore.data.first().language }
 
-        _locale = MutableStateFlow(setSectionsLocale(lastLanguage))
+        val initialResolutionResult = getSentencesLocale(lastLanguage)
+        _locale = MutableStateFlow(initialResolutionResult.availableLocale)
         locale = _locale
+        _sentencesLanguage = MutableStateFlow(initialResolutionResult.supportedLocaleString)
+        sentencesLanguage = _sentencesLanguage
 
         scope.launch {
             dataStore.data
@@ -67,7 +75,9 @@ class LocaleManager @Inject constructor(
                 .collect { newLanguage ->
                     if (newLanguage != lastLanguage) {
                         lastLanguage = newLanguage
-                        _locale.value = setSectionsLocale(newLanguage)
+                        val resolutionResult = getSentencesLocale(newLanguage)
+                        _locale.value = resolutionResult.availableLocale
+                        _sentencesLanguage.value = resolutionResult.supportedLocaleString
                     }
                 }
         }
