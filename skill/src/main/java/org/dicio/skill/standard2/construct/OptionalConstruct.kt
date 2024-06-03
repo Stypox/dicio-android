@@ -6,4 +6,8 @@ import org.dicio.skill.standard2.helper.MatchHelper
 class OptionalConstruct : Construct {
     override fun matchToEnd(memToEnd: Array<StandardMatchResult>, helper: MatchHelper) {
     }
+
+    override fun toString(): String {
+        return "(?)"
+    }
 }

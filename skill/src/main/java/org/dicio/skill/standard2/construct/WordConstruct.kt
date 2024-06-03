@@ -45,4 +45,8 @@ data class WordConstruct(
 
         normalizeMemToEnd(memToEnd, cumulativeWeight)
     }
+
+    override fun toString(): String {
+        return text
+    }
 }

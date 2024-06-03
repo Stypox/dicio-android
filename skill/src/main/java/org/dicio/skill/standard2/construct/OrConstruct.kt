@@ -42,4 +42,8 @@ data class OrConstruct(
 
         normalizeMemToEnd(memToEnd, helper.cumulativeWeight)
     }
+
+    override fun toString(): String {
+        return constructs.joinToString("|") { it.toString() }
+    }
 }

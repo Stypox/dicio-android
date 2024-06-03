@@ -47,4 +47,8 @@ data class CapturingConstruct(
 
         normalizeMemToEnd(memToEnd, helper.cumulativeWeight)
     }
+
+    override fun toString(): String {
+        return ".$name."
+    }
 }
