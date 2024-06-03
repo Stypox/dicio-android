@@ -39,16 +39,11 @@ class LocaleManager @Inject constructor(
             )
         } catch (e: LocaleUtils.UnsupportedLocaleException) {
             Log.w(TAG, "Current locale is not supported, defaulting to English", e)
-            try {
-                // TODO ask the user to manually choose a locale instead of defaulting to english
-                LocaleUtils.LocaleResolutionResult(
-                    availableLocale = Locale.ENGLISH,
-                    supportedLocaleString = "en",
-                )
-            } catch (e1: LocaleUtils.UnsupportedLocaleException) {
-                Log.wtf(TAG, "COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!", e1)
-                error("COULD NOT LOAD THE ENGLISH LOCALE SECTIONS, IMPOSSIBLE!")
-            }
+            // TODO ask the user to manually choose a locale instead of defaulting to english
+            LocaleUtils.LocaleResolutionResult(
+                availableLocale = Locale.ENGLISH,
+                supportedLocaleString = "en",
+            )
         }
     }
 
