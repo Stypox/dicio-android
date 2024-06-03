@@ -94,7 +94,7 @@ sealed interface TimerOutput : SkillOutput {
             ctx.getString(R.string.skill_timer_confirm_cancel)
 
         override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-            object : RecognizeYesNoSkill(TimerInfo, Sentences.UtilYesNo[ctx.locale.language]!!) {
+            object : RecognizeYesNoSkill(TimerInfo, Sentences.UtilYesNo[ctx.sentencesLanguage]!!) {
                 override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
                     return if (scoreResult) {
                         onConfirm()

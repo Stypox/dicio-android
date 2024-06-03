@@ -23,12 +23,12 @@ object CalculatorInfo : SkillInfo("calculator") {
         rememberVectorPainter(Icons.Default.Calculate)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Calculator[ctx.locale.language] != null &&
-                Sentences.CalculatorOperators[ctx.locale.language] != null &&
+        return Sentences.Calculator[ctx.sentencesLanguage] != null &&
+                Sentences.CalculatorOperators[ctx.sentencesLanguage] != null &&
                 ctx.parserFormatter != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return CalculatorSkill(CalculatorInfo, Sentences.Calculator[ctx.locale.language]!!)
+        return CalculatorSkill(CalculatorInfo, Sentences.Calculator[ctx.sentencesLanguage]!!)
     }
 }

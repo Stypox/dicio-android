@@ -24,7 +24,7 @@ class ConfirmCallOutput(
         ctx.getString(R.string.skill_telephone_confirm_call, name)
 
     override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-        object : RecognizeYesNoSkill(TelephoneInfo, Sentences.UtilYesNo[ctx.locale.language]!!) {
+        object : RecognizeYesNoSkill(TelephoneInfo, Sentences.UtilYesNo[ctx.sentencesLanguage]!!) {
             override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
                 return if (scoreResult) {
                     TelephoneSkill.call(ctx.android, number)

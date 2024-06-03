@@ -48,7 +48,7 @@ class SearchOutput(
 
     override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = if (results.isNullOrEmpty())
         listOf(
-            SearchSkill(SearchInfo, Sentences.Search[ctx.locale.language]!!),
+            SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
             object : RecognizeEverythingSkill(SearchInfo) {
                 override suspend fun generateOutput(ctx: SkillContext, scoreResult: String): SkillOutput {
                     return SearchOutput(searchOnDuckDuckGo(ctx, scoreResult))

@@ -29,11 +29,11 @@ object TelephoneInfo : SkillInfo("telephone") {
             = listOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Telephone[ctx.locale.language] != null &&
-                Sentences.UtilYesNo[ctx.locale.language] != null
+        return Sentences.Telephone[ctx.sentencesLanguage] != null &&
+                Sentences.UtilYesNo[ctx.sentencesLanguage] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return TelephoneSkill(TelephoneInfo, Sentences.Telephone[ctx.locale.language]!!)
+        return TelephoneSkill(TelephoneInfo, Sentences.Telephone[ctx.sentencesLanguage]!!)
     }
 }

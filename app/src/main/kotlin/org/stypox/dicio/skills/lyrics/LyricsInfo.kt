@@ -23,10 +23,10 @@ object LyricsInfo : SkillInfo("lyrics") {
         rememberVectorPainter(Icons.Default.MusicNote)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Lyrics[ctx.locale.language] != null
+        return Sentences.Lyrics[ctx.sentencesLanguage] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return LyricsSkill(LyricsInfo, Sentences.Lyrics[ctx.locale.language]!!)
+        return LyricsSkill(LyricsInfo, Sentences.Lyrics[ctx.sentencesLanguage]!!)
     }
 }

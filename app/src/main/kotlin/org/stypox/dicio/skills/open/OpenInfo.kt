@@ -26,10 +26,10 @@ object OpenInfo : SkillInfo("open") {
         rememberVectorPainter(Icons.AutoMirrored.Filled.OpenInNew)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Open[ctx.locale.language] != null
+        return Sentences.Open[ctx.sentencesLanguage] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return OpenSkill(OpenInfo, Sentences.Open[ctx.locale.language]!!)
+        return OpenSkill(OpenInfo, Sentences.Open[ctx.sentencesLanguage]!!)
     }
 }

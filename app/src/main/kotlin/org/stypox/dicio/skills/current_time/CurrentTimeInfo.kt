@@ -23,10 +23,10 @@ object CurrentTimeInfo : SkillInfo("current_time") {
         rememberVectorPainter(Icons.Default.Watch)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.CurrentTime[ctx.locale.language] != null
+        return Sentences.CurrentTime[ctx.sentencesLanguage] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return CurrentTimeSkill(CurrentTimeInfo, Sentences.CurrentTime[ctx.locale.language]!!)
+        return CurrentTimeSkill(CurrentTimeInfo, Sentences.CurrentTime[ctx.sentencesLanguage]!!)
     }
 }

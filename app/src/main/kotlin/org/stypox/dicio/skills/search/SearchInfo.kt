@@ -23,10 +23,10 @@ object SearchInfo : SkillInfo("search") {
         rememberVectorPainter(Icons.Default.Search)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Search[ctx.locale.language] != null
+        return Sentences.Search[ctx.sentencesLanguage] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return SearchSkill(SearchInfo, Sentences.Search[ctx.locale.language]!!)
+        return SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!)
     }
 }

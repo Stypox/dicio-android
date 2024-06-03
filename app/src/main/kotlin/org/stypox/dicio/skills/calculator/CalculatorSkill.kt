@@ -44,7 +44,7 @@ class CalculatorSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognize
             return CalculatorOutput(null, "", "")
         }
 
-        val operatorRecognizerData = CalculatorOperators[ctx.locale.language]!!
+        val operatorRecognizerData = CalculatorOperators[ctx.sentencesLanguage]!!
         var firstNumber: Number
         var i: Int
         if (textWithNumbers[0] is Number) {

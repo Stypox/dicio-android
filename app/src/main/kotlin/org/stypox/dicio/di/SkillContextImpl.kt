@@ -31,6 +31,9 @@ class SkillContextImpl private constructor(
     override val locale: Locale
         get() = localeManager.locale.value
 
+    override val sentencesLanguage: String
+        get() = localeManager.sentencesLanguage.value
+
     private var lastParserFormatter: Pair<ParserFormatter?, Locale>? = null
     override val parserFormatter: ParserFormatter?
         get() {

@@ -21,6 +21,14 @@ interface SkillContext {
     val locale: Locale
 
     /**
+     * The currently active language identifier to use to select recognition resources, e.g. used
+     * in Dicio to select a [org.dicio.skill.standard2.StandardRecognizerData] of a specific skill
+     * among the ones available in various languages. Will often act as a key in
+     * language-to-resources hashmaps and will usually be equal to [locale]`.language`.
+     */
+    val sentencesLanguage: String
+
+    /**
      * The number parser formatter for the current locale, useful for example to format a
      * number to show to the user or extract numbers from an utterance. Is set to `null` if
      * the current user language is not supported by any [ParserFormatter].

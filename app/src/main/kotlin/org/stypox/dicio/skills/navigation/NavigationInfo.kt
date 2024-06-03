@@ -26,10 +26,10 @@ object NavigationInfo : SkillInfo("navigation") {
         rememberVectorPainter(Icons.Default.Directions)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sentences.Navigation[ctx.locale.language] != null
+        return Sentences.Navigation[ctx.sentencesLanguage] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return NavigationSkill(NavigationInfo, Sentences.Navigation[ctx.locale.language]!!)
+        return NavigationSkill(NavigationInfo, Sentences.Navigation[ctx.sentencesLanguage]!!)
     }
 }
