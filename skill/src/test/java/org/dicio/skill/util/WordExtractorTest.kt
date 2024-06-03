@@ -6,8 +6,8 @@ import io.kotest.matchers.shouldBe
 import org.dicio.skill.old_standard_impl.InputWordRange
 import org.dicio.skill.old_standard.WordExtractor.extractCapturingGroup
 import org.dicio.skill.old_standard.WordExtractor.extractWords
-import org.dicio.skill.old_standard.WordExtractor.nfkdNormalizeWord
 import org.dicio.skill.old_standard.WordExtractor.normalizeWords
+import org.dicio.skill.standard2.helper.nfkdNormalizeWord
 
 
 class WordExtractorTest : StringSpec({

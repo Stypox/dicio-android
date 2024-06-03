@@ -16,6 +16,7 @@ import java.util.Locale
 object MockSkillContext : SkillContext {
     override val android: Context get() = mocked()
     override val locale: Locale get() = mocked()
+    override val sentencesLanguage: String get() = mocked()
     override val parserFormatter: ParserFormatter get() = mocked()
     override val speechOutputDevice: SpeechOutputDevice get() = mocked()
 }

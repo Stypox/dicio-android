@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveWord
-import org.dicio.skill.old_standard.WordExtractor.nfkdNormalizeWord
+import org.dicio.skill.standard2.helper.nfkdNormalizeWord
 
 class DiacriticsInsensitiveWordTest : StringSpec({
     "matches" {
