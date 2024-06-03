@@ -6,8 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 class SentencesCompilerPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        // create task TODO remove 2
-        val generateResourceTask = target.tasks.create("sentencesCompiler2", SentencesCompilerTask::class.java)
+        val generateResourceTask = target.tasks.create("sentencesCompiler", SentencesCompilerTask::class.java)
 
         // make sure the generated kotlin files are compiled by adding them to the source sets; note
         // that this also makes sure any task depending on source sets also depends on this task
