@@ -3,12 +3,12 @@ package org.stypox.dicio.util
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
-import org.dicio.skill.skill.Specificity
-import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.stypox.dicio.sentences.Sentences.UtilYesNo
 
 abstract class RecognizeYesNoSkill(
     correspondingSkillInfo: SkillInfo,
-    private val data: StandardRecognizerData,
+    private val data: StandardRecognizerData<UtilYesNo>,
 ) : Skill<Boolean>(correspondingSkillInfo, data.specificity) {
     override fun score(
         ctx: SkillContext,
@@ -16,8 +16,8 @@ abstract class RecognizeYesNoSkill(
         inputWords: List<String>,
         normalizedWordKeys: List<String>
     ): Pair<Float, Boolean> {
-        return data.score(input, inputWords, normalizedWordKeys).let { (score, standardResult) ->
-            Pair(score, standardResult.sentenceId == "yes")
+        return data.score(input).let { (score, standardResult) ->
+            Pair(score, standardResult is UtilYesNo.Yes)
         }
     }
 }

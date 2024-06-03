@@ -11,6 +11,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.lyrics
+import org.stypox.dicio.sentences.Sentences
 
 object LyricsInfo : SkillInfo("lyrics") {
     override fun name(context: Context) =
@@ -24,10 +25,10 @@ object LyricsInfo : SkillInfo("lyrics") {
         rememberVectorPainter(Icons.Default.MusicNote)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(lyrics)
+        return Sentences.Lyrics[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return LyricsSkill(LyricsInfo, Sections.getSection(lyrics))
+        return LyricsSkill(LyricsInfo, Sentences.Lyrics[ctx.locale.language]!!)
     }
 }

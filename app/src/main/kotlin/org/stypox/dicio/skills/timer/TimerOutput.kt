@@ -14,6 +14,7 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.skills.fallback.text.TextFallbackOutput
 import org.stypox.dicio.util.RecognizeYesNoSkill
 import org.stypox.dicio.util.getString
@@ -95,8 +96,7 @@ sealed interface TimerOutput : SkillOutput {
             ctx.getString(R.string.skill_timer_confirm_cancel)
 
         override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-            object : RecognizeYesNoSkill(TimerInfo,
-                                         Sections.getSection(SectionsGenerated.util_yes_no)) {
+            object : RecognizeYesNoSkill(TimerInfo, Sentences.UtilYesNo[ctx.locale.language]!!) {
                 override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
                     return if (scoreResult) {
                         onConfirm()

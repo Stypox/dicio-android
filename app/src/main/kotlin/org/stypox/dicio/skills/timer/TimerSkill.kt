@@ -10,38 +10,38 @@ import kotlinx.coroutines.withContext
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
 import org.stypox.dicio.R
+import org.stypox.dicio.sentences.Sentences.Timer
 import org.stypox.dicio.util.StringUtils
 import org.stypox.dicio.util.getString
 import java.time.Duration
 
 // TODO cleanup this skill and use a service to manage timers
-class TimerSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData) :
-    StandardRecognizerSkill(correspondingSkillInfo, data) {
+class TimerSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Timer>) :
+    StandardRecognizerSkill<Timer>(correspondingSkillInfo, data) {
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
-        val duration = scoreResult.getCapturingGroup("duration")?.let {
-            ctx.parserFormatter!!.extractDuration(it).first?.toJavaDuration()
-        }
-        val name = scoreResult.getCapturingGroup("name")
-
-        return when (scoreResult.sentenceId) {
-            "cancel" -> {
-                if (name == null && SET_TIMERS.size > 1) {
-                    TimerOutput.ConfirmCancel { cancelTimer(ctx, null) }
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Timer): SkillOutput {
+        return when (scoreResult) {
+            is Timer.Set -> {
+                val duration = scoreResult.duration?.let {
+                    ctx.parserFormatter?.extractDuration(it)?.first?.toJavaDuration()
+                }
+                if (duration == null) {
+                    TimerOutput.SetAskDuration { setTimer(ctx, it, scoreResult.name) }
                 } else {
-                    cancelTimer(ctx, name)
+                    setTimer(ctx, duration, scoreResult.name)
                 }
             }
-            "query" -> queryTimer(ctx, name)
-            else -> { // "set"
-                if (duration == null) {
-                    TimerOutput.SetAskDuration { setTimer(ctx, it, name) }
+            is Timer.Query -> {
+                queryTimer(ctx, scoreResult.name)
+            }
+            is Timer.Cancel -> {
+                if (scoreResult.name == null && SET_TIMERS.size > 1) {
+                    TimerOutput.ConfirmCancel { cancelTimer(ctx, null) }
                 } else {
-                    setTimer(ctx, duration, name)
+                    cancelTimer(ctx, scoreResult.name)
                 }
             }
         }

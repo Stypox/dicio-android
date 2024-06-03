@@ -4,20 +4,20 @@ import androidx.core.os.LocaleListCompat
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.stypox.dicio.Sentences_en.search
+import org.stypox.dicio.sentences.Sentences.Search
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.LocaleUtils
 
-class SearchSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
-    : StandardRecognizerSkill(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
-        val query = scoreResult.getCapturingGroup(search.what)
-            ?: return SearchOutput(null)
+class SearchSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Search>)
+    : StandardRecognizerSkill<Search>(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Search): SkillOutput {
+        val query = when (scoreResult) {
+            is Search.Query -> scoreResult.what ?: return SearchOutput(null)
+        }
         return SearchOutput(searchOnDuckDuckGo(ctx, query))
     }
 }

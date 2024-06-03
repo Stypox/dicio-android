@@ -3,29 +3,30 @@ package org.stypox.dicio.skills.lyrics
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
 import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.stypox.dicio.Sentences_en.lyrics
+import org.stypox.dicio.sentences.Sentences.Lyrics
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.RegexUtils
 import org.unbescape.javascript.JavaScriptEscape
 import org.unbescape.json.JsonEscape
 import java.util.regex.Pattern
 
-class LyricsSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
-    : StandardRecognizerSkill(correspondingSkillInfo, data) {
+class LyricsSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Lyrics>)
+    : StandardRecognizerSkill<Lyrics>(correspondingSkillInfo, data) {
 
     /**
      * This connects to Genius to get lyrics information.
      * More services could be added in the future.
      */
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
-        val songName: String = scoreResult.getCapturingGroup(lyrics.song)!!.trim { it <= ' ' }
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Lyrics): SkillOutput {
+        val songName: String = when (scoreResult) {
+            is Lyrics.Query -> scoreResult.song ?: return LyricsOutput.Failed(title = "")
+        }
         val search: JSONObject = ConnectionUtils.getPageJson(
             GENIUS_SEARCH_URL + ConnectionUtils.urlEncode(songName) + "&count=1"
         )

@@ -14,6 +14,7 @@ import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Body
 import org.stypox.dicio.io.graphical.Headline
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.util.RecognizeYesNoSkill
 import org.stypox.dicio.util.getString
 
@@ -25,8 +26,7 @@ class ConfirmCallOutput(
         ctx.getString(R.string.skill_telephone_confirm_call, name)
 
     override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-        object : RecognizeYesNoSkill(TelephoneInfo,
-                                     Sections.getSection(SectionsGenerated.util_yes_no)) {
+        object : RecognizeYesNoSkill(TelephoneInfo, Sentences.UtilYesNo[ctx.locale.language]!!) {
             override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
                 return if (scoreResult) {
                     TelephoneSkill.call(ctx.android, number)

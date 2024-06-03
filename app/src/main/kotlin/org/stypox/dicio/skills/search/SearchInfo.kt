@@ -11,6 +11,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.search
+import org.stypox.dicio.sentences.Sentences
 
 object SearchInfo : SkillInfo("search") {
     override fun name(context: Context) =
@@ -24,10 +25,10 @@ object SearchInfo : SkillInfo("search") {
         rememberVectorPainter(Icons.Default.Search)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(search)
+        return Sentences.Search[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return SearchSkill(SearchInfo, Sections.getSection(search))
+        return SearchSkill(SearchInfo, Sentences.Search[ctx.locale.language]!!)
     }
 }

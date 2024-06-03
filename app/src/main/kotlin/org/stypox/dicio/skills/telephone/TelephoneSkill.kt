@@ -6,17 +6,18 @@ import android.net.Uri
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
-import org.stypox.dicio.Sentences_en.telephone
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.stypox.dicio.sentences.Sentences.Telephone
 
-class TelephoneSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData) :
-    StandardRecognizerSkill(correspondingSkillInfo, data) {
+class TelephoneSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Telephone>) :
+    StandardRecognizerSkill<Telephone>(correspondingSkillInfo, data) {
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Telephone): SkillOutput {
         val contentResolver = ctx.android.contentResolver
-        val userContactName = scoreResult.getCapturingGroup(telephone.who)?.trim { it <= ' ' } ?: ""
+        val userContactName = when (scoreResult) {
+            is Telephone.Dial -> scoreResult.who?.trim { it <= ' ' } ?: ""
+        }
         val contacts = Contact.getFilteredSortedContacts(contentResolver, userContactName)
         val validContacts = ArrayList<Pair<String, List<String>>>()
 

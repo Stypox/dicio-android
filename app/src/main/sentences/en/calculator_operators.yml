@@ -1,0 +1,17 @@
+addition:
+  - plus|(add|adding|addition|sum|summing to?)|(in addition to?)
+
+subtraction:
+  - minus|(subtract|subtracting|subtraction from?)
+
+multiplication:
+  - times|(multiply|multiplying|multiplied|multiplication by?)
+
+division:
+  - (divide|division|dividing|divided by?)|over
+
+power:
+  - (to? the? power of?)|(to the)
+
+square_root:
+  - square root of?

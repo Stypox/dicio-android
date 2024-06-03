@@ -8,17 +8,18 @@ import android.content.pm.ResolveInfo
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
-import org.stypox.dicio.Sentences_en.open
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.stypox.dicio.sentences.Sentences.Open
 import org.stypox.dicio.util.StringUtils
 
-class OpenSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
-    : StandardRecognizerSkill(correspondingSkillInfo, data) {
+class OpenSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Open>)
+    : StandardRecognizerSkill<Open>(correspondingSkillInfo, data) {
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
-        val userAppName = scoreResult.getCapturingGroup(open.what)?.trim { it <= ' ' }
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Open): SkillOutput {
+        val userAppName = when (scoreResult) {
+            is Open.Query -> scoreResult.what?.trim { it <= ' ' }
+        }
         val packageManager: PackageManager = ctx.android.packageManager
         val applicationInfo = userAppName?.let { getMostSimilarApp(packageManager, it) }
 

@@ -25,6 +25,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Headline
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.util.ShareUtils
 import org.stypox.dicio.util.getString
 
@@ -49,7 +50,7 @@ class SearchOutput(
 
     override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = if (results.isNullOrEmpty())
         listOf(
-            SearchSkill(SearchInfo, Sections.getSection(SectionsGenerated.search)),
+            SearchSkill(SearchInfo, Sentences.Search[ctx.locale.language]!!),
             object : RecognizeEverythingSkill(SearchInfo) {
                 override suspend fun generateOutput(ctx: SkillContext, scoreResult: String): SkillOutput {
                     return SearchOutput(searchOnDuckDuckGo(ctx, scoreResult))

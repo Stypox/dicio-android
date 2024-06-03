@@ -11,6 +11,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.current_time
+import org.stypox.dicio.sentences.Sentences
 
 object CurrentTimeInfo : SkillInfo("current_time") {
     override fun name(context: Context) =
@@ -24,10 +25,10 @@ object CurrentTimeInfo : SkillInfo("current_time") {
         rememberVectorPainter(Icons.Default.Watch)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(current_time)
+        return Sentences.CurrentTime[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return CurrentTimeSkill(CurrentTimeInfo, Sections.getSection(current_time))
+        return CurrentTimeSkill(CurrentTimeInfo, Sentences.CurrentTime[ctx.locale.language]!!)
     }
 }

@@ -15,8 +15,9 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.telephone
 import org.stypox.dicio.SectionsGenerated.util_yes_no
+import org.stypox.dicio.sentences.Sentences
 
-object TelephoneInfo : SkillInfo("open") {
+object TelephoneInfo : SkillInfo("telephone") {
     override fun name(context: Context) =
         context.getString(R.string.skill_name_telephone)
 
@@ -31,10 +32,11 @@ object TelephoneInfo : SkillInfo("open") {
             = listOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(telephone) && Sections.isSectionAvailable(util_yes_no)
+        return Sentences.Telephone[ctx.locale.language] != null &&
+                Sentences.UtilYesNo[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return TelephoneSkill(TelephoneInfo, Sections.getSection(telephone))
+        return TelephoneSkill(TelephoneInfo, Sentences.Telephone[ctx.locale.language]!!)
     }
 }

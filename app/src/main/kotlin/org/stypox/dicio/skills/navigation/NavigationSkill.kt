@@ -6,17 +6,17 @@ import org.dicio.numbers.unit.Number
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
-import org.stypox.dicio.Sentences_en.navigation
+import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.stypox.dicio.sentences.Sentences.Navigation
 import java.util.Locale
 
-class NavigationSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData)
-    : StandardRecognizerSkill(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: StandardResult): SkillOutput {
-        val placeToNavigate: String = scoreResult.getCapturingGroup(navigation.where)
-            ?: return NavigationOutput(null)
+class NavigationSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Navigation>)
+    : StandardRecognizerSkill<Navigation>(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Navigation): SkillOutput {
+        val placeToNavigate: String = when (scoreResult) {
+            is Navigation.Query -> scoreResult.where ?: return NavigationOutput(null)
+        }
 
         val npf = ctx.parserFormatter
         val cleanPlaceToNavigate = if (npf == null) {

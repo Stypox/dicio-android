@@ -11,6 +11,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.calculator
+import org.stypox.dicio.sentences.Sentences
 
 object CalculatorInfo : SkillInfo("calculator") {
     override fun name(context: Context) =
@@ -24,10 +25,12 @@ object CalculatorInfo : SkillInfo("calculator") {
         rememberVectorPainter(Icons.Default.Calculate)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(calculator) && ctx.parserFormatter != null
+        return Sentences.Calculator[ctx.locale.language] != null &&
+                Sentences.CalculatorOperators[ctx.locale.language] != null &&
+                ctx.parserFormatter != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return CalculatorSkill(CalculatorInfo, Sections.getSection(calculator))
+        return CalculatorSkill(CalculatorInfo, Sentences.Calculator[ctx.locale.language]!!)
     }
 }

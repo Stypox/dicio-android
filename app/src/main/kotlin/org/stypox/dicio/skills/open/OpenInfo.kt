@@ -14,6 +14,7 @@ import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.open
+import org.stypox.dicio.sentences.Sentences
 
 object OpenInfo : SkillInfo("open") {
     override fun name(context: Context) =
@@ -27,10 +28,10 @@ object OpenInfo : SkillInfo("open") {
         rememberVectorPainter(Icons.AutoMirrored.Filled.OpenInNew)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(open)
+        return Sentences.Open[ctx.locale.language] != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return OpenSkill(OpenInfo, Sections.getSection(open))
+        return OpenSkill(OpenInfo, Sentences.Open[ctx.locale.language]!!)
     }
 }

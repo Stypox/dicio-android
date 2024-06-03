@@ -14,6 +14,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.Sections
 import org.stypox.dicio.SectionsGenerated.timer
 import org.stypox.dicio.SectionsGenerated.util_yes_no
+import org.stypox.dicio.sentences.Sentences
 
 object TimerInfo : SkillInfo("timer") {
     override fun name(context: Context) =
@@ -27,12 +28,12 @@ object TimerInfo : SkillInfo("timer") {
         rememberVectorPainter(Icons.Default.Timer)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        return Sections.isSectionAvailable(timer)
-                && Sections.isSectionAvailable(util_yes_no)
+        return Sentences.Timer[ctx.locale.language] != null
+                && Sentences.UtilYesNo[ctx.locale.language] != null
                 && ctx.parserFormatter != null
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return TimerSkill(TimerInfo, Sections.getSection(timer))
+        return TimerSkill(TimerInfo, Sentences.Timer[ctx.locale.language]!!)
     }
 }
