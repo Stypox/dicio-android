@@ -10,8 +10,8 @@ import kotlinx.coroutines.withContext
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard2.StandardRecognizerData
-import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.R
 import org.stypox.dicio.sentences.Sentences.Timer
 import org.stypox.dicio.util.StringUtils

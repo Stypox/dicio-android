@@ -3,7 +3,7 @@ package org.stypox.dicio.util
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
-import org.dicio.skill.standard2.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerData
 import org.stypox.dicio.sentences.Sentences.UtilYesNo
 
 abstract class RecognizeYesNoSkill(

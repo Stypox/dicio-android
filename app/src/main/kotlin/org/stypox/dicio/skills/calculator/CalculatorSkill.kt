@@ -5,8 +5,8 @@ import org.dicio.numbers.unit.Number
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard2.StandardRecognizerData
-import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences.Calculator
 import org.stypox.dicio.sentences.Sentences.CalculatorOperators
 import java.text.DecimalFormat

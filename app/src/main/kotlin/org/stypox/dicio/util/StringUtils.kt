@@ -1,6 +1,6 @@
 package org.stypox.dicio.util
 
-import org.dicio.skill.standard2.helper.nfkdNormalizeWord
+import org.dicio.skill.standard.helper.nfkdNormalizeWord
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.max

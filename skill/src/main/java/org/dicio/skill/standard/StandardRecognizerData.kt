@@ -1,9 +1,9 @@
-package org.dicio.skill.standard2
+package org.dicio.skill.standard
 
 import org.dicio.skill.skill.Specificity
-import org.dicio.skill.standard2.construct.Construct
-import org.dicio.skill.standard2.helper.MatchHelper
-import org.dicio.skill.standard2.helper.initialMemToEnd
+import org.dicio.skill.standard.construct.Construct
+import org.dicio.skill.standard.helper.MatchHelper
+import org.dicio.skill.standard.helper.initialMemToEnd
 
 open class StandardRecognizerData<out T>(
     val specificity: Specificity,

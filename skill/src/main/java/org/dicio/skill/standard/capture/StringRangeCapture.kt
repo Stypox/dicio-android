@@ -1,4 +1,4 @@
-package org.dicio.skill.standard2.capture
+package org.dicio.skill.standard.capture
 
 data class StringRangeCapture(
     override val name: String,

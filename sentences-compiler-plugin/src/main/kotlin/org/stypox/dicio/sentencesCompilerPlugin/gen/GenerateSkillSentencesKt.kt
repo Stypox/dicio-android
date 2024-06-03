@@ -106,7 +106,7 @@ private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: Clas
     val fromStandardResultFun = FunSpec.builder("fromStandardResult")
         .addParameter("input", String::class)
         .addParameter("sentenceId", String::class)
-        .addParameter("matchResult", ClassName("org.dicio.skill.standard2", "StandardMatchResult"))
+        .addParameter("matchResult", ClassName("org.dicio.skill.standard", "StandardMatchResult"))
         .returns(returnType)
         .beginControlFlow("return when(sentenceId)")
 
@@ -136,7 +136,7 @@ private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: Clas
 
 private fun generateLanguageToDataProperty(skill: ParsedSkill, resultType: ClassName): PropertySpec {
     val standardRecognizerDataClassName =
-        ClassName("org.dicio.skill.standard2", "StandardRecognizerData")
+        ClassName("org.dicio.skill.standard", "StandardRecognizerData")
             .parameterizedBy(resultType)
     val dataProp = PropertySpec
         .builder(
@@ -177,7 +177,7 @@ private fun generateGetOperator(resultType: ClassName): FunSpec {
         .addModifiers(KModifier.OPERATOR)
         .addParameter("language", String::class)
         .returns(
-            ClassName("org.dicio.skill.standard2", "StandardRecognizerData")
+            ClassName("org.dicio.skill.standard", "StandardRecognizerData")
                 .parameterizedBy(resultType)
                 .copy(nullable = true)
         )

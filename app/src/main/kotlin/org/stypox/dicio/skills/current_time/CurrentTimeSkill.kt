@@ -3,8 +3,8 @@ package org.stypox.dicio.skills.current_time
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard2.StandardRecognizerData
-import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences.CurrentTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter

@@ -22,7 +22,7 @@ interface SkillContext {
 
     /**
      * The currently active language identifier to use to select recognition resources, e.g. used
-     * in Dicio to select a [org.dicio.skill.standard2.StandardRecognizerData] of a specific skill
+     * in Dicio to select a [org.dicio.skill.standard.StandardRecognizerData] of a specific skill
      * among the ones available in various languages. Will often act as a key in
      * language-to-resources hashmaps and will usually be equal to [locale]`.language`.
      */

@@ -63,13 +63,13 @@ for benchmark_file in ["current_time", "weather", "timer"]:
     for benchmark_dir, benchmark_dir_name in zip(benchmark_dirs, benchmark_dir_names):
         data = json.load(open(os.path.join("benchmarks/", benchmark_dir, benchmark_file + ".json")))
 
-        add_item_to_incremental_bar_plots(benchmark_file, "increm", benchmark_dir_name, data["incremental"][-1]["size"])
+        add_item_to_incremental_bar_plots(benchmark_file, "increm", benchmark_dir_name, data["incremental"][-2]["size"])
 
         for benchmark in data["benchmarks"]:
             add_item_to_input_plots(benchmark_file, str(len(benchmark["input"])) + "ch", benchmark_dir_name, benchmark["time"] / 1e9)
 
         add_line_to_incremental_graph_plots(benchmark_file, "increm", benchmark_dir_name,
-            [v["size"] for v in data["incremental"]], [v["time"] / 1e9 for v in data["incremental"]])
+            [v["size"] for v in data["incremental"][:-1]], [v["time"] / 1e9 for v in data["incremental"][:-1]])
 
 
 #input_plots = {}
@@ -103,7 +103,7 @@ for i, (item_name, data) in enumerate(incremental_graph_plots.items()):
 
     a0, a1, a2, a3, a4 = fit_poly(xs, ys)
     print(f"{item_name} => ({a4**(1/4)*1e4:.2f}n)⁴ + ({a3**(1/3)*1e4:.2f}n)³ + ({a2**(1/2)*1e4:.2f}n)² + ({a1*1e4:.2f}n)")
-    plt.plot(list(range(xs[-1]+1)), [a4*v**4 + a3*v**3 + a2*v**2 + a1*v + a0 for v in range(xs[-1]+1)], color="black", linewidth=1, linestyle='--')
+    plt.plot(list(range(xs[-1]+1)), [a4*v**4 + a3*v**3 + a2*v**2 + a1*v + a0 for v in range(xs[-1]+1)], color="#0f0f0f80", linewidth=1, linestyle="--")
 
 plt.get_current_fig_manager().window.showMaximized()
 plt.show(block=False)

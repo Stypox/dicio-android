@@ -1,8 +1,8 @@
-package org.dicio.skill.standard2
+package org.dicio.skill.standard
 
-import org.dicio.skill.standard2.capture.Capture
-import org.dicio.skill.standard2.capture.NamedCapture
-import org.dicio.skill.standard2.capture.StringRangeCapture
+import org.dicio.skill.standard.capture.Capture
+import org.dicio.skill.standard.capture.NamedCapture
+import org.dicio.skill.standard.capture.StringRangeCapture
 
 data class StandardMatchResult(
     val userMatched: Float,

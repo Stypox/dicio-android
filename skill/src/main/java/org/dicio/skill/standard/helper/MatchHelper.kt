@@ -1,4 +1,4 @@
-package org.dicio.skill.standard2.helper
+package org.dicio.skill.standard.helper
 
 data class MatchHelper(
     val userInput: String,

@@ -1,4 +1,4 @@
-package org.dicio.skill.standard2
+package org.dicio.skill.standard
 
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext

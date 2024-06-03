@@ -1,13 +1,13 @@
-package org.dicio.skill.standard2
+package org.dicio.skill.standard
 
 import io.kotest.core.spec.style.FunSpec
 import org.dicio.skill.benchmarkContext
 import org.dicio.skill.skill.Specificity
-import org.dicio.skill.standard2.construct.CapturingConstruct
-import org.dicio.skill.standard2.construct.CompositeConstruct
-import org.dicio.skill.standard2.construct.OptionalConstruct
-import org.dicio.skill.standard2.construct.OrConstruct
-import org.dicio.skill.standard2.construct.WordConstruct
+import org.dicio.skill.standard.construct.CapturingConstruct
+import org.dicio.skill.standard.construct.CompositeConstruct
+import org.dicio.skill.standard.construct.OptionalConstruct
+import org.dicio.skill.standard.construct.OrConstruct
+import org.dicio.skill.standard.construct.WordConstruct
 
 class PerformanceTest : FunSpec({
     benchmarkContext("current_time", currentTimeData::score) {

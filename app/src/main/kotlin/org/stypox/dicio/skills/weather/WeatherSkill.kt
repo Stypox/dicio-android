@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.first
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
-import org.dicio.skill.standard2.StandardRecognizerData
-import org.dicio.skill.standard2.StandardRecognizerSkill
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.sentences.Sentences.Weather
 import org.stypox.dicio.skills.weather.WeatherInfo.weatherDataStore

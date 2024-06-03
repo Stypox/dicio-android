@@ -30,7 +30,7 @@ fun generateConstruct(construct: Construct): CodeBlock {
 fun generateWord(word: Word): CodeBlock {
     return CodeBlock.of(
         "%T(%S, %L, %L, %Lf)",
-        ClassName("org.dicio.skill.standard2.construct", "WordConstruct"),
+        ClassName("org.dicio.skill.standard.construct", "WordConstruct"),
         word.value,
         /* isRegex = */ false,
         word.isDiacriticsSensitive,
@@ -41,7 +41,7 @@ fun generateWord(word: Word): CodeBlock {
 fun generateWordWithVariations(word: WordWithVariations): CodeBlock {
     return CodeBlock.of(
         "%T(%S, %L, %L, %Lf)",
-        ClassName("org.dicio.skill.standard2.construct", "WordConstruct"),
+        ClassName("org.dicio.skill.standard.construct", "WordConstruct"),
         word.toJavaRegex(),
         /* isRegex = */ true,
         word.isDiacriticsSensitive,
@@ -52,7 +52,7 @@ fun generateWordWithVariations(word: WordWithVariations): CodeBlock {
 fun generateOrList(orList: OrList): CodeBlock {
     return CodeBlock.of(
         "%T(listOf(${"%L,".repeat(orList.constructs.size)}))",
-        ClassName("org.dicio.skill.standard2.construct", "OrConstruct"),
+        ClassName("org.dicio.skill.standard.construct", "OrConstruct"),
         *orList.constructs.map(::generateConstruct).toTypedArray(),
     )
 }
@@ -60,14 +60,14 @@ fun generateOrList(orList: OrList): CodeBlock {
 fun generateOptionalConstruct(): CodeBlock {
     return CodeBlock.of(
         "%T()",
-        ClassName("org.dicio.skill.standard2.construct", "OptionalConstruct")
+        ClassName("org.dicio.skill.standard.construct", "OptionalConstruct")
     )
 }
 
 fun generateCapturingGroup(capturingGroup: CapturingGroup): CodeBlock {
     return CodeBlock.of(
         "%T(%S, %Lf)",
-        ClassName("org.dicio.skill.standard2.construct", "CapturingConstruct"),
+        ClassName("org.dicio.skill.standard.construct", "CapturingConstruct"),
         capturingGroup.name,
         1.0f // TODO allow specifying weight
     )
@@ -76,7 +76,7 @@ fun generateCapturingGroup(capturingGroup: CapturingGroup): CodeBlock {
 fun generateSentenceConstructList(sentenceConstructList: SentenceConstructList): CodeBlock {
     return CodeBlock.of(
         "%T(listOf(${"%L,".repeat(sentenceConstructList.constructs.size)}))",
-        ClassName("org.dicio.skill.standard2.construct", "CompositeConstruct"),
+        ClassName("org.dicio.skill.standard.construct", "CompositeConstruct"),
         *sentenceConstructList.constructs.map(::generateConstruct).toTypedArray(),
     )
 }

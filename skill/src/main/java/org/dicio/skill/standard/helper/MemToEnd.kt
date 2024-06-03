@@ -1,6 +1,6 @@
-package org.dicio.skill.standard2.helper
+package org.dicio.skill.standard.helper
 
-import org.dicio.skill.standard2.StandardMatchResult
+import org.dicio.skill.standard.StandardMatchResult
 
 
 fun initialMemToEnd(cumulativeWeight: FloatArray): Array<StandardMatchResult> {

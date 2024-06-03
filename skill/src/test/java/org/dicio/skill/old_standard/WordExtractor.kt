@@ -1,6 +1,6 @@
 package org.dicio.skill.old_standard
 
-import org.dicio.skill.standard2.helper.nfkdNormalizeWord
+import org.dicio.skill.standard.helper.nfkdNormalizeWord
 import java.util.regex.Pattern
 
 object WordExtractor {
