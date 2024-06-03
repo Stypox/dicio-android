@@ -25,7 +25,7 @@ def fit_exp(xs, ys):
     return (np.exp(a), b)
 
 def fit_poly(xs, ys):
-    return (*np.polynomial.polynomial.polyfit(xs, ys, 2), 0, 0)
+    return (*np.polynomial.polynomial.polyfit(xs, ys, 1), 0, 0, 0)
 
 
 benchmark_dirs = sorted(os.listdir("benchmarks/"))
@@ -68,7 +68,8 @@ for benchmark_file in ["current_time", "weather", "timer"]:
         for benchmark in data["benchmarks"]:
             add_item_to_input_plots(benchmark_file, str(len(benchmark["input"])) + "ch", benchmark_dir_name, benchmark["time"] / 1e9)
 
-        add_line_to_incremental_graph_plots(benchmark_file, "increm", benchmark_dir_name, [v["size"] for v in data["incremental"]], [v["time"] / 1e9 for v in data["incremental"]])
+        add_line_to_incremental_graph_plots(benchmark_file, "increm", benchmark_dir_name,
+            [v["size"] for v in data["incremental"]], [v["time"] / 1e9 for v in data["incremental"]])
 
 
 #input_plots = {}

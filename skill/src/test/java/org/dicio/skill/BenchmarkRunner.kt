@@ -65,11 +65,9 @@ class BenchmarkRunner(
             var skipUntilSize = 1
             // limit increment initially, since at small values the slope is not reliable
             var maxIncrement = 1.0f
-            var prevIncrement = 1.0f
             while (results.last().second < maxDuration) {
                 input.append(if (input.length % 4 == 3) " " else "a")
                 if (input.length >= skipUntilSize) {
-                    val (prevSize, prevTime) = results.last()
                     val currSize = input.length
                     val currTime = try {
                         val inputToString = input.toString()
@@ -79,15 +77,13 @@ class BenchmarkRunner(
                     }
                     results.add(Pair(currSize, currTime))
 
-                    val dx = (currSize - prevSize).toFloat()
-                    val dy = (currTime - prevTime).inWholeNanoseconds * 1e-9f
+                    val dx = currSize.toFloat()
+                    val dy = currTime.inWholeNanoseconds * 1e-9f
                     val rawIncrement = dx / dy *
                             (maxDuration - currTime).inWholeNanoseconds * 1e-9f /
                             max(1, wantedPoints - results.size)
-                    val newIncrement = max(1f, min(maxIncrement, rawIncrement))
-                    prevIncrement = (prevIncrement + newIncrement) / 2
-                    skipUntilSize += prevIncrement.toInt()
-                    maxIncrement *= 3f
+                    skipUntilSize += max(1f, min(maxIncrement, rawIncrement)).toInt()
+                    maxIncrement *= 10f
                 }
             }
 
