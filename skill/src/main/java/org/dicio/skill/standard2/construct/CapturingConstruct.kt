@@ -31,6 +31,14 @@ data class CapturingConstruct(
             val ifSkippingCapturingGroup = memToEnd[start].plus(refWeight = weight)
             if (ifContinuingCapturingGroup.score() > ifSkippingCapturingGroup.score()) {
                 memToEnd[start] = ifContinuingCapturingGroup
+
+                val ifCreatingNewCapturingGroup = originalMemToEnd[start].plus(
+                    refMatched = weight,
+                    refWeight = weight,
+                )
+                if (ifCreatingNewCapturingGroup.score() > ifContinuingCapturingGroup.score()) {
+                    lastCapturingGroupEnd = start
+                }
             } else {
                 lastCapturingGroupEnd = start
                 memToEnd[start] = ifSkippingCapturingGroup
