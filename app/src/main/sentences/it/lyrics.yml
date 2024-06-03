@@ -1,0 +1,5 @@
+query:
+  - (qual è)|trova|trovami|mostra|mostrami|dimmi|(fa|fammi vedere)|canta|cantami ((il testo)|(le parole) di|(della canzone|melodia|musica)|(del brano))|((la canzone|melodia|musica)|(il brano) (che fa)|(con (il testo)|(le parole))?) .song.
+  - canta|cantami .song.
+  - .song. parole|testo
+  - parole|testo di|(della canzone|melodia|musica)|(del brano)? .song.

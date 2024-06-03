@@ -1,4 +1,0 @@
-lyrics: high
-(zeige|finde heraus|lade|finde)? mir? den|die|das? lyrics|text|liedtext|lied (von|für (das Lied|den Song)?)?  .song.;
-.song. lyrics|text|songtext|liedtext;
-Wie heißt (das Lied)|(der Song) (dass|das|der so geht)|(mit dem Text) .song.;

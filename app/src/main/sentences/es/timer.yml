@@ -1,0 +1,10 @@
+set:
+  - notifica<r?>me|alerta<r?>me en .duration.
+  - configura<r?>|inicia<r?>|crea<r?> un? temporizador|cronometro|contador (con duracion)? de .duration. ((llamado|(con el nombre de?)) .name.)?
+
+cancel:
+  - cancela<r?>|deten<er?> ((el? temporizador|cronometro|contador llamado|(con el nombre de?))|(los? temporizadores|cronometros|contadores (llamados|(con el nombre de?))))? .name.
+
+query:
+  - cuanto tiempo? le? queda|resta|falta|sobra al|(en el) temporizador|cronometro|contador (llamado|(con el nombre de?) .name.)?
+  - cuando terminara|finalizara|(se detendra) el temporizador|cronometro|contador (llamado|(con el nombre de?) .name.)?

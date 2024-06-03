@@ -1,7 +1,0 @@
-timer: high
-[set] timer|(rappelle moi dans) .duration.;
-[set] (mettre un?)|configure|démarre|créer un? (.duration.? timer)|(timer pour|de .duration. (appelé|nommé|surnommé|(avec le nom) .name.)?);
-[set] ajoute un timer (de|qui dure) .duration.;
-[cancel] annule|arrête le|stop? (.name.? timer<s?>)|(timer<s?> appelé|nommé|surnommé|(avec le nom) .name.);
-[query] combien de temps (est laissé?)|(reste t il)? sur le? (.name.? timer<s?>)|(timer<s?> appelé|nommé|surnommé|(avec le nom) .name.);
-[query] quand est ce que le? (.name.? timer<s?>)|(timer<s?> appelé|nommé|surnommé|(avec le nom) .name.) va? expire<r?>|(se? termine<r?>);

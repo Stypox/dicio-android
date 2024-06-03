@@ -1,9 +1,0 @@
-calculator: medium
-посчитай|(сколько будет) .calculation.;
-calculator_operators: low
-[addition] плюс|прибавить;
-[subtraction] минус|отнять;
-[multiplication] умножить|(раз по);
-[division] (разделить|поделить) на;
-[power] (в степени)|(возвести в степень);
-[square_root] (квадратный? корень)|(корень квадратный?) из;

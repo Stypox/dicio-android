@@ -1,6 +1,0 @@
-timer: high
-[set] timer|(ping mich in) .duration.;
-[set] stell<e?>|start<e?> einen timer (mit namen .name.)? für|auf .duration. (mit dem namen .name.)|(genannt .name.)? ein?;
-[cancel] stop<p|pe?>|halt<e?> den|die? timer .name.? (mit dem? namen .name.)|(genannt .name.)? an?;
-[query] wie lange läuft der timer .name.|(mit dem? namen .name.)|(genannt .name.)? noch;
-[query] wann läuft der timer .name.|(mit dem? namen .name.)|(genannt .name.)? ab;

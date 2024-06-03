@@ -1,0 +1,17 @@
+addition:
+  - più|(sommare|sommato|sommando|somma|aggiungere|aggiunto|aggiungendo|aggiungi a?)
+
+subtraction:
+  - meno|(sottrarre|sottratto|sottraendo|sottrai da?)
+
+multiplication:
+  - per|(moltiplicare|moltiplicato|moltiplicando|moltiplica per?)
+
+division:
+  - (dividere|diviso|dividendo|dividi da|per?)
+
+power:
+  - elevato? alla (potenza di)?
+
+square_root:
+  - radice quadrata di?

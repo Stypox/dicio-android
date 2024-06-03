@@ -1,0 +1,3 @@
+calculate:
+  - calculadora|caculadora|determina|halla (el? valor de)|(cuanto vale|es|fa)? .calculation.
+  - cuanto vale|es|fa .calculation.

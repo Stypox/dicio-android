@@ -1,0 +1,17 @@
+addition:
+  - plus|a|součet
+
+subtraction:
+  - mínus|odečti
+
+multiplication:
+  - krát|násobek
+
+division:
+  - děleno|podíl|zlomek
+
+power:
+  - mocnina|(na druhou)
+
+square_root:
+  - odmocnina z?

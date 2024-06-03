@@ -1,0 +1,17 @@
+addition:
+  - plus
+
+subtraction:
+  - odštej od?
+
+multiplication:
+  - množi|pomnoži z? s?
+
+division:
+  - deli s? z?
+
+power:
+  - na potenco
+
+square_root:
+  - koreni|koren od?
