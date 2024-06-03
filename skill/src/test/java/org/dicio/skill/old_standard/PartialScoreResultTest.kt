@@ -1,12 +1,13 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard
 
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.floats.plusOrMinus
 import io.kotest.matchers.floats.shouldBeGreaterThan
 import io.kotest.matchers.floats.shouldBeLessThan
 import io.kotest.matchers.shouldBe
-import org.dicio.skill.standard.PartialScoreResult.Companion.dropAt0point6
-import org.dicio.skill.standard.PartialScoreResult.Companion.dropAt0point75
+import org.dicio.skill.old_standard_impl.PartialScoreResult
+import org.dicio.skill.old_standard_impl.PartialScoreResult.Companion.dropAt0point6
+import org.dicio.skill.old_standard_impl.PartialScoreResult.Companion.dropAt0point75
 
 
 private const val FLOAT_EQUALS_DELTA = 0.0001f

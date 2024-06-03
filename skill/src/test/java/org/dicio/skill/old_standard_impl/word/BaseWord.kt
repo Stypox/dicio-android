@@ -1,4 +1,4 @@
-package org.dicio.skill.standard.word
+package org.dicio.skill.old_standard_impl.word
 
 /**
  * A word in a sentence with the indices of all possible subsequent words

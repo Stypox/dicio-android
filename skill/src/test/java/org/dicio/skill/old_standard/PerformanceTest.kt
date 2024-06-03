@@ -1,12 +1,13 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard
 
 import io.kotest.core.spec.style.FunSpec
 import org.dicio.skill.benchmarkContext
 import org.dicio.skill.skill.Specificity
-import org.dicio.skill.standard.word.CapturingGroup
-import org.dicio.skill.standard.word.DiacriticsInsensitiveRegexWord
-import org.dicio.skill.standard.word.DiacriticsInsensitiveWord
-import org.dicio.skill.util.WordExtractor
+import org.dicio.skill.old_standard_impl.Sentence
+import org.dicio.skill.old_standard_impl.StandardRecognizerData
+import org.dicio.skill.old_standard_impl.word.CapturingGroup
+import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveRegexWord
+import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveWord
 
 class PerformanceTest : FunSpec({
     benchmarkContext("current_time", scoreFunction(current_time)) {

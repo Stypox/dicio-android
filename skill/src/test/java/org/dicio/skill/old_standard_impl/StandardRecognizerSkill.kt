@@ -1,9 +1,9 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard_impl
 
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
-import org.dicio.skill.util.WordExtractor
+import org.dicio.skill.old_standard.WordExtractor
 
 abstract class StandardRecognizerSkill(
     correspondingSkillInfo: SkillInfo,

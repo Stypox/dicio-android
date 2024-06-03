@@ -7,19 +7,13 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
-import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
-import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
-import org.dicio.skill.util.WordExtractor.extractWords
-import org.dicio.skill.util.WordExtractor.normalizeWords
 import org.stypox.dicio.MockSkill
 import org.stypox.dicio.MockSkillContext
 
 
 const val INPUT: String = "hi"
-val INPUT_WORDS: List<String> = extractWords(INPUT)
-val NORMALIZED_WORD_KEYS: List<String> = normalizeWords(INPUT_WORDS)
 
 private fun getRanker(
     fallback: Skill<*>,
@@ -33,7 +27,7 @@ private fun assertRanked(
     fallback: MockSkill,
     best: MockSkill
 ) {
-    val result = cr.getBest(MockSkillContext, "", listOf(), listOf())
+    val result = cr.getBest(MockSkillContext, "")
     result shouldNotBe null
 
     withClue(if (result?.skill === fallback) {
@@ -55,7 +49,7 @@ class SkillRankerTest : StringSpec({
         val acLow = MockSkill(Specificity.LOW, 1.00f)
 
         val cr = getRanker(MockSkill(Specificity.LOW, 0.0f), ac1, acMed, ac2, acLow, ac3)
-        cr.getBest(MockSkillContext, INPUT, INPUT_WORDS, NORMALIZED_WORD_KEYS)
+        cr.getBest(MockSkillContext, INPUT)
 
         ac1.scoreCalled.shouldBeTrue()
         ac2.scoreCalled.shouldBeTrue()
@@ -95,14 +89,14 @@ class SkillRankerTest : StringSpec({
     "getBest should return null if there is no match even with the fallback" {
         val fallback = MockSkill(Specificity.LOW, 0.0f)
         val cr = getRanker(fallback, MockSkill(Specificity.LOW, 0.8f))
-        val result = cr.getBest(MockSkillContext, INPUT, INPUT_WORDS, NORMALIZED_WORD_KEYS)
+        val result = cr.getBest(MockSkillContext, INPUT)
         result shouldBe null // make sure the fallback is not returned (this was once the case)
     }
 
     "getFallbackSkill should return the fallback skill" {
         val fallback = MockSkill(Specificity.LOW, 0.0f)
         val cr = getRanker(fallback, MockSkill(Specificity.LOW, 0.8f))
-        val gotFallback = cr.getFallbackSkill(MockSkillContext, INPUT, INPUT_WORDS, NORMALIZED_WORD_KEYS)
+        val gotFallback = cr.getFallbackSkill(MockSkillContext, INPUT)
         gotFallback.skill shouldBeSameInstanceAs fallback
         (gotFallback.skill as MockSkill).scoreCalled.shouldBeTrue()
     }

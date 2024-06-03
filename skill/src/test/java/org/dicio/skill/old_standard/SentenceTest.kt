@@ -1,20 +1,21 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard
 
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.floats.plusOrMinus
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import org.dicio.skill.standard.word.BaseWord
-import org.dicio.skill.standard.word.CapturingGroup
-import org.dicio.skill.standard.word.DiacriticsInsensitiveWord
-import org.dicio.skill.standard.word.DiacriticsSensitiveWord
-import org.dicio.skill.util.WordExtractor.extractWords
-import org.dicio.skill.util.WordExtractor.nfkdNormalizeWord
-import org.dicio.skill.util.WordExtractor.normalizeWords
+import org.dicio.skill.old_standard_impl.InputWordRange
+import org.dicio.skill.old_standard_impl.Sentence
+import org.dicio.skill.old_standard_impl.word.BaseWord
+import org.dicio.skill.old_standard_impl.word.CapturingGroup
+import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveWord
+import org.dicio.skill.old_standard_impl.word.DiacriticsSensitiveWord
+import org.dicio.skill.old_standard.WordExtractor.extractWords
+import org.dicio.skill.old_standard.WordExtractor.nfkdNormalizeWord
+import org.dicio.skill.old_standard.WordExtractor.normalizeWords
 
 
 private const val FLOAT_EQUALS_DELTA: Float = 0.0001f

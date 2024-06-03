@@ -1,4 +1,4 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard
 
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.StringSpec
@@ -9,12 +9,15 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import org.dicio.skill.MockSkillContext
 import org.dicio.skill.skill.Specificity
-import org.dicio.skill.standard.word.CapturingGroup
-import org.dicio.skill.standard.word.DiacriticsInsensitiveWord
-import org.dicio.skill.standard.word.DiacriticsSensitiveWord
+import org.dicio.skill.old_standard_impl.word.CapturingGroup
+import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveWord
+import org.dicio.skill.old_standard_impl.word.DiacriticsSensitiveWord
 import org.dicio.skill.mockStandardRecognizerSkill
-import org.dicio.skill.util.WordExtractor.extractWords
-import org.dicio.skill.util.WordExtractor.normalizeWords
+import org.dicio.skill.old_standard_impl.Sentence
+import org.dicio.skill.old_standard_impl.StandardRecognizerData
+import org.dicio.skill.old_standard_impl.StandardRecognizerSkill
+import org.dicio.skill.old_standard.WordExtractor.extractWords
+import org.dicio.skill.old_standard.WordExtractor.normalizeWords
 import java.util.Collections
 
 

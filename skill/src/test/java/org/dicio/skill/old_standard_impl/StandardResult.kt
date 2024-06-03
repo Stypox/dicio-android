@@ -1,6 +1,6 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard_impl
 
-import org.dicio.skill.util.WordExtractor
+import org.dicio.skill.old_standard.WordExtractor
 
 open class StandardResult(
     val sentenceId: String,

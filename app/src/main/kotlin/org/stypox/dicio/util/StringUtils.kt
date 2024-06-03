@@ -1,6 +1,6 @@
 package org.stypox.dicio.util
 
-import org.dicio.skill.util.WordExtractor
+import org.dicio.skill.standard2.helper.nfkdNormalizeWord
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.max
@@ -40,7 +40,7 @@ object StringUtils {
 
     private fun cleanStringForDistance(s: String): String {
         return WORD_DELIMITERS_PATTERN.matcher(
-            WordExtractor.nfkdNormalizeWord(s.lowercase(Locale.getDefault()))
+            nfkdNormalizeWord(s.lowercase(Locale.getDefault()))
         ).replaceAll("")
     }
 

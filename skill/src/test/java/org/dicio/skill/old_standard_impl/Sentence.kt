@@ -1,8 +1,8 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard_impl
 
-import org.dicio.skill.standard.word.BaseWord
-import org.dicio.skill.standard.word.CapturingGroup
-import org.dicio.skill.standard.word.StringWord
+import org.dicio.skill.old_standard_impl.word.BaseWord
+import org.dicio.skill.old_standard_impl.word.CapturingGroup
+import org.dicio.skill.old_standard_impl.word.StringWord
 
 class Sentence(
     val sentenceId: String,

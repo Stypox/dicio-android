@@ -1,7 +1,6 @@
 package org.dicio.skill.standard2.helper
 
-import org.dicio.skill.util.WordExtractor.nfkdNormalizeWord
-import java.util.regex.Pattern
+import java.text.Normalizer
 
 
 data class WordToken(
@@ -11,23 +10,35 @@ data class WordToken(
     val nfkdNormalizedText: String,
 ) : Token
 
-val WORD_PATTERN: Pattern = Pattern.compile("\\p{L}+")
-val PUNCTUATION_PATTERN: Pattern = Pattern.compile("\\p{Punct}")
-const val WORD_WEIGHT = 1.0f
-const val CHAR_WEIGHT = 0.1f
-const val PUNCTUATION_WEIGHT = 0.05f
-const val WHITESPACE_WEIGHT = 0.0f
+private val WORD_PATTERN = Regex("\\p{L}+")
+private val PUNCTUATION_PATTERN = Regex("\\p{Punct}")
+private val DIACRITICAL_MARKS_REMOVER = Regex("\\p{InCombiningDiacriticalMarks}")
+private const val WORD_WEIGHT = 1.0f
+private const val CHAR_WEIGHT = 0.1f
+private const val PUNCTUATION_WEIGHT = 0.05f
+private const val WHITESPACE_WEIGHT = 0.0f
+
+
+
+/**
+ * @param word a lowercase string
+ * @return the unicode NFKD normalized value for the provided word
+ * @implNote the normalization process could be slow
+ */
+fun nfkdNormalizeWord(word: String): String {
+    val normalized = Normalizer.normalize(word, Normalizer.Form.NFKD)
+    return DIACRITICAL_MARKS_REMOVER.replace(normalized, "")
+}
 
 fun splitWords(userInput: String): List<WordToken> {
     val result: MutableList<WordToken> = ArrayList()
-    val matcher = WORD_PATTERN.matcher(userInput)
-    while (matcher.find()) {
+    for (match in WORD_PATTERN.findAll(userInput)) {
         result.add(
             WordToken(
-                start = matcher.start(),
-                end = matcher.end(),
-                originalText = matcher.group().lowercase(),
-                nfkdNormalizedText = nfkdNormalizeWord(matcher.group().lowercase()),
+                start = match.range.first,
+                end = match.range.last + 1,
+                originalText = match.value.lowercase(),
+                nfkdNormalizedText = nfkdNormalizeWord(match.value.lowercase()),
             )
         )
     }
@@ -73,7 +84,7 @@ fun cumulativeWhitespace(userInput: String): IntArray {
 private fun getCharWeight(c: Char): Float {
     return if (c.isWhitespace()) {
         WHITESPACE_WEIGHT
-    } else if (PUNCTUATION_PATTERN.matcher(c.toString()).matches()) {
+    } else if (PUNCTUATION_PATTERN.matches(c.toString())) {
         PUNCTUATION_WEIGHT
     } else {
         CHAR_WEIGHT

@@ -3,11 +3,11 @@ package org.dicio.skill.util
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import org.dicio.skill.standard.InputWordRange
-import org.dicio.skill.util.WordExtractor.extractCapturingGroup
-import org.dicio.skill.util.WordExtractor.extractWords
-import org.dicio.skill.util.WordExtractor.nfkdNormalizeWord
-import org.dicio.skill.util.WordExtractor.normalizeWords
+import org.dicio.skill.old_standard_impl.InputWordRange
+import org.dicio.skill.old_standard.WordExtractor.extractCapturingGroup
+import org.dicio.skill.old_standard.WordExtractor.extractWords
+import org.dicio.skill.old_standard.WordExtractor.nfkdNormalizeWord
+import org.dicio.skill.old_standard.WordExtractor.normalizeWords
 
 
 class WordExtractorTest : StringSpec({

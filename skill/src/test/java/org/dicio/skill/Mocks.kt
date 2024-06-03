@@ -8,9 +8,9 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.context.SpeechOutputDevice
 import org.dicio.skill.skill.SkillInfo
-import org.dicio.skill.standard.StandardRecognizerData
-import org.dicio.skill.standard.StandardRecognizerSkill
-import org.dicio.skill.standard.StandardResult
+import org.dicio.skill.old_standard_impl.StandardRecognizerData
+import org.dicio.skill.old_standard_impl.StandardRecognizerSkill
+import org.dicio.skill.old_standard_impl.StandardResult
 import java.util.Locale
 
 object MockSkillContext : SkillContext {

@@ -1,4 +1,4 @@
-package org.dicio.skill.standard.word
+package org.dicio.skill.old_standard_impl.word
 
 /**
  * A capturing group in a sentence with the indices of all possible subsequent base words

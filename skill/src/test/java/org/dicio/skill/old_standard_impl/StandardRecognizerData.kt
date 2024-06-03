@@ -1,4 +1,4 @@
-package org.dicio.skill.standard
+package org.dicio.skill.old_standard_impl
 
 import org.dicio.skill.skill.Specificity
 import kotlin.math.abs

@@ -1,10 +1,11 @@
-package org.dicio.skill.standard.word
+package org.dicio.skill.old_standard.word
 
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import org.dicio.skill.util.WordExtractor.nfkdNormalizeWord
+import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveWord
+import org.dicio.skill.old_standard.WordExtractor.nfkdNormalizeWord
 
 class DiacriticsInsensitiveWordTest : StringSpec({
     "matches" {

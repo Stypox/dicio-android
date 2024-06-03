@@ -1,13 +1,10 @@
-package org.dicio.skill.util
+package org.dicio.skill.old_standard
 
-import org.dicio.skill.standard.InputWordRange
-import java.text.Normalizer
+import org.dicio.skill.standard2.helper.nfkdNormalizeWord
 import java.util.regex.Pattern
 
 object WordExtractor {
     private val wordSplitter: Pattern = Pattern.compile("[^\\p{L}]+")
-    private val diacriticalMarksRemover: Pattern =
-        Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
 
     /**
      * Splits the input into words at every non-letter character, and making every word lowercase.
@@ -46,16 +43,6 @@ object WordExtractor {
     }
 
     /**
-     * @param word a lowercase string
-     * @return the unicode NFKD normalized value for the provided word
-     * @implNote the normalization process could be slow
-     */
-    fun nfkdNormalizeWord(word: String): String {
-        val normalized = Normalizer.normalize(word, Normalizer.Form.NFKD)
-        return diacriticalMarksRemover.matcher(normalized).replaceAll("")
-    }
-
-    /**
      * Extracts a capturing group from the input containing the provided word range. Special
      * characters before and after the range are kept. The case and diacritics of letters are also
      * preserved.<br></br>
@@ -65,7 +52,7 @@ object WordExtractor {
      * @param range the range of words representing those captured in the capturing group
      * @return the content of the capturing group
      */
-    fun extractCapturingGroup(input: String, range: InputWordRange): String? {
+    fun extractCapturingGroup(input: String, range: org.dicio.skill.old_standard_impl.InputWordRange): String? {
         val pattern = Pattern.compile(
             "^(?:[^\\p{L}]*\\p{L}+){" + range.from()
                     + "}((?:[^\\p{L}]*\\p{L}+){" + (range.to() - range.from()) + "}[^\\p{L}]*)"
