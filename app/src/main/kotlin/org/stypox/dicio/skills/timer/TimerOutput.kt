@@ -10,8 +10,6 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
 import org.stypox.dicio.R
-import org.stypox.dicio.Sections
-import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.sentences.Sentences

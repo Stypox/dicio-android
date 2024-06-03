@@ -12,9 +12,6 @@ import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
-import org.stypox.dicio.Sections
-import org.stypox.dicio.SectionsGenerated.telephone
-import org.stypox.dicio.SectionsGenerated.util_yes_no
 import org.stypox.dicio.sentences.Sentences
 
 object TelephoneInfo : SkillInfo("telephone") {

@@ -22,8 +22,6 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.util.RecognizeEverythingSkill
 import org.stypox.dicio.R
-import org.stypox.dicio.Sections
-import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.util.ShareUtils

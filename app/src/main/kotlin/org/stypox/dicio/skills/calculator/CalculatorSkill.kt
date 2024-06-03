@@ -7,8 +7,6 @@ import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.standard2.StandardRecognizerData
 import org.dicio.skill.standard2.StandardRecognizerSkill
-import org.stypox.dicio.Sections
-import org.stypox.dicio.SectionsGenerated
 import org.stypox.dicio.sentences.Sentences.Calculator
 import org.stypox.dicio.sentences.Sentences.CalculatorOperators
 import java.text.DecimalFormat

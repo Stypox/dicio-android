@@ -9,8 +9,6 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
-import org.stypox.dicio.Sections
-import org.stypox.dicio.SectionsGenerated.current_time
 import org.stypox.dicio.sentences.Sentences
 
 object CurrentTimeInfo : SkillInfo("current_time") {
