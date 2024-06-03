@@ -12,12 +12,15 @@ data class CapturingConstruct(
     override fun matchToEnd(memToEnd: Array<StandardMatchResult>, helper: MatchHelper) {
         val cumulativeWeight = helper.cumulativeWeight
         val cumulativeWhitespace = helper.cumulativeWhitespace
+        val originalMemToEnd = memToEnd.clone()
 
         var lastCapturingGroupEnd: Int = helper.userInput.length
         for (start in memToEnd.indices.reversed()) {
             val userWeight = cumulativeWeight[lastCapturingGroupEnd] - cumulativeWeight[start]
             val whitespace = cumulativeWhitespace[lastCapturingGroupEnd] - cumulativeWhitespace[start]
-            val ifContinuingCapturingGroup = memToEnd[lastCapturingGroupEnd].plus(
+            // using originalMemToEnd because originalMemToEnd[lastCapturingGroupEnd] will already
+            // have been changed
+            val ifContinuingCapturingGroup = originalMemToEnd[lastCapturingGroupEnd].plus(
                 userMatched = userWeight,
                 userWeight = userWeight,
                 refMatched = if (whitespace == lastCapturingGroupEnd - start) 0.0f else weight,
