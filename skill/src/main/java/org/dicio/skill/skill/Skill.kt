@@ -20,10 +20,6 @@ abstract class Skill<ScoreResult>(
      * @param ctx the [SkillContext] object to use to access resources, query information from
      * the environment (e.g. get the current locale), read settings, parse numbers, ...
      * @param input raw input from the user
-     * @param inputWords normalized input split into words
-     * @param normalizedWordKeys the collation keys for all of the input words (in the same order),
-     * needed for diacritics-insensitive matching, built by passing inputWords to
-     * [org.dicio.skill.util.WordExtractor.normalizeWords]
      * @return a score in range [0, 1] representing how closely this skill matched the user input,
      * along with any data that [generateOutput] may need to generate output, in case this skill
      * turns out to be the best one
@@ -31,8 +27,6 @@ abstract class Skill<ScoreResult>(
     abstract fun score(
         ctx: SkillContext,
         input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>,
     ): Pair<Float, ScoreResult>
 
     /**

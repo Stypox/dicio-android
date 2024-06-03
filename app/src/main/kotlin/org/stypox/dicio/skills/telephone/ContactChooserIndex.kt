@@ -11,9 +11,7 @@ class ContactChooserIndex internal constructor(private val contacts: List<Pair<S
 
     override fun score(
         ctx: SkillContext,
-        input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
+        input: String
     ): Pair<Float, Int> {
         val index = ctx.parserFormatter!!
             .extractNumber(input)

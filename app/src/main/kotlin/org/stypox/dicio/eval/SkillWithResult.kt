@@ -17,10 +17,8 @@ data class SkillWithResult<ScoreResult>(
 fun <ScoreResult> Skill<ScoreResult>.scoreAndWrapResult(
     ctx: SkillContext,
     input: String,
-    inputWords: List<String>,
-    normalizedWordKeys: List<String>,
 ): SkillWithResult<ScoreResult> {
-    val (score, result) = score(ctx, input, inputWords, normalizedWordKeys)
+    val (score, result) = score(ctx, input)
     return SkillWithResult(
         skill = this,
         score = score,

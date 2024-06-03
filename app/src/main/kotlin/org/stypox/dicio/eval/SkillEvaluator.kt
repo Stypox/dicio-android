@@ -86,20 +86,14 @@ class SkillEvaluator @Inject constructor(
     private suspend fun evaluateMatchingSkill(utterances: List<String>) {
         val (chosenInput, chosenSkill, isFallback) = try {
             utterances.firstNotNullOfOrNull { input: String ->
-                val inputWords = WordExtractor.extractWords(input)
-                val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                skillRanker.getBest(skillContext, input, inputWords, normalizedWords)
-                    ?.let { Triple(input, it, false) }
-            } ?: run {
-                val inputWords = WordExtractor.extractWords(utterances[0])
-                val normalizedWords = WordExtractor.normalizeWords(inputWords)
-                Triple(
-                    utterances[0],
-                    skillRanker.getFallbackSkill(
-                        skillContext, utterances[0], inputWords, normalizedWords),
-                    true
-                )
-            }
+                skillRanker.getBest(skillContext, input)?.let { skillWithResult ->
+                    Triple(input, skillWithResult, false)
+                }
+            } ?: Triple(
+                utterances[0],
+                skillRanker.getFallbackSkill(skillContext, utterances[0]),
+                true
+            )
         } catch (throwable: Throwable) {
             addErrorInteractionFromPending(throwable)
             return

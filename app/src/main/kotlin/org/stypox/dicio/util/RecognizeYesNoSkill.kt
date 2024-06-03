@@ -12,9 +12,7 @@ abstract class RecognizeYesNoSkill(
 ) : Skill<Boolean>(correspondingSkillInfo, data.specificity) {
     override fun score(
         ctx: SkillContext,
-        input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
+        input: String
     ): Pair<Float, Boolean> {
         return data.score(input).let { (score, standardResult) ->
             Pair(score, standardResult is UtilYesNo.Yes)

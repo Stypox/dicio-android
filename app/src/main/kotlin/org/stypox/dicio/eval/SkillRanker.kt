@@ -27,15 +27,10 @@ class SkillRanker(
             }
         }
 
-        fun getBest(
-            ctx: SkillContext,
-            input: String,
-            inputWords: List<String>,
-            normalizedWordKeys: List<String>
-        ): SkillWithResult<*>? {
+        fun getBest(ctx: SkillContext, input: String): SkillWithResult<*>? {
             // first round: considering only high-priority skills
             val bestHigh = getFirstAboveThresholdOrBest(
-                ctx, highSkills, input, inputWords, normalizedWordKeys, HIGH_THRESHOLD_1
+                ctx, highSkills, input, HIGH_THRESHOLD_1
             )
             if (bestHigh != null && bestHigh.score > HIGH_THRESHOLD_1) {
                 return bestHigh
@@ -43,7 +38,7 @@ class SkillRanker(
 
             // second round: considering both medium- and high-priority skills
             val bestMedium = getFirstAboveThresholdOrBest(
-                ctx, mediumSkills, input, inputWords, normalizedWordKeys, MEDIUM_THRESHOLD_2
+                ctx, mediumSkills, input, MEDIUM_THRESHOLD_2
             )
             if (bestMedium != null && bestMedium.score > MEDIUM_THRESHOLD_2) {
                 return bestMedium
@@ -53,7 +48,7 @@ class SkillRanker(
 
             // third round: all skills are considered
             val bestLow = getFirstAboveThresholdOrBest(
-                ctx, lowSkills, input, inputWords, normalizedWordKeys, LOW_THRESHOLD_3
+                ctx, lowSkills, input, LOW_THRESHOLD_3
             )
             if (bestLow != null && bestLow.score > LOW_THRESHOLD_3) {
                 return bestLow
@@ -72,15 +67,13 @@ class SkillRanker(
                 ctx: SkillContext,
                 skills: List<Skill<*>>,
                 input: String,
-                inputWords: List<String>,
-                normalizedWordKeys: List<String>,
                 threshold: Float
             ): SkillWithResult<*>? {
                 // this ensures that if `skills` is empty and null skill is returned,
                 // nothing bad happens since its score cannot be higher than any other float value.
                 var bestSkillSoFar: SkillWithResult<*>? = null
                 for (skill in skills) {
-                    val res = skill.scoreAndWrapResult(ctx, input, inputWords, normalizedWordKeys)
+                    val res = skill.scoreAndWrapResult(ctx, input)
                     if (bestSkillSoFar == null || res.score > bestSkillSoFar.score) {
                         bestSkillSoFar = res
                         if (res.score > threshold) {
@@ -115,11 +108,9 @@ class SkillRanker(
     fun getBest(
         ctx: SkillContext,
         input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
     ): SkillWithResult<*>? {
         for (i in batches.indices.reversed()) {
-            val skillFromBatch = batches[i].getBest(ctx, input, inputWords, normalizedWordKeys)
+            val skillFromBatch = batches[i].getBest(ctx, input)
             if (skillFromBatch != null) {
                 // found a matching skill: remove all skills in batch above it
                 for (j in i + 1 until batches.size) {
@@ -129,7 +120,7 @@ class SkillRanker(
             }
         }
 
-        val skillFromBatch = defaultBatch.getBest(ctx, input, inputWords, normalizedWordKeys)
+        val skillFromBatch = defaultBatch.getBest(ctx, input)
         if (skillFromBatch != null) {
             // found a matching skill in the default batch: remove all other skill batches
             removeAllBatches()
@@ -140,10 +131,8 @@ class SkillRanker(
     fun getFallbackSkill(
         ctx: SkillContext,
         input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
     ): SkillWithResult<*> {
-        return fallbackSkill.scoreAndWrapResult(ctx, input, inputWords, normalizedWordKeys)
+        return fallbackSkill.scoreAndWrapResult(ctx, input)
     }
 
     override fun cleanup() {

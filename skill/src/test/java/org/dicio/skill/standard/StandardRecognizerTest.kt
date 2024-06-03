@@ -106,7 +106,7 @@ private fun assertRecognized(
 ) {
     val inputWords = extractWords(input)
     val normalizedInputWords = normalizeWords(inputWords)
-    val (score, result) = sr.score(MockSkillContext, input, inputWords, normalizedInputWords)
+    val (score, result) = sr.score(MockSkillContext, input)
     result.sentenceId shouldBe sentenceId
 
     if (a == b) {

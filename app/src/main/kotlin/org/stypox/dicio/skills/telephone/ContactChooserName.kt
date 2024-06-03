@@ -12,9 +12,7 @@ class ContactChooserName internal constructor(private val contacts: List<Pair<St
 
     override fun score(
         ctx: SkillContext,
-        input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
+        input: String
     ): Pair<Float, Pair<String, String>?> {
         val trimmedInput = input.trim { it <= ' ' }
 

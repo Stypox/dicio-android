@@ -3,7 +3,6 @@ package org.dicio.skill.standard2
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
-import kotlin.math.abs
 
 abstract class StandardRecognizerSkill<T>(
     correspondingSkillInfo: SkillInfo,
@@ -12,9 +11,7 @@ abstract class StandardRecognizerSkill<T>(
 
     override fun score(
         ctx: SkillContext,
-        input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
+        input: String
     ): Pair<Float, T> {
         return data.score(input)
     }

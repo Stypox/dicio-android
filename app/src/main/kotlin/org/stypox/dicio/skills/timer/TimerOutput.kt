@@ -52,9 +52,7 @@ sealed interface TimerOutput : SkillOutput {
             object : Skill<Duration?>(TimerInfo, Specificity.HIGH) {
                 override fun score(
                     ctx: SkillContext,
-                    input: String,
-                    inputWords: List<String>,
-                    normalizedWordKeys: List<String>
+                    input: String
                 ): Pair<Float, Duration?> {
                     val duration = ctx.parserFormatter!!
                         .extractDuration(input)

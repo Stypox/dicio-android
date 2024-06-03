@@ -3,7 +3,7 @@ package org.dicio.skill.standard
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
-import kotlin.math.abs
+import org.dicio.skill.util.WordExtractor
 
 abstract class StandardRecognizerSkill(
     correspondingSkillInfo: SkillInfo,
@@ -12,10 +12,10 @@ abstract class StandardRecognizerSkill(
 
     override fun score(
         ctx: SkillContext,
-        input: String,
-        inputWords: List<String>,
-        normalizedWordKeys: List<String>
+        input: String
     ): Pair<Float, StandardResult> {
-        return data.score(input, inputWords, normalizedWordKeys)
+        val inputWords = WordExtractor.extractWords(input)
+        val normalizedWords = WordExtractor.normalizeWords(inputWords)
+        return data.score(input, inputWords, normalizedWords)
     }
 }
