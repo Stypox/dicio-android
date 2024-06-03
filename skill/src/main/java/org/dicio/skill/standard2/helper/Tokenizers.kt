@@ -1,12 +1,14 @@
 package org.dicio.skill.standard2.helper
 
+import org.dicio.skill.util.WordExtractor.nfkdNormalizeWord
 import java.util.regex.Pattern
 
 
 data class WordToken(
     override val start: Int,
     override val end: Int,
-    val text: String,
+    val originalText: String,
+    val nfkdNormalizedText: String,
 ) : Token
 
 val WORD_PATTERN: Pattern = Pattern.compile("\\p{L}+")
@@ -20,8 +22,14 @@ fun splitWords(userInput: String): List<WordToken> {
     val result: MutableList<WordToken> = ArrayList()
     val matcher = WORD_PATTERN.matcher(userInput)
     while (matcher.find()) {
-        // TODO remove diacritics?
-        result.add(WordToken(matcher.start(), matcher.end(), matcher.group().lowercase()))
+        result.add(
+            WordToken(
+                start = matcher.start(),
+                end = matcher.end(),
+                originalText = matcher.group().lowercase(),
+                nfkdNormalizedText = nfkdNormalizeWord(matcher.group().lowercase()),
+            )
+        )
     }
     return result
 }

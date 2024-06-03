@@ -7,10 +7,12 @@ import org.dicio.skill.standard2.helper.normalizeMemToEnd
 
 data class WordConstruct(
     private val text: String,
-    // TODO isDiacriticsSensitive
+    private val isRegex: Boolean,
     private val isDiacriticsSensitive: Boolean,
     private val weight: Float,
 ) : Construct {
+    private val compiledRegex = if (isRegex) Regex(text) else null
+
     override fun matchToEnd(memToEnd: Array<StandardMatchResult>, helper: MatchHelper) {
         val cumulativeWeight = helper.cumulativeWeight
 
@@ -18,7 +20,12 @@ data class WordConstruct(
             val wordIndex = helper.splitWordsIndices[start]
             if (wordIndex >= 0) {
                 val word = helper.splitWords[wordIndex]
-                if (word.text == text) {
+                val wordText = if (isDiacriticsSensitive)
+                    word.originalText
+                else
+                    word.nfkdNormalizedText
+
+                if ((compiledRegex?.matches(wordText)) ?: (text == wordText)) {
                     val userWeight = cumulativeWeight[word.end] - cumulativeWeight[start]
                     memToEnd[start] = StandardMatchResult.keepBest(
                         memToEnd[word.end].plus(
