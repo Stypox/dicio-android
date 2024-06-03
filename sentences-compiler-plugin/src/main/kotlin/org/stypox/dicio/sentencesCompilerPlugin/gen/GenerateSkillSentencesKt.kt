@@ -1,5 +1,6 @@
 package org.stypox.dicio.sentencesCompilerPlugin.gen
 
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -21,6 +22,11 @@ import java.io.File
 
 fun generateSkillSentencesKt(parsedData: ParsedData, outputDirFile: File) {
     val baseObj = TypeSpec.objectBuilder(CLASS_NAME)
+        .addAnnotation(
+            AnnotationSpec.builder(Suppress::class)
+                .addMember("%S", "UNUSED_PARAMETER")
+                .build()
+        )
 
     // add languages property
     baseObj.addProperty(
