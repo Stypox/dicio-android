@@ -13,6 +13,11 @@ fun cumulativeWeight(userInput: String): FloatArray {
     return cumulativeWeight(userInput, words)
 }
 
+fun splitWordsIndices(userInput: String): IntArray {
+    val words = splitWords(userInput)
+    return splitWordsIndices(userInput, words)
+}
+
 fun beEqualToPlusOrMinus(vararg expected: Float) = object : Matcher<FloatArray> {
     override fun test(value: FloatArray): MatcherResult {
         if (expected.size != value.size) {
@@ -96,6 +101,29 @@ class TokenizersTest : DescribeSpec({
                     WordToken(0, 5, "hèlło", "helło"),
                     WordToken(6, 12, "wòrłdç", "worłdc"),
                 ))
+        }
+    }
+
+    describe("splitWordsIndices") {
+        it("empty") {
+            splitWordsIndices("")
+                .shouldBe(intArrayOf(-1))
+        }
+        it("blank") {
+            splitWordsIndices(" \n\t 0,-7")
+                .shouldBe(intArrayOf(-1,-1,-1,-1,-1,-1,-1,-1,-1))
+        }
+        it("whitespace") {
+            splitWordsIndices(" hello how\nare \t  you ")
+                .shouldBe(intArrayOf(-1,0,-1,-1,-1,-1,-1,1,-1,-1,-1,2,-1,-1,-1,-1,-1,-1,3,-1,-1,-1,-1))
+        }
+        it("punctuation") {
+            splitWordsIndices("¿hello, .org!?")
+                .shouldBe(intArrayOf(-1,0,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1))
+        }
+        it("digits") {
+            splitWordsIndices("he110 w0rld")
+                .shouldBe(intArrayOf(0,-1,-1,-1,-1,-1,1,-1,2,-1,-1,-1))
         }
     }
 
