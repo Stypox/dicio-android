@@ -15,7 +15,7 @@ import org.dicio.skill.old_standard_impl.word.DiacriticsInsensitiveWord
 import org.dicio.skill.old_standard_impl.word.DiacriticsSensitiveWord
 import org.dicio.skill.old_standard.WordExtractor.extractWords
 import org.dicio.skill.old_standard.WordExtractor.normalizeWords
-import org.dicio.skill.standard.helper.nfkdNormalizeWord
+import org.dicio.skill.standard.util.nfkdNormalizeWord
 
 
 private const val FLOAT_EQUALS_DELTA: Float = 0.0001f

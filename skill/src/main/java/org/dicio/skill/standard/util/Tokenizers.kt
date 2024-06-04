@@ -1,4 +1,4 @@
-package org.dicio.skill.standard.helper
+package org.dicio.skill.standard.util
 
 import java.text.Normalizer
 

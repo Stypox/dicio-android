@@ -7,7 +7,7 @@ import org.dicio.skill.old_standard_impl.InputWordRange
 import org.dicio.skill.old_standard.WordExtractor.extractCapturingGroup
 import org.dicio.skill.old_standard.WordExtractor.extractWords
 import org.dicio.skill.old_standard.WordExtractor.normalizeWords
-import org.dicio.skill.standard.helper.nfkdNormalizeWord
+import org.dicio.skill.standard.util.nfkdNormalizeWord
 
 
 class WordExtractorTest : StringSpec({

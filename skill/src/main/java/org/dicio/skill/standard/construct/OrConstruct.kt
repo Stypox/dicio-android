@@ -1,8 +1,8 @@
 package org.dicio.skill.standard.construct
 
 import org.dicio.skill.standard.StandardScore
-import org.dicio.skill.standard.helper.MatchHelper
-import org.dicio.skill.standard.helper.normalizeMemToEnd
+import org.dicio.skill.standard.util.MatchHelper
+import org.dicio.skill.standard.util.normalizeMemToEnd
 
 data class OrConstruct(
     private val constructs: List<Construct>
