@@ -2,6 +2,9 @@ package org.stypox.dicio.skills.telephone
 
 import org.dicio.numbers.unit.Number
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.AlwaysBestScore
+import org.dicio.skill.skill.AlwaysWorstScore
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
@@ -12,7 +15,7 @@ class ContactChooserIndex internal constructor(private val contacts: List<Pair<S
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, Int> {
+    ): Pair<Score, Int> {
         val index = ctx.parserFormatter!!
             .extractNumber(input)
             .preferOrdinal(true)
@@ -22,7 +25,7 @@ class ContactChooserIndex internal constructor(private val contacts: List<Pair<S
             .map { obj -> (obj as Number).integerValue().toInt() }
             .firstOrNull() ?: 0
         return Pair(
-            if (index <= 0 || index > contacts.size) 0.0f else 1.0f,
+            if (index <= 0 || index > contacts.size) AlwaysWorstScore else AlwaysBestScore,
             index
         )
     }

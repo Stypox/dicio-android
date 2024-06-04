@@ -27,7 +27,7 @@ abstract class Skill<ScoreResult>(
     abstract fun score(
         ctx: SkillContext,
         input: String,
-    ): Pair<Float, ScoreResult>
+    ): Pair<Score, ScoreResult>
 
     /**
      * This will be called if this skill was deemed as the best one which could provide output for

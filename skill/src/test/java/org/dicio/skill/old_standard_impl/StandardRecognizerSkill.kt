@@ -4,6 +4,7 @@ import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.old_standard.WordExtractor
+import org.dicio.skill.skill.Score
 
 abstract class StandardRecognizerSkill(
     correspondingSkillInfo: SkillInfo,
@@ -13,7 +14,7 @@ abstract class StandardRecognizerSkill(
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, StandardResult> {
+    ): Pair<Score, StandardResult> {
         val inputWords = WordExtractor.extractWords(input)
         val normalizedWords = WordExtractor.normalizeWords(inputWords)
         return data.score(input, inputWords, normalizedWords)

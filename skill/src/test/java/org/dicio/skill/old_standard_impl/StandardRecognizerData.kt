@@ -1,5 +1,6 @@
 package org.dicio.skill.old_standard_impl
 
+import org.dicio.skill.skill.FloatScore
 import org.dicio.skill.skill.Specificity
 import kotlin.math.abs
 
@@ -8,7 +9,7 @@ open class StandardRecognizerData(val specificity: Specificity, vararg val sente
         input: String,
         inputWords: List<String>,
         normalizedWordKeys: List<String>
-    ): Pair<Float, StandardResult> {
+    ): Pair<FloatScore, StandardResult> {
         var bestResultSoFar = sentences[0].score(inputWords, normalizedWordKeys)
         var bestValueSoFar = bestResultSoFar.value(inputWords.size)
         var bestSentenceIdSoFar = sentences[0].sentenceId
@@ -31,7 +32,7 @@ open class StandardRecognizerData(val specificity: Specificity, vararg val sente
         }
 
         return Pair(
-            bestResultSoFar.value(inputWords.size),
+            FloatScore(bestResultSoFar.value(inputWords.size)),
             bestResultSoFar.toStandardResult(bestSentenceIdSoFar, input),
         )
     }

@@ -1,12 +1,12 @@
 package org.dicio.skill.standard.helper
 
-import org.dicio.skill.standard.StandardMatchResult
+import org.dicio.skill.standard.StandardScore
 
 
-fun initialMemToEnd(cumulativeWeight: FloatArray): Array<StandardMatchResult> {
+fun initialMemToEnd(cumulativeWeight: FloatArray): Array<StandardScore> {
     val endWeight = cumulativeWeight.last()
     return Array(cumulativeWeight.size) { start ->
-        StandardMatchResult(
+        StandardScore(
             userMatched = 0.0f,
             userWeight = endWeight - cumulativeWeight[start],
             refMatched = 0.0f,
@@ -16,9 +16,9 @@ fun initialMemToEnd(cumulativeWeight: FloatArray): Array<StandardMatchResult> {
     }
 }
 
-fun normalizeMemToEnd(memToEnd: Array<StandardMatchResult>, cumulativeWeight: FloatArray) {
+fun normalizeMemToEnd(memToEnd: Array<StandardScore>, cumulativeWeight: FloatArray) {
     for (i in memToEnd.size-2 downTo 0) {
-        memToEnd[i] = StandardMatchResult.keepBest(
+        memToEnd[i] = StandardScore.keepBest(
             memToEnd[i],
             memToEnd[i+1].plus(userWeight = cumulativeWeight[i+1] - cumulativeWeight[i]),
         )

@@ -1,10 +1,11 @@
 package org.dicio.skill.standard
 
+import org.dicio.skill.skill.Score
 import org.dicio.skill.standard.capture.Capture
 import org.dicio.skill.standard.capture.NamedCapture
 import org.dicio.skill.standard.capture.StringRangeCapture
 
-data class StandardMatchResult(
+data class StandardScore(
     val userMatched: Float,
     val userWeight: Float,
     val refMatched: Float,
@@ -13,7 +14,7 @@ data class StandardMatchResult(
     // will form a binary tree structure, where inner nodes are Pairs of subtrees,
     // while the leaves are either Capture or StringRangeCapture
     val capturingGroups: Any?,
-) {
+) : Score {
     fun score(): Float {
         return UM * userMatched +
                 UW * userWeight +
@@ -23,15 +24,23 @@ data class StandardMatchResult(
 
     /**
      * This is not a well-behaving score and **should not** be used to compare two
-     * [StandardMatchResult]s. This is to be used strictly only when a score in range
+     * [StandardScore]s. This is to be used strictly only when a score in range
      * [[0, 1]] is needed, e.g. to compare with scores of other types.
      */
-    fun scoreIn01Range(): Float {
+    override fun scoreIn01Range(): Float {
         // TODO choose better expression
         return 0.5f * (
                 (if (userWeight > 0.0f) userMatched / userWeight else 0.0f) +
                 (if (refWeight > 0.0f) refMatched / refWeight else 0.0f)
         )
+    }
+
+    override fun isBetterThan(other: Score): Boolean {
+        return if (other is StandardScore) {
+            score() > other.score()
+        } else {
+            scoreIn01Range() > other.scoreIn01Range()
+        }
     }
 
     fun exploreCapturingGroupsTree(node: Any?, name: String): NamedCapture? {
@@ -70,8 +79,8 @@ data class StandardMatchResult(
         }
     }
 
-    operator fun plus(other: StandardMatchResult): StandardMatchResult {
-        return StandardMatchResult(
+    operator fun plus(other: StandardScore): StandardScore {
+        return StandardScore(
             userMatched = this.userMatched + other.userMatched,
             userWeight = this.userWeight + other.userWeight,
             refMatched = this.refMatched + other.refMatched,
@@ -91,8 +100,8 @@ data class StandardMatchResult(
         userWeight: Float = 0.0f,
         refMatched: Float = 0.0f,
         refWeight: Float = 0.0f,
-    ): StandardMatchResult {
-        return StandardMatchResult(
+    ): StandardScore {
+        return StandardScore(
             userMatched = this.userMatched + userMatched,
             userWeight = this.userWeight + userWeight,
             refMatched = this.refMatched + refMatched,
@@ -107,8 +116,8 @@ data class StandardMatchResult(
         refMatched: Float = 0.0f,
         refWeight: Float = 0.0f,
         capturingGroup: Any
-    ): StandardMatchResult {
-        return StandardMatchResult(
+    ): StandardScore {
+        return StandardScore(
             userMatched = this.userMatched + userMatched,
             userWeight = this.userWeight + userWeight,
             refMatched = this.refMatched + refMatched,
@@ -122,9 +131,9 @@ data class StandardMatchResult(
     }
 
     companion object {
-        val EMPTY = StandardMatchResult(0.0f, 0.0f, 0.0f, 0.0f, null)
+        val EMPTY = StandardScore(0.0f, 0.0f, 0.0f, 0.0f, null)
 
-        fun keepBest(m1: StandardMatchResult?, m2: StandardMatchResult): StandardMatchResult {
+        fun keepBest(m1: StandardScore?, m2: StandardScore): StandardScore {
             return if (m1 == null || m2.score() > m1.score()) m2 else m1
         }
 

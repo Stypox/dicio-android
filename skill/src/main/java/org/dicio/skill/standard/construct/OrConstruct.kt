@@ -1,6 +1,6 @@
 package org.dicio.skill.standard.construct
 
-import org.dicio.skill.standard.StandardMatchResult
+import org.dicio.skill.standard.StandardScore
 import org.dicio.skill.standard.helper.MatchHelper
 import org.dicio.skill.standard.helper.normalizeMemToEnd
 
@@ -9,15 +9,15 @@ data class OrConstruct(
 ) : Construct {
     private fun evaluateConstruct(
         construct: Construct,
-        immutableMemToEnd: Array<StandardMatchResult>,
+        immutableMemToEnd: Array<StandardScore>,
         helper: MatchHelper,
-    ): Array<StandardMatchResult> {
-        val newMemToEnd: Array<StandardMatchResult> = immutableMemToEnd.clone()
+    ): Array<StandardScore> {
+        val newMemToEnd: Array<StandardScore> = immutableMemToEnd.clone()
         construct.matchToEnd(newMemToEnd, helper)
         return newMemToEnd
     }
 
-    override fun matchToEnd(memToEnd: Array<StandardMatchResult>, helper: MatchHelper) {
+    override fun matchToEnd(memToEnd: Array<StandardScore>, helper: MatchHelper) {
         if (constructs.isEmpty()) {
             // edge case that doesn't make sense, just treat this as an OptionalConstruct
             return
@@ -28,7 +28,7 @@ data class OrConstruct(
         for (j in 1..<constructs.size) {
             val newMemToEnd = evaluateConstruct(constructs[j], memToEnd, helper)
             for (start in bestNewMemToEnd.indices) {
-                bestNewMemToEnd[start] = StandardMatchResult.keepBest(
+                bestNewMemToEnd[start] = StandardScore.keepBest(
                     bestNewMemToEnd[start],
                     newMemToEnd[start],
                 )

@@ -7,14 +7,14 @@ import org.dicio.skill.standard.helper.initialMemToEnd
 
 open class StandardRecognizerData<out T>(
     val specificity: Specificity,
-    private val converter: (input: String, sentenceId: String, matchResult: StandardMatchResult) -> T,
+    private val converter: (input: String, sentenceId: String, matchResult: StandardScore) -> T,
     private val sentencesWithId: List<Pair<String, Construct>>,
 ) {
-    fun score(input: String): Pair<Float, T> {
+    fun score(input: String): Pair<StandardScore, T> {
         val helper = MatchHelper(input)
         val cumulativeWeight = helper.cumulativeWeight
 
-        var bestRes: Pair<String, StandardMatchResult>? = null
+        var bestRes: Pair<String, StandardScore>? = null
         for ((sentenceId, construct) in sentencesWithId) {
             val memToEnd = initialMemToEnd(cumulativeWeight)
             construct.matchToEnd(memToEnd, helper)
@@ -27,7 +27,7 @@ open class StandardRecognizerData<out T>(
         // it is impossible for the result to be null because sentencesWithId is non-empty
         bestRes!!
         return Pair(
-            bestRes.second.scoreIn01Range(),
+            bestRes.second,
             converter(
                 input,
                 bestRes.first,

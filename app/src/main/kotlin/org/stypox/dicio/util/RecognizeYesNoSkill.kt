@@ -1,6 +1,7 @@
 package org.stypox.dicio.util
 
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.standard.StandardRecognizerData
@@ -13,7 +14,7 @@ abstract class RecognizeYesNoSkill(
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, Boolean> {
+    ): Pair<Score, Boolean> {
         return data.score(input).let { (score, standardResult) ->
             Pair(score, standardResult is UtilYesNo.Yes)
         }

@@ -17,7 +17,6 @@ import org.dicio.skill.old_standard_impl.Sentence
 import org.dicio.skill.old_standard_impl.StandardRecognizerData
 import org.dicio.skill.old_standard_impl.StandardRecognizerSkill
 import org.dicio.skill.old_standard.WordExtractor.extractWords
-import org.dicio.skill.old_standard.WordExtractor.normalizeWords
 import java.util.Collections
 
 
@@ -112,10 +111,10 @@ private fun assertRecognized(
     result.sentenceId shouldBe sentenceId
 
     if (a == b) {
-        score shouldBe a.plusOrMinus(FLOAT_EQUALS_DELTA)
+        score.scoreIn01Range() shouldBe a.plusOrMinus(FLOAT_EQUALS_DELTA)
     } else {
         withClue("Score $score is not in range [$a, $b]") {
-            (score in a..b).shouldBeTrue()
+            (score.scoreIn01Range() in a..b).shouldBeTrue()
         }
     }
 

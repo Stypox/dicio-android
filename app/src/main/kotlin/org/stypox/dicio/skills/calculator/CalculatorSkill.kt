@@ -20,7 +20,7 @@ class CalculatorSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognize
         text: String
     ): CalculatorOperators? {
         val (score, result) = operatorSection.score(text)
-        return if (score < 0.3) {
+        return if (score.scoreIn01Range() < 0.3) {
             null
         } else {
             result

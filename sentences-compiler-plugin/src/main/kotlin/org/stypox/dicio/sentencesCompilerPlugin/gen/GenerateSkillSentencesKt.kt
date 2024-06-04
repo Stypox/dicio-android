@@ -106,7 +106,7 @@ private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: Clas
     val fromStandardResultFun = FunSpec.builder("fromStandardResult")
         .addParameter("input", String::class)
         .addParameter("sentenceId", String::class)
-        .addParameter("matchResult", ClassName("org.dicio.skill.standard", "StandardMatchResult"))
+        .addParameter("score", ClassName("org.dicio.skill.standard", "StandardScore"))
         .returns(returnType)
         .beginControlFlow("return when(sentenceId)")
 
@@ -120,7 +120,7 @@ private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: Clas
         } else {
             fromStandardResultFun.addStatement(
                 "%S -> $definitionClassName(${
-                    "matchResult.getCapturingGroup<%T>(input, %S),"
+                    "score.getCapturingGroup<%T>(input, %S),"
                         .repeat(definition.captures.size)
                 })",
                 definition.id,

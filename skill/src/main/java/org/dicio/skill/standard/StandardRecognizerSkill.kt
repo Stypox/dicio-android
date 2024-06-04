@@ -2,6 +2,7 @@ package org.dicio.skill.standard
 
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.SkillInfo
 
 abstract class StandardRecognizerSkill<T>(
@@ -12,7 +13,7 @@ abstract class StandardRecognizerSkill<T>(
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, T> {
+    ): Pair<Score, T> {
         return data.score(input)
     }
 }

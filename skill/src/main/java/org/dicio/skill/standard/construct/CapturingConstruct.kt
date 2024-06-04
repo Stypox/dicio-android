@@ -1,6 +1,6 @@
 package org.dicio.skill.standard.construct
 
-import org.dicio.skill.standard.StandardMatchResult
+import org.dicio.skill.standard.StandardScore
 import org.dicio.skill.standard.capture.StringRangeCapture
 import org.dicio.skill.standard.helper.MatchHelper
 import org.dicio.skill.standard.helper.normalizeMemToEnd
@@ -9,7 +9,7 @@ data class CapturingConstruct(
     private val name: String,
     private val weight: Float
 ) : Construct {
-    override fun matchToEnd(memToEnd: Array<StandardMatchResult>, helper: MatchHelper) {
+    override fun matchToEnd(memToEnd: Array<StandardScore>, helper: MatchHelper) {
         val cumulativeWeight = helper.cumulativeWeight
         val cumulativeWhitespace = helper.cumulativeWhitespace
         val originalMemToEnd = memToEnd.clone()

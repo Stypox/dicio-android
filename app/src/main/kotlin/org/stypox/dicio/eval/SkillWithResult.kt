@@ -1,12 +1,13 @@
 package org.stypox.dicio.eval
 
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillOutput
 
 data class SkillWithResult<ScoreResult>(
     val skill: Skill<ScoreResult>,
-    val score: Float,
+    val score: Score,
     val scoreResult: ScoreResult,
 ) {
     suspend fun generateOutput(ctx: SkillContext): SkillOutput {

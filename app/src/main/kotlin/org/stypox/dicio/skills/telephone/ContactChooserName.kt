@@ -1,6 +1,9 @@
 package org.stypox.dicio.skills.telephone
 
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.AlwaysBestScore
+import org.dicio.skill.skill.AlwaysWorstScore
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
@@ -13,7 +16,7 @@ class ContactChooserName internal constructor(private val contacts: List<Pair<St
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, Pair<String, String>?> {
+    ): Pair<Score, Pair<String, String>?> {
         val trimmedInput = input.trim { it <= ' ' }
 
         val bestContact = contacts
@@ -28,7 +31,7 @@ class ContactChooserName internal constructor(private val contacts: List<Pair<St
             ?.first
 
         return Pair(
-            if (bestContact == null) 0.0f else 1.0f,
+            if (bestContact == null) AlwaysWorstScore else AlwaysBestScore,
             bestContact
         )
     }

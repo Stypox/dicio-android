@@ -7,6 +7,9 @@ import androidx.compose.runtime.LongState
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.AlwaysBestScore
+import org.dicio.skill.skill.AlwaysWorstScore
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
 import org.stypox.dicio.R
@@ -53,14 +56,14 @@ sealed interface TimerOutput : SkillOutput {
                 override fun score(
                     ctx: SkillContext,
                     input: String
-                ): Pair<Float, Duration?> {
+                ): Pair<Score, Duration?> {
                     val duration = ctx.parserFormatter!!
                         .extractDuration(input)
                         .first
                         ?.toJavaDuration()
 
                     return Pair(
-                        if (duration == null) 0.0f else 1.0f,
+                        if (duration == null) AlwaysWorstScore else AlwaysBestScore,
                         duration
                     )
                 }

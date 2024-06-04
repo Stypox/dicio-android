@@ -1,6 +1,6 @@
 package org.dicio.skill.standard.construct
 
-import org.dicio.skill.standard.StandardMatchResult
+import org.dicio.skill.standard.StandardScore
 import org.dicio.skill.standard.helper.MatchHelper
 import org.dicio.skill.standard.helper.normalizeMemToEnd
 
@@ -13,7 +13,7 @@ data class WordConstruct(
 ) : Construct {
     private val compiledRegex = if (isRegex) Regex(text) else null
 
-    override fun matchToEnd(memToEnd: Array<StandardMatchResult>, helper: MatchHelper) {
+    override fun matchToEnd(memToEnd: Array<StandardScore>, helper: MatchHelper) {
         val cumulativeWeight = helper.cumulativeWeight
 
         for (start in memToEnd.indices) {
@@ -27,7 +27,7 @@ data class WordConstruct(
 
                 if ((compiledRegex?.matches(wordText)) ?: (text == wordText)) {
                     val userWeight = cumulativeWeight[word.end] - cumulativeWeight[start]
-                    memToEnd[start] = StandardMatchResult.keepBest(
+                    memToEnd[start] = StandardScore.keepBest(
                         memToEnd[word.end].plus(
                             userMatched = userWeight,
                             userWeight = userWeight,

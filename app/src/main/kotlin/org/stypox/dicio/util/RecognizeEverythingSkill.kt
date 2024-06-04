@@ -1,6 +1,8 @@
 package org.stypox.dicio.util
 
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.AlwaysBestScore
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.Specificity
@@ -10,7 +12,7 @@ abstract class RecognizeEverythingSkill(correspondingSkillInfo: SkillInfo) :
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, String> {
-        return Pair(1.0f, input)
+    ): Pair<Score, String> {
+        return Pair(AlwaysBestScore, input)
     }
 }

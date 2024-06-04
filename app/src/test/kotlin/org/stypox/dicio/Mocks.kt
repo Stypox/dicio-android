@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
+import org.dicio.skill.skill.FloatScore
+import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.Specificity
@@ -36,9 +38,9 @@ class MockSkill(specificity: Specificity, private val score: Float) :
     override fun score(
         ctx: SkillContext,
         input: String
-    ): Pair<Float, Nothing?> {
+    ): Pair<Score, Nothing?> {
         scoreCalled = true
-        return Pair(score, null)
+        return Pair(FloatScore(score), null)
     }
 
     override suspend fun generateOutput(ctx: SkillContext, scoreResult: Nothing?) = mocked()

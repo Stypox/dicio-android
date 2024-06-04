@@ -32,7 +32,7 @@ class SkillRanker(
             val bestHigh = getFirstAboveThresholdOrBest(
                 ctx, highSkills, input, HIGH_THRESHOLD_1
             )
-            if (bestHigh != null && bestHigh.score > HIGH_THRESHOLD_1) {
+            if (bestHigh != null && bestHigh.score.scoreIn01Range() > HIGH_THRESHOLD_1) {
                 return bestHigh
             }
 
@@ -40,9 +40,9 @@ class SkillRanker(
             val bestMedium = getFirstAboveThresholdOrBest(
                 ctx, mediumSkills, input, MEDIUM_THRESHOLD_2
             )
-            if (bestMedium != null && bestMedium.score > MEDIUM_THRESHOLD_2) {
+            if (bestMedium != null && bestMedium.score.scoreIn01Range() > MEDIUM_THRESHOLD_2) {
                 return bestMedium
-            } else if (bestHigh != null && bestHigh.score > HIGH_THRESHOLD_2) {
+            } else if (bestHigh != null && bestHigh.score.scoreIn01Range() > HIGH_THRESHOLD_2) {
                 return bestHigh
             }
 
@@ -50,11 +50,11 @@ class SkillRanker(
             val bestLow = getFirstAboveThresholdOrBest(
                 ctx, lowSkills, input, LOW_THRESHOLD_3
             )
-            if (bestLow != null && bestLow.score > LOW_THRESHOLD_3) {
+            if (bestLow != null && bestLow.score.scoreIn01Range() > LOW_THRESHOLD_3) {
                 return bestLow
-            } else if (bestMedium != null && bestMedium.score > MEDIUM_THRESHOLD_3) {
+            } else if (bestMedium != null && bestMedium.score.scoreIn01Range() > MEDIUM_THRESHOLD_3) {
                 return bestMedium
-            } else if (bestHigh != null && bestHigh.score > HIGH_THRESHOLD_3) {
+            } else if (bestHigh != null && bestHigh.score.scoreIn01Range() > HIGH_THRESHOLD_3) {
                 return bestHigh
             }
 
@@ -74,9 +74,9 @@ class SkillRanker(
                 var bestSkillSoFar: SkillWithResult<*>? = null
                 for (skill in skills) {
                     val res = skill.scoreAndWrapResult(ctx, input)
-                    if (bestSkillSoFar == null || res.score > bestSkillSoFar.score) {
+                    if (bestSkillSoFar == null || res.score.isBetterThan(bestSkillSoFar.score)) {
                         bestSkillSoFar = res
-                        if (res.score > threshold) {
+                        if (res.score.scoreIn01Range() > threshold) {
                             break
                         }
                     }
