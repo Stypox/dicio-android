@@ -21,7 +21,7 @@ class WordExtractorTest : StringSpec({
         assertExtractedWords("")
     }
 
-    "normalizeWords and nfkdNormalizeWord" {
+    "normalizeWords" {
         assertNormalized("aeiou", "aeiou", "àeiòu", "àéìoù", "aéiou")
         assertNormalized("ssèç", "ssec", "sseç", "ssèc", "ssèç", "sséc", "sséç")
     }

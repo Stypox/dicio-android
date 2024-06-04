@@ -55,6 +55,34 @@ fun beEqualToPlusOrMinus(vararg expected: Float) = object : Matcher<FloatArray> 
 }
 
 class TokenizersTest : DescribeSpec({
+    describe("nfkdNormalizeWord") {
+        it("normal characters") {
+            nfkdNormalizeWord("hElLoWoRlD")
+                .shouldBe("hElLoWoRlD")
+        }
+        it("special characters") {
+            nfkdNormalizeWord("#@'?<")
+                .shouldBe("#@'?<")
+        }
+        it("whitespace") {
+            nfkdNormalizeWord(" \t  \n\r ")
+                .shouldBe(" \t  \n\r ")
+        }
+        it("italian vowels") {
+            nfkdNormalizeWord("àéìòù")
+                .shouldBe("aeiou")
+        }
+        it("https://en.wikipedia.org/wiki/Diacritic#Types") {
+            nfkdNormalizeWord("áàâǎőȍãȧạijäăāåșç")
+                .shouldBe("aaaaooaaaijaaaasc")
+        }
+        it("https://en.wikipedia.org/wiki/Two_dots_(diacritic)#Diacritic_underneath") {
+            // apparently ᴞ is not normalized, but there's not much that can be done
+            nfkdNormalizeWord("ÄäǞǟC̈c̈ËëÏïḮḯJ̈j̈K̈k̈L̈l̈M̈m̈N̈n̈ÖöȪȫǪ̈ǫ̈ṎṏS̈s̈T̈ẗÜüǕǖǗǘǙǚǛǜṲṳṺṻᴞΪϊΫϋῢΰῧϔӒӓЁёӚӛӜӝӞӟӤӥЇїӦӧӪӫӰӱӴӵӸӹӬӭ")
+                .shouldBe("AaAaCcEeIiIiJjKkLlMmNnOoOoOoOoSsTtUuUuUuUuUuUuUuᴞΙιΥυυυυΥАаЕеӘәЖжЗзИиІіОоӨөУуЧчЫыЭэ")
+        }
+    }
+
     describe("splitWords") {
         it("empty") {
             splitWords("")
