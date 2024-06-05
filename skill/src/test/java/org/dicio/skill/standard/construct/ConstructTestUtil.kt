@@ -67,6 +67,20 @@ fun Triple<Construct, String, Array<StandardScore>>.shouldChangeMemToEndInto(
     startingMemToEnd should beEqualToPlusOrMinus(*changedMemToEnd)
 }
 
+fun Triple<Construct, String, Array<StandardScore>>.shouldNotMatchAnything(
+    additionalRefWeight: Float,
+) {
+    val (construct, userInput, startingMemToEnd) = this
+    val changedMemToEnd = startingMemToEnd
+        .map { it.plus(refWeight = additionalRefWeight) }
+        .toTypedArray()
+
+    val helper = MatchHelper(userInput)
+    construct.matchToEnd(startingMemToEnd, helper)
+
+    startingMemToEnd should beEqualToPlusOrMinus(*changedMemToEnd)
+}
+
 fun s(
     userMatched: Float,
     userWeight: Float,

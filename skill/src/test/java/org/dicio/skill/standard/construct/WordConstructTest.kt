@@ -4,46 +4,45 @@ import io.kotest.core.spec.style.DescribeSpec
 
 @Suppress("BooleanLiteralArgument")
 class WordConstructTest : DescribeSpec({
-    describe("normal word") {
+    describe("empty or non-matching input") {
         it("empty input") {
             val w = 1.0f
             WordConstruct("hello", false, false, w)
                 .withInput("")
-                .withStartingZeroedMemToEnd()
-                .shouldChangeMemToEndInto(s(0f,0f,0f,w))
+                .withStartingInitialMemToEnd()
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
         it("no words, starting zeroed memToEnd") {
             val w = 1.7f
             WordConstruct("hello", false, false, w)
                 .withInput("8 6; 9,2")
                 .withStartingZeroedMemToEnd()
-                .shouldChangeMemToEndInto(*Array(9) { s(0f,0f,0f,w) })
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
         it("no words, starting random memToEnd") {
             val w = 2.3f
-            val starting = arrayOf(s(0.4f,0.4f,2.0f,2.0f),s(0.3f,0.3f,1.5f,1.5f),s(0.2f,0.2f,1.0f,1.5f),s(0.0f,0.1f,0.0f,1.5f),s(0.0f,0.0f,0.0f,1.5f))
-            val changed = starting.map { it.plus(refWeight = w) }.toTypedArray()
             WordConstruct("hello", false, false, w)
                 .withInput("1234")
-                .withStartingMemToEnd(*starting)
-                .shouldChangeMemToEndInto(*changed)
+                .withStartingMemToEnd(s(0.4f,0.4f,2.0f,2.0f),s(0.3f,0.3f,1.5f,1.5f),s(0.2f,0.2f,1.0f,1.5f),s(0.0f,0.1f,0.0f,1.5f),s(0.0f,0.0f,0.0f,1.5f))
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
-        it("no matching words, starting zeroed memToEnd") {
+        it("no matching words, starting zeroed memToEnd, diacritics sensitive word") {
             val w = 0.5f
-            WordConstruct("hello", false, false, w)
-                .withInput("a aa abc hallo")
+            WordConstruct("hello", false, true, w)
+                .withInput("a hèllo abc hallo")
                 .withStartingZeroedMemToEnd()
-                .shouldChangeMemToEndInto(*Array(15) { s(0f,0f,0f,w) })
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
-        it("no matching words, starting random memToEnd") {
+        it("no matching words, starting random memToEnd, regex word") {
             val w = 1.1f
-            val starting = arrayOf(s(0.4f,0.4f,2.0f,2.0f),s(0.3f,0.3f,1.5f,1.5f),s(0.2f,0.2f,1.0f,1.5f),s(0.0f,0.1f,0.0f,1.5f),s(0.0f,0.0f,0.0f,1.5f))
-            val changed = starting.map { it.plus(refWeight = w) }.toTypedArray()
-            WordConstruct("hello", false, false, w)
+            WordConstruct("h(?:a|e)llo", true, false, w)
                 .withInput("a aa")
-                .withStartingMemToEnd(*starting)
-                .shouldChangeMemToEndInto(*changed)
+                .withStartingMemToEnd(s(0.4f,0.4f,2.0f,2.0f),s(0.3f,0.3f,1.5f,1.5f),s(0.2f,0.2f,1.0f,1.5f),s(0.0f,0.1f,0.0f,1.5f),s(0.0f,0.0f,0.0f,1.5f))
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
+    }
+
+    describe("normal word") {
         it("matching word, starting initial mem to end") {
             val w = 1.3f
             WordConstruct("a", false, false, w)

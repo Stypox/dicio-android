@@ -8,8 +8,8 @@ class CapturingConstructTest : DescribeSpec({
             val w = 0.5f
             CapturingConstruct("name", w)
                 .withInput("")
-                .withStartingZeroedMemToEnd()
-                .shouldChangeMemToEndInto(s(0f,0f,0f,w))
+                .withStartingInitialMemToEnd()
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
         it("only whitespace, which is not captured") {
             val n = "the capturing group name"
@@ -17,18 +17,17 @@ class CapturingConstructTest : DescribeSpec({
             CapturingConstruct(n, w)
                 .withInput(" \n\r ")
                 .withStartingInitialMemToEnd()
-                .shouldChangeMemToEndInto(s(0f,0f,0f,w),s(0f,0f,0f,w),s(0f,0f,0f,w),s(0f,0f,0f,w),s(0f,0f,0f,w))
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
         it("everything already matched well") {
             // The starting memToEnd is as if 4 single-character constructs with weight 1.0f were
             // already passed through it. Therefore set the capturing group's weight
             // lower than 1f, otherwise the capturing group would always take a char.
             val w = 0.6f
-            val starting = arrayOf(s(1f,1f,4f,4f),s(0.75f,0.75f,3f,4f),s(0.5f,0.5f,2f,4f),s(0.25f,0.25f,1f,4f),s(0f,0f,0f,4f))
             CapturingConstruct("The_Name", w)
                 .withInput("aaaa")
-                .withStartingMemToEnd(*starting)
-                .shouldChangeMemToEndInto(*starting.map { it.plus(refWeight = w) }.toTypedArray())
+                .withStartingMemToEnd(s(1f,1f,4f,4f),s(0.75f,0.75f,3f,4f),s(0.5f,0.5f,2f,4f),s(0.25f,0.25f,1f,4f),s(0f,0f,0f,4f))
+                .shouldNotMatchAnything(additionalRefWeight = w)
         }
     }
 
