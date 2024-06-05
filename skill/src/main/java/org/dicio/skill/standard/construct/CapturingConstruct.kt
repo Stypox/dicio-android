@@ -15,7 +15,7 @@ data class CapturingConstruct(
         val originalMemToEnd = memToEnd.clone()
 
         var lastCapturingGroupEnd: Int = helper.userInput.length
-        for (start in memToEnd.indices.reversed()) {
+        for (start in helper.userInput.indices.reversed()) {
             val userWeight = cumulativeWeight[lastCapturingGroupEnd] - cumulativeWeight[start]
             val whitespace = cumulativeWhitespace[lastCapturingGroupEnd] - cumulativeWhitespace[start]
             // using originalMemToEnd because originalMemToEnd[lastCapturingGroupEnd] will already
@@ -29,15 +29,17 @@ data class CapturingConstruct(
             )
 
             val ifSkippingCapturingGroup = memToEnd[start].plus(refWeight = weight)
-            if (ifContinuingCapturingGroup.score() > ifSkippingCapturingGroup.score()) {
+            if (ifContinuingCapturingGroup.score() >= ifSkippingCapturingGroup.score()) {
                 memToEnd[start] = ifContinuingCapturingGroup
 
-                val ifCreatingNewCapturingGroup = originalMemToEnd[start].plus(
-                    refMatched = weight,
-                    refWeight = weight,
-                )
-                if (ifCreatingNewCapturingGroup.score() > ifContinuingCapturingGroup.score()) {
-                    lastCapturingGroupEnd = start
+                if (whitespace != lastCapturingGroupEnd - start) {
+                    val ifCreatingNewCapturingGroup = originalMemToEnd[start].plus(
+                        refMatched = weight,
+                        refWeight = weight,
+                    )
+                    if (ifCreatingNewCapturingGroup.score() > ifContinuingCapturingGroup.score()) {
+                        lastCapturingGroupEnd = start
+                    }
                 }
             } else {
                 lastCapturingGroupEnd = start
@@ -45,6 +47,7 @@ data class CapturingConstruct(
             }
         }
 
+        memToEnd[helper.userInput.length] = memToEnd[helper.userInput.length].plus(refWeight = weight)
         normalizeMemToEnd(memToEnd, helper.cumulativeWeight)
     }
 

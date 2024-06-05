@@ -6,9 +6,9 @@ import io.kotest.matchers.Matcher
 import io.kotest.matchers.MatcherResult
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.should
-import io.kotest.matchers.shouldBe
 import org.dicio.skill.standard.StandardScore
 import org.dicio.skill.standard.capture.NamedCapture
+import org.dicio.skill.standard.capture.StringRangeCapture
 import org.dicio.skill.standard.util.MatchHelper
 import org.dicio.skill.standard.util.cumulativeWeight
 import org.dicio.skill.standard.util.initialMemToEnd
@@ -64,7 +64,7 @@ fun Triple<Construct, String, Array<StandardScore>>.shouldChangeMemToEndInto(
 
     // checking that changedMemToEnd is normalized above
     // also ensures that startingMemToEnd is normalized
-    changedMemToEnd should beEqualToPlusOrMinus(*startingMemToEnd)
+    startingMemToEnd should beEqualToPlusOrMinus(*changedMemToEnd)
 }
 
 fun s(
@@ -87,6 +87,10 @@ fun s(
     }
 
     return result
+}
+
+fun capt(name: String, start: Int, end: Int): StringRangeCapture {
+    return StringRangeCapture(name, start, end)
 }
 
 fun flattenCapturingGroups(node: Any?): Set<NamedCapture> {
