@@ -11,13 +11,13 @@ class CapturingConstructTest : DescribeSpec({
                 .withStartingZeroedMemToEnd()
                 .shouldChangeMemToEndInto(s(0f,0f,0f,w))
         }
-        it("only whitespace, but it should still be captured") {
+        it("only whitespace, which is not captured") {
             val n = "the capturing group name"
             val w = 1.5f
             CapturingConstruct(n, w)
                 .withInput(" \n\r ")
                 .withStartingInitialMemToEnd()
-                .shouldChangeMemToEndInto(s(0f,0f,0f,w,capt(n,0,4)),s(0f,0f,0f,w,capt(n,1,4)),s(0f,0f,0f,w,capt(n,2,4)),s(0f,0f,0f,w,capt(n,3,4)),s(0f,0f,0f,w))
+                .shouldChangeMemToEndInto(s(0f,0f,0f,w),s(0f,0f,0f,w),s(0f,0f,0f,w),s(0f,0f,0f,w),s(0f,0f,0f,w))
         }
         it("everything already matched well") {
             // The starting memToEnd is as if 4 single-character constructs with weight 1.0f were
@@ -39,7 +39,7 @@ class CapturingConstructTest : DescribeSpec({
             CapturingConstruct(n, w)
                 .withInput(" a. ")
                 .withStartingInitialMemToEnd()
-                .shouldChangeMemToEndInto(s(1.05f,1.05f,w,w,capt(n,0,4)),s(1.05f,1.05f,w,w,capt(n,1,4)),s(0.05f,0.05f,w,w,capt(n,2,4)),s(0f,0f,0f,w,capt(n,3,4)),s(0f,0f,0f,w))
+                .shouldChangeMemToEndInto(s(1.05f,1.05f,w,w,capt(n,0,4)),s(1.05f,1.05f,w,w,capt(n,1,4)),s(0.05f,0.05f,w,w,capt(n,2,4)),s(0f,0f,0f,w),s(0f,0f,0f,w))
         }
         it("capturing group is best from any position") {
             val n = "myname"
@@ -66,7 +66,7 @@ class CapturingConstructTest : DescribeSpec({
             CapturingConstruct(n, w)
                 .withInput("b c")
                 .withStartingMemToEnd(s(1f,2f,1f,1f),s(1f,1f,1f,1f),s(1f,1f,1f,1f),s(0f,0f,0f,1f))
-                .shouldChangeMemToEndInto(s(2f,2f,1f+w,1f+w,capt(n,0,2)),s(1f,1f,1f,1f+w,capt(n,1,2)),s(1f,1f,1f,1f+w),s(0f,0f,0f,1f+w))
+                .shouldChangeMemToEndInto(s(2f,2f,1f+w,1f+w,capt(n,0,2)),s(1f,1f,1f,1f+w),s(1f,1f,1f,1f+w),s(0f,0f,0f,1f+w))
         }
     }
 
@@ -88,7 +88,7 @@ class CapturingConstructTest : DescribeSpec({
             CapturingConstruct(n1, w)
                 .withInput("b c")
                 .withStartingMemToEnd(s(2f,2f,1f,1f,capt(n2,0,3)),s(1f,1f,1f,1f,capt(n2,1,3)),s(1f,1f,1f,1f,capt(n2,2,3)),s(0f,0f,0f,1f))
-                .shouldChangeMemToEndInto(s(2f,2f,1f+w,1f+w,capt(n1,0,2),capt(n2,2,3)),s(1f,1f,1f,1f+w,capt(n1,1,2),capt(n2,2,3)),s(1f,1f,1f,1f+w,capt(n2,2,3)),s(0f,0f,0f,1f+w))
+                .shouldChangeMemToEndInto(s(2f,2f,1f+w,1f+w,capt(n1,0,2),capt(n2,2,3)),s(1f,1f,1f,1f+w,capt(n2,1,3)),s(1f,1f,1f,1f+w,capt(n2,2,3)),s(0f,0f,0f,1f+w))
         }
         it("two capturing groups with word in the middle") {
             val n1 = "1"
@@ -102,7 +102,7 @@ class CapturingConstructTest : DescribeSpec({
             val after2 = arrayOf(s(3f,3f,w1,w1+w2,capt(n1,0,5)),s(2f,2f,w1+w2,w1+w2,capt(n1,3,5)),s(2f,2f,w1+w2,w1+w2,capt(n1,3,5)),
                                  s(1f,1f,w1,w1+w2,capt(n1,3,5)),s(1f,1f,w1,   w1+w2,capt(n1,4,5)),s(0f,0f,0f,   w1+w2             ))
             val after3 = arrayOf(s(3f,3f,w1+w2+w3,w1+w2+w3,capt(n3,0,2),capt(n1,3,5)),s(2f,2f,w1+w3,w1+w2+w3,capt(n3,2,4),capt(n1,4,5)),s(2f,2f,w1+w3,w1+w2+w3,capt(n3,2,4),capt(n1,4,5)),
-                                 s(1f,1f,w1,      w1+w2+w3,capt(n3,3,4),capt(n1,4,5)),s(1f,1f,w1,w1+w2+w3,                capt(n1,4,5)),s(0f,0f,0f,   w1+w2+w3                          ))
+                                 s(1f,1f,w1,      w1+w2+w3,capt(n1,3,5)),             s(1f,1f,w1,w1+w2+w3,                capt(n1,4,5)),s(0f,0f,0f,   w1+w2+w3                          ))
 
             CapturingConstruct(n1, w1)
                 .withInput(userInput)
