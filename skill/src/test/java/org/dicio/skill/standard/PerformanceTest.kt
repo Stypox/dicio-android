@@ -1,5 +1,6 @@
 package org.dicio.skill.standard
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import org.dicio.skill.benchmarkContext
 import org.dicio.skill.skill.Specificity
@@ -9,6 +10,7 @@ import org.dicio.skill.standard.construct.OptionalConstruct
 import org.dicio.skill.standard.construct.OrConstruct
 import org.dicio.skill.standard.construct.WordConstruct
 
+@Ignored // only enable to record a benchmark, otherwise it takes too much time
 class PerformanceTest : FunSpec({
     benchmarkContext("current_time", currentTimeData::score) {
         warmup("test", "time", "what time", "current time")
