@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="back">返回</string>
+    <string name="clear">清除</string>
+    <string name="open_with">開啟以</string>
+    <string name="no_app_to_open_intent">你裝置上的應用程式都無法開啟這個內容</string>
+    <string name="copy_to_clipboard">複製至剪貼簿</string>
+    <string name="copied_to_clipboard">已複製至剪貼簿</string>
+    <string name="done">完成</string>
+    <string name="permission_denied">權限被拒絕</string>
+    <string name="downloaded">已下載</string>
+    <string name="loaded">已載入</string>
+    <string name="stt_download">下載語音轉文字</string>
+    <string name="drawer_open">開啟導航欄</string>
+    <string name="drawer_close">關閉導航欄</string>
+    <string name="drawer_header_subtitle">我可以幫你嗎？</string>
+    <string name="share">分享</string>
+    <string name="text_input_hint">有甚麼問題問我…</string>
+    <string name="grant_microphone_permission">授予麥克風權限</string>
+    <string name="download">下載</string>
+    <string name="stt_not_available">語音轉文字不可用</string>
+</resources>
