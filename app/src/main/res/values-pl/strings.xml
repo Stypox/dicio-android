@@ -57,7 +57,7 @@
     <string name="skill_search_here_is_what_i_found">Oto co znalazłem</string>
     <string name="skill_search_no_results">Nic nie znalazłem, spróbuj powiedzieć mi jeszcze raz</string>
     <string name="skill_search_what_question">Czego mam poszukać\?</string>
-    <string name="skill_weather_could_not_find_city">Nie znalazłem miasta %1$s</string>
+    <string name="skill_weather_could_not_find_city">Nie znaleziono miasta %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Obecnie w %1$s jest %2$s</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="skill_weather_min_max_wind">Minimalna temperatura: %1$.1f°C
@@ -155,4 +155,16 @@
     <string name="loaded">Załadowane</string>
     <string name="pref_general">Ogólne</string>
     <string name="pref_dynamic_colors_title">Dynamiczne kolory</string>
+    <string name="back">Wstecz</string>
+    <string name="error_loading">Błąd ładowania</string>
+    <string name="stt_download">Pobierz funkcję zamiany mowy na tekst</string>
+    <string name="stt_unzip">Rozpakuj Mowa na Tekst</string>
+    <string name="start_listening">Rozpocznij słuchanie</string>
+    <string name="all_skills_disabled_title">Wszystkie umiejętności są wyłączone</string>
+    <string name="all_skills_disabled_description">Włącz niektóre umiejętności w ustawieniach, w przeciwnym razie Dicio nie będzie w stanie nic zrobić</string>
+    <string name="clear">Wyszyść</string>
+    <string name="expand">Rozwiń</string>
+    <string name="reduce">Zmniejsz</string>
+    <string name="pref_theme_black">Czarny</string>
+    <string name="skill_open_could_not_understand">Nie można zrozumieć aplikacji</string>
 </resources>
