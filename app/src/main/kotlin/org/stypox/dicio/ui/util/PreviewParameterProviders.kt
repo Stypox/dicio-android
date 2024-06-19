@@ -116,6 +116,8 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
 
 class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
     SttState.NoMicrophonePermission,
+    SttState.NotInitialized,
+    SttState.NotAvailable,
     SttState.NotDownloaded,
     SttState.Downloading(987654, 0),
     SttState.Downloading(987654, 1234567),

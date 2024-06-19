@@ -189,7 +189,7 @@ private fun SttFabPreview(@PreviewParameter(SttStatesPreviews::class) state: Stt
 }
 
 // this preview is useful to take screenshots
-@Preview(device = "spec:width=2200px,height=2340px,dpi=440,orientation=portrait")
+@Preview(device = "spec:width=2500px,height=2340px,dpi=440")
 @Composable
 private fun SttFabPreviewAll() {
     AppTheme {
