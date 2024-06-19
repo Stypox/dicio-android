@@ -122,7 +122,7 @@ class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
     SttState.ErrorDownloading(IOException("ErrorDownloading exception")),
     SttState.Downloaded,
     SttState.Unzipping(765432, 0),
-    SttState.Unzipping(765432, 9876543),
+    SttState.Unzipping(3365432, 9876543),
     SttState.ErrorUnzipping(Exception("ErrorUnzipping exception")),
     SttState.NotLoaded,
     SttState.Loading(true),

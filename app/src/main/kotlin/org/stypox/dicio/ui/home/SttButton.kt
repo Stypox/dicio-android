@@ -5,7 +5,10 @@ import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -49,6 +52,7 @@ import org.stypox.dicio.ui.home.SttState.NotDownloaded
 import org.stypox.dicio.ui.home.SttState.NotInitialized
 import org.stypox.dicio.ui.home.SttState.NotLoaded
 import org.stypox.dicio.ui.home.SttState.Unzipping
+import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.LoadingProgress
 import org.stypox.dicio.ui.util.SmallCircularProgressIndicator
 import org.stypox.dicio.ui.util.SttStatesPreviews
@@ -181,5 +185,29 @@ private fun SttFabPreview(@PreviewParameter(SttStatesPreviews::class) state: Stt
             state = state,
             onClick = {},
         )
+    }
+}
+
+// this preview is useful to take screenshots
+@Preview(device = "spec:width=2200px,height=2340px,dpi=440,orientation=portrait")
+@Composable
+private fun SttFabPreviewAll() {
+    AppTheme {
+        @OptIn(ExperimentalLayoutApi::class)
+        FlowRow(
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            for (state in SttStatesPreviews().values) {
+                if ((state is Downloading && state.totalBytes == 0L) ||
+                    (state is Unzipping && state.totalBytes == 0L)) {
+                    continue // not useful in screenshots
+                }
+                SttFabImpl(
+                    state = state,
+                    onClick = {},
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
+        }
     }
 }
