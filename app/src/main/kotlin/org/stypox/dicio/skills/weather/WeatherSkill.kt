@@ -6,7 +6,6 @@ import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.standard.StandardRecognizerData
 import org.dicio.skill.standard.StandardRecognizerSkill
-import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.sentences.Sentences.Weather
 import org.stypox.dicio.skills.weather.WeatherInfo.weatherDataStore
 import org.stypox.dicio.util.ConnectionUtils
@@ -16,9 +15,9 @@ import java.util.Locale
 
 class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Weather>) :
     StandardRecognizerSkill<Weather>(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Weather): SkillOutput {
-        var city = when (scoreResult) {
-            is Weather.Current -> scoreResult.where
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Weather): SkillOutput {
+        var city = when (inputData) {
+            is Weather.Current -> inputData.where
         }
 
         if (city.isNullOrEmpty()) {

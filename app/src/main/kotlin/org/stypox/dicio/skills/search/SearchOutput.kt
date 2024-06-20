@@ -50,8 +50,8 @@ class SearchOutput(
         listOf(
             SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
             object : RecognizeEverythingSkill(SearchInfo) {
-                override suspend fun generateOutput(ctx: SkillContext, scoreResult: String): SkillOutput {
-                    return SearchOutput(searchOnDuckDuckGo(ctx, scoreResult))
+                override suspend fun generateOutput(ctx: SkillContext, inputData: String): SkillOutput {
+                    return SearchOutput(searchOnDuckDuckGo(ctx, inputData))
                 }
             },
         )

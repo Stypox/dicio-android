@@ -5,24 +5,24 @@ import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillOutput
 
-data class SkillWithResult<ScoreResult>(
-    val skill: Skill<ScoreResult>,
+data class SkillWithResult<InputData>(
+    val skill: Skill<InputData>,
     val score: Score,
-    val scoreResult: ScoreResult,
+    val inputData: InputData,
 ) {
     suspend fun generateOutput(ctx: SkillContext): SkillOutput {
-        return skill.generateOutput(ctx, scoreResult)
+        return skill.generateOutput(ctx, inputData)
     }
 }
 
-fun <ScoreResult> Skill<ScoreResult>.scoreAndWrapResult(
+fun <InputData> Skill<InputData>.scoreAndWrapResult(
     ctx: SkillContext,
     input: String,
-): SkillWithResult<ScoreResult> {
-    val (score, result) = score(ctx, input)
+): SkillWithResult<InputData> {
+    val (score, inputData) = score(ctx, input)
     return SkillWithResult(
         skill = this,
         score = score,
-        scoreResult = result,
+        inputData = inputData,
     )
 }

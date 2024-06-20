@@ -13,10 +13,10 @@ import org.stypox.dicio.sentences.Sentences.Telephone
 class TelephoneSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Telephone>) :
     StandardRecognizerSkill<Telephone>(correspondingSkillInfo, data) {
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Telephone): SkillOutput {
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Telephone): SkillOutput {
         val contentResolver = ctx.android.contentResolver
-        val userContactName = when (scoreResult) {
-            is Telephone.Dial -> scoreResult.who?.trim { it <= ' ' } ?: ""
+        val userContactName = when (inputData) {
+            is Telephone.Dial -> inputData.who?.trim { it <= ' ' } ?: ""
         }
         val contacts = Contact.getFilteredSortedContacts(contentResolver, userContactName)
         val validContacts = ArrayList<Pair<String, List<String>>>()

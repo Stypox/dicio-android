@@ -12,7 +12,7 @@ import java.time.format.FormatStyle
 
 class CurrentTimeSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<CurrentTime>)
     : StandardRecognizerSkill<CurrentTime>(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: CurrentTime): SkillOutput {
+    override suspend fun generateOutput(ctx: SkillContext, inputData: CurrentTime): SkillOutput {
         val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
             .withLocale(ctx.locale)
         return CurrentTimeOutput(LocalTime.now().format(formatter))

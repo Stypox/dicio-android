@@ -23,9 +23,9 @@ class LyricsSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDat
      * This connects to Genius to get lyrics information.
      * More services could be added in the future.
      */
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Lyrics): SkillOutput {
-        val songName: String = when (scoreResult) {
-            is Lyrics.Query -> scoreResult.song ?: return LyricsOutput.Failed(title = "")
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Lyrics): SkillOutput {
+        val songName: String = when (inputData) {
+            is Lyrics.Query -> inputData.song ?: return LyricsOutput.Failed(title = "")
         }
         val search: JSONObject = ConnectionUtils.getPageJson(
             GENIUS_SEARCH_URL + ConnectionUtils.urlEncode(songName) + "&count=1"

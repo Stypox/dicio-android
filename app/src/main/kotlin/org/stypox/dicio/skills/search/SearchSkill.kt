@@ -14,9 +14,9 @@ import org.stypox.dicio.util.LocaleUtils
 
 class SearchSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Search>)
     : StandardRecognizerSkill<Search>(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Search): SkillOutput {
-        val query = when (scoreResult) {
-            is Search.Query -> scoreResult.what ?: return SearchOutput(null)
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Search): SkillOutput {
+        val query = when (inputData) {
+            is Search.Query -> inputData.what ?: return SearchOutput(null)
         }
         return SearchOutput(searchOnDuckDuckGo(ctx, query))
     }

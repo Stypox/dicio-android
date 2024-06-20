@@ -22,26 +22,26 @@ import java.time.Duration
 class TimerSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Timer>) :
     StandardRecognizerSkill<Timer>(correspondingSkillInfo, data) {
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Timer): SkillOutput {
-        return when (scoreResult) {
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Timer): SkillOutput {
+        return when (inputData) {
             is Timer.Set -> {
-                val duration = scoreResult.duration?.let {
+                val duration = inputData.duration?.let {
                     ctx.parserFormatter?.extractDuration(it)?.first?.toJavaDuration()
                 }
                 if (duration == null) {
-                    TimerOutput.SetAskDuration { setTimer(ctx, it, scoreResult.name) }
+                    TimerOutput.SetAskDuration { setTimer(ctx, it, inputData.name) }
                 } else {
-                    setTimer(ctx, duration, scoreResult.name)
+                    setTimer(ctx, duration, inputData.name)
                 }
             }
             is Timer.Query -> {
-                queryTimer(ctx, scoreResult.name)
+                queryTimer(ctx, inputData.name)
             }
             is Timer.Cancel -> {
-                if (scoreResult.name == null && SET_TIMERS.size > 1) {
+                if (inputData.name == null && SET_TIMERS.size > 1) {
                     TimerOutput.ConfirmCancel { cancelTimer(ctx, null) }
                 } else {
-                    cancelTimer(ctx, scoreResult.name)
+                    cancelTimer(ctx, inputData.name)
                 }
             }
         }

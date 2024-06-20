@@ -13,9 +13,9 @@ import java.util.Locale
 
 class NavigationSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Navigation>)
     : StandardRecognizerSkill<Navigation>(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Navigation): SkillOutput {
-        val placeToNavigate: String = when (scoreResult) {
-            is Navigation.Query -> scoreResult.where ?: return NavigationOutput(null)
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Navigation): SkillOutput {
+        val placeToNavigate: String = when (inputData) {
+            is Navigation.Query -> inputData.where ?: return NavigationOutput(null)
         }
 
         val npf = ctx.parserFormatter

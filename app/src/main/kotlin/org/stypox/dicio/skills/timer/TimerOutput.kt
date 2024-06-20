@@ -70,13 +70,13 @@ sealed interface TimerOutput : SkillOutput {
 
                 override suspend fun generateOutput(
                     ctx: SkillContext,
-                    scoreResult: Duration?
+                    inputData: Duration?
                 ): SkillOutput {
-                    return if (scoreResult == null) {
+                    return if (inputData == null) {
                         // impossible situation
                         TextFallbackOutput()
                     } else {
-                        onGotDuration(scoreResult)
+                        onGotDuration(inputData)
                     }
                 }
             })
@@ -96,8 +96,8 @@ sealed interface TimerOutput : SkillOutput {
 
         override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
             object : RecognizeYesNoSkill(TimerInfo, Sentences.UtilYesNo[ctx.sentencesLanguage]!!) {
-                override suspend fun generateOutput(ctx: SkillContext, scoreResult: Boolean): SkillOutput {
-                    return if (scoreResult) {
+                override suspend fun generateOutput(ctx: SkillContext, inputData: Boolean): SkillOutput {
+                    return if (inputData) {
                         onConfirm()
                     } else {
                         Cancel(ctx.getString(R.string.skill_timer_none_canceled))

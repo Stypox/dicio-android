@@ -35,9 +35,9 @@ class CalculatorSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognize
         }
     }
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Calculator): SkillOutput {
-        val textWithNumbers: List<Any>? = when (scoreResult) {
-            is Calculator.Calculate -> scoreResult.calculation
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Calculator): SkillOutput {
+        val textWithNumbers: List<Any>? = when (inputData) {
+            is Calculator.Calculate -> inputData.calculation
         }?.let { ctx.parserFormatter?.extractNumber(it)?.mixedWithText }
         if (textWithNumbers.isNullOrEmpty()
             || (textWithNumbers.size == 1 && textWithNumbers[0] !is Number)) {

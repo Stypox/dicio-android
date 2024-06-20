@@ -43,7 +43,7 @@ class MockSkill(specificity: Specificity, private val score: Float) :
         return Pair(FloatScore(score), null)
     }
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Nothing?) = mocked()
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Nothing?) = mocked()
 }
 
 fun mocked(): Nothing {

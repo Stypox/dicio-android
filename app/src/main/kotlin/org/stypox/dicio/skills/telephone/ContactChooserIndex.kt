@@ -30,9 +30,9 @@ class ContactChooserIndex internal constructor(private val contacts: List<Pair<S
         )
     }
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Int): SkillOutput {
-        if (scoreResult > 0 && scoreResult <= contacts.size) {
-            val contact = contacts[scoreResult - 1]
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Int): SkillOutput {
+        if (inputData > 0 && inputData <= contacts.size) {
+            val contact = contacts[inputData - 1]
             return ConfirmCallOutput(contact.first, contact.second)
         } else {
             // impossible situation

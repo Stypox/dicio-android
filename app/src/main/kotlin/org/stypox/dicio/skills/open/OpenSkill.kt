@@ -16,9 +16,9 @@ import org.stypox.dicio.util.StringUtils
 class OpenSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Open>)
     : StandardRecognizerSkill<Open>(correspondingSkillInfo, data) {
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Open): SkillOutput {
-        val userAppName = when (scoreResult) {
-            is Open.Query -> scoreResult.what?.trim { it <= ' ' }
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Open): SkillOutput {
+        val userAppName = when (inputData) {
+            is Open.Query -> inputData.what?.trim { it <= ' ' }
         }
         val packageManager: PackageManager = ctx.android.packageManager
         val applicationInfo = userAppName?.let { getMostSimilarApp(packageManager, it) }

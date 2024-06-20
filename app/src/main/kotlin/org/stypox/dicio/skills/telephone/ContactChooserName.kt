@@ -36,8 +36,8 @@ class ContactChooserName internal constructor(private val contacts: List<Pair<St
         )
     }
 
-    override suspend fun generateOutput(ctx: SkillContext, scoreResult: Pair<String, String>?): SkillOutput {
-        return scoreResult?.let {
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Pair<String, String>?): SkillOutput {
+        return inputData?.let {
             ConfirmCallOutput(it.first, it.second)
         }
             // impossible situation

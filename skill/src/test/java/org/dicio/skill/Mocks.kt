@@ -35,7 +35,7 @@ fun mockStandardRecognizerSkill(data: StandardRecognizerData) = object : Standar
 ) {
     override suspend fun generateOutput(
         ctx: SkillContext,
-        scoreResult: StandardResult
+        inputData: StandardResult
     ): SkillOutput = mocked()
 }
 
