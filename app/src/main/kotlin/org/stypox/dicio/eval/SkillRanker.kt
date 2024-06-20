@@ -29,17 +29,13 @@ class SkillRanker(
 
         fun getBest(ctx: SkillContext, input: String): SkillWithResult<*>? {
             // first round: considering only high-priority skills
-            val bestHigh = getFirstAboveThresholdOrBest(
-                ctx, highSkills, input, HIGH_THRESHOLD_1
-            )
+            val bestHigh = getBestForSpecificity(ctx, highSkills, input)
             if (bestHigh != null && bestHigh.score.scoreIn01Range() > HIGH_THRESHOLD_1) {
                 return bestHigh
             }
 
             // second round: considering both medium- and high-priority skills
-            val bestMedium = getFirstAboveThresholdOrBest(
-                ctx, mediumSkills, input, MEDIUM_THRESHOLD_2
-            )
+            val bestMedium = getBestForSpecificity(ctx, mediumSkills, input)
             if (bestMedium != null && bestMedium.score.scoreIn01Range() > MEDIUM_THRESHOLD_2) {
                 return bestMedium
             } else if (bestHigh != null && bestHigh.score.scoreIn01Range() > HIGH_THRESHOLD_2) {
@@ -47,9 +43,7 @@ class SkillRanker(
             }
 
             // third round: all skills are considered
-            val bestLow = getFirstAboveThresholdOrBest(
-                ctx, lowSkills, input, LOW_THRESHOLD_3
-            )
+            val bestLow = getBestForSpecificity(ctx, lowSkills, input)
             if (bestLow != null && bestLow.score.scoreIn01Range() > LOW_THRESHOLD_3) {
                 return bestLow
             } else if (bestMedium != null && bestMedium.score.scoreIn01Range() > MEDIUM_THRESHOLD_3) {
@@ -63,11 +57,10 @@ class SkillRanker(
         }
 
         companion object {
-            private fun getFirstAboveThresholdOrBest(
+            private fun getBestForSpecificity(
                 ctx: SkillContext,
                 skills: List<Skill<*>>,
                 input: String,
-                threshold: Float
             ): SkillWithResult<*>? {
                 // this ensures that if `skills` is empty and null skill is returned,
                 // nothing bad happens since its score cannot be higher than any other float value.
@@ -76,9 +69,6 @@ class SkillRanker(
                     val res = skill.scoreAndWrapResult(ctx, input)
                     if (bestSkillSoFar == null || res.score.isBetterThan(bestSkillSoFar.score)) {
                         bestSkillSoFar = res
-                        if (res.score.scoreIn01Range() > threshold) {
-                            break
-                        }
                     }
                 }
                 return bestSkillSoFar
