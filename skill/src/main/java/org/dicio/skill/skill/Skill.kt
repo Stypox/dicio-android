@@ -16,12 +16,12 @@ abstract class Skill<InputData>(
 ) {
 
     /**
-     * Matches the user input and calculates a score in range [0, 1].
+     * Matches the user input, calculates a [Score] object and extracts data from the input.
      *
      * @param ctx the [SkillContext] object to use to access resources, query information from
      * the environment (e.g. get the current locale), read settings, parse numbers, ...
      * @param input raw input from the user
-     * @return a score in range [0, 1] representing how closely this skill matched the user input,
+     * @return a [Score] representing how closely this skill matched the user input,
      * along with any data about the input that [generateOutput] may need to generate output (will
      * actually be used only in case this skill turns out to be the best one)
      */
@@ -33,9 +33,9 @@ abstract class Skill<InputData>(
     /**
      * This will be called if this skill was deemed as the best one which could provide output for
      * what the user requested, based on its score and specificity. This method processes the input
-     * previously received by [Skill.score] (and stored in [inputData]), and generates output to
-     * speak or to show to the user. This will be called in a background thread, so if you need to
-     * run something on the main thread make sure to use coroutines or other means.
+     * data previously provided by [Skill.score] (and stored in [inputData]), and generates output
+     * to speak or to show to the user. This will be called in a background thread, so if you need
+     * to run something on the main thread make sure to use coroutines or other means.
      *
      * @param ctx the [SkillContext] object to use to access resources, query information from
      * the environment (e.g. get user contacts), read settings, parse numbers, ...
