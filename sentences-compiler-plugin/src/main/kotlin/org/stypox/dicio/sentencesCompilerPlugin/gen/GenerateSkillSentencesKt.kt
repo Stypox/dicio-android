@@ -103,7 +103,7 @@ private fun generateResultTypes(skill: ParsedSkill, superinterface: ClassName): 
 }
 
 private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: ClassName): FunSpec {
-    val fromStandardResultFun = FunSpec.builder("fromStandardResult")
+    val fromStandardResultFun = FunSpec.builder("fromStandardScore")
         .addParameter("input", String::class)
         .addParameter("sentenceId", String::class)
         .addParameter("score", ClassName("org.dicio.skill.standard", "StandardScore"))
@@ -157,7 +157,7 @@ private fun generateLanguageToDataProperty(skill: ParsedSkill, resultType: Class
                         standardRecognizerDataClassName,
                         ClassName("org.dicio.skill.skill", "Specificity"),
                         skill.specificity.name,
-                        "::fromStandardResult",
+                        "::fromStandardScore",
                         *sentences.flatMap { sentence ->
                             sequenceOf(
                                 sentence.id,
