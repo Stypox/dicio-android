@@ -11,6 +11,7 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.eval.SkillHandler
+import org.stypox.dicio.util.toStateFlowDistinctBlockingFirst
 import javax.inject.Inject
 
 
@@ -21,8 +22,14 @@ class SkillSettingsViewModel @Inject constructor(
     val skillContext: SkillContext,
     private val skillHandler: SkillHandler,
 ) : AndroidViewModel(application) {
+
     val skills: List<SkillInfo> get() = skillHandler.allSkillInfoList
-    val enabledSkills = dataStore.data.map { it.enabledSkillsMap }
+
+    // run blocking because the settings screen cannot start if settings have not been loaded yet
+    val enabledSkills = dataStore.data
+        .map { it.enabledSkillsMap }
+        .toStateFlowDistinctBlockingFirst(viewModelScope)
+
     val numberLibraryNotAvailable = skillContext.parserFormatter == null
 
     fun setSkillEnabled(id: String, state: Boolean) {

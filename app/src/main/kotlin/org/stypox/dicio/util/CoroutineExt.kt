@@ -1,8 +1,12 @@
 package org.stypox.dicio.util
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -32,4 +36,13 @@ private class DistinctFlowWithFirstValue<T>(
 fun <T> Flow<T>.distinctUntilChangedBlockingFirst(): Pair<T, Flow<T>> {
     val firstValue: T = runBlocking { first() }
     return Pair(firstValue, DistinctFlowWithFirstValue(this, firstValue))
+}
+
+fun <T> Flow<T>.toStateFlowDistinctBlockingFirst(scope: CoroutineScope): StateFlow<T> {
+    val (firstValue, nextValueFlow) = distinctUntilChangedBlockingFirst()
+    val stateFlow = MutableStateFlow(firstValue)
+    scope.launch {
+        nextValueFlow.collect { stateFlow.emit(it) }
+    }
+    return stateFlow
 }

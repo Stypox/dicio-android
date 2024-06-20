@@ -11,6 +11,7 @@ import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettings
+import org.stypox.dicio.util.toStateFlowDistinctBlockingFirst
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +19,9 @@ class MainSettingsViewModel @Inject constructor(
     application: Application,
     private val dataStore: DataStore<UserSettings>
 ) : AndroidViewModel(application) {
-    val settingsFlow = dataStore.data
+    // run blocking because the settings screen cannot start if settings have not been loaded yet
+    val settingsState = dataStore.data
+        .toStateFlowDistinctBlockingFirst(viewModelScope)
 
     private fun updateData(transform: (UserSettings.Builder) -> Unit) {
         viewModelScope.launch {

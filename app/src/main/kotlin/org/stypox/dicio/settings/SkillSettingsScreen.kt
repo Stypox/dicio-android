@@ -84,8 +84,7 @@ fun SkillSettingsScreen(
     modifier: Modifier = Modifier,
 ) {
     val skills = viewModel.skills
-    val enabledSkills by viewModel.enabledSkills
-        .collectAsState(initial = mapOf())
+    val enabledSkills by viewModel.enabledSkills.collectAsState()
 
     LazyColumn(
         contentPadding = PaddingValues(top = 4.dp, bottom = 4.dp),

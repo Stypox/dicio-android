@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,8 +66,7 @@ private fun MainSettingsScreen(
     viewModel: MainSettingsViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val settingsState = viewModel.settingsFlow.collectAsState(initial = null)
-    val settings = settingsState.value ?: return // do not render until settings are loaded
+    val settings by viewModel.settingsState.collectAsState()
 
     LazyColumn(modifier) {
         item { SettingsCategoryTitle(stringResource(R.string.pref_general), topPadding = 4.dp) }
