@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,6 +54,10 @@ import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
 import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
 import org.stypox.dicio.eval.SkillHandler
+import org.stypox.dicio.skills.lyrics.LyricsInfo
+import org.stypox.dicio.skills.search.SearchInfo
+import org.stypox.dicio.skills.weather.WeatherInfo
+import org.stypox.dicio.skills.weather.WeatherSkill
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.util.PermissionUtils
@@ -124,11 +129,30 @@ fun SkillSettingsItem(
     skill: SkillInfo,
     isAvailable: Boolean,
     enabled: Boolean,
-    setEnabled: (Boolean) -> Unit
+    setEnabled: (Boolean) -> Unit,
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    SkillSettingsItem(
+        skill = skill,
+        isAvailable = isAvailable,
+        enabled = enabled,
+        setEnabled = setEnabled,
+        expanded = expanded,
+        toggleExpanded = { expanded = !expanded },
+    )
+}
+
+@Composable
+fun SkillSettingsItem(
+    skill: SkillInfo,
+    isAvailable: Boolean,
+    enabled: Boolean,
+    setEnabled: (Boolean) -> Unit,
+    expanded: Boolean,
+    toggleExpanded: () -> Unit,
 ) {
     val canExpand = isAvailable &&
             (skill.renderSettings != null || skill.neededPermissions.isNotEmpty())
-    var expanded by rememberSaveable { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -138,7 +162,7 @@ fun SkillSettingsItem(
     ) {
         SkillSettingsItemHeader(
             expanded = expanded,
-            toggleExpanded = if (canExpand) { -> expanded = !expanded } else null,
+            toggleExpanded = if (canExpand) toggleExpanded else null,
             skill = skill,
             enabled = enabled && isAvailable,
             setEnabled = setEnabled,
@@ -294,6 +318,48 @@ private fun SkillSettingsItemPreview(@PreviewParameter(SkillInfoPreviews::class)
         enabled = false,
         setEnabled = {},
     )
+}
+
+// this preview is useful to take screenshots
+@Preview
+@Composable
+private fun ThreeSkillSettingsItemsPreview() {
+    AppTheme {
+        LazyColumn(
+            contentPadding = PaddingValues(top = 4.dp, bottom = 4.dp),
+        ) {
+            item {
+                SkillSettingsItem(
+                    skill = WeatherInfo,
+                    isAvailable = true,
+                    enabled = true,
+                    setEnabled = {},
+                    expanded = true,
+                    toggleExpanded = {},
+                )
+            }
+            item {
+                SkillSettingsItem(
+                    skill = SearchInfo,
+                    isAvailable = true,
+                    enabled = false,
+                    setEnabled = {},
+                    expanded = false,
+                    toggleExpanded = {},
+                )
+            }
+            item {
+                SkillSettingsItem(
+                    skill = LyricsInfo,
+                    isAvailable = false,
+                    enabled = true,
+                    setEnabled = {},
+                    expanded = false,
+                    toggleExpanded = {},
+                )
+            }
+        }
+    }
 }
 
 @Preview
