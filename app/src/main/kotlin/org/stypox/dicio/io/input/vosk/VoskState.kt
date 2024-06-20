@@ -32,7 +32,7 @@ import org.vosk.android.SpeechService
 sealed interface VoskState {
 
     /**
-     * The VoskInputDevice has not been initialized yet (waiting for a locale to be available)
+     * The VoskInputDevice has not been initialized yet, or has just been deinitialized
      */
     data object NotInitialized : VoskState
 

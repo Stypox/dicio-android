@@ -54,6 +54,7 @@ import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
 import org.stypox.dicio.io.input.vosk.VoskState.NotInitialized
 import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.util.LocaleUtils
+import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import org.vosk.BuildConfig
 import org.vosk.LibVosk
 import org.vosk.LogLevel
@@ -66,18 +67,16 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Locale
 import java.util.zip.ZipInputStream
-import javax.inject.Inject
-import javax.inject.Singleton
 
-class VoskInputDevice constructor(
+class VoskInputDevice(
     @ApplicationContext appContext: Context,
     private val okHttpClient: OkHttpClient,
     localeManager: LocaleManager,
 ) : SttInputDevice {
 
-    private val _state: MutableStateFlow<VoskState> = MutableStateFlow(NotInitialized)
-    private val _uiState: MutableStateFlow<SttState> = MutableStateFlow(NotInitialized.toUiState())
-    override val uiState: StateFlow<SttState> = _uiState
+    private val _state: MutableStateFlow<VoskState>
+    private val _uiState: MutableStateFlow<SttState>
+    override val uiState: StateFlow<SttState>
 
     private var operationsJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -91,19 +90,28 @@ class VoskInputDevice constructor(
 
 
     init {
+        // Run blocking, because the locale is always available right away since LocaleManager also
+        // initializes in a blocking way. Moreover, if VoskInputDevice were not initialized straight
+        // away, the tryLoad() call when MainActivity starts may do nothing.
+        val (firstLocale, nextLocaleFlow) = localeManager.locale
+            .distinctUntilChangedBlockingFirst()
+
+        val initialState = init(firstLocale)
+        _state = MutableStateFlow(initialState)
+        _uiState = MutableStateFlow(initialState.toUiState())
+        uiState = _uiState
+
         scope.launch {
             _state.collect { _uiState.value = it.toUiState() }
         }
+
         scope.launch {
-            // perform initialization every time the locale changes
-            localeManager.locale.collect { init(it) }
+            // perform initialization again every time the locale changes
+            nextLocaleFlow.collect { reinit(it) }
         }
     }
 
-    private suspend fun init(locale: Locale) {
-        // interrupt whatever was happening before
-        deinit()
-
+    private fun init(locale: Locale): VoskState {
         // choose the model url based on the locale
         val modelUrl = try {
             val localeResolutionResult = LocaleUtils.resolveSupportedLocale(
@@ -123,7 +131,7 @@ class VoskInputDevice constructor(
             true
         }
 
-        val initialState = when {
+        return when {
             // if the modelUrl is null, then the current locale is not supported by any Vosk model
             modelUrl == null -> NotAvailable
             // if the model url changed, the model needs to be re-downloaded
@@ -140,7 +148,14 @@ class VoskInputDevice constructor(
             // has not been downloaded yet
             else -> NotDownloaded(modelUrl)
         }
+    }
 
+    private suspend fun reinit(locale: Locale) {
+        // interrupt whatever was happening before
+        deinit()
+
+        // reinitialize and emit the new state
+        val initialState = init(locale)
         _state.emit(initialState)
     }
 

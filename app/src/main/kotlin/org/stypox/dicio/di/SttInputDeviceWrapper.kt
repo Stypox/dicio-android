@@ -15,9 +15,11 @@ import okhttp3.OkHttpClient
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.vosk.VoskInputDevice
+import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.InputDevice.*
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.ui.home.SttState
+import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,35 +41,47 @@ class SttInputDeviceWrapper @Inject constructor(
 
 
     init {
-        // TODO the datastore might provide the input device later than the main activity starts,
-        //  causing any tryLoad() to do nothing
-        scope.launch {
-            dataStore.data
-                .map { it.inputDevice }
-                .distinctUntilChanged()
-                .collect { setting ->
-                    val prevSttInputDevice = sttInputDevice
-                    sttInputDevice = when (setting) {
-                        null,
-                        UNRECOGNIZED,
-                        INPUT_DEVICE_UNSET,
-                        INPUT_DEVICE_VOSK -> VoskInputDevice(
-                            appContext, okHttpClient, localeManager
-                        )
-                        INPUT_DEVICE_NOTHING -> null
-                    }
-                    prevSttInputDevice?.destroy()
+        // Run blocking, because the data store is always available right away since LocaleManager
+        // also initializes in a blocking way from the same data store.
+        val (firstInputDevice, nextInputDeviceFlow) = dataStore.data
+            .map { it.inputDevice }
+            .distinctUntilChangedBlockingFirst()
 
-                    uiStateJob?.cancel()
-                    val newSttInputDevice = sttInputDevice
-                    if (newSttInputDevice == null) {
-                        _uiState.emit(null)
-                    } else {
-                        uiStateJob = launch {
-                            newSttInputDevice.uiState.collect { _uiState.emit(it) }
-                        }
-                    }
-                }
+        sttInputDevice = buildInputDevice(firstInputDevice)
+        scope.launch {
+            restartUiStateJob()
+        }
+
+        scope.launch {
+            nextInputDeviceFlow.collect { setting ->
+                val prevSttInputDevice = sttInputDevice
+                sttInputDevice = buildInputDevice(setting)
+                prevSttInputDevice?.destroy()
+                restartUiStateJob()
+            }
+        }
+    }
+
+    private fun buildInputDevice(setting: InputDevice): SttInputDevice? {
+        return when (setting) {
+            UNRECOGNIZED,
+            INPUT_DEVICE_UNSET,
+            INPUT_DEVICE_VOSK -> VoskInputDevice(
+                appContext, okHttpClient, localeManager
+            )
+            INPUT_DEVICE_NOTHING -> null
+        }
+    }
+
+    private suspend fun restartUiStateJob() {
+        uiStateJob?.cancel()
+        val newSttInputDevice = sttInputDevice
+        if (newSttInputDevice == null) {
+            _uiState.emit(null)
+        } else {
+            uiStateJob = scope.launch {
+                newSttInputDevice.uiState.collect { _uiState.emit(it) }
+            }
         }
     }
 
