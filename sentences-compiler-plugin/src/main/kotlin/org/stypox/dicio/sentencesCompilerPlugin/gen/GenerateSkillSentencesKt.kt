@@ -143,12 +143,14 @@ private fun generateLanguageToDataProperty(skill: ParsedSkill, resultType: Class
             "languageToData",
             Map::class.asTypeName().parameterizedBy(
                 String::class.asTypeName(),
-                standardRecognizerDataClassName
+                Lazy::class.asTypeName().parameterizedBy(
+                    standardRecognizerDataClassName
+                )
             )
         )
         .addModifiers(KModifier.PRIVATE)
         .initializer(
-            "mapOf(${"%S to %L,".repeat(skill.languageToSentences.size)})",
+            "mapOf(${"%S to lazy { %L },".repeat(skill.languageToSentences.size)})",
             *skill.languageToSentences.flatMap { (language, sentences) ->
                 sequenceOf(
                     language,
@@ -181,7 +183,7 @@ private fun generateGetOperator(resultType: ClassName): FunSpec {
                 .parameterizedBy(resultType)
                 .copy(nullable = true)
         )
-        .addCode("return languageToData[language]")
+        .addCode("return languageToData[language]?.value")
         .build()
 }
 
