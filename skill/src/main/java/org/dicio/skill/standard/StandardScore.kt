@@ -28,10 +28,15 @@ data class StandardScore(
      * [[0, 1]] is needed, e.g. to compare with scores of other types.
      */
     override fun scoreIn01Range(): Float {
-        // TODO choose better expression
-        return 0.5f * (
-                (if (userWeight > 0.0f) userMatched / userWeight else 0.0f) +
-                (if (refWeight > 0.0f) refMatched / refWeight else 0.0f)
+        if (userMatched <= 0.0f || userWeight <= 0.0f || refMatched <= 0.0f || refWeight <= 0.0f) {
+            return 0.0f
+        }
+
+        // use harmonic mean so that if one of the two terms is significantly lower than the other,
+        // the mean tends towards the lower one
+        return 2.0f / (
+                userWeight / userMatched +
+                refWeight / refMatched
         )
     }
 
