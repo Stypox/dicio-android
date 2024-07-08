@@ -1,6 +1,6 @@
 set:
   - timer|(ping me in) .duration.
-  - (set up?)|setup|start|create a? (.duration.? timer)|(timer for|of .duration. (called|named|(with the name) .name.)?)
+  - (set up?)|setup|start|create a? (.duration. time<r|rs?>)|(time<r|rs?> (for|of .duration.)? (called|named|(with the name) .name.)?)
 
 cancel:
   - cancel|stop|disable|end|terminate the? (.name.? time<r|rs?>)|(time<r|rs?> called|named|(with the name) .name.)
