@@ -2,6 +2,7 @@
 accompanist = "0.34.0"
 activityCompose = "1.9.0"
 androidGradlePlugin = "8.2.2"
+androidxTest = "1.6.1"
 appcompat = "1.7.0"
 coilCompose = "2.6.0"
 composeBom = "2024.06.00"
@@ -70,6 +71,8 @@ protobuf-java-lite = { module = "com.google.protobuf:protobuf-javalite", version
 protobuf-kotlin-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protoc" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 test-android-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+test-rules = { module = "androidx.test:rules", version.ref = "androidxTest" }
+test-runner = { module = "androidx.test:runner", version.ref = "androidxTest" }
 unbescape = { module = "org.unbescape:unbescape", version.ref = "unbescape" }
 vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
 

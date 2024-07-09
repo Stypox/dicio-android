@@ -2,13 +2,16 @@ package org.stypox.dicio.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -16,15 +19,16 @@ import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.vosk.VoskInputDevice
 import org.stypox.dicio.settings.datastore.InputDevice
-import org.stypox.dicio.settings.datastore.InputDevice.*
+import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_NOTHING
+import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_UNSET
+import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_VOSK
+import org.stypox.dicio.settings.datastore.InputDevice.UNRECOGNIZED
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
-import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class SttInputDeviceWrapper @Inject constructor(
+open class SttInputDeviceWrapper(
     @ApplicationContext private val appContext: Context,
     dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
@@ -62,7 +66,7 @@ class SttInputDeviceWrapper @Inject constructor(
         }
     }
 
-    private fun buildInputDevice(setting: InputDevice): SttInputDevice? {
+    protected open fun buildInputDevice(setting: InputDevice): SttInputDevice? {
         return when (setting) {
             UNRECOGNIZED,
             INPUT_DEVICE_UNSET,
@@ -92,5 +96,20 @@ class SttInputDeviceWrapper @Inject constructor(
 
     fun onClick(eventListener: (InputEvent) -> Unit) {
         sttInputDevice?.onClick(eventListener)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+class SttInputDeviceWrapperModule {
+    @Provides
+    @Singleton
+    fun provideInputDeviceWrapper(
+        @ApplicationContext appContext: Context,
+        dataStore: DataStore<UserSettings>,
+        localeManager: LocaleManager,
+        okHttpClient: OkHttpClient,
+    ): SttInputDeviceWrapper {
+        return SttInputDeviceWrapper(appContext, dataStore, localeManager, okHttpClient)
     }
 }

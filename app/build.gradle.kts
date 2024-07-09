@@ -31,7 +31,7 @@ android {
         targetSdk = 34
         versionCode = 10
         versionName = "0.10"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.stypox.dicio.CustomTestRunner"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -140,7 +140,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestAnnotationProcessor(libs.hilt.android.compiler)
+    //androidTestAnnotationProcessor(libs.hilt.android.compiler)
     testImplementation(libs.hilt.android.testing)
     testAnnotationProcessor(libs.hilt.android.compiler)
 
@@ -176,4 +176,13 @@ dependencies {
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.kotest.property)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.test.rules)
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        force("androidx.test:core:1.6.0")
+        // or force libs.test.core
+    }
 }
