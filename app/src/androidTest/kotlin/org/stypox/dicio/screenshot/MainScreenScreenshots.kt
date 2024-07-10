@@ -5,7 +5,9 @@ import android.content.Context
 import android.view.WindowInsets
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.datastore.core.DataStore
@@ -152,11 +154,20 @@ class MainScreenScreenshots {
             .performScrollToIndex(2) // scroll to the first interaction
         composeRule.takeScreenshot("en-US", "2")
 
-        // screenshot 3: skill settings screen
-        composeRule.takeScreenshot("en-US", "3")
-
         // screenshot 4: settings screen
+        composeRule.onNodeWithTag("drawer_handle")
+            .performClick() // open the drawer
+        composeRule.onNodeWithTag("settings_drawer_item")
+            .performClick() // open the settings screen
         composeRule.takeScreenshot("en-US", "4")
+
+        // screenshot 3: skill settings screen
+        composeRule.onNodeWithTag("skill_settings_item")
+            .performClick() // open the skill settings screen
+        composeRule.onAllNodesWithTag("expand_skill_settings_handle").apply {
+            fetchSemanticsNodes().forEachIndexed { i, _ -> get(i).performClick() }
+        } // expand all skill settings
+        composeRule.takeScreenshot("en-US", "3")
     }
 
     companion object {

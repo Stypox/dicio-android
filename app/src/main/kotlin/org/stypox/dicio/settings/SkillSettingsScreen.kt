@@ -42,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -236,7 +237,10 @@ private fun SkillSettingsItemHeader(
             color = maybeDisabledColor,
         )
         if (toggleExpanded != null) {
-            IconButton(onClick = toggleExpanded) {
+            IconButton(
+                onClick = toggleExpanded,
+                modifier = Modifier.testTag("expand_skill_settings_handle"),
+            ) {
                 Icon(
                     modifier = Modifier.rotate(expandedAnimation),
                     imageVector = Icons.Default.ArrowDropDown,
