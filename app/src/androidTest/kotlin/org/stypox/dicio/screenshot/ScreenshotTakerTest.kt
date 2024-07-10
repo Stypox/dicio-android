@@ -64,13 +64,8 @@ class ScreenshotTakerTest {
     class FakeSttInputDeviceWrapperModule {
         @Provides
         @Singleton
-        fun provideInputDeviceWrapper(
-            @ApplicationContext appContext: Context,
-            dataStore: DataStore<UserSettings>,
-            localeManager: LocaleManager,
-            okHttpClient: OkHttpClient,
-        ): SttInputDeviceWrapper {
-            return FakeSttInputDeviceWrapper(appContext, dataStore, localeManager, okHttpClient)
+        fun provideInputDeviceWrapper(): SttInputDeviceWrapper {
+            return FakeSttInputDeviceWrapper()
         }
     }
 
@@ -137,12 +132,12 @@ class ScreenshotTakerTest {
 
         // screenshot 0: home screen with "Here is what I can do" and STT listening
         dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
-        fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Listening)
+        fakeSttInputDeviceWrapper.uiState.emit(SttState.Listening)
         composeRule.takeScreenshot("en-US", "0")
 
         // screenshot 1: home screen with interactions with weather, timer and lyrics skills
         dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
-        fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Loaded)
+        fakeSttInputDeviceWrapper.uiState.emit(SttState.Loaded)
         coilEventListener.resetStartedImages()
         fakeSkillEvaluator.state.value = screenshot2InteractionLog
         composeRule.onNodeWithTag("interaction_list")
@@ -152,7 +147,7 @@ class ScreenshotTakerTest {
 
         // screenshot 2: home screen with interactions with calculator, telephone and search skills
         dataStore.updateData { it.copy { theme = Theme.THEME_BLACK } }
-        fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Loaded)
+        fakeSttInputDeviceWrapper.uiState.emit(SttState.Loaded)
         coilEventListener.resetStartedImages()
         fakeSkillEvaluator.state.value = screenshot3InteractionLog
         composeRule.onNodeWithTag("interaction_list")

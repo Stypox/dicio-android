@@ -28,19 +28,27 @@ import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import javax.inject.Singleton
 
-open class SttInputDeviceWrapper(
+interface SttInputDeviceWrapper {
+    val uiState: StateFlow<SttState?>
+
+    fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?)
+
+    fun onClick(eventListener: (InputEvent) -> Unit)
+}
+
+class SttInputDeviceWrapperImpl(
     @ApplicationContext private val appContext: Context,
     dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
     private val okHttpClient: OkHttpClient,
-) {
+) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
     private var sttInputDevice: SttInputDevice? = null
 
     // null means that the user has not enabled any STT input device
     private val _uiState: MutableStateFlow<SttState?> = MutableStateFlow(null)
-    val uiState: StateFlow<SttState?> = _uiState
+    override val uiState: StateFlow<SttState?> = _uiState
     private var uiStateJob: Job? = null
 
 
@@ -66,8 +74,7 @@ open class SttInputDeviceWrapper(
         }
     }
 
-    // overridden in tests (TODO is there a better solution?)
-    protected open fun buildInputDevice(setting: InputDevice): SttInputDevice? {
+    private fun buildInputDevice(setting: InputDevice): SttInputDevice? {
         return when (setting) {
             UNRECOGNIZED,
             INPUT_DEVICE_UNSET,
@@ -91,11 +98,11 @@ open class SttInputDeviceWrapper(
     }
 
 
-    fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
+    override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
         sttInputDevice?.tryLoad(thenStartListeningEventListener)
     }
 
-    fun onClick(eventListener: (InputEvent) -> Unit) {
+    override fun onClick(eventListener: (InputEvent) -> Unit) {
         sttInputDevice?.onClick(eventListener)
     }
 }
@@ -111,6 +118,6 @@ class SttInputDeviceWrapperModule {
         localeManager: LocaleManager,
         okHttpClient: OkHttpClient,
     ): SttInputDeviceWrapper {
-        return SttInputDeviceWrapper(appContext, dataStore, localeManager, okHttpClient)
+        return SttInputDeviceWrapperImpl(appContext, dataStore, localeManager, okHttpClient)
     }
 }
