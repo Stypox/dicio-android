@@ -80,7 +80,7 @@ tasks.withType<Test>().configureEach {
 
 protobuf {
     protoc {
-        libs.protobuf.protoc.get().toString()
+        artifact = libs.protobuf.protoc.get().toString()
     }
     plugins {
         generateProtoTasks {
