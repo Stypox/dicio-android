@@ -16,10 +16,13 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Setup Python dependencies for the screenshot server
+        run: python -m pip install flask
+
       - name: Start screenshot server
         run: python ./app/src/androidTest/kotlin/org/stypox/dicio/screenshot/screenshot_server.py &
 
-      - name: run tests
+      - name: Run Android instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
