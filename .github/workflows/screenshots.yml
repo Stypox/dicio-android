@@ -28,8 +28,14 @@ jobs:
           api-level: 34
           target: default
           arch: x86_64
-          profile: Pixel 3a XL
+          profile: Nexus 5X
           script: ./gradlew connectedCheck -P android.testInstrumentationRunnerArguments.class=org.stypox.dicio.screenshot.ScreenshotTakerTest
 
       - name: Print git status
         run: git status
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: gh-action-update-screenshots
+          commit-message: "Update screenshots"
