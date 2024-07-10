@@ -33,6 +33,19 @@ gradlePlugin {
     }
 }
 
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.get())
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
+    }
+}
+
+
 dependencies {
     // these dependencies are usually compile-time dependencies, but since this is a plugin, we want
     // to access the gradle libraries at the runtime of the plugin, which happens at compile-time
