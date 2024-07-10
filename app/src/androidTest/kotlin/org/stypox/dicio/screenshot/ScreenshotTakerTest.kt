@@ -9,7 +9,6 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
-import androidx.compose.ui.test.performScrollToNode
 import androidx.datastore.core.DataStore
 import androidx.test.rule.GrantPermissionRule
 import dagger.Module
@@ -43,7 +42,6 @@ import org.stypox.dicio.skills.search.SearchOutput
 import org.stypox.dicio.skills.telephone.ConfirmCallOutput
 import org.stypox.dicio.skills.telephone.ConfirmedCallOutput
 import org.stypox.dicio.skills.telephone.TelephoneInfo
-import org.stypox.dicio.skills.telephone.TelephoneOutput
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.timer.TimerOutput
 import org.stypox.dicio.skills.weather.WeatherInfo
@@ -60,7 +58,7 @@ import javax.inject.Singleton
     SkillEvaluatorModule::class,
 )
 @HiltAndroidTest
-class MainScreenScreenshots {
+class ScreenshotTakerTest {
     @Module
     @InstallIn(SingletonComponent::class)
     class FakeSttInputDeviceWrapperModule {
