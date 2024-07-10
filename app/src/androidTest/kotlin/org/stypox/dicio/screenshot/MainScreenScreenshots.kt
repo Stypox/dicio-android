@@ -2,7 +2,8 @@ package org.stypox.dicio.screenshot
 
 import android.Manifest
 import android.content.Context
-import androidx.compose.foundation.layout.WindowInsets
+import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE
+import android.view.WindowInsets
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.datastore.core.DataStore
 import androidx.test.rule.GrantPermissionRule
@@ -16,6 +17,8 @@ import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
+import okhttp3.internal.notify
+import okhttp3.internal.wait
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -53,13 +56,17 @@ class MainScreenScreenshots {
         sttInputDeviceWrapper as FakeSttInputDeviceWrapper
 
     @get:Rule(order = 0)
-    var hiltRule = HiltAndroidRule(this)
+    val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    var permissionRule: GrantPermissionRule =
+    val permissionRule: GrantPermissionRule =
         GrantPermissionRule.grant(Manifest.permission.RECORD_AUDIO)
 
+    // needed to make hiding status/navigation bars instantaneous
     @get:Rule(order = 2)
+    val disableAnimationsRule = DisableAnimationsRule()
+
+    @get:Rule(order = 3)
     val composeRule = createAndroidComposeRule<MainActivity>()
 
     @Before
@@ -69,6 +76,10 @@ class MainScreenScreenshots {
 
     @Test
     fun takeScreenshots() {
+        composeRule.activity.runOnUiThread {
+            composeRule.activity.window.decorView.windowInsetsController!!
+                .hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+        }
         runBlocking { fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Listening) }
         composeRule.takeScreenshot("en-US", "0")
         runBlocking { fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Loaded) }

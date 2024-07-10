@@ -178,11 +178,13 @@ dependencies {
     testImplementation(libs.kotest.property)
     androidTestImplementation(libs.test.runner)
     androidTestImplementation(libs.test.rules)
+    androidTestImplementation(libs.test.ui.automator)
 }
 
+// this is required to avoid NoClassDefFoundError for ActivityInvoker during androidTest
+// https://github.com/android/android-test/issues/2247#issuecomment-2194435444
 configurations.configureEach {
     resolutionStrategy {
-        force("androidx.test:core:1.6.0")
-        // or force libs.test.core
+        force(libs.test.core)
     }
 }
