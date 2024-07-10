@@ -31,7 +31,9 @@ import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapperModule
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillEvaluatorModule
+import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettings
+import org.stypox.dicio.settings.datastore.copy
 import org.stypox.dicio.skills.calculator.CalculatorInfo
 import org.stypox.dicio.skills.calculator.CalculatorOutput
 import org.stypox.dicio.skills.lyrics.LyricsInfo
@@ -96,6 +98,9 @@ class MainScreenScreenshots {
 
     private val fakeSkillEvaluator: FakeSkillEvaluator get() =
         skillEvaluator as FakeSkillEvaluator
+    
+    @Inject
+    lateinit var dataStore: DataStore<UserSettings>
 
 
     // must run before anything else
@@ -133,28 +138,32 @@ class MainScreenScreenshots {
 
 
         // screenshot 0: home screen with "Here is what I can do" and STT listening
+        dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
         fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Listening)
         composeRule.takeScreenshot("en-US", "0")
 
         // screenshot 1: home screen with interactions with weather, timer and lyrics skills
+        dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
         fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Loaded)
         coilEventListener.resetStartedImages()
         fakeSkillEvaluator.state.value = screenshot2InteractionLog
-        composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 1) }
         composeRule.onNodeWithTag("interaction_list")
             .performScrollToIndex(2) // scroll to the first interaction
+        composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 1) }
         composeRule.takeScreenshot("en-US", "1")
 
         // screenshot 2: home screen with interactions with calculator, telephone and search skills
+        dataStore.updateData { it.copy { theme = Theme.THEME_BLACK } }
         fakeSttInputDeviceWrapper.fakeUiState.emit(SttState.Loaded)
         coilEventListener.resetStartedImages()
         fakeSkillEvaluator.state.value = screenshot3InteractionLog
-        composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 2) }
         composeRule.onNodeWithTag("interaction_list")
             .performScrollToIndex(2) // scroll to the first interaction
+        composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 2) }
         composeRule.takeScreenshot("en-US", "2")
 
         // screenshot 4: settings screen
+        dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
         composeRule.onNodeWithTag("drawer_handle")
             .performClick() // open the drawer
         composeRule.onNodeWithTag("settings_drawer_item")
@@ -162,6 +171,7 @@ class MainScreenScreenshots {
         composeRule.takeScreenshot("en-US", "4")
 
         // screenshot 3: skill settings screen
+        dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
         composeRule.onNodeWithTag("skill_settings_item")
             .performClick() // open the skill settings screen
         composeRule.onAllNodesWithTag("expand_skill_settings_handle").apply {
