@@ -51,13 +51,13 @@ val includeGitRepos = listOf(
         name = "dicio-numbers",
         uri = "https://github.com/Stypox/dicio-numbers",
         projectPath = ":numbers",
-        commit = "3206f161e80b349168fedcc21a601e5ea9b05961",
+        commit = "55f027debf0b44cb71a431b1ab927de6df2eefcc",
     ),
     IncludeGitRepo(
         name = "dicio-sentences-compiler",
         uri = "https://github.com/Stypox/dicio-sentences-compiler",
         projectPath = ":sentences_compiler",
-        commit = "6862bd9b351ca55a457fd3f88ad764d5b7e71543",
+        commit = "50dd8f7b04b43a956156f8a792eaf5d83d8cbdf8",
     ),
 )
 
