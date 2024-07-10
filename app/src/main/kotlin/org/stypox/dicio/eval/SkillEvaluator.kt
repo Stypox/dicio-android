@@ -1,6 +1,10 @@
 package org.stypox.dicio.eval
 
 import android.util.Log
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,17 +21,26 @@ import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.PendingQuestion
 import org.stypox.dicio.ui.home.QuestionAnswer
-import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class SkillEvaluator @Inject constructor(
+interface SkillEvaluator {
+    val state: StateFlow<InteractionLog>
+
+    var permissionRequester: suspend (Array<String>) -> Boolean
+
+    fun processInputEvent(event: InputEvent)
+}
+
+class SkillEvaluatorImpl(
     private val skillContext: SkillContext,
     private val skillHandler: SkillHandler,
     private val sttInputDevice: SttInputDeviceWrapper,
-) {
+) : SkillEvaluator {
 
     private val scope = CoroutineScope(Dispatchers.Default)
+
+    private val skillRanker: SkillRanker
+        get() = skillHandler.skillRanker.value
 
     private val _state = MutableStateFlow(
         InteractionLog(
@@ -35,15 +48,12 @@ class SkillEvaluator @Inject constructor(
             pendingQuestion = null,
         )
     )
-    val state: StateFlow<InteractionLog> = _state
-
-    private val skillRanker: SkillRanker
-        get() = skillHandler.skillRanker.value
+    override val state: StateFlow<InteractionLog> = _state
 
     // must be kept up to date even when the activity is recreated, for this reason it is `var`
-    var permissionRequester: suspend (Array<String>) -> Boolean = { false }
+    override var permissionRequester: suspend (Array<String>) -> Boolean = { false }
 
-    fun processInputEvent(event: InputEvent) {
+    override fun processInputEvent(event: InputEvent) {
         scope.launch {
             suspendProcessInputEvent(event)
         }
@@ -183,5 +193,19 @@ class SkillEvaluator @Inject constructor(
 
     companion object {
         val TAG = SkillEvaluator::class.simpleName
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+class SkillEvaluatorModule {
+    @Provides
+    @Singleton
+    fun provideSkillEvaluator(
+        skillContext: SkillContext,
+        skillHandler: SkillHandler,
+        sttInputDevice: SttInputDeviceWrapper,
+    ): SkillEvaluator {
+        return SkillEvaluatorImpl(skillContext, skillHandler, sttInputDevice)
     }
 }

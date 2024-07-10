@@ -33,7 +33,7 @@ fun ComposeContentTestRule.takeScreenshot(language: String, name: String) {
  * address is always 10.0.2.2, and this function requires that `screenshot_server.py` is running on
  * the host PC.
  */
-private fun Bitmap.saveToHostPc(language: String, name: String) {
+fun Bitmap.saveToHostPc(language: String, name: String) {
     val image = ByteArrayOutputStream()
         .use { out ->
             compress(Bitmap.CompressFormat.PNG, 100, out)

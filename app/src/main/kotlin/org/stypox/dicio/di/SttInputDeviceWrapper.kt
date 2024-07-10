@@ -66,6 +66,7 @@ open class SttInputDeviceWrapper(
         }
     }
 
+    // overridden in tests (TODO is there a better solution?)
     protected open fun buildInputDevice(setting: InputDevice): SttInputDevice? {
         return when (setting) {
             UNRECOGNIZED,

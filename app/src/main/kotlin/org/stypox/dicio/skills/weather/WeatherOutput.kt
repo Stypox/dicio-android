@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -105,6 +106,7 @@ fun WeatherImage(iconUrl: String, description: String, widthFraction: Float) {
         contentDescription = description,
         modifier = Modifier
             .fillMaxWidth(widthFraction)
-            .aspectRatio(1.0f),
+            .aspectRatio(1.0f)
+            .testTag("weather_image"),
     )
 }
