@@ -17,6 +17,9 @@ jobs:
           distribution: "temurin"
           cache: 'gradle'
 
+      - name: Install OptiPNG
+        run: sudo apt install optipng
+
       - name: Setup Python dependencies for the screenshot server
         run: python -m pip install flask
 
@@ -40,6 +43,9 @@ jobs:
 
       - name: Print git status
         run: git status
+
+      - name: Optimize PNGs
+        run: optipng fastlane/metadata/android/**/images/phoneScreenshots/*.png
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
