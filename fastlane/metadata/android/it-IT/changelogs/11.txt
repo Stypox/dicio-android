@@ -1,0 +1,14 @@
+Novità:
+- Design Material 3 con temi neri e dinamici
+- Migrazione del codice a Jetpack Compose e altre librerie moderne
+- Algoritmo di riconoscimento frasi più veloce e accurato
+- Skill APIs più semplici e potenti
+
+Miglioramenti:
+- [Vosk] Più informazioni di stato nel pulsante STT
+- Target Android 14 (API 34)
+- Migliorato il raggruppamento delle interazioni e aggiunto caricamento nella schermata home
+
+Correzioni:
+- [Vosk] Sistemato il download del modello
+- Risolti vari crash dell'UI

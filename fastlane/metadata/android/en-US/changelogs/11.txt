@@ -1,0 +1,14 @@
+New:
+- Material 3 design with black and dynamic themes
+- Migrate code to Jetpack Compose and other modern libs
+- Faster and more accurate sentence recognition algorithm
+- Simpler and more powerful Skill APIs
+
+Improved:
+- [Vosk] Report more status information in STT button
+- Target Android 14 (API 34)
+- Group interactions better and add loading box in home screen
+
+Fixed:
+- [Vosk] Fix Vosk model not downloading on some phones
+- Fix various UI crashes
