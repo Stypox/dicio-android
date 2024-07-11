@@ -51,4 +51,6 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: gh-action-update-screenshots
+          title: "Update screenshots"
+          body: "Automated changes by CI workflow \"Take screenshots and create Pull Request\""
           commit-message: "Update screenshots"
