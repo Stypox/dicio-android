@@ -16,7 +16,6 @@
     <string name="settings">Ayarlar</string>
     <string name="pref_io">Giriş ve çıkış yöntemleri</string>
     <string name="pref_appearance">Görünüm</string>
-    <string name="pref_skills_title">Yetenekler</string>
     <string name="pref_theme">Tema</string>
     <string name="pref_theme_light">Açık</string>
     <string name="pref_theme_dark">Koyu</string>
@@ -53,7 +52,7 @@
     <string name="skill_name_lyrics">Şarkı sözleri</string>
     <string name="skill_search_no_results">Arama sonuç vermedi, ne aramak istediğinizi bana tekrar söyleyin</string>
     <string name="skill_search_what_question">Ne aramak istiyorsun\?</string>
-    <string name="skill_weather_could_not_find_city">Şehri bulamadım %1$s</string>
+    <string name="skill_weather_could_not_find_city">%1$s şehri bulunamadı</string>
     <string name="skill_weather_min_max_wind">En düşük sıcaklık: %1$.1f°C
 \nEn yüksek sıcaklık: %2$.1f°C
 \nRüzgar hızı: %3$.1fm/sn</string>
@@ -64,7 +63,7 @@
     <string name="pref_input_method_summary">Dicio ile konuşmak için kullanılacak hizmeti seçin</string>
     <string name="skill_sentence_example_open">NewPipe\'ı aç</string>
     <string name="pref_language_system">Sistem dilini kullan</string>
-    <string name="pref_input_method_text">Metin kutusu</string>
+    <string name="pref_input_method_text">Yalnızca metin kutusu</string>
     <string name="eval_fatal_error">İsteğiniz değerlendirilemedi</string>
     <string name="skill_name_weather">Hava durumu</string>
     <string name="skill_sentence_example_lyrics">\"We will we will rock you\" hangi şarkıda geçiyor\?</string>
@@ -137,4 +136,34 @@
     <string name="skill_name_navigation">Navigasyon</string>
     <string name="skill_sentence_example_navigation">Vancouver uluslararası havaalanına git</string>
     <string name="skill_navigation_navigating_to">%1$s\'e gidiliyor</string>
+    <string name="pref_skills_summary">Yetenekleri etkinleştirin/devre dışı bırakın ve davranışlarını ayarlayın</string>
+    <string name="expand">Genişlet</string>
+    <string name="reduce">Azalt</string>
+    <string name="pref_theme_system">Sistem temasını kullan</string>
+    <string name="pref_theme_system_dark_black">Sistem temasını kullan (koyu tema için siyah çeşidini kullan)</string>
+    <string name="download">İndir</string>
+    <string name="pref_theme_black">Siyah</string>
+    <string name="pref_dynamic_colors_summary">Sistem tarafından sağlanan Material You değişken renklerini kullanın</string>
+    <string name="settings_description_with_value">%1$s — %2$s</string>
+    <string name="skill_open_could_not_understand">Uygulama anlaşılamadı</string>
+    <string name="back">Geri</string>
+    <string name="copy_to_clipboard">Panoya kopyala</string>
+    <string name="error_unzipping">Çıkarma sırasında hata oluştu</string>
+    <string name="clear">Temizle</string>
+    <string name="done">Bitti</string>
+    <string name="error_loading">Yüklenirken hata oluştu</string>
+    <string name="unzipping">Çıkartılıyor…</string>
+    <string name="stt_not_available">Konuşmadan metne kullanılabilir değil</string>
+    <string name="stt_unzip">Konuşmayı metne dönüştürmeyi çıkart</string>
+    <string name="downloaded">İndirildi</string>
+    <string name="stt_download">Konuşmayı metne dönüştürmeyi indir</string>
+    <string name="all_skills_disabled_title">Tüm yetenekler devre dışı bırakıldı</string>
+    <string name="start_listening">Dinlemeye başla</string>
+    <string name="all_skills_disabled_description">Lütfen ayarlardan bazı yetenekleri etkinleştirin, aksi takdirde Dicio hiçbir şey yapamayacaktır</string>
+    <string name="grant_microphone_permission">Mikrofon izni ver</string>
+    <string name="error_downloading">İndirirken hata oluştu</string>
+    <string name="loaded">Yüklendi</string>
+    <string name="pref_general">Genel</string>
+    <string name="pref_skills_title">Yetenekler</string>
+    <string name="pref_dynamic_colors_title">Değişken renkler</string>
 </resources>

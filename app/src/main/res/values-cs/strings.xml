@@ -35,7 +35,6 @@
     <string name="error_report_channel_description">Oznámení pro nahlášení chyb</string>
     <string name="pref_io">Způsoby vstupu a výstupu</string>
     <string name="pref_appearance">Vzhled</string>
-    <string name="pref_skills_title">Funkce</string>
     <string name="pref_theme">Motiv</string>
     <string name="pref_theme_summary">Vyberte barvy aplikace</string>
     <string name="pref_theme_light">Světlé</string>
@@ -45,7 +44,7 @@
     <string name="pref_language_system">Použít systémový jazyk</string>
     <string name="pref_input_method">Způsob vstupu</string>
     <string name="pref_input_method_summary">Zvolte službu, kterou chcete použít pro komunikaci s Dicio</string>
-    <string name="pref_input_method_text">Textové pole</string>
+    <string name="pref_input_method_text">Pouze textové pole</string>
     <string name="pref_input_method_vosk">Offline rozpoznávání hlasu Vosk</string>
     <string name="pref_speech_output_method">Způsob hlasového výstupu</string>
     <string name="pref_speech_output_method_summary">Zvolte službu, pomocí které má s vámi Dicio komunikovat</string>
@@ -154,4 +153,17 @@
     <string name="downloaded">Staženo</string>
     <string name="loaded">Načteno</string>
     <string name="all_skills_disabled_title">Všechny funkce jsou zakázány</string>
+    <string name="pref_skills_title">Funkce</string>
+    <string name="expand">Rozšířit</string>
+    <string name="all_skills_disabled_description">Povolte prosím nějaké funkce v nastavení, jinak nebude Dicio schopné nic dělat</string>
+    <string name="pref_general">Obecné</string>
+    <string name="reduce">Zmenšit</string>
+    <string name="pref_theme_system">Použít systémový motiv</string>
+    <string name="pref_dynamic_colors_title">Dynamické barvy</string>
+    <string name="pref_theme_system_dark_black">Použít systémový motiv (použít černou variantu pro tmavý motiv)</string>
+    <string name="pref_dynamic_colors_summary">Použít dynamické barvy Material You poskytnuté systémem</string>
+    <string name="settings_description_with_value">%1$s — %2$s</string>
+    <string name="pref_skills_summary">Povolte/zakažte funkce a upravte jejich chování</string>
+    <string name="pref_theme_black">Černý</string>
+    <string name="skill_open_could_not_understand">Nepodařilo se pochopit aplikaci</string>
 </resources>
