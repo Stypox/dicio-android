@@ -1,4 +1,4 @@
-Dicio is a <i>free and open source</i> <b>voice assistant</b>. It supports many different <b>skills</b> and input/output methods, and it provides both <b>speech</b> and <b>graphical</b> feedback to a question. It uses <a href="https://github.com/alphacep/vosk-api/">Vosk</a> for <i>speech to text</i>. It has <b>multilanguage</b> support, and is currently available in English, French, German, Greek, Italian, Russian, Slovenian and Spanish.
+Dicio is a <i>free and open source</i> <b>voice assistant</b>. It supports many different <b>skills</b> and input/output methods, and it provides both <b>speech</b> and <b>graphical</b> feedback to a question. It uses <a href="https://github.com/alphacep/vosk-api/">Vosk</a> for <i>speech to text</i>. It has <b>multilanguage</b> support, and is currently available in Czech, English, French, German, Greek, Italian, Russian, Slovenian and Spanish.
 
 Dicio answers questions about:
 <ul>
@@ -15,8 +15,8 @@ Dicio answers questions about:
 
 Dicio can receive input through a text box or through <a href="https://github.com/alphacep/vosk-api/">Vosk</a> <i>speech to text</i>, and can talk using toasts or the Android <i>speech synthesis</i> engine. <b>Interactive graphical output</b> is provided by skills when they answer a question.
 
-Each skill can be enabled, disabled or customized using the related settings screen. A dark theme is available.
+Each skill can be enabled, disabled or customized using the related settings screen. Dark, black and dynamic color themes are available.
 
-The user input is interpreted by specific, yet reusable, libraries: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a>, <a href="https://github.com/Stypox/dicio-skill">dicio-skill</a> and <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
+The user input is interpreted by specific, yet reusable, libraries: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a> and <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
 
 This app has the <i>NonFreeNet</i> anti-feature because some skills use non-free services to obtain the information requested by the user. You can easily disable unwanted skills or choose alternative services via settings.

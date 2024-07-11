@@ -43,14 +43,13 @@ Dicio uses [Vosk](https://github.com/alphacep/vosk-api/) as its speech to text (
 
 ## Contributing
 
-Dicio's code is **not only here**! The repository with the *compiler for sentences* language files is at [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler), the code taking care of *input matching and skill interfaces* is at [`dicio-skill`](https://github.com/Stypox/dicio-skill) and the *number parser and formatter* is at [`dicio-numbers`](https://github.com/Stypox/dicio-numbers).
+Dicio's code is **not only here**! The repository with the *compiler for sentences* language files is at [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler), the *number parser and formatter* is at [`dicio-numbers`](https://github.com/Stypox/dicio-numbers) and the code for evaluating matching algorithms is at [`dicio-evaluation`](https://github.com/Stypox/dicio-evaluation).
 
 When contributing keep in mind that other people may have **needs** and **views different** than yours, so please *respect* them. For any question feel free to contact the project team at [@Stypox](https://github.com/Stypox).
 
-### IRC/Matrix room for communication
+### Matrix room for communication
 
-- The **#dicio** channel on *Libera Chat* (`ircs://irc.libera.chat:6697/dicio`) is available to get in touch with the developers. [Click here for webchat](https://web.libera.chat/#dicio)!
-- You can also use a *Matrix* account to join the Dicio channel at [#dicio:libera.chat](https://matrix.to/#/#dicio:libera.chat). Some convenient clients, available both for phone and desktop, are listed at that link.
+The **#dicio** channel on *Matrix* is available to get in touch with the developers: [#dicio:matrix.org](https://matrix.to/#/#dicio:matrix.org). Some convenient Matrix clients, available both for phone and desktop, are listed at that link.
 
 ### Translating
 
@@ -63,7 +62,7 @@ If you want to translate Dicio to a new language you have to follow these **step
   </a>
 </li></ul>
 
-- Translate the **sentences** used by Dicio to identify a user's request and to feed it to the correct skill. To do this open the repository root and navigate to `app/src/main/sentences/`. Copy-paste the `en` folder (i.e. the one containing English translations) and call the new folder with the 2- or 3-letter name of your language (in particular, any `ISO-639`-compliant language ID is supported). Then open the newly created folder: inside there should be some files with the `.dslf` extension and in English language. Open each one of them and translate the English content; feel free to add/remove sentences if their translation does not fit into your language and remember those sentences need to identify as better as possible what the user said. Do **NOT** edit the name of the copied files or the first line in them (i.e. the `ID: SPECIFICITY` line, like `weather: high`): they should remain English. To learn about the Dicio sentences language syntax, please refer to the documentation and the [example](https://github.com/Stypox/dicio-sentences-compiler#example) in [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler#dicio-sentences-language). Hopefully in the future a custom translation system will be used for sentences.
+- Translate the **sentences** used by Dicio to identify a user's request and to feed it to the correct skill. To do this open the repository root and navigate to `app/src/main/sentences/`. Copy-paste the `en` folder (i.e. the one containing English translations) and call the new folder with the 2- or 3-letter name of your language (in particular, any `ISO-639`-compliant language ID is supported). Then open the newly created folder: inside there will be some YAML files in English language. Open each one of them and translate the English content; feel free to add/remove sentences if their translation does not fit into your language and remember those sentences need to identify as better as possible what the user said. Do **NOT** change the name of the copied files, the IDs of the sentences (i.e. the `sentence_id:` before each list of sentences) or the IDs of the capturing groups (i.e. the `.ID.` construct). To learn about the Dicio sentences language syntax, please refer to the documentation and the [example](https://github.com/Stypox/dicio-sentences-compiler#example) in [`dicio-sentences-compiler`](https://github.com/Stypox/dicio-sentences-compiler#dicio-sentences-language). Hopefully in the future a custom translation system will be used for sentences.
 
 - Once both the Weblate and the sentences translations are ready, add the new language to the app's language selector. You can do so by editing [this file](./app/src/main/res/values/arrays.xml):
   1. Add the [language code](https://en.wikipedia.org/wiki/Language_code) in the language code array `pref_language_entry_values`. You must respect the alphabetic order. You can find the language code with Weblate: click on a language to translate, and the language code is in the last part of the URL. For example, English is `https://hosted.weblate.org/projects/dicio-android/strings/en`, and English language code is `en`.
@@ -75,51 +74,141 @@ If you want to translate Dicio to a new language you have to follow these **step
 
 ### Adding skills
 
-A skill is a component that enables the assistant to **understand** some specific queries and **act** accordingly. While reading the instructions, keep in mind the skill structure description on the [`dicio-skill` repo](https://github.com/Stypox/dicio-skill/#skills-for-dicio-assistant), the **javadocs** of the methods being implemented and the code of the already implemented skills. In order to add a skill to Dicio you have to follow the steps below, where `SKILL_ID` is the computer readable name of the skill (e.g. `weather`).
+A skill is a component that enables the assistant to **understand** some specific queries and **act** accordingly. While reading the instructions, keep in mind the **javadocs** of the methods being implemented and the code of the already implemented skills. In order to add a skill to Dicio you have to follow the steps below.
 
-#### 1. **Sentences**
+<sub>`$skill_id$` and `$SkillId$` indicate the computer readable name of the skill, in snake_case and PascalCase, e.g. `weather` or `Weather`</sub>
 
-Create a file named `SKILL_ID.dslf` (e.g. `weather.dslf`) under `app/src/main/sentences/en/`: it will contain the **sentences** the skill should recognize.
-1. Add a *section* to the file by putting `SKILL_ID: SPECIFICITY` (e.g. `weather: high`) on the first line, where `SPECIFICITY` can be `high`, `medium` or `low`. Choose the *specificity* wisely: for example, a section that matches queries about phone calls is very specific, while one that matches every question about famous people has a lower specificity.
-2. Fill the rest of the file with *sentences* according to the [`dicio-sentences-language`'s syntax](https://github.com/Stypox/dicio-sentences-compiler#dicio-sentences-language).
-3. _\[Optional\]_ If you need to, you can add other sections by adding another `SECTION_NAME: SPECIFICITY` to the same file (check out the calculator skill for why that could be useful). For style reasons, always prefix the section name with `SKILL_ID_` (e.g. `calculator_operators`).
-4. _\[Optional\]_ Note that you may choose not to use the standard recognizer; in that case create a class in the skill package overriding [`InputRecognizer`](https://github.com/Stypox/dicio-skill/#input-recognizer). If you do so, replace any reference to `StandardRecognizer` with your recognizer and any reference to `StandardResult` with the result type of your recognizer, while reading the steps below.
-5. Try to *build* the app: if it succeeds you did everything right, otherwise you will get errors pointing to syntax errors in the `.dslf` file.
+#### 1. **Reference sentences**
+
+The new skill most likely needs to interpret user input. The Dicio framework provides a *standard* way to define how to efficiently match user input and extract information from it, in the form of translatable reference sentences stored in YAML files. Note that *for some specific cases* the standard recognizer might not be wanted, in which case you can skip this section, and in section 3 extend `Skill<>` and implement `Skill.score()` manually, instead of extending `StandardRecognizerSkill<>`.
+
+1. Edit the `app/src/main/sentences/skill_definitions.yml` file and add a definition for the new skill:
+    ```yaml
+      # The unique ID of the skill.
+    - id: $skill_id$
+      # `SPECIFICITY` can be `high`, `medium` or `low`.
+      # It should be chosen wisely: for example, a section that matches queries
+      # about phone calls is very specific, while one that matches every question
+      # about famous people has a lower specificity.
+      specificity: SPECIFICITY
+      # A list of definitions for the types of sentences this skill can interpret.
+      # Can contain multiple sentences, e.g. the timer skill has the
+      # "set", "cancel" and "query" sentences.
+      sentences:
+          # An ID for the sentence, must be unique amongst this skill's sentences.
+        - id: SENTENCE_1_ID
+          # (optional) If this sentence has some capturing groups, their IDs and
+          # types must be listed here.
+          captures:
+              # An ID for the capturing group, must be unique amongst this
+              # sentence's capturing groups
+            - id: CAPTURING_GROUP_1_ID
+              # Currently only string capturing groups are supported, but in
+              # the future "number", "duration" and "date" will also be possible.
+              # For the moment use "string" and then manually parse the string to
+              # number, duration or date using dicio-numbers.
+              type: string
+    ```
+
+2. Create a file named `$skill_id$.yml` (e.g. `weather.yml`) under `app/src/main/sentences/en/`: it will contain the **sentences** the skill should recognize.
+3. For each of the sentence definitions in `skill_definitions.yml`, write the id of each sentence type followed by `:` and a list of sentences:
+    ```yaml
+    SENTENCE_1_ID:
+      - a<n?> sentence|phrase? alternative # ...
+      - another sentence|phrase? alternative with .CAPTURING_GROUP_1_ID. # ...
+      # ...
+    # SENTENCE_2_ID: ... in case you have multiple sentence types
+    ```
+4. Write the reference sentences according to the [`dicio-sentences-language`'s syntax](https://github.com/Stypox/dicio-sentences-compiler#dicio-sentences-language).
+
+5. Try to *build* the app: if it succeeds you did everything right, otherwise you will get errors pointing to syntax errors in the `.yml` files.
+
+Here is an example of the weather skill definition in `skill_definitions.yml`:
+```yaml
+- id: weather
+  specificity: high
+  sentences:
+    - id: current
+      captures:
+        - id: where
+          type: string
+```
+
+And these are the example contents of `app/src/main/sentences/en/weather.yml`:
+```yaml
+current:
+  - (what is|s)|whats the weather like? (in|on .where.)?
+  - weather (in|on? .where.)?
+  - how is it outside
+```
 
 #### 2. **Subpackage**
 Create a **subpackage** that will contain all of the classes you are about to add: `org.stypox.dicio.skills.SKILLID` (e.g. `org.stypox.dicio.skills.weather`).
 
-#### 3. **Output generator**
-Create a class named `SKILL_IDOutput` (e.g. `WeatherOutput`): it will contain the code that **talks, displays information or does actions**. It will **not** contain code that fetches data from the internet or does calculations.
-1. Create a subclass named `Data` and add to that class some `public` fields representing the *input to the output generator*, i.e. all of the data needed to provide an output.
-2. Have the class implement `OutputGenerator<Data>` (e.g. `WeatherOutput implements OutputGenerator<WeatherOutput.Data>`)
-3. Override the `generate()` method and implement the output *behaviour* of the skill. In particular, use `SpeechOutputDevice` for speech output and `GraphicalOutputDevice` for graphical output.
+#### 3. **The Skill class**
+Create a class named `$SkillId$Skill` (e.g. `WeatherSkill`): it will contain the code that interprets user input (i.e. the `score()` function) and that processes it to generate output (i.e. the `generateOutput()` function). The next few points assume that you want to use the *standard* recognizer with the skill definition and sentences you created in [step 1](#1-reference-sentences). In that case `score()` is actually already implemented and you don't need to provide an implementation yourself.
 
-#### 4. **Intermediate processor**
-Create a class named `PROCESSOR_NAMEProcessor` (e.g. `OpenWeatherMapProcessor`): it will contain the code needed to **turn the recognized data into data ready to be outputted**. Note that the name of the class is not based on the skill id but *on what is actually being done*.
-1. Have the class implement `IntermediateProcessor<StandardResult, SKILL_IDOutput.Data>` (e.g. `OpenWeatherMapProcessor implements IntermediateProcessor<StandardResult, WeatherOutput.Data>`). `StandardResult` is the *input* data for the processor, generated by `StandardRecognizer` after having understood a user's sentence; `SKILL_IDOutput.Data`, from [3.2](https://github.com/Stypox/dicio-android#3-output-generator), is the *output* data from the processor to feed to the `OutputGenerator`.
-2. Override the `process()` method and put there any code making *network requests or calculations*, then return data ready to be outputted. For example, the weather skill gets the weather information for the city you asked for.
-3. _\[Optional\]_ There could be more than one processor for the same skill: you can chain them or use different ones based on some conditions (see [3.3](https://github.com/Stypox/dicio-android#3-output-generator)). The search skill, for example, allows the user to choose the search engine, and has a different processor for each engine.
+1. Have the `$SkillId$Skill` class implement `StandardRecognizerSkill<$SkillId$>`. You can import the `$SkillId$` class with `import org.stypox.dicio.sentences.Sentences.$SkillId$`. The `Sentences.$SkillId$` sealed class is generated based on `skill_definitions.yml`, and contains one subclass for each of the defined sentence types.
+2. The constructor of `Skill` takes `SkillInfo` (see [step 5](#5-skillinfo)), and moreover the constructor of `StandardRecognizerSkill` takes `StandardRecognizerData<$SkillId$>` (the data generated from the sentences, see [step 5](#5-skillinfo)). You should expose these two parameters in `$SkillId$Skill`'s constructor, too.
+3. Implement the following function: `override suspend fun generateOutput(ctx: SkillContext, inputData: $SkillId$): SkillOutput`. `inputData` is, again, an instance of `Sentences.$SkillId$` corresponding to the matched sentence type, and its fields contain type-safe information about the data captured in capturing groups (if any).
+4. Any code making *network requests or heavy calculations* should be put in `generateOutput` (which is a suspend function for this exact purpose). The returned `SkillOutput` should contain all of the data needed to actually show the output, i.e. it shouldn't do any more network requests or calculations (unless it's an interactive widget and the user presses some button, but that's not too relevant for the matter at hand).
 
-#### 5. **Skill info**
-Create a class named `SKILL_IDInfo` (e.g. `WeatherInfo`) overriding `SkillInfo`: it will contain all of the **information needed to manage your skill**.
-1. Create a *constructor* taking no arguments and initialize `super` with the skill id (e.g. `"weather"`), a human readable name, a description, an icon (add Android resources for these last three) and finally whether the skill will have some tunable settings (more on this at point [5.4](https://github.com/Stypox/dicio-android#5-skill-info))
-2. Override the `isAvailable()` method and return whether the skill can be used under the *circumstances* the user is in (e.g. check whether the recognizer sentences are translated into the user language with `isSectionAvailable(SECTION_NAME)` (see [1.1](https://github.com/Stypox/dicio-android#1-sentences)) or check whether `context.getParserFormatter() != null`, if your skill uses number parsing and formatting).
-3. Override the `build()` method. This is the core method of `SkillInfo`, as it actually *builds* a skill. You shall use `ChainSkill.Builder()` to achieve that: it will create a skill that recognizes input, then passes the recognized input to the intermediate processor(s) which in turn provides the output generator with something to output.
-	1. Add `.recognize(new StandardRecognizer(getSection(SectionsGenerated.SECTION_NAME)))` as the first function. `SECTION_NAME` is `SKILL_ID`, if you followed the naming scheme from [1.1](https://github.com/Stypox/dicio-android#1-sentences), e.g. `SectionsGenerated.weather`.
-	2. Add `.process(new PROCESSOR_NAMEProcessor())`: add the processor you built at step [4](https://github.com/Stypox/dicio-android#4-intermediate-processor), e.g. `new OpenWeatherMapProcessor()`.
-	3. _\[Optional\]_ Implement here any condition on processors: for example, query settings to choose the service the user wants, etc. If you wish, you can chain multiple processors together; just make sure the output/input types of consecutive processors match. For an example of this check out the search skill, that uses the search engine chosen by the user.
-	4. At the end add `.output
-4. _\[Optional\]_ If your skill wants to present some preferences to the user, it has to do so by overriding `getPreferenceFragment()` (return `null` otherwise). Create a subclass of `SKILL_IDInfo` named `Preferences` extending `PreferenceFragmentCompat` (Android requires you not to use anonymous classes) and override the `onCreatePreferences()` as you would do normally. `getPreferenceFragment()` should then `return new Preferences()`. Make sure the `hasPreferences` parameter you use in the constructor (see [5.1](https://github.com/Stypox/dicio-android#5-skill-info)) reflects whether there are preferences or not. 
+This is a stub implementation of the `WeatherSkill`:
 
-#### 6. **List skill for SkillHandler**
-Under `org.stypox.dicio.Skills.SkillHandler`, update the `SKILL_INFO_LIST` by adding `add(new SKILL_IDInfo())`; this will make your skill visible to Dicio.   
+```kotlin
+package org.stypox.dicio.skills.weather
+import org.stypox.dicio.sentences.Sentences.Weather
+// ...
+class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Weather>) :
+    StandardRecognizerSkill<Weather>(correspondingSkillInfo, data) {
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Weather): SkillOutput {
+      return // ...
+    }
+}
+```
+
+#### 4. **SkillOutput**
+
+Create a class named `$SkillId$Output` (e.g. `WeatherOutput`): it will contain the code that creates a Jetpack Compose UI and provides speech output.
+
+1. The class should be constructed by `Skill.generateOutput()` with all of the data needed to display/speak output, and is meant to be serializable (so in most cases it is a `data class`). In some cases it might make sense to have multiple types of output (e.g. the weather has `Success` and `Failed` output types): in that case you can create a `sealed interface` and have both output types extend it.
+2. `getSpeechOutput()` returns a localized string that will be spoken via the configured Text To Speech service.
+3. `@Composable GraphicalOutput()` builds the UI that will be shown in a box on the home screen. The UI can be interactive and can act as a widget: for example the timer skill shows the ongoing countdown.
+4. _\[Optional\]_ `getNextSkills()` returns a list of skills that could continue the current conversation. If this list is non-empty, the next time the user asks something to the assistant, these skills will be considered before all other skills, and if any of these skills understands the user input well enough, the conversation continues. For example, if the user says "Call Mom", the assistant may answer with "Should I call mom?" and this method would return a skill that can understand a yes/no response.
+
+This is a stub implementation of `WeatherOutput`:
+```kotlin
+data class WeatherOutput(
+    val city: String,
+    val description: String,
+    // ...
+) : WeatherOutput {
+    override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
+        R.string.skill_weather_in_city_there_is_description, city, description
+    )
+
+    @Composable
+    override fun GraphicalOutput(ctx: SkillContext) {
+        // Jetpack Compose UI
+    }
+}
+```
+
+#### 5. **SkillInfo**
+Create an `object` named `$SkillId$Info` (e.g. `WeatherInfo`) overriding `SkillInfo`: it will contain all of the **information needed to manage your skill**.
+1. This is not a class, but an `object`, because it makes no sense to instantiate it multiple times.
+2. Call the `SkillInfo` constructor with the `"$skill_id$"` string.
+3. Provide sensible values for `name()`, `sentenceExample()` and `icon()`.
+4. Override the `isAvailable()` method and return whether the skill can be used under the *circumstances* the user is in (e.g. check whether the recognizer sentences are translated into the user language with `Sentences.$SkillId$[ctx.sentencesLanguage] != null` (see [step 1](#1-reference-sentences) and step 5.5) or check whether `ctx.parserFormatter != null`, if your skill uses number parsing and formatting).
+5. Override the `build()` method so that it returns an instance of `$SkillId$Skill` with `$SkillId$Info` as `correspondingSkillInfo` and, if the skill uses standard recognizer sentences (see [step 1](#1-reference-sentences)), with `Sentences.$SkillId$[ctx.sentencesLanguage]` as `data`.
+4. _\[Optional\]_ If your skill wants to present some preferences to the user, it has to do so by overriding the `renderSettings` value (which by default returns `null` to indicate there are no preferences).
+
+#### 6. **List skill inside SkillHandler**
+Under `org.stypox.dicio.Skills.SkillHandler`, update the `allSkillInfoList` by adding `$SkillId$Info`; this will make the new skill finally visible to Dicio.
 
 #### **Notes**
-- `skillContext` is provided in many places and can be used to **access resources and services**, similarly to Andorid's `context`.
-- If your input recognizer, processor or output generator use some resources that need to be cleaned up in order **not to create memory leaks**, make sure to override the `cleanup()` method.
-- If the skill **doesn't do any processing** (e.g. it may just answer with random quotes from famous people after a request for quotes by the user) you may skip step [4](https://github.com/Stypox/dicio-android#4-intermediate-processor) above. Also skip [3.1](https://github.com/Stypox/dicio-android#3-output-generator) in that case, and have `SKILL_IDOutput` implement `OutputGenerator<StandardResult>`.
+- The `ctx: SkillContext` object, that appears here and there in the implementation, allows accessing the Android context, the number parser/formatter and other **resources** and services, similarly to Andorid's `context`.
 - The **names** used for things (files, classes, packages, sections, etc.) are not mandatory, but they help **avoiding confusion**, so try to stick to them.
-- When committing changes about a skill, prefix the commit message with "[SKILL_ID]", e.g. "[Weather] Fix crash".
+- When committing changes about a skill, prefix the commit message with "[\$SkillId\$]", e.g. "[Weather] Fix crash".
 - Add your skill with a short description and an example in the README under [Skills](https://github.com/Stypox/dicio-android#skills) and in the [fastlane's long description](https://github.com/Stypox/dicio-android/tree/master/fastlane/metadata/android/en-US/full_description.txt).
 - If you have any question, **don't hesitate** to ask. 😃
