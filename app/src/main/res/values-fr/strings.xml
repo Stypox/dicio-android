@@ -16,7 +16,7 @@
 \nVitesse du vent : %3$.1f m/s</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f °C</string>
     <string name="skill_weather_in_city_there_is_description">Actuellement à %1$s il y a %2$s</string>
-    <string name="skill_weather_could_not_find_city">Je n\'ai pas pu trouver la ville %1$s</string>
+    <string name="skill_weather_could_not_find_city">La ville de %1$s n\'a pas pu être trouvée</string>
     <string name="skill_search_here_is_what_i_found">Voici ce que j\'ai trouvé</string>
     <string name="skill_fallback_name_text">Message textuel</string>
     <string name="skill_sentence_example_calculator">Combien font cinq fois quatre moins un million \?</string>
@@ -36,7 +36,7 @@
     <string name="pref_speech_output_method_summary">Choisir le service que Dicio doit utiliser pour vous parler</string>
     <string name="pref_speech_output_method">Méthode de sortie vocale</string>
     <string name="pref_input_method_vosk">Reconnaissance vocale hors ligne Vosk</string>
-    <string name="pref_input_method_text">Zone de texte</string>
+    <string name="pref_input_method_text">Zone de texte uniquement</string>
     <string name="pref_input_method_summary">Choisir le service à utiliser pour parler à Dicio</string>
     <string name="vosk_model_ready">Le modèle Vosk est prêt</string>
     <string name="skill_calculator_could_not_calculate">Je n\'ai pas pu calculer votre demande</string>
@@ -63,7 +63,7 @@
     <string name="listening">À l\'écoute…</string>
     <string name="action_voice_input">Entrée vocale</string>
     <string name="action_text_input">Saisie de texte</string>
-    <string name="here_is_what_i_can_do">Voici ce que je peux faire !</string>
+    <string name="here_is_what_i_can_do">Voici ce que je peux faire !</string>
     <string name="text_input_hint">Demandez-moi quelque chose…</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
     <string name="share">Partager</string>
@@ -137,4 +137,33 @@
     <string name="skill_sentence_example_navigation">Naviguer vers l\'aéroport international de Vancouver</string>
     <string name="skill_navigation_specify_where">Où naviguer vers</string>
     <string name="skill_navigation_navigating_to">Navigation vers %1$s</string>
+    <string name="clear">Effacer</string>
+    <string name="copy_to_clipboard">Copier dans le presse-papiers</string>
+    <string name="back">Retour</string>
+    <string name="done">Terminé</string>
+    <string name="grant_microphone_permission">Demander l\' accès au microphone</string>
+    <string name="error_loading">Erreur de chargement</string>
+    <string name="error_unzipping">erreur de décompression</string>
+    <string name="error_downloading">Erreur de téléchargement</string>
+    <string name="unzipping">Décompression…</string>
+    <string name="download">Télécharger</string>
+    <string name="stt_not_available">Reconnaissance vocale non disponible</string>
+    <string name="stt_download">Télécharger la reconnaissance vocale</string>
+    <string name="stt_unzip">Décompresser la reconnaissance vocale</string>
+    <string name="start_listening">Commencer à écouter</string>
+    <string name="downloaded">Téléchargé</string>
+    <string name="loaded">Chargé</string>
+    <string name="all_skills_disabled_title">Toutes les fonctionnalités sont désactivées</string>
+    <string name="all_skills_disabled_description">Veuillez activer des fonctionnalités dans les paramètres, sinon Dicio ne pourra rien faire</string>
+    <string name="pref_general">Général</string>
+    <string name="pref_skills_summary">Activer/ Désactiver des fonctionnalités et ajuster leur comportement</string>
+    <string name="expand">Développer</string>
+    <string name="pref_theme_system">Utiliser le thème système</string>
+    <string name="pref_theme_black">Noir</string>
+    <string name="reduce">Réduire</string>
+    <string name="pref_theme_system_dark_black">Utiliser le thème système (utiliser la variante noire pour le thème sombre)</string>
+    <string name="pref_dynamic_colors_title">Couleurs dynamiques</string>
+    <string name="pref_dynamic_colors_summary">Utiliser les couleurs dynamiques de Material You fourni par le système</string>
+    <string name="skill_open_could_not_understand">Application non reconnue</string>
+    <string name="settings_description_with_value">%1$s — %2$s</string>
 </resources>
