@@ -9,6 +9,8 @@ import org.dicio.sentences_compiler.construct.OrList
 import org.dicio.sentences_compiler.construct.SentenceConstructList
 import org.dicio.sentences_compiler.construct.Word
 import org.dicio.sentences_compiler.construct.WordWithVariations
+import org.dicio.sentences_compiler.util.StringNormalizer
+import org.dicio.sentences_compiler.util.StringNormalizer.nfkdNormalize
 import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginException
 
 fun generateConstruct(construct: Construct): CodeBlock {
@@ -31,7 +33,7 @@ fun generateWord(word: Word): CodeBlock {
     return CodeBlock.of(
         "%T(%S, %L, %L, %Lf)",
         ClassName("org.dicio.skill.standard.construct", "WordConstruct"),
-        word.value,
+        word.normalizedValue,
         /* isRegex = */ false,
         word.isDiacriticsSensitive,
         1.0f // TODO allow specifying weight
