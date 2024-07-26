@@ -1,12 +1,19 @@
 package org.stypox.dicio.io.input.stt_service
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.speech.RecognitionService
+import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
+import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.AndroidEntryPoint
+import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.input.InputEvent
+import org.stypox.dicio.util.LocaleUtils
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -16,7 +23,24 @@ class SttService : RecognitionService() {
     @Inject
     lateinit var sttInputDevice: SttInputDeviceWrapper
 
+    @Inject
+    lateinit var localeManager: LocaleManager
+
     override fun onStartListening(recognizerIntent: Intent, listener: Callback) {
+        val wantedLanguageExtra = recognizerIntent.getStringExtra(RecognizerIntent.EXTRA_LANGUAGE)
+        // "und" is "Undetermined", see https://www.loc.gov/standards/iso639-2/php/code_list.php
+        if (wantedLanguageExtra != null && wantedLanguageExtra != "und") {
+            val appLanguage = localeManager.locale.value.language
+            val wantedLanguage = Locale(wantedLanguageExtra).language
+            if (appLanguage != wantedLanguage) {
+                Log.e(TAG, "Unsupported language: app=$appLanguage wanted=$wantedLanguageExtra")
+                // From the javadoc of ERROR_LANGUAGE_UNAVAILABLE: Requested language is supported,
+                // but not available currently (e.g. not downloaded yet).
+                listener.error(ERROR_LANGUAGE_UNAVAILABLE)
+                return
+            }
+        }
+
         var beginningOfSpeech = true
         val willStartListening = sttInputDevice.tryLoad { inputEvent ->
             when (inputEvent) {
@@ -37,7 +61,7 @@ class SttService : RecognitionService() {
                     listener.endOfSpeech()
                 }
                 InputEvent.None -> {
-                    listener.error(SpeechRecognizer.ERROR_NO_MATCH)
+                    listener.error(SpeechRecognizer.ERROR_SPEECH_TIMEOUT)
                     listener.endOfSpeech()
                 }
                 is InputEvent.Partial -> {
@@ -56,9 +80,7 @@ class SttService : RecognitionService() {
         }
 
         if (!willStartListening) {
-            // TODO choose better error to indicate that manual intervention is required to
-            //  download the Vosk model
-            listener.error(SpeechRecognizer.ERROR_NETWORK)
+            listener.error(ERROR_LANGUAGE_UNAVAILABLE)
         }
     }
 
@@ -68,5 +90,19 @@ class SttService : RecognitionService() {
 
     override fun onStopListening(listener: Callback) {
         sttInputDevice.stopListening()
+    }
+
+    companion object {
+        val TAG = SttService::class.simpleName
+
+        /**
+         * From the javadoc of [SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE]: Requested language is
+         * supported, but not available currently (e.g. not downloaded yet).
+         */
+        val ERROR_LANGUAGE_UNAVAILABLE = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
+        } else {
+            SpeechRecognizer.ERROR_SERVER
+        }
     }
 }
