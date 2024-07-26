@@ -130,7 +130,7 @@
     <string name="pref_stt_auto_finish_summary_off">Attendez une confirmation manuelle avant d\'envoyer le résultat de la parole à l\'application requérante</string>
     <string name="stt_say_something">Dites quelque chose…</string>
     <string name="stt_did_not_understand">Je ne comprends pas, réessayez</string>
-    <string name="stt_service">Service speech to text</string>
+    <string name="stt_popup">Service speech to text</string>
     <string name="pref_stt_auto_finish_title">Envoyez directement le résultat de la parole au service de texte</string>
     <string name="pref_stt_auto_finish_summary_on">Envoyez automatiquement le résultat de la parole à l\'application requérante à la fin de l\'écoute</string>
     <string name="skill_name_navigation">Navigation</string>

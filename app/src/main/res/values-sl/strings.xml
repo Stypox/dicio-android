@@ -43,7 +43,7 @@
     <string name="error_crash_log_headline">Poročilo o sesutju:</string>
     <string name="error_github_notice">Preverite, ali že obstaja težava, ki obravnava vaše sesutje. Ko ustvarite podvojene vstopnice, nam vzamete čas, ki bi ga lahko porabili za odpravo dejanske napake.</string>
     <string name="pref_skill_not_available">Ta sposobnost še ni na voljo v tvojem jeziku. Prispevanje je dobrodošlo!</string>
-    <string name="stt_service">Storitev pretvorbe govora v besedilo</string>
+    <string name="stt_popup">Storitev pretvorbe govora v besedilo</string>
     <string name="pref_language_system">Uporabi sistemski jezik</string>
     <string name="pref_input_method">Vhodna metoda</string>
     <string name="pref_input_method_summary">Izberi metodo za pogovor z Diciom</string>

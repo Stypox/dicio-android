@@ -132,7 +132,7 @@
     <string name="pref_stt_auto_finish_title">Envia directament el resultat del servei de veu a text</string>
     <string name="stt_say_something">Digueu alguna cosa…</string>
     <string name="stt_did_not_understand">No us he entès, si us plau, repetiu</string>
-    <string name="stt_service">Servei de reconeixement de veu</string>
+    <string name="stt_popup">Servei de reconeixement de veu</string>
     <string name="skill_name_navigation">Navegació</string>
     <string name="skill_sentence_example_navigation">Navegar a l\'aeroport del Prat</string>
     <string name="skill_navigation_specify_where">Especifiqueu on voleu anar</string>

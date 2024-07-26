@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class UserAction(val message: String) : Parcelable {
     UNKNOWN("Unknown error"),
-    STT_SERVICE_SPEECH_TO_TEXT("Stt service speech to text"),
+    STT_POPUP_SPEECH_TO_TEXT("Stt popup speech to text"),
     GENERIC_EVALUATION("Evaluation"),
     SKILL_EVALUATION("Skill evaluation");
 }

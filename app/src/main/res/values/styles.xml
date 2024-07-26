@@ -2,7 +2,7 @@
 
     <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="SttServiceTheme">
+    <style name="SttPopupTheme">
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

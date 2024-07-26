@@ -1,4 +1,4 @@
-package org.stypox.dicio.io.input.stt_service
+package org.stypox.dicio.io.input.stt_popup
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -60,12 +60,12 @@ import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.util.ShareUtils
 
 @Composable
-fun SttServiceBottomSheet(
+fun SttPopupBottomSheet(
     customHint: String?,
     onDoneClicked: ((List<Pair<String, Float>>) -> Unit)?,
     onDismissRequest: () -> Unit,
 ) {
-    val viewModel: SttServiceViewModel = hiltViewModel()
+    val viewModel: SttPopupViewModel = hiltViewModel()
     val textFieldValue = viewModel.textFieldValue.collectAsState()
     val sttState = viewModel.sttInputDevice.uiState.collectAsState().value ?: SttState.NotAvailable
 
@@ -96,7 +96,7 @@ fun SttServiceBottomSheet(
         // except for the `ime` insets which are not meant to be drawn under
         windowInsets = WindowInsets.ime,
     ) {
-        SttServiceBottomSheet(
+        SttPopupBottomSheet(
             customHint = customHint,
             onDoneClicked = if (onDoneClicked == null) {
                 null
@@ -114,7 +114,7 @@ fun SttServiceBottomSheet(
 }
 
 @Composable
-private fun SttServiceBottomSheet(
+private fun SttPopupBottomSheet(
     customHint: String?,
     onDoneClicked: (() -> Unit)?,
     onDismissRequest: () -> Unit,
@@ -130,7 +130,7 @@ private fun SttServiceBottomSheet(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxWidth(),
     ) {
-        SttServiceTextField(
+        SttPopupTextField(
             value = textFieldValue,
             onValueChange = onTextFieldChange,
             customHint = customHint,
@@ -144,7 +144,7 @@ private fun SttServiceBottomSheet(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            SttServiceButton(
+            SttPopupButton(
                 icon = Icons.Default.ContentCopy,
                 contentDescription = R.string.copy_to_clipboard,
                 onClick = {
@@ -168,7 +168,7 @@ private fun SttServiceBottomSheet(
             }
 
             if (onDoneClicked == null) {
-                SttServiceButton(
+                SttPopupButton(
                     icon = Icons.Default.Share,
                     contentDescription = R.string.share,
                     onClick = {
@@ -177,7 +177,7 @@ private fun SttServiceBottomSheet(
                     },
                 )
             } else {
-                SttServiceButton(
+                SttPopupButton(
                     icon = Icons.Default.Done,
                     contentDescription = R.string.done,
                     onClick = {
@@ -191,7 +191,7 @@ private fun SttServiceBottomSheet(
 }
 
 @Composable
-private fun SttServiceTextField(
+private fun SttPopupTextField(
     value: String,
     onValueChange: (String) -> Unit,
     customHint: String?,
@@ -227,7 +227,7 @@ private fun SttServiceTextField(
 }
 
 @Composable
-private fun SttServiceButton(
+private fun SttPopupButton(
     icon: ImageVector,
     @StringRes contentDescription: Int,
     onClick: () -> Unit,
@@ -246,14 +246,14 @@ private fun SttServiceButton(
 
 @Preview
 @Composable
-private fun SttServiceBottomSheetPreview() {
+private fun SttPopupBottomSheetPreview() {
     var textFieldValue by rememberSaveable { mutableStateOf("") }
 
     AppTheme {
         @OptIn(ExperimentalMaterial3Api::class)
         BottomSheetScaffold(
             sheetContent = {
-                SttServiceBottomSheet(
+                SttPopupBottomSheet(
                     customHint = null,
                     onDoneClicked = {},
                     onDismissRequest = {},

@@ -106,7 +106,7 @@
     <string name="eval_no_match">Я не зрозумів, чи можете ви повторити?</string>
     <string name="pref_stt_auto_finish_summary_on">Автоматично надсилати результат мовлення до запитуючого застосунку після завершення прослуховування</string>
     <string name="eval_missing_permissions">Для роботи навички \"%1$s\" потрібні наступні дозволи: %2$s</string>
-    <string name="stt_service">Сервіс Speech to Text</string>
+    <string name="stt_popup">Сервіс Speech to Text</string>
     <string name="skill_name_search">Пошук</string>
     <string name="skill_sentence_example_search">Пошук, як годувати кота</string>
     <string name="skill_name_weather">Погода</string>

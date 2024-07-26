@@ -91,7 +91,7 @@
     <string name="eval_no_match">לא הבנתי, אפשר שוב?</string>
     <string name="stt_say_something">נא לומר משהו…</string>
     <string name="stt_did_not_understand">לא הבנתי, נא לנסות שוב</string>
-    <string name="stt_service">שירות הקראה</string>
+    <string name="stt_popup">שירות הקראה</string>
     <string name="skill_name_search">חיפוש</string>
     <string name="skill_sentence_example_search">חיפוש איך להאכיל חתול</string>
     <string name="skill_name_lyrics">מילות שירים</string>

@@ -131,7 +131,7 @@
     <string name="stt_did_not_understand">Ich konnte es nicht verstehen, versuche es erneut</string>
     <string name="pref_stt_auto_finish_summary_on">Sprachergebnis automatisch an die anfordernde App senden, wenn das Zuhören beendet ist</string>
     <string name="pref_stt_auto_finish_summary_off">Auf manuelle Bestätigung warten, bevor das Sprachergebnis an die anfordernde App gesendet wird</string>
-    <string name="stt_service">Sprache-zu-Text-Dienst</string>
+    <string name="stt_popup">Sprache-zu-Text-Dienst</string>
     <string name="skill_navigation_navigating_to">Zu %1$s navigieren</string>
     <string name="skill_name_navigation">Navigation</string>
     <string name="skill_sentence_example_navigation">Zum internationalen Flughafen von Vancouver navigieren</string>

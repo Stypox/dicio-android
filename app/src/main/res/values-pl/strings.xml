@@ -112,7 +112,7 @@
     <string name="pref_stt_auto_finish_summary_off">Poczekaj na ręczne potwierdzenie przed wysłaniem wyniku mowy do żądającej aplikacji</string>
     <string name="stt_say_something">Powiedz coś…</string>
     <string name="stt_did_not_understand">Nie mogłem zrozumieć, spróbuj ponownie</string>
-    <string name="stt_service">Usługa zamiany mowy na tekst</string>
+    <string name="stt_popup">Usługa zamiany mowy na tekst</string>
     <string name="skill_name_navigation">Nawigacja</string>
     <string name="skill_sentence_example_navigation">Nawiguj do międzynarodowego lotniska w Vancouver</string>
     <string name="skill_navigation_navigating_to">Nawigacja do %1$s</string>

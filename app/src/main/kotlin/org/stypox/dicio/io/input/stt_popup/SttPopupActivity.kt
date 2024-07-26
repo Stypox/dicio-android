@@ -1,4 +1,4 @@
-package org.stypox.dicio.io.input.stt_service
+package org.stypox.dicio.io.input.stt_popup
 
 import android.app.PendingIntent
 import android.app.PendingIntent.CanceledException
@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.stypox.dicio.util.BaseActivity
 
 @AndroidEntryPoint
-class SttServiceActivity : BaseActivity() {
+class SttPopupActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class SttServiceActivity : BaseActivity() {
         }
 
         composeSetContent {
-            SttServiceBottomSheet(
+            SttPopupBottomSheet(
                 customHint = customHint,
                 onDoneClicked = if (startedForSpeechResult) { utterancesWithConfidence ->
                     sendSpeechResult(
@@ -92,6 +92,6 @@ class SttServiceActivity : BaseActivity() {
     }
 
     companion object {
-        private val TAG = SttServiceActivity::class.java.simpleName
+        private val TAG = SttPopupActivity::class.java.simpleName
     }
 }

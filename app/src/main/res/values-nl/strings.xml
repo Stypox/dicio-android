@@ -13,7 +13,7 @@
     <string name="eval_no_match">Ik heb je niet verstaan, kan je dat herhalen\?</string>
     <string name="stt_say_something">Zeg iets…</string>
     <string name="stt_did_not_understand">Ik heb je niet begrepen, probeer opnieuw</string>
-    <string name="stt_service">Spraak-naar-tekst service</string>
+    <string name="stt_popup">Spraak-naar-tekst service</string>
     <string name="drawer_open">Open de navigatielade</string>
     <string name="drawer_close">Sluit de navigatielade</string>
     <string name="drawer_header_subtitle">Kan ik je helpen\?</string>

@@ -33,7 +33,7 @@ import org.stypox.dicio.R
 @Composable
 fun DrawerContent(
     onSettingsClick: () -> Unit,
-    onSpeechToTextServiceClick: () -> Unit,
+    onSpeechToTextPopupClick: () -> Unit,
     closeDrawer: () -> Unit,
 ) {
     ModalDrawerSheet(
@@ -59,9 +59,9 @@ fun DrawerContent(
 
         DrawerItem(
             icon = Icons.Default.RecordVoiceOver,
-            label = R.string.stt_service,
+            label = R.string.stt_popup,
             onClick = {
-                onSpeechToTextServiceClick()
+                onSpeechToTextPopupClick()
                 closeDrawer()
             },
             modifier = Modifier.padding(horizontal = 12.dp),
@@ -72,7 +72,7 @@ fun DrawerContent(
 @Preview
 @Composable
 private fun DrawerContentPreview() {
-    DrawerContent(onSettingsClick = {}, onSpeechToTextServiceClick = {}, closeDrawer = {})
+    DrawerContent(onSettingsClick = {}, onSpeechToTextPopupClick = {}, closeDrawer = {})
 }
 
 @Preview

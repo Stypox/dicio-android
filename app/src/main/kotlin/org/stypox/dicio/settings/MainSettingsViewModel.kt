@@ -43,6 +43,6 @@ class MainSettingsViewModel @Inject constructor(
         updateData { it.setInputDevice(value) }
     fun setSpeechOutputDevice(value: SpeechOutputDevice) =
         updateData { it.setSpeechOutputDevice(value) }
-    fun setAutoFinishSttService(value: Boolean) =
-        updateData { it.setAutoFinishSttService(value) }
+    fun setAutoFinishSttPopup(value: Boolean) =
+        updateData { it.setAutoFinishSttPopup(value) }
 }

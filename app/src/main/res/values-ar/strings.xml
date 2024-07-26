@@ -129,7 +129,7 @@
     <string name="pref_skill_number_library_not_available">مكتبة تحليل الأرقام وتنسيقها <i> dicio-number </i> لم تتم ترجمتها بعد إلى لغتك ، مما يعني أن جميع المهارات المتعلقة بالأرقام والمدد والتواريخ غير متوفرة. <b> الرجاء المساهمة بـ </b> إذا كان بإمكانك النقر هنا!</string>
     <string name="skill_timer_all_canceled">تم إلغاء جميع الموقتات</string>
     <string name="skill_timer_no_active">لا يوجد مؤقت نشط</string>
-    <string name="stt_service">خدمة تحويل الكلام إلى نص</string>
+    <string name="stt_popup">خدمة تحويل الكلام إلى نص</string>
     <string name="skill_telephone_unknown_contact">لم يتم العثور على جهة اتصال ، حاول مرة أخرى</string>
     <string name="skill_timer_query_last">تنتهي صلاحية المؤقت الأخير في %1$s</string>
     <string name="skill_name_navigation">الملاحة</string>

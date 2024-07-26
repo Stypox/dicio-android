@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import org.stypox.dicio.io.input.stt_service.SttServiceActivity
+import org.stypox.dicio.io.input.stt_popup.SttPopupActivity
 import org.stypox.dicio.settings.MainSettingsScreen
 import org.stypox.dicio.settings.SkillSettingsScreen
 import org.stypox.dicio.ui.home.HomeScreen
@@ -48,8 +48,8 @@ fun Navigation() {
             val context = LocalContext.current
             ScreenWithDrawer(
                 onSettingsClick = { navController.navigate(MainSettings) },
-                onSpeechToTextServiceClick = {
-                    val intent = Intent(context, SttServiceActivity::class.java)
+                onSpeechToTextPopupClick = {
+                    val intent = Intent(context, SttPopupActivity::class.java)
                     context.startActivity(intent)
                 },
             ) {
@@ -73,7 +73,7 @@ fun Navigation() {
 @Composable
 fun ScreenWithDrawer(
     onSettingsClick: () -> Unit,
-    onSpeechToTextServiceClick: () -> Unit,
+    onSpeechToTextPopupClick: () -> Unit,
     screen: @Composable (navigationIcon: @Composable () -> Unit) -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -84,7 +84,7 @@ fun ScreenWithDrawer(
         drawerContent = {
             DrawerContent(
                 onSettingsClick = onSettingsClick,
-                onSpeechToTextServiceClick = onSpeechToTextServiceClick,
+                onSpeechToTextPopupClick = onSpeechToTextPopupClick,
                 closeDrawer = {
                     scope.launch {
                         drawerState.close()

@@ -70,7 +70,7 @@
     <string name="eval_no_match">没听懂，请重复？</string>
     <string name="stt_say_something">随便说些什么…</string>
     <string name="stt_did_not_understand">不明白，请重试</string>
-    <string name="stt_service">语音识别服务</string>
+    <string name="stt_popup">语音识别服务</string>
     <string name="skill_name_search">搜索</string>
     <string name="skill_sentence_example_search">搜索如何喂猫</string>
     <string name="skill_name_weather">天气</string>

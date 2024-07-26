@@ -133,7 +133,7 @@
     <string name="skill_sentence_example_navigation">Navegue ao aeroporto internacional de Vancouver</string>
     <string name="pref_stt_auto_finish_summary_on">Enviar automaticamente o resultado da fala para a app solicitante ao terminar de ouvir</string>
     <string name="pref_stt_auto_finish_title">Enviar diretamente o resultado do serviço de fala para texto</string>
-    <string name="stt_service">Serviço de fala para texto</string>
+    <string name="stt_popup">Serviço de fala para texto</string>
     <string name="skill_name_navigation">Navegação</string>
     <string name="pref_stt_auto_finish_summary_off">Aguardar confirmação manual antes de enviar o resultado da fala para a app solicitante</string>
     <string name="skill_navigation_navigating_to">A navegar para %1$s</string>

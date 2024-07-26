@@ -129,7 +129,7 @@
     <string name="skill_time_current_time">Agora são %1$s</string>
     <string name="pref_stt_auto_finish_title">Enviar diretamente o resultado do serviço de fala para texto</string>
     <string name="pref_stt_auto_finish_summary_on">Enviar automaticamente o resultado da fala para o aplicativo solicitante ao terminar de ouvir</string>
-    <string name="stt_service">Serviço de fala para texto</string>
+    <string name="stt_popup">Serviço de fala para texto</string>
     <string name="skill_name_navigation">Navegação</string>
     <string name="pref_stt_auto_finish_summary_off">Aguardar confirmação manual antes de enviar o resultado da fala para o app solicitante</string>
     <string name="stt_say_something">Diga algo…</string>

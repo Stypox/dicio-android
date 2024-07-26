@@ -1,7 +1,7 @@
 Join the discussion for a new logo: https://github.com/Stypox/dicio-android/issues/74
 
 New:
-- The Vosk Speech To Text service can now take dictation, including in other apps, e.g. when pressing the microphone button
+- The Vosk Speech To Text popup can now take dictation, including in other apps, e.g. when pressing the microphone button
 - Add current time skill
 - Add French and Russian translations for telephone skill
   - and for timer, too, though `dicio-numbers` doesn't support those languages yet

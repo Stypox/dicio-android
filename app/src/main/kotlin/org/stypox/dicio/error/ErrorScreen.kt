@@ -113,7 +113,7 @@ private fun ErrorScreen(
 private fun ErrorScreenPreview() {
     AppTheme {
         ErrorScreen(
-            errorInfo = ErrorInfo(Exception(), UserAction.STT_SERVICE_SPEECH_TO_TEXT),
+            errorInfo = ErrorInfo(Exception(), UserAction.STT_POPUP_SPEECH_TO_TEXT),
             locale = Locale.getDefault(),
             timestamp = "2024-05-27 08:52 ".repeat(10),
             osInfo = "Linux Android 14 - 34",

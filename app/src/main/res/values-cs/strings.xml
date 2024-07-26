@@ -131,7 +131,7 @@
     <string name="stt_say_something">Řekněte něco…</string>
     <string name="pref_stt_auto_finish_summary_off">Před odesláním výsledku řeči do žádající aplikace počkejte na ruční potvrzení</string>
     <string name="stt_did_not_understand">Nerozumím, zkuste to znovu</string>
-    <string name="stt_service">Služba převodu řeči na text</string>
+    <string name="stt_popup">Služba převodu řeči na text</string>
     <string name="skill_name_navigation">Navigace</string>
     <string name="skill_sentence_example_navigation">Naviguj do Brussele</string>
     <string name="skill_navigation_navigating_to">Navigovat do %1$s</string>

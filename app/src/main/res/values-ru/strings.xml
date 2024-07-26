@@ -131,7 +131,7 @@
     <string name="pref_stt_auto_finish_summary_off">Ожидать ручного подтверждения перед отправкой результат распознавания речи в запрашивающее приложение</string>
     <string name="stt_say_something">Скажите что-нибудь…</string>
     <string name="stt_did_not_understand">Я Вас не понял, повторите пожалуйста</string>
-    <string name="stt_service">Сервис преобразования речи в текст</string>
+    <string name="stt_popup">Сервис преобразования речи в текст</string>
     <string name="skill_navigation_specify_where">Уточните, куда вы хотите построить маршрут</string>
     <string name="skill_sentence_example_navigation">Построй маршрут до Москвы</string>
     <string name="skill_navigation_navigating_to">Построение маршрута к %1$s</string>

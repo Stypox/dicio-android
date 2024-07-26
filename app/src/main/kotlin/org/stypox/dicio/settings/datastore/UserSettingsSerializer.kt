@@ -9,7 +9,7 @@ import java.io.OutputStream
 object UserSettingsSerializer : Serializer<UserSettings> {
     override val defaultValue: UserSettings = UserSettings.getDefaultInstance()
         .toBuilder()
-        .setAutoFinishSttService(true)
+        .setAutoFinishSttPopup(true)
         .build()
 
     override suspend fun readFrom(input: InputStream): UserSettings {

@@ -64,11 +64,11 @@
             android:exported="false" />
 
         <activity
-            android:name=".io.input.stt_service.SttServiceActivity"
+            android:name=".io.input.stt_popup.SttPopupActivity"
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/SttServiceTheme"
+            android:theme="@style/SttPopupTheme"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>

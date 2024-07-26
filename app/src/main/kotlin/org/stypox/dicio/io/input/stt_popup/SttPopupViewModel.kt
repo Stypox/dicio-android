@@ -1,4 +1,4 @@
-package org.stypox.dicio.io.input.stt_service
+package org.stypox.dicio.io.input.stt_popup
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,11 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.io.input.SttInputDevice
 import javax.inject.Inject
 
 @HiltViewModel
-class SttServiceViewModel @Inject constructor(
+class SttPopupViewModel @Inject constructor(
     application: Application,
     val sttInputDevice: SttInputDeviceWrapper,
 ) : AndroidViewModel(application) {
@@ -24,7 +23,7 @@ class SttServiceViewModel @Inject constructor(
 
 
     init {
-        // start listening right away when the SttServiceActivity is started
+        // start listening right away when the SttPopupActivity is started
         sttInputDevice.tryLoad(this::onReceiveInputEvent)
     }
 

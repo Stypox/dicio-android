@@ -132,8 +132,8 @@ private fun MainSettingsScreen(
         }
         item {
             sttAutoFinish().Render(
-                settings.autoFinishSttService,
-                viewModel::setAutoFinishSttService
+                settings.autoFinishSttPopup,
+                viewModel::setAutoFinishSttPopup
             )
         }
 
