@@ -90,6 +90,7 @@ class SttService : RecognitionService() {
         }
 
         if (!willStartListening) {
+            Log.w(TAG, "Could not start STT recognizer")
             logRemoteExceptions { listener.error(ERROR_LANGUAGE_UNAVAILABLE) }
         }
     }

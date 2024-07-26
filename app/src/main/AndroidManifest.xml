@@ -22,15 +22,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
 
-    <queries>
-        <!-- To access Speech recognizer via system interface on Android 11+
-        https://developer.android.com/reference/android/speech/SpeechRecognizer#createSpeechRecognizer(android.content.Context,%20android.content.ComponentName) -->
-        <intent>
-            <action
-                android:name="android.speech.RecognitionService" />
-        </intent>
-    </queries>
-
     <!-- allowBackup=false because of a critical nasty bug: https://medium.com/p/924c91bafcac -->
     <application
         android:name=".App"
@@ -88,12 +79,13 @@
 
         <service
             android:name=".io.input.stt_service.SttService"
-            android:enabled="true"
-            android:exported="true"
-            android:description="@string/pref_input_method_vosk"
-            android:icon="@mipmap/ic_launcher"
+            android:description="@string/stt_service_label"
             android:directBootAware="true"
-            android:foregroundServiceType="microphone">
+            android:exported="true"
+            android:foregroundServiceType="microphone"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/stt_service_label"
+            android:permission="android.permission.RECORD_AUDIO">
             <intent-filter>
                 <action android:name="android.speech.RecognitionService"/>
                 <category android:name="android.intent.category.DEFAULT" />
