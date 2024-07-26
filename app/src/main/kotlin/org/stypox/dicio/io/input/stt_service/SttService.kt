@@ -16,6 +16,18 @@ import java.util.Locale
 import javax.inject.Inject
 
 
+// TODO this class is really simple at the moment, but many more things could be implemented, e.g.:
+//  - allowing an SttInputDevice to download/support multiple languages
+//  - handling more EXTRAs, e.g. EXTRA_LANGUAGE, EXTRA_LANGUAGE_PREFERENCE,
+//  EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, EXTRA_LANGUAGE_MODEL, LANGUAGE_MODEL_FREE_FORM,
+//  LANGUAGE_MODEL_WEB_SEARCH, EXTRA_SEGMENTED_SESSION,
+//  EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS,
+//  EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS,
+//  EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, EXTRA_AUDIO_SOURCE, EXTRA_AUDIO_SOURCE_CHANNEL_COUNT,
+//  EXTRA_AUDIO_SOURCE_ENCODING, EXTRA_AUDIO_SOURCE_SAMPLING_RATE, EXTRA_BIASING_STRINGS,
+//  EXTRA_ENABLE_BIASING_DEVICE_CONTEXT
+//  - if the SttInputDevice is already busy (e.g. another service is using it, or another part of
+//  Dicio is using it), that needs to be reported with ERROR_BUSY
 @AndroidEntryPoint
 class SttService : RecognitionService() {
 
