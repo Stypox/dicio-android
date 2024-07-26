@@ -2,6 +2,7 @@ package org.stypox.dicio
 
 import android.content.Intent
 import android.content.Intent.ACTION_ASSIST
+import android.content.Intent.ACTION_VOICE_COMMAND
 import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -47,7 +48,7 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        if (intent.action == ACTION_ASSIST) {
+        if (isAssistIntent(intent)) {
             onAssistIntentReceived()
         }
     }
@@ -55,7 +56,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (intent?.action == ACTION_ASSIST) {
+        if (isAssistIntent(intent)) {
             onAssistIntentReceived()
         } else {
             // load the input device, without starting to listen
@@ -79,5 +80,9 @@ class MainActivity : BaseActivity() {
     companion object {
         private const val INTENT_BACKOFF_MILLIS = 100L
         private val TAG = MainActivity::class.simpleName
+
+        private fun isAssistIntent(intent: Intent?): Boolean {
+            return intent?.action == ACTION_ASSIST || intent?.action == ACTION_VOICE_COMMAND
+        }
     }
 }
