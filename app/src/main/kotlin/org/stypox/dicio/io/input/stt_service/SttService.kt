@@ -3,16 +3,15 @@ package org.stypox.dicio.io.input.stt_service
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.RemoteException
 import android.speech.RecognitionService
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
-import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.AndroidEntryPoint
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.util.LocaleUtils
 import java.util.Locale
 import javax.inject.Inject
 
@@ -36,7 +35,7 @@ class SttService : RecognitionService() {
                 Log.e(TAG, "Unsupported language: app=$appLanguage wanted=$wantedLanguageExtra")
                 // From the javadoc of ERROR_LANGUAGE_UNAVAILABLE: Requested language is supported,
                 // but not available currently (e.g. not downloaded yet).
-                listener.error(ERROR_LANGUAGE_UNAVAILABLE)
+                logRemoteExceptions { listener.error(ERROR_LANGUAGE_UNAVAILABLE) }
                 return
             }
         }
@@ -45,9 +44,15 @@ class SttService : RecognitionService() {
         val willStartListening = sttInputDevice.tryLoad { inputEvent ->
             when (inputEvent) {
                 is InputEvent.Error -> {
-                    listener.error(SpeechRecognizer.ERROR_SERVER)
+                    logRemoteExceptions { listener.error(SpeechRecognizer.ERROR_SERVER) }
                 }
+
                 is InputEvent.Final -> {
+                    if (beginningOfSpeech) {
+                        logRemoteExceptions { listener.beginningOfSpeech() }
+                        beginningOfSpeech = false
+                    }
+
                     val results = Bundle()
                     results.putStringArrayList(
                         SpeechRecognizer.RESULTS_RECOGNITION,
@@ -57,30 +62,35 @@ class SttService : RecognitionService() {
                         SpeechRecognizer.CONFIDENCE_SCORES,
                         inputEvent.utterances.map { it.second }.toFloatArray()
                     )
-                    listener.results(results)
-                    listener.endOfSpeech()
+
+                    logRemoteExceptions { listener.results(results) }
+                    logRemoteExceptions { listener.endOfSpeech() }
                 }
+
                 InputEvent.None -> {
-                    listener.error(SpeechRecognizer.ERROR_SPEECH_TIMEOUT)
-                    listener.endOfSpeech()
+                    logRemoteExceptions { listener.error(SpeechRecognizer.ERROR_SPEECH_TIMEOUT) }
+                    logRemoteExceptions { listener.endOfSpeech() }
                 }
+
                 is InputEvent.Partial -> {
                     if (beginningOfSpeech) {
-                        listener.beginningOfSpeech()
+                        logRemoteExceptions { listener.beginningOfSpeech() }
                         beginningOfSpeech = false
                     }
+
                     val partResult = Bundle()
                     partResult.putStringArrayList(
                         SpeechRecognizer.RESULTS_RECOGNITION,
                         arrayListOf(inputEvent.utterance)
                     )
-                    listener.partialResults(partResult)
+
+                    logRemoteExceptions { listener.partialResults(partResult) }
                 }
             }
         }
 
         if (!willStartListening) {
-            listener.error(ERROR_LANGUAGE_UNAVAILABLE)
+            logRemoteExceptions { listener.error(ERROR_LANGUAGE_UNAVAILABLE) }
         }
     }
 
@@ -103,6 +113,14 @@ class SttService : RecognitionService() {
             SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE
         } else {
             SpeechRecognizer.ERROR_SERVER
+        }
+
+        fun logRemoteExceptions(f: () -> Unit) {
+            try {
+                return f()
+            } catch (e: RemoteException) {
+                Log.e(TAG, "Remote exception", e)
+            }
         }
     }
 }
