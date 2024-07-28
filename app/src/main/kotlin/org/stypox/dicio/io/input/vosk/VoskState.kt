@@ -78,12 +78,28 @@ sealed interface VoskState {
     data object NotLoaded : VoskState
 
     /**
-     * The model is being loaded, and [thenStartListening] indicates whether once loading is
-     * finished, the STT should start listening right away.
+     * The model is being loaded, and the nullity of [thenStartListening] indicates whether once
+     * loading is finished, the STT should start listening right away.
+     * [shouldEqualAnyLoading] is used just to create a [Loading] object with compares equal to any
+     * other [Loading], but [Loading] with [shouldEqualAnyLoading]` = true` will never appear as a
+     * state.
      */
     data class Loading(
-        val thenStartListening: Boolean
-    ) : VoskState
+        val thenStartListening: ((InputEvent) -> Unit)?,
+        val shouldEqualAnyLoading: Boolean = false,
+    ) : VoskState {
+        override fun equals(other: Any?): Boolean {
+            if (other !is Loading)
+                return false
+            if (shouldEqualAnyLoading || other.shouldEqualAnyLoading)
+                return true
+            return (this.thenStartListening == null) == (other.thenStartListening == null)
+        }
+
+        override fun hashCode(): Int {
+            return if (thenStartListening == null) 0 else 1;
+        }
+    }
 
     data class ErrorLoading(
         val throwable: Throwable
@@ -119,7 +135,7 @@ sealed interface VoskState {
             is Unzipping -> SttState.Unzipping(currentBytes, totalBytes)
             is ErrorUnzipping -> SttState.ErrorUnzipping(throwable)
             NotLoaded -> SttState.NotLoaded
-            is Loading -> SttState.Loading(thenStartListening)
+            is Loading -> SttState.Loading(thenStartListening != null)
             is ErrorLoading -> SttState.ErrorLoading(throwable)
             is Loaded -> SttState.Loaded
             is Listening -> SttState.Listening

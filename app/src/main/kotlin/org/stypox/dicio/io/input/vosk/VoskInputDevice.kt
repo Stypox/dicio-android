@@ -375,7 +375,7 @@ class VoskInputDevice(
      * if the user clicked on the button while loading).
      */
     private fun load(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
-        _state.value = Loading(thenStartListeningEventListener != null)
+        _state.value = Loading(thenStartListeningEventListener)
 
         operationsJob = scope.launch {
             val speechService: SpeechService
@@ -391,22 +391,25 @@ class VoskInputDevice(
                 return@launch
             }
 
-            if (!_state.compareAndSet(Loading(false), Loaded(speechService))) {
-                if (thenStartListeningEventListener != null &&
-                        // this will always be true except when the load() is begin joined by init()
-                        _state.value == Loading(true)) {
-                    // If the state wasn't thenStartListening=false, then thenStartListening=true
-                    // (which implies thenStartListeningEventListener != null but kotlin doesn't
-                    // know it). compareAndSet() is used in conjunction with
-                    // toggleThenStartListening() to ensure atomicity.
-                    startListening(speechService, thenStartListeningEventListener)
-                } else {
-                    // load() is begin joined by init(), which is reinitializing everything,
-                    // drop the speechService
+            if (!_state.compareAndSet(Loading(null), Loaded(speechService))) {
+                val state = _state.value
+                if (state is Loading && state.thenStartListening != null) {
+                    // "state is Loading" will always be true except when the load() is begin
+                    // joined by init().
+                    // "state.thenStartListening" might be "null" if, in the brief moment between
+                    // the compareAndSet() and reading _state.value, the state was changed by
+                    // toggleThenStartListening().
+                    startListening(speechService, state.thenStartListening)
+
+                } else if (!_state.compareAndSet(Loading(null, true), Loaded(speechService))) {
+                    // The current state is not the Loading state, which is unexpected. This means
+                    // that load() is begin joined by init(), which is reinitializing everything,
+                    // so we should drop the speechService.
                     speechService.stop()
                     speechService.shutdown()
                 }
-            }
+
+            } // else, the state was set to Loaded, so no need to do anything
         }
     }
 
@@ -421,8 +424,8 @@ class VoskInputDevice(
      */
     private fun toggleThenStartListening(eventListener: (InputEvent) -> Unit) {
         if (
-            !_state.compareAndSet(Loading(false), Loading(true)) &&
-            !_state.compareAndSet(Loading(true), Loading(false))
+            !_state.compareAndSet(Loading(null), Loading(eventListener)) &&
+            !_state.compareAndSet(Loading(eventListener), Loading(null))
         ) {
             // may happen if load() changes the state in the brief moment between when the state is
             // first checked before calling this function, and when the checks above are performed
