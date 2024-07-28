@@ -40,11 +40,14 @@ import org.stypox.dicio.util.useEntries
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.stypox.dicio.di.LocaleManager
@@ -163,8 +166,14 @@ class VoskInputDevice(
         val prevState = _state.getAndUpdate { NotInitialized }
         when (prevState) {
             // either interrupt the current
-            is Downloading -> operationsJob?.cancel()
-            is Unzipping -> operationsJob?.cancel()
+            is Downloading -> {
+                operationsJob?.cancel()
+                operationsJob?.join()
+            }
+            is Unzipping -> {
+                operationsJob?.cancel()
+                operationsJob?.join()
+            }
             is Loading -> {
                 operationsJob?.join()
                 when (val s = _state.getAndUpdate { NotInitialized }) {
@@ -322,17 +331,21 @@ class VoskInputDevice(
      * Will set the state to [ErrorUnzipping] or [NotLoaded] in the end. Also deletes the zip
      * file once downloading is successfully complete, to save disk space.
      */
-    private fun unzipImpl() {
+    private suspend fun unzipImpl() {
         try {
             // delete the model directory in case there are leftover files from other models
             modelDirectory.deleteRecursively()
 
             ZipInputStream(modelZipFile.inputStream()).useEntries { entry ->
-                val destinationFile = getDestinationFile(modelDirectory, entry.name)
+                val destinationFile = withContext(Dispatchers.IO) {
+                    getDestinationFile(modelDirectory, entry.name)
+                }
 
                 if (entry.isDirectory) {
                     // create directory
-                    if (!destinationFile.mkdirs() && !destinationFile.isDirectory) {
+                    if (withContext(Dispatchers.IO) {
+                        !destinationFile.exists() && !destinationFile.mkdirs()
+                    }) {
                         throw IOException("mkdirs failed: $destinationFile")
                     }
                     return@useEntries
@@ -346,6 +359,7 @@ class VoskInputDevice(
                     _state.value = Unzipping(0, entry.size)
 
                     while (read(buffer).also { length = it } > 0) {
+                        yield() // manually yield because the input/output streams are blocking
                         outputStream.write(buffer, 0, length)
                         currentBytes += length
                         _state.value = Unzipping(currentBytes, entry.size)

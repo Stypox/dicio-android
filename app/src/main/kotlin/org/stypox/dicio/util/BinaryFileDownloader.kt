@@ -19,6 +19,9 @@
 
 package org.stypox.dicio.util
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import okhttp3.Response
 import java.io.BufferedInputStream
 import java.io.File
@@ -50,7 +53,7 @@ fun deletePartialFiles(cacheDir: File) {
  * `0, 0` if there is no [CONTENT_LENGTH] header in the response
  */
 @Throws(IOException::class)
-fun downloadBinaryFileWithPartial(
+suspend fun downloadBinaryFileWithPartial(
     response: Response,
     file: File,
     cacheDir: File,
@@ -58,16 +61,20 @@ fun downloadBinaryFileWithPartial(
 ) {
     // use a partial file so that the file won't be considered as already downloaded
     // if the download gets interrupted
-    val partialFile = File.createTempFile(file.name, DOT_PART_SUFFIX, cacheDir)
+    val partialFile = withContext(Dispatchers.IO) {
+        File.createTempFile(file.name, DOT_PART_SUFFIX, cacheDir)
+    }
     partialFile.outputStream().use {
         downloadBinaryFile(response, it, progressCallback)
     }
 
     // delete the previous file, if any
-    file.delete()
+    withContext(Dispatchers.IO) {
+        file.delete()
+    }
 
     // the file has been fully downloaded, so we can rename it
-    if (!partialFile.renameTo(file)) {
+    if (withContext(Dispatchers.IO) { !partialFile.renameTo(file) }) {
         throw IOException("Cannot rename partial file $partialFile to actual file $file")
     }
 }
@@ -79,7 +86,7 @@ fun downloadBinaryFileWithPartial(
  * `0, 0` if there is no [CONTENT_LENGTH] header in the response
  */
 @Throws(IOException::class)
-fun downloadBinaryFile(
+suspend fun downloadBinaryFile(
     response: Response,
     outputStream: OutputStream,
     progressCallback: (currentBytes: Long, totalBytes: Long) -> Unit,
@@ -94,6 +101,7 @@ fun downloadBinaryFile(
         var readBytes: Int
         var currentBytes: Long = 0
         while (input.read(dataBuffer).also { readBytes = it } != -1) {
+            yield() // manually yield because the input/output streams are blocking
             currentBytes += readBytes.toLong()
             outputStream.write(dataBuffer, 0, readBytes)
             progressCallback(currentBytes, totalBytes)

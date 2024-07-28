@@ -27,7 +27,7 @@ import java.util.zip.ZipInputStream
 /**
  * Cycles through every entry of the zip file.
  */
-fun ZipInputStream.useEntries(forEachEntry: ZipInputStream.(entry: ZipEntry) -> Unit) {
+inline fun ZipInputStream.useEntries(forEachEntry: ZipInputStream.(entry: ZipEntry) -> Unit) {
     use { zipInputStream ->
         // cycles through all entries
         while (true) {
