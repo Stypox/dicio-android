@@ -211,13 +211,20 @@ class VoskInputDevice(
      *
      * @param thenStartListeningEventListener if not `null`, causes the [VoskInputDevice] to start
      * listening after it has finished loading, and the received input events are sent there
+     * @return `true` if the input device will start listening (or be ready to do so in case
+     * `thenStartListeningEventListener == null`) at some point,
+     * `false` if manual user intervention is required to start listening
      */
-    override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
+    override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
         val s = _state.value
         if (s == NotLoaded) {
             load(thenStartListeningEventListener)
+            return true
         } else if (thenStartListeningEventListener != null && s is Loaded) {
             startListening(s.speechService, thenStartListeningEventListener)
+            return true
+        } else {
+            return false
         }
     }
 
@@ -249,6 +256,16 @@ class VoskInputDevice(
             is ErrorLoading -> load(eventListener) // retry
             is Loaded -> startListening(s.speechService, eventListener)
             is Listening -> stopListening(s.speechService, s.eventListener, true)
+        }
+    }
+
+    /**
+     * If the recognizer is currently listening, stops listening. Otherwise does nothing.
+     */
+    override fun stopListening() {
+        when (val s = _state.value) {
+            is Listening -> stopListening(s.speechService, s.eventListener, true)
+            else -> {}
         }
     }
 

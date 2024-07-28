@@ -162,4 +162,5 @@
     <string name="skill_timer_query_name">Timer %1$s expires in %2$s</string>
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
+    <string name="stt_service_label">Dicio offline speech recognition</string>
 </resources>

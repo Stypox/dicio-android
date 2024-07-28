@@ -31,7 +31,9 @@ import javax.inject.Singleton
 interface SttInputDeviceWrapper {
     val uiState: StateFlow<SttState?>
 
-    fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?)
+    fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean
+
+    fun stopListening()
 
     fun onClick(eventListener: (InputEvent) -> Unit)
 }
@@ -98,8 +100,12 @@ class SttInputDeviceWrapperImpl(
     }
 
 
-    override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?) {
-        sttInputDevice?.tryLoad(thenStartListeningEventListener)
+    override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
+        return sttInputDevice?.tryLoad(thenStartListeningEventListener) ?: false
+    }
+
+    override fun stopListening() {
+        sttInputDevice?.stopListening()
     }
 
     override fun onClick(eventListener: (InputEvent) -> Unit) {

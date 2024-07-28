@@ -76,5 +76,23 @@
                 <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".io.input.stt_service.SttService"
+            android:description="@string/stt_service_label"
+            android:directBootAware="true"
+            android:exported="true"
+            android:foregroundServiceType="microphone"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/stt_service_label"
+            android:permission="android.permission.RECORD_AUDIO">
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.speech"
+                android:resource="@xml/stt_service_metadata" />
+        </service>
     </application>
 </manifest>
