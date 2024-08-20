@@ -1,0 +1,48 @@
+name: Publish to Play Store
+on: workflow_dispatch
+
+env:
+  # these are needed by fastlane
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Fastlane
+        run: |
+          sudo apt install ruby ruby-dev
+          sudo gem install bundler
+          sudo bundle install
+
+      - name: Extract version and version code
+        run: |
+          echo "VERSION=$(sed -nE 's~versionName ?= ?\"(.*)\"~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$(sed -nE 's~versionCode ?= ?(.*)~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
+
+      - name: Print some information
+        env:
+          VERSION: ${{ env.VERSION }}
+          VERSION_CODE: ${{ env.VERSION_CODE }}
+        run: |
+          echo "Version: $VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "Version code: $VERSION_CODE" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create Keystore and Google Play config file
+        env:
+          KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          PLAY_STORE_CONFIG_BASE64: ${{ secrets.PLAY_STORE_CONFIG_BASE64 }}
+        run: |
+          openssl base64 -A -d -out keystore.jks <<< "$KEYSTORE_BASE64"
+          openssl base64 -A -d -out play_config.json <<< "$PLAY_STORE_CONFIG_BASE64"
+
+      - name: Run Fastlane to build the bundle, publish to Play Store and update metadata
+        env:
+          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+        run: |
+          bundle exec fastlane deploy "signing_store_file:keystore.jks" "signing_store_password:$KEYSTORE_PASSWORD" "signing_key_alias:$KEY_ALIAS" "signing_key_password:$KEYSTORE_PASSWORD" "play_store_json_key:play_config.json"
