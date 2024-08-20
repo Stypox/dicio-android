@@ -20,6 +20,10 @@ jobs:
           echo "VERSION=$(sed -nE 's~versionName ?= ?\"(.*)\"~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
           echo "VERSION_CODE=$(sed -nE 's~versionCode ?= ?(.*)~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
 
+      - name: Prepare changelog
+        env:
+          VERSION_CODE: ${{ env.VERSION_CODE }}
+        run: |
           CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/$VERSION_CODE.txt"
           if [ -f "$CHANGELOG_FILE" ]; then
             cp "$CHANGELOG_FILE" "__changelog_file__";
@@ -30,6 +34,8 @@ jobs:
             touch "__changelog_file__";
           fi;
 
+      - name: Extract apksigner paths
+        run: |
           BUILD_TOOLS_PATH="$("$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --list_installed | grep build-tools/ | tail -n 1 | sed -nE 's~^.*(build-tools/[^ \t]+).*$~\1~p')"
           echo "APKSIGNER=$ANDROID_HOME/$BUILD_TOOLS_PATH/apksigner" >> $GITHUB_ENV
 
