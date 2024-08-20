@@ -52,4 +52,4 @@ jobs:
           KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
         run: |
-          bundle exec fastlane deploy "signing_store_file:keystore.jks" "signing_store_password:$KEYSTORE_PASSWORD" "signing_key_alias:$KEY_ALIAS" "signing_key_password:$KEYSTORE_PASSWORD" "play_store_json_key:play_config.json"
+          bundle exec fastlane deploy "signing_store_file:$(pwd)/keystore.jks" "signing_store_password:$KEYSTORE_PASSWORD" "signing_key_alias:$KEY_ALIAS" "signing_key_password:$KEYSTORE_PASSWORD" "play_store_json_key:$(pwd)/play_config.json"
