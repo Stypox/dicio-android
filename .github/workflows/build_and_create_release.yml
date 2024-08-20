@@ -1,0 +1,99 @@
+name: Build and create release
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: "temurin"
+          cache: 'gradle'
+
+      - name: Extract version, version code, changelog and some paths
+        run: |
+          echo "VERSION=$(sed -nE 's~versionName ?= ?\"(.*)\"~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$(sed -nE 's~versionCode ?= ?(.*)~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
+
+          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/$VERSION_CODE.txt"
+          if [ -f "$CHANGELOG_FILE" ]; then
+            cp "$CHANGELOG_FILE" "__changelog_file__";
+            sed -Ei 's/^([a-zA-Z0-9 ]+):$/### \1/g' "__changelog_file__";
+            sed -i 's/•/-/g' "__changelog_file__";
+          else
+            echo "Did not find changelog file";
+            touch "__changelog_file__";
+          fi;
+
+          BUILD_TOOLS_PATH="$("$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --list_installed | grep build-tools/ | tail -n 1 | sed -nE 's~^.*(build-tools/[^ \t]+).*$~\1~p')"
+          echo "APKSIGNER=$ANDROID_HOME/$BUILD_TOOLS_PATH/apksigner" >> $GITHUB_ENV
+
+      - name: Print some information
+        env:
+          VERSION: ${{ env.VERSION }}
+          VERSION_CODE: ${{ env.VERSION_CODE }}
+          APKSIGNER: ${{ env.APKSIGNER }}
+        run: |
+          echo "Version: $VERSION" >> "$GITHUB_STEP_SUMMARY"
+          echo "Version code: $VERSION_CODE" >> "$GITHUB_STEP_SUMMARY"
+          echo "Build directory: $BUILD_DIR" >> "$GITHUB_STEP_SUMMARY"
+          echo "Android home: $ANDROID_HOME" >> "$GITHUB_STEP_SUMMARY"
+          echo "Chosen apksigner: $APKSIGNER" >> "$GITHUB_STEP_SUMMARY"
+          echo "Available Android build-tools:" "$(ls "$ANDROID_HOME/build-tools/" | xargs)" >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "Changelog:" >> "$GITHUB_STEP_SUMMARY"
+          cat "__changelog_file__" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build release APK
+        run: ./gradlew assembleRelease
+
+      - name: Move APK to folder for upload
+        env:
+          VERSION: ${{ env.VERSION }}
+        run: |
+          mkdir apks
+          mv "app/release/app-release.apk" "./apks/Dicio_${VERSION}.apk"
+
+      - name: Sign APKs
+        env:
+          KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          VERSION: ${{ env.VERSION }}
+          APKSIGNER: ${{ env.APKSIGNER }}
+        run: |
+          openssl base64 -A -d -out keystore.jks <<< "$KEYSTORE_BASE64"
+          "$APKSIGNER" sign --ks ./keystore.jks --ks-key-alias "$KEY_ALIAS" --ks-pass "pass:$KEYSTORE_PASSWORD" "./apks/Dicio_${VERSION}.apk"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: apks
+          path: apks
+
+      - name: Make sure not to overwrite the APKs of a release that was already released
+        id: get_release
+        uses: joutvhu/get-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create draft release
+        id: create_release
+        # if the release exists and is a draft, or the release does not exists,
+        # proceed with uploading/overwriting artifacts
+        if: ${{ (steps.get_release.outputs.draft == 'true') || (steps.get_release.outputs.draft == '') }}
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          body_path: __changelog_file__
+          draft: true
+          files: |
+            apks/Dicio_${{ env.VERSION }}.apk
