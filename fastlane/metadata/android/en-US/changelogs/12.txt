@@ -1,0 +1,16 @@
+New:
+• Dicio can now be used as Voice Input in Android settings
+• The voice command button on (Bluetooth) headsets will now trigger Dicio
+
+Improved:
+• Rename STT service to STT popup
+
+Fixed:
+• Fix reference words not being normalized
+• [Vosk] Fix pressing STT microphone while still loading
+
+Localization:
+• New language available: Ukrainian
+• Translate navigation skill in Russian
+• Improve French and German translations
+• Improve README documentation
