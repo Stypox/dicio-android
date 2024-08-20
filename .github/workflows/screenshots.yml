@@ -1,4 +1,4 @@
-name: Take screenshots and create Pull Request
+name: Take screenshots and create PR
 
 on:
   workflow_dispatch:

@@ -18,4 +18,4 @@ read -s signing_store_password
 echo "Enter signing_key_password: "
 read -s signing_key_password
 
-fastlane deploy signing_store_file:$signing_store_file signing_store_password:$signing_store_password signing_key_alias:$signing_key_alias signing_key_password:$signing_key_password play_store_json_key:$play_store_json_key
+fastlane deploy "signing_store_file:$signing_store_file" "signing_store_password:$signing_store_password" "signing_key_alias:$signing_key_alias" "signing_key_password:$signing_key_password" "play_store_json_key:$play_store_json_key"
