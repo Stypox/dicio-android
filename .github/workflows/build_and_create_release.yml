@@ -15,7 +15,7 @@ jobs:
           distribution: "temurin"
           cache: 'gradle'
 
-      - name: Extract version, version code, changelog and some paths
+      - name: Extract version and version code
         run: |
           echo "VERSION=$(sed -nE 's~versionName ?= ?\"(.*)\"~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
           echo "VERSION_CODE=$(sed -nE 's~versionCode ?= ?(.*)~\1~p' app/build.gradle.kts | tr -d ' ' )" >> "$GITHUB_ENV"
@@ -98,7 +98,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ env.VERSION }}
-          name: ${{ env.VERSION }}
+          name: v${{ env.VERSION }}
           body_path: __changelog_file__
           draft: true
           files: |
