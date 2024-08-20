@@ -63,7 +63,7 @@ jobs:
           VERSION: ${{ env.VERSION }}
         run: |
           mkdir apks
-          mv "app/release/app-release.apk" "./apks/Dicio_${VERSION}.apk"
+          mv "app/build/outputs/apk/release/app-release-unsigned.apk" "./apks/Dicio_${VERSION}.apk"
 
       - name: Sign APKs
         env:
