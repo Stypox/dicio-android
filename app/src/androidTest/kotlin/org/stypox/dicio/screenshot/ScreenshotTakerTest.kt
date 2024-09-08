@@ -1,7 +1,6 @@
 package org.stypox.dicio.screenshot
 
 import android.Manifest
-import android.content.Context
 import android.view.WindowInsets
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -14,18 +13,15 @@ import androidx.test.rule.GrantPermissionRule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.test.runTest
-import okhttp3.OkHttpClient
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.stypox.dicio.MainActivity
-import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapperModule
 import org.stypox.dicio.eval.SkillEvaluator
@@ -49,7 +45,7 @@ import org.stypox.dicio.skills.weather.WeatherOutput
 import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.QuestionAnswer
-import org.stypox.dicio.ui.home.SttState
+import org.stypox.dicio.io.input.SttState
 import javax.inject.Inject
 import javax.inject.Singleton
 

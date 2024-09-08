@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.stypox.dicio.ui.home
+package org.stypox.dicio.io.input
 
 /**
  * This is almost symmetrical to [org.stypox.dicio.io.input.vosk.VoskState], except that there are

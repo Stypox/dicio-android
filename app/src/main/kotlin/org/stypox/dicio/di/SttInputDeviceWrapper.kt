@@ -24,7 +24,7 @@ import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_UNSET
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_VOSK
 import org.stypox.dicio.settings.datastore.InputDevice.UNRECOGNIZED
 import org.stypox.dicio.settings.datastore.UserSettings
-import org.stypox.dicio.ui.home.SttState
+import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import javax.inject.Singleton
 

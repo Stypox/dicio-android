@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.stypox.dicio.R
 import org.stypox.dicio.ui.home.SttFab
-import org.stypox.dicio.ui.home.SttState
+import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.util.ShareUtils
 

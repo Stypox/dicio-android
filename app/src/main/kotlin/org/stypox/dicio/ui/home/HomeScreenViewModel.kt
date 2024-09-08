@@ -13,6 +13,7 @@ import org.stypox.dicio.di.SpeechOutputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillHandler
+import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.io.speech.SnackbarSpeechDevice
 import javax.inject.Inject
 
