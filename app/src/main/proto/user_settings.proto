@@ -4,6 +4,7 @@ import "theme.proto";
 import "language.proto";
 import "input_device.proto";
 import "speech_output_device.proto";
+import "wake_device.proto";
 
 option java_package = "org.stypox.dicio.settings.datastore";
 option java_multiple_files = true;
@@ -16,4 +17,5 @@ message UserSettings {
     SpeechOutputDevice speech_output_device = 5;
     bool auto_finish_stt_popup = 6;
     map<string, bool> enabled_skills = 7;
+    WakeDevice wake_device = 8;
 }

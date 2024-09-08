@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.stypox.dicio.di.SpeechOutputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapper
+import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillHandler
 import org.stypox.dicio.io.input.SttState
@@ -24,6 +25,7 @@ class HomeScreenViewModel @Inject constructor(
     val skillHandler: SkillHandler,
     val sttInputDevice: SttInputDeviceWrapper,
     val speechOutputDevice: SpeechOutputDeviceWrapper,
+    val wakeDevice: WakeDeviceWrapper,
     val skillEvaluator: SkillEvaluator,
     // this is always instantiated, but will do nothing if
     // it is not the speech device chosen by the user

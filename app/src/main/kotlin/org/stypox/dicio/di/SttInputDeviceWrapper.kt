@@ -91,6 +91,7 @@ class SttInputDeviceWrapperImpl(
         uiStateJob?.cancel()
         val newSttInputDevice = sttInputDevice
         if (newSttInputDevice == null) {
+            uiStateJob = null
             _uiState.emit(null)
         } else {
             uiStateJob = scope.launch {
