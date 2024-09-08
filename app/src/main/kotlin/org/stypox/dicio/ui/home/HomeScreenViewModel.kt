@@ -2,6 +2,7 @@ package org.stypox.dicio.ui.home
 
 import android.app.Application
 import androidx.compose.material3.SnackbarHostState
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,9 @@ import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillHandler
 import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.io.speech.SnackbarSpeechDevice
+import org.stypox.dicio.settings.datastore.UserSettings
+import org.stypox.dicio.settings.datastore.WakeDevice
+import org.stypox.dicio.settings.datastore.copy
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +27,7 @@ class HomeScreenViewModel @Inject constructor(
     application: Application,
     val skillContext: SkillContext,
     val skillHandler: SkillHandler,
+    val dataStore: DataStore<UserSettings>,
     val sttInputDevice: SttInputDeviceWrapper,
     val speechOutputDevice: SpeechOutputDeviceWrapper,
     val wakeDevice: WakeDeviceWrapper,
@@ -57,6 +62,14 @@ class HomeScreenViewModel @Inject constructor(
             sttInputDevice.uiState
                 .filter { it == SttState.Listening }
                 .collect { speechOutputDevice.stopSpeaking() }
+        }
+    }
+
+    fun disableWakeWord() {
+        viewModelScope.launch {
+            dataStore.updateData {
+                it.copy { wakeDevice = WakeDevice.WAKE_DEVICE_NOTHING }
+            }
         }
     }
 }

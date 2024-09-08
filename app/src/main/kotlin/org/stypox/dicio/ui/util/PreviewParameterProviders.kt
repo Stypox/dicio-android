@@ -26,6 +26,7 @@ import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.PendingQuestion
 import org.stypox.dicio.ui.home.QuestionAnswer
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.wake.WakeState
 import java.io.IOException
 
 
@@ -130,4 +131,14 @@ class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
     SttState.ErrorLoading(Exception("ErrorLoading exception")),
     SttState.Loaded,
     SttState.Listening,
+))
+
+class WakeStatesPreviews : CollectionPreviewParameterProvider<WakeState>(listOf(
+    WakeState.NotDownloaded,
+    WakeState.Downloading(987654, 0),
+    WakeState.Downloading(987654, 1234567),
+    WakeState.ErrorDownloading(Exception("ErrorDownloading exception")),
+    WakeState.Loading,
+    WakeState.ErrorLoading(Exception("ErrorLoading exception")),
+    WakeState.Listening,
 ))

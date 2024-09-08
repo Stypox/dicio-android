@@ -47,11 +47,14 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.di.SkillContextImpl
+import org.stypox.dicio.io.wake.WakeState
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SkillOutputPreviews
 import org.stypox.dicio.ui.util.UserInputPreviews
+import org.stypox.dicio.ui.util.WakeStatesPreviews
+import kotlin.math.absoluteValue
 
 @Composable
 fun InteractionList(
@@ -60,6 +63,9 @@ fun InteractionList(
     skills: List<SkillInfo>?,
     interactionLog: InteractionLog,
     onConfirmedQuestionClick: (String) -> Unit,
+    wakeState: WakeState?,
+    onWakeDownload: () -> Unit,
+    onWakeDisable: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var totalItemCount = 0
@@ -85,6 +91,20 @@ fun InteractionList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         state = listState,
     ) {
+        countedItem(canBeAnchor = false) {
+            when (wakeState) {
+                WakeState.NotDownloaded,
+                is WakeState.Downloading,
+                is WakeState.ErrorDownloading,
+                is WakeState.ErrorLoading -> WakeWordWidget(
+                    wakeState = wakeState,
+                    onWakeDownload = onWakeDownload,
+                    onWakeDisable = onWakeDisable,
+                )
+                else -> {}
+            }
+        }
+
         countedItem(canBeAnchor = false) {
             if (skills != null) {
                 // avoid showing anything if skills are null, i.e. not ready yet
@@ -172,11 +192,15 @@ fun InteractionList(
 fun InteractionListPreview(
     @PreviewParameter(InteractionLogPreviews::class) interactionLog: InteractionLog,
 ) {
+    val wakeStatesPreviews = WakeStatesPreviews().values.toList()
     AppTheme {
         InteractionList(
             skillContext = SkillContextImpl.newForPreviews(LocalContext.current),
             skills = SkillInfoPreviews().values.toList(),
             interactionLog = interactionLog,
+            wakeState = wakeStatesPreviews[interactionLog.hashCode().absoluteValue % wakeStatesPreviews.size],
+            onWakeDownload = {},
+            onWakeDisable = {},
             onConfirmedQuestionClick = {},
         )
     }

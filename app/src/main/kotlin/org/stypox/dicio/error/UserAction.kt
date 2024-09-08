@@ -12,5 +12,7 @@ enum class UserAction(val message: String) : Parcelable {
     UNKNOWN("Unknown error"),
     STT_POPUP_SPEECH_TO_TEXT("Stt popup speech to text"),
     GENERIC_EVALUATION("Evaluation"),
-    SKILL_EVALUATION("Skill evaluation");
+    SKILL_EVALUATION("Skill evaluation"),
+    WAKE_DOWNLOADING("Downloading wake word model"),
+    WAKE_LOADING("Loading wake word model");
 }

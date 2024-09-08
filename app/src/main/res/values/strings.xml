@@ -163,4 +163,13 @@
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
     <string name="stt_service_label">Dicio offline speech recognition</string>
+    <string name="wake_word_setup_title">Setup wake word</string>
+    <string name="wake_word_setup_description">Dicio will wake up automatically whenever you say \"Hey Mycroft\".
+        This works by starting a service that always listens in the background.
+        All speech processing happens locally, that\'s why you need to download the AI model in advance.</string>
+    <string name="wake_word_error_downloading">An unexpected error occurred while downloading</string>
+    <string name="wake_word_error_downloading_network">Dicio could not reach the internet. Please check your connection and retry.</string>
+    <string name="wake_word_error_loading">An unexpected error occurred while loading</string>
+    <string name="disable">Disable</string>
+    <string name="retry">Retry</string>
 </resources>
