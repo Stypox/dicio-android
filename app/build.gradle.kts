@@ -157,6 +157,9 @@ dependencies {
     implementation(libs.jna) { artifact { type = "aar" } }
     implementation(libs.vosk.android)
 
+    // LiteRT / Tensorflow Lite
+    implementation(libs.litert)
+
     // OkHttp
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
