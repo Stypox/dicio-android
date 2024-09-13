@@ -6,8 +6,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,7 +37,7 @@ class OpenWakeWordDevice(
 
     init {
         _state = if (melFile.exists() && embFile.exists() && wakeFile.exists()) {
-            MutableStateFlow(WakeState.Loading)
+            MutableStateFlow(WakeState.NotLoaded)
         } else {
             MutableStateFlow(WakeState.NotDownloaded)
         }
@@ -79,7 +77,7 @@ class OpenWakeWordDevice(
         }
     }
 
-    override fun processFrame(audio16bitPcm: ShortArray): Float {
+    override fun processFrame(audio16bitPcm: ShortArray): Boolean {
         if (audio16bitPcm.size != OwwModel.MEL_INPUT_COUNT) {
             throw IllegalArgumentException(
                 "OwwModel can only process audio frames of ${OwwModel.MEL_INPUT_COUNT} samples"
@@ -105,7 +103,7 @@ class OpenWakeWordDevice(
             audio[i] = audio16bitPcm[i].toFloat() / 32768.0f
         }
 
-        return model!!.processFrame(audio)
+        return model!!.processFrame(audio) > 0.8f
     }
 
     override fun frameSize(): Int {

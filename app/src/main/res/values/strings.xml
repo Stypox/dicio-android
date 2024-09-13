@@ -167,6 +167,12 @@
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
     <string name="stt_service_label">Dicio offline speech recognition</string>
+    <string name="wake_service_label">Dicio wake word service</string>
+    <string name="wake_service_foreground_notification_summary">This notification allows the Dicio
+        wake word service to listen to the microphone in the background</string>
+    <string name="wake_service_foreground_notification">Listening for the \"Hey Mycroft\" wake-up word</string>
+    <string name="wake_service_start_notification">Tap to start Dicio wake word service</string>
+    <string name="wake_service_start_notification_summary">In newer Android versions Dicio can\'t start the service without a manual interaction from the user.</string>
     <string name="wake_word_setup_title">Setup wake word</string>
     <string name="wake_word_setup_description">Dicio will wake up automatically whenever you say \"Hey Mycroft\".
         This works by starting a service that always listens in the background.

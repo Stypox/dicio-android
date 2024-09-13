@@ -28,7 +28,7 @@ interface WakeDeviceWrapper {
 
     fun download()
 
-    fun processFrame(audio16bitPcm: ShortArray): Float
+    fun processFrame(audio16bitPcm: ShortArray): Boolean
 
     fun frameSize(): Int
 }
@@ -41,14 +41,15 @@ class WakeDeviceWrapperImpl(
     private val okHttpClient: OkHttpClient,
 ) : WakeDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
+    private var stateJob: Job? = null
 
     private var wakeDevice: WakeDevice? = null
+    private var lastFrameHadWrongSize = false
 
     // null means that the user has not enabled any STT input device
     private val _state: MutableStateFlow<WakeState?> = MutableStateFlow(null)
     override val state: StateFlow<WakeState?> = _state
 
-    private var stateJob: Job? = null
 
 
     init {
@@ -67,6 +68,7 @@ class WakeDeviceWrapperImpl(
             nextWakeDeviceFlow.collect { setting ->
                 val prevWakeDevice = wakeDevice
                 wakeDevice = buildInputDevice(setting)
+                lastFrameHadWrongSize = false
                 prevWakeDevice?.destroy()
                 restartUiStateJob()
             }
@@ -99,9 +101,24 @@ class WakeDeviceWrapperImpl(
         wakeDevice?.download()
     }
 
-    override fun processFrame(audio16bitPcm: ShortArray): Float {
+    override fun processFrame(audio16bitPcm: ShortArray): Boolean {
         val device = wakeDevice ?: throw IllegalArgumentException("No wake word device is enabled")
-        return device.processFrame(audio16bitPcm)
+
+        if (audio16bitPcm.size != device.frameSize()) {
+            if (lastFrameHadWrongSize) {
+                // a single badly-sized frame may happen when switching wake device, so we can
+                // tolerate it, but otherwise it is a programming error and should be reported
+                throw IllegalArgumentException("Wrong audio frame size: expected ${
+                    device.frameSize()} samples but got ${audio16bitPcm.size}")
+            }
+            lastFrameHadWrongSize = true
+            return false
+
+        } else {
+            // process the frame only if it has the correct size
+            lastFrameHadWrongSize = false
+            return device.processFrame(audio16bitPcm)
+        }
     }
 
     override fun frameSize(): Int {

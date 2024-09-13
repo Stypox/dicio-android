@@ -11,9 +11,17 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import org.stypox.dicio.di.SttInputDeviceWrapper
+import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
+import org.stypox.dicio.io.wake.WakeService
+import org.stypox.dicio.io.wake.WakeState
 import org.stypox.dicio.ui.nav.Navigation
 import org.stypox.dicio.util.BaseActivity
 import java.time.Instant
@@ -26,6 +34,10 @@ class MainActivity : BaseActivity() {
     lateinit var skillEvaluator: SkillEvaluator
     @Inject
     lateinit var sttInputDevice: SttInputDeviceWrapper
+    @Inject
+    lateinit var wakeDevice: WakeDeviceWrapper
+
+    private var wakeServiceJob: Job? = null
 
     private var nextAssistAllowed = Instant.MIN
 
@@ -61,6 +73,14 @@ class MainActivity : BaseActivity() {
         } else {
             // load the input device, without starting to listen
             sttInputDevice.tryLoad(null)
+        }
+
+        WakeService.start(this)
+        wakeServiceJob?.cancel()
+        wakeServiceJob = lifecycleScope.launch {
+            wakeDevice.state
+                .filter { it == WakeState.NotLoaded }
+                .collect { WakeService.start(this@MainActivity) }
         }
 
         composeSetContent {

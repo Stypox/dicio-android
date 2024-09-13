@@ -9,8 +9,9 @@ interface WakeDevice {
 
     /**
      * This is blocking and should be called only from the background service.
+     * @return true if the wake word was detected
      */
-    fun processFrame(audio16bitPcm: ShortArray): Float
+    fun processFrame(audio16bitPcm: ShortArray): Boolean
 
     /**
      * The size of audio frames passed to [processFrame]
