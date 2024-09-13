@@ -81,6 +81,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         // TODO request notifications permission
+        // TODO make main activity show on lock screen
+        // TODO add sound when Dicio stats listening
 
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
