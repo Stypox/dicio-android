@@ -13,11 +13,13 @@ sealed interface WakeState {
         val throwable: Throwable
     ) : WakeState
 
+    data object NotLoaded : WakeState
+
     data object Loading : WakeState
 
     data class ErrorLoading(
         val throwable: Throwable
     ) : WakeState
 
-    data object Listening : WakeState
+    data object Loaded : WakeState
 }

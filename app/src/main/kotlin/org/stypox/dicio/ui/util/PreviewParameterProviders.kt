@@ -140,5 +140,5 @@ class WakeStatesPreviews : CollectionPreviewParameterProvider<WakeState>(listOf(
     WakeState.ErrorDownloading(Exception("ErrorDownloading exception")),
     WakeState.Loading,
     WakeState.ErrorLoading(Exception("ErrorLoading exception")),
-    WakeState.Listening,
+    WakeState.Loaded,
 ))

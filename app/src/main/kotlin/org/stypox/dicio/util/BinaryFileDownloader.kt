@@ -22,6 +22,8 @@ package org.stypox.dicio.util
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.Response
 import java.io.BufferedInputStream
 import java.io.File
@@ -107,4 +109,9 @@ suspend fun downloadBinaryFile(
             progressCallback(currentBytes, totalBytes)
         }
     }
+}
+
+fun OkHttpClient.getResponse(url: String): Response {
+    val request: Request = Request.Builder().url(url).build()
+    return this.newCall(request).execute()
 }

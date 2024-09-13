@@ -57,6 +57,7 @@ import org.stypox.dicio.io.input.vosk.VoskState.NotInitialized
 import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.util.LocaleUtils
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
+import org.stypox.dicio.util.getResponse
 import org.vosk.BuildConfig
 import org.vosk.LibVosk
 import org.vosk.LogLevel
@@ -286,11 +287,8 @@ class VoskInputDevice(
 
         operationsJob = scope.launch(Dispatchers.IO) {
             try {
-                val request: Request = Request.Builder().url(modelUrl).build()
-                val response = okHttpClient.newCall(request).execute()
-
                 downloadBinaryFileWithPartial(
-                    response = response,
+                    response = okHttpClient.getResponse(modelUrl),
                     file = modelZipFile,
                     cacheDir = cacheDir,
                 ) { currentBytes, totalBytes ->
@@ -366,7 +364,7 @@ class VoskInputDevice(
                     outputStream.flush()
                 }
             }
-        } catch (e: IOException) {
+        } catch (e: Throwable) {
             Log.e(TAG, "Can't unzip Vosk model", e)
             _state.value = ErrorUnzipping(e)
             return

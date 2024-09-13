@@ -28,10 +28,9 @@ interface WakeDeviceWrapper {
 
     fun download()
 
-    /**
-     * Should be called only from the background service.
-     */
-    suspend fun loadAndListen()
+    fun processFrame(audio16bitPcm: ShortArray): Float
+
+    fun frameSize(): Int
 }
 
 typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
@@ -39,7 +38,6 @@ typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
 class WakeDeviceWrapperImpl(
     @ApplicationContext private val appContext: Context,
     dataStore: DataStore<UserSettings>,
-    private val localeManager: LocaleManager,
     private val okHttpClient: OkHttpClient,
 ) : WakeDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -69,7 +67,7 @@ class WakeDeviceWrapperImpl(
             nextWakeDeviceFlow.collect { setting ->
                 val prevWakeDevice = wakeDevice
                 wakeDevice = buildInputDevice(setting)
-                //prevWakeDevice?.destroy() TODO
+                prevWakeDevice?.destroy()
                 restartUiStateJob()
             }
         }
@@ -79,7 +77,7 @@ class WakeDeviceWrapperImpl(
         return when (setting) {
             UNRECOGNIZED,
             WAKE_DEVICE_UNSET,
-            WAKE_DEVICE_OWW -> OpenWakeWordDevice()
+            WAKE_DEVICE_OWW -> OpenWakeWordDevice(appContext, okHttpClient)
             WAKE_DEVICE_NOTHING -> null
         }
     }
@@ -101,8 +99,13 @@ class WakeDeviceWrapperImpl(
         wakeDevice?.download()
     }
 
-    override suspend fun loadAndListen() {
-        wakeDevice?.loadAndListen()
+    override fun processFrame(audio16bitPcm: ShortArray): Float {
+        val device = wakeDevice ?: throw IllegalArgumentException("No wake word device is enabled")
+        return device.processFrame(audio16bitPcm)
+    }
+
+    override fun frameSize(): Int {
+        return wakeDevice?.frameSize() ?: 0
     }
 }
 
@@ -114,9 +117,8 @@ class WakeDeviceWrapperModule {
     fun provideWakeDeviceWrapper(
         @ApplicationContext appContext: Context,
         dataStore: DataStore<UserSettings>,
-        localeManager: LocaleManager,
         okHttpClient: OkHttpClient,
     ): WakeDeviceWrapper {
-        return WakeDeviceWrapperImpl(appContext, dataStore, localeManager, okHttpClient)
+        return WakeDeviceWrapperImpl(appContext, dataStore, okHttpClient)
     }
 }
