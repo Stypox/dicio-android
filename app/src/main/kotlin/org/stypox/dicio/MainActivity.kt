@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.stypox.dicio.di.SttInputDeviceWrapper
@@ -65,8 +64,20 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onStart() {
+        isActivityRunning += 1
+        super.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isActivityRunning -= 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // TODO request notifications permission
 
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
@@ -100,6 +111,8 @@ class MainActivity : BaseActivity() {
     companion object {
         private const val INTENT_BACKOFF_MILLIS = 100L
         private val TAG = MainActivity::class.simpleName
+        var isActivityRunning: Int = 0
+            private set
 
         private fun isAssistIntent(intent: Intent?): Boolean {
             return intent?.action == ACTION_ASSIST || intent?.action == ACTION_VOICE_COMMAND

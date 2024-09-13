@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -169,7 +168,42 @@ class WakeService : Service() {
         val intent = Intent(this, MainActivity::class.java)
         intent.setAction(ACTION_ASSIST)
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || MainActivity.isActivityRunning > 0) {
+            // start the activity directly on versions prior to Android 10
+            startActivity(intent)
+        } else {
+            // Android 10+ does not allow starting activities from the background,
+            // so show a full-screen notification instead
+
+            val notificationManager = getSystemService(this, NotificationManager::class.java)!!
+
+            val channel = NotificationChannel(
+                TRIGGERED_NOTIFICATION_CHANNEL_ID,
+                getString(R.string.wake_service_triggered_notification),
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            channel.description = getString(R.string.wake_service_triggered_notification_summary)
+            notificationManager.createNotificationChannel(channel)
+
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+
+            val notification = NotificationCompat.Builder(this, TRIGGERED_NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_hearing_white)
+                .setContentTitle(getString(R.string.wake_service_triggered_notification))
+                .setContentText(getString(R.string.wake_service_triggered_notification_summary))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setFullScreenIntent(pendingIntent, true)
+                .build()
+
+            notificationManager.cancel(TRIGGERED_NOTIFICATION_ID)
+            notificationManager.notify(TRIGGERED_NOTIFICATION_ID, notification)
+        }
     }
 
     companion object {
@@ -196,7 +230,7 @@ class WakeService : Service() {
                 context,
                 0,
                 Intent(context, WakeService::class.java),
-                FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE
             )
 
             val notification = NotificationCompat.Builder(context, START_NOTIFICATION_CHANNEL_ID)
@@ -231,8 +265,11 @@ class WakeService : Service() {
             "org.stypox.dicio.io.wake.WakeService.FOREGROUND"
         private const val START_NOTIFICATION_CHANNEL_ID =
             "org.stypox.dicio.io.wake.WakeService.START"
+        private const val TRIGGERED_NOTIFICATION_CHANNEL_ID =
+            "org.stypox.dicio.io.wake.WakeService.TRIGGERED"
         private const val FOREGROUND_NOTIFICATION_ID = 19803672
         private const val START_NOTIFICATION_ID = 48019274
+        private const val TRIGGERED_NOTIFICATION_ID = 601398647
         private const val WAKE_WORD_BACKOFF_MILLIS = 4000L
     }
 }
