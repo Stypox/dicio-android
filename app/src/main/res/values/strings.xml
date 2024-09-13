@@ -85,6 +85,10 @@
     <string name="pref_speech_output_method_toast">Toast (popup message)</string>
     <string name="pref_speech_output_method_snackbar">Snackbar (message at the bottom)</string>
     <string name="pref_speech_output_method_nothing">Nothing</string>
+    <string name="pref_wake_method">Wake word recognition method</string>
+    <string name="pref_wake_method_summary">Choose the service to use to listen for the \"Hey Mycroft\" wakeup word in the background</string>
+    <string name="pref_wake_method_disabled">Disabled</string>
+    <string name="pref_wake_method_openwakeword">OpenWakeWord offline audio processing</string>
     <string name="pref_skill_not_available">This skill is not yet available for your language. Contributions are welcome!</string>
     <string name="pref_skill_missing_permissions">Requires these permissions: %1$s</string>
     <string name="pref_skill_grant_permissions">Grant</string>

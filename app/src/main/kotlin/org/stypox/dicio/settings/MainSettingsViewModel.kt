@@ -11,6 +11,7 @@ import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettings
+import org.stypox.dicio.settings.datastore.WakeDevice
 import org.stypox.dicio.util.toStateFlowDistinctBlockingFirst
 import javax.inject.Inject
 
@@ -41,6 +42,8 @@ class MainSettingsViewModel @Inject constructor(
         updateData { it.setDynamicColors(value) }
     fun setInputDevice(value: InputDevice) =
         updateData { it.setInputDevice(value) }
+    fun setWakeDevice(value: WakeDevice) =
+        updateData { it.setWakeDevice(value) }
     fun setSpeechOutputDevice(value: SpeechOutputDevice) =
         updateData { it.setSpeechOutputDevice(value) }
     fun setAutoFinishSttPopup(value: Boolean) =
