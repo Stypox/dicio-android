@@ -260,6 +260,17 @@ class WakeService : Service() {
             }
         }
 
+        /**
+         * On Android 10+ cancels any notification telling the user that the Dicio wake word was
+         * triggered, which is not needed anymore after the main activity starts.
+         */
+        fun cancelTriggeredNotification(context: Context) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getSystemService(context, NotificationManager::class.java)
+                    ?.cancel(TRIGGERED_NOTIFICATION_ID)
+            }
+        }
+
         private val TAG = WakeService::class.simpleName
         private const val FOREGROUND_NOTIFICATION_CHANNEL_ID =
             "org.stypox.dicio.io.wake.WakeService.FOREGROUND"

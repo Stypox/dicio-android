@@ -46,6 +46,9 @@ class MainActivity : BaseActivity() {
      * intent to the app twice in a row.
      */
     private fun onAssistIntentReceived() {
+        // the wake word triggered notification is not needed anymore
+        WakeService.cancelTriggeredNotification(this)
+
         val now = Instant.now()
         if (nextAssistAllowed < now) {
             nextAssistAllowed = now.plusMillis(INTENT_BACKOFF_MILLIS)
