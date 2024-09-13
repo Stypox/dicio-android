@@ -119,7 +119,8 @@ class WakeService : Service() {
         notificationManager.createNotificationChannel(channel)
 
         val notification = NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
-            .setContentText(getString(R.string.wake_service_foreground_notification))
+            .setSmallIcon(R.drawable.ic_hearing_white)
+            .setContentTitle(getString(R.string.wake_service_foreground_notification))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setOngoing(true)
             .setShowWhen(false)
@@ -199,10 +200,12 @@ class WakeService : Service() {
             )
 
             val notification = NotificationCompat.Builder(context, START_NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_hearing_white)
                 .setContentTitle(context.getString(R.string.wake_service_start_notification))
                 .setContentText(context.getString(R.string.wake_service_start_notification_summary))
                 .setOngoing(false)
                 .setShowWhen(false)
+                .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .build()
 
