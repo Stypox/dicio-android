@@ -82,7 +82,7 @@ class MainActivity : BaseActivity() {
 
         // TODO request notifications permission
         // TODO make main activity show on lock screen
-        // TODO add sound when Dicio stats listening
+        // TODO add button to stop service
 
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
