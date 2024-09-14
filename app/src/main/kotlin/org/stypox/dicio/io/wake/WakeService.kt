@@ -208,12 +208,12 @@ class WakeService : Service() {
 
     companion object {
         /**
-         * Starting from Android 14, it is not possible to start a foreground service
+         * Starting from Android 11, it is not possible to start a foreground service
          * that accesses the microphone from a BOOT_COMPLETED broadcast. So we show a
          * notification instead, which starts the foreground service when clicked.
          * https://developer.android.com/about/versions/15/behavior-changes-15#fgs-boot-completed
          */
-        @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+        @RequiresApi(Build.VERSION_CODES.R)
         fun createNotificationToStartLater(context: Context) {
             val notificationManager = getSystemService(context, NotificationManager::class.java)
                 ?: return

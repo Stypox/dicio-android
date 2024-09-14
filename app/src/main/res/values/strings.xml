@@ -173,7 +173,7 @@
     <string name="wake_service_foreground_notification">Listening for the \"Hey Mycroft\" wake-up word</string>
     <string name="wake_service_start_notification">Tap to start Dicio wake word service</string>
     <string name="wake_service_triggered_notification">Dicio wake word triggered, tap to open</string>
-    <string name="wake_service_start_notification_summary">In Android 14+ Dicio can\'t start the service without a manual interaction from the user.</string>
+    <string name="wake_service_start_notification_summary">In Android 11+ Dicio can\'t start the service without a manual interaction from the user.</string>
     <string name="wake_service_triggered_notification_summary">In Android 10+ Dicio can\'t start when a wake word is detected without showing a notification.</string>
     <string name="wake_word_setup_title">Setup wake word</string>
     <string name="wake_word_setup_description">Dicio will wake up automatically whenever you say \"Hey Mycroft\".

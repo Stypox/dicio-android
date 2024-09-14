@@ -32,8 +32,8 @@ class BootBroadcastReceiver : BroadcastReceiver() {
                 // any of these three states indicates that wake word recognition is enabled, and
                 // that the model has already been downloaded
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    // Starting from Android 14, it is not possible to start a foreground service
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    // Starting from Android 11, it is not possible to start a foreground service
                     // that accesses the microphone from a BOOT_COMPLETED broadcast. So we show a
                     // notification instead, which starts the foreground service when clicked.
                     // https://developer.android.com/about/versions/15/behavior-changes-15#fgs-boot-completed
@@ -45,7 +45,7 @@ class BootBroadcastReceiver : BroadcastReceiver() {
                 }
             }
             else -> {
-                Log.d(TAG, "Wrong wake device state")
+                Log.d(TAG, "Wrong wake device state: ${wakeDevice.state.value}")
             }
         }
     }
