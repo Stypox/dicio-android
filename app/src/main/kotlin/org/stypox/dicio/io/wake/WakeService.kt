@@ -142,8 +142,8 @@ class WakeService : Service() {
         var audio = ShortArray(0)
         var nextWakeWordAllowed = Instant.MIN
 
-        ar.startRecording()
         try {
+            ar.startRecording()
             while (true) {
                 if (audio.size != wakeDevice.frameSize()) {
                     audio = ShortArray(wakeDevice.frameSize())
@@ -159,6 +159,7 @@ class WakeService : Service() {
             }
         } finally {
             ar.stop()
+            ar.release()
         }
     }
 
