@@ -8,7 +8,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_ASSIST
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.media.AudioFormat
@@ -18,7 +17,6 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
@@ -29,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.stypox.dicio.MainActivity
+import org.stypox.dicio.MainActivity.Companion.ACTION_WAKE_WORD
 import org.stypox.dicio.R
 import org.stypox.dicio.di.WakeDeviceWrapper
 import java.time.Instant
@@ -187,7 +186,7 @@ class WakeService : Service() {
         Log.d(TAG, "Wake word detected")
 
         val intent = Intent(this, MainActivity::class.java)
-        intent.setAction(ACTION_ASSIST)
+        intent.setAction(ACTION_WAKE_WORD)
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || MainActivity.isActivityRunning > 0) {

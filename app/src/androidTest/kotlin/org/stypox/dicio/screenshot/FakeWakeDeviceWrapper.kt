@@ -8,9 +8,9 @@ import org.stypox.dicio.io.wake.WakeState
 class FakeWakeDeviceWrapper : WakeDeviceWrapper {
     override val state: StateFlow<WakeState?> = MutableStateFlow(null)
 
-    override fun download() {
-    }
+    override fun download() {}
 
-    override suspend fun loadAndListen() {
-    }
+    override fun processFrame(audio16bitPcm: ShortArray): Boolean = false
+
+    override fun frameSize(): Int = 1312
 }

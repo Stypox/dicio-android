@@ -3,6 +3,7 @@ package org.stypox.dicio
 import android.content.Intent
 import android.content.Intent.ACTION_ASSIST
 import android.content.Intent.ACTION_VOICE_COMMAND
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -59,9 +60,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun turnOnScreenIfNeeded(intent: Intent?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 &&
+            intent?.action == ACTION_WAKE_WORD
+        ) {
+            // Dicio was started anew based on a wake word,
+            // turn on the screen to let the user see what is happening
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
+        turnOnScreenIfNeeded(intent)
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
         }
@@ -75,15 +88,24 @@ class MainActivity : BaseActivity() {
     override fun onStop() {
         super.onStop()
         isActivityRunning -= 1
+
+        // once the activity is swiped away from the lock screen (or put in the background in any
+        // other way), we don't want to show it on the lock screen anymore
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(false)
+            setTurnScreenOn(false)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO request notifications permission
-        // TODO make main activity show on lock screen
+        // TODO request notifications and microphone permission
         // TODO train "Hey Dicio" wake word
+        // TODO also use "Display over other apps" permission?
+        // TODO remove unneeded native architectures included in the APK
 
+        turnOnScreenIfNeeded(intent)
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
         } else {
@@ -116,11 +138,16 @@ class MainActivity : BaseActivity() {
     companion object {
         private const val INTENT_BACKOFF_MILLIS = 100L
         private val TAG = MainActivity::class.simpleName
+        const val ACTION_WAKE_WORD = "org.stypox.dicio.MainActivity.ACTION_WAKE_WORD"
+
         var isActivityRunning: Int = 0
             private set
 
         private fun isAssistIntent(intent: Intent?): Boolean {
-            return intent?.action == ACTION_ASSIST || intent?.action == ACTION_VOICE_COMMAND
+            return when (intent?.action) {
+                ACTION_ASSIST, ACTION_VOICE_COMMAND, ACTION_WAKE_WORD -> true
+                else -> false
+            }
         }
     }
 }
