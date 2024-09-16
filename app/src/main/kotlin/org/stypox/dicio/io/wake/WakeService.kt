@@ -18,7 +18,9 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,18 +44,28 @@ class WakeService : Service() {
 
     @Inject lateinit var wakeDevice: WakeDeviceWrapper
 
+    private lateinit var notificationManager: NotificationManager
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        notificationManager = getSystemService(this, NotificationManager::class.java)!!
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            try {
-                createForegroundNotification()
-            } catch (t: Throwable) {
-                stopWithMessage("could not create WakeService foreground notification", t)
-                return START_NOT_STICKY
-            }
+        if (intent?.action == ACTION_STOP_WAKE_SERVICE) {
+            stopWithMessage()
+            return START_NOT_STICKY
+        }
+
+        try {
+            createForegroundNotification()
+        } catch (t: Throwable) {
+            stopWithMessage("could not create WakeService foreground notification", t)
+            return START_NOT_STICKY
         }
 
         if (alreadyStarted) {
@@ -92,38 +104,46 @@ class WakeService : Service() {
         job.cancel()
     }
 
-    private fun stopWithMessage(message: String, throwable: Throwable? = null) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-        }
+    private fun stopWithMessage(message: String = "", throwable: Throwable? = null) {
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         stopSelf()
 
-        if (throwable == null) {
-            Log.e(TAG, message)
-        } else {
+        if (throwable != null) {
             Log.e(TAG, message, throwable)
+        } else if (message.isNotEmpty()) {
+            Log.e(TAG, message)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createForegroundNotification() {
-        val notificationManager = getSystemService(this, NotificationManager::class.java)!!
-
-        val channel = NotificationChannel(
-            FOREGROUND_NOTIFICATION_CHANNEL_ID,
-            getString(R.string.wake_service_label),
-            NotificationManager.IMPORTANCE_LOW,
-        )
-        channel.description = getString(R.string.wake_service_foreground_notification_summary)
-        notificationManager.createNotificationChannel(channel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                FOREGROUND_NOTIFICATION_CHANNEL_ID,
+                getString(R.string.wake_service_label),
+                NotificationManager.IMPORTANCE_LOW,
+            )
+            channel.description = getString(R.string.wake_service_foreground_notification_summary)
+            notificationManager.createNotificationChannel(channel)
+        }
 
         val notification = NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_hearing_white)
             .setContentTitle(getString(R.string.wake_service_foreground_notification))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setShowWhen(false)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .addAction(NotificationCompat.Action(
+                R.drawable.ic_stop_circle_white,
+                getString(R.string.stop),
+                PendingIntent.getService(
+                    this,
+                    0,
+                    Intent(this, WakeService::class.java)
+                        .apply { action = ACTION_STOP_WAKE_SERVICE },
+                    PendingIntent.FLAG_IMMUTABLE,
+                ),
+            ))
             .build()
 
         startForeground(FOREGROUND_NOTIFICATION_ID, notification)
@@ -175,9 +195,8 @@ class WakeService : Service() {
             startActivity(intent)
         } else {
             // Android 10+ does not allow starting activities from the background,
-            // so show a full-screen notification instead
-
-            val notificationManager = getSystemService(this, NotificationManager::class.java)!!
+            // so show a full-screen notification instead, which does actually result in starting
+            // the activity from the background if the phone is off and Do Not Disturb is not active
 
             val channel = NotificationChannel(
                 TRIGGERED_NOTIFICATION_CHANNEL_ID,
@@ -249,16 +268,12 @@ class WakeService : Service() {
 
         /**
          * Start the service. Call this only from a foreground part of the app (e.g. the main
-         * activity), or from BOOT_COMPLETED only before Android 14. For BOOT_COMPLETED on Android
-         * 14+ use [createNotificationToStartLater] instead.
+         * activity), or from BOOT_COMPLETED only before Android 11. For BOOT_COMPLETED on Android
+         * 11+ use [createNotificationToStartLater] instead.
          */
         fun start(context: Context) {
             val intent = Intent(context, WakeService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent)
-            } else {
-                context.startService(intent)
-            }
+            ContextCompat.startForegroundService(context, intent)
         }
 
         /**
@@ -283,5 +298,7 @@ class WakeService : Service() {
         private const val START_NOTIFICATION_ID = 48019274
         private const val TRIGGERED_NOTIFICATION_ID = 601398647
         private const val WAKE_WORD_BACKOFF_MILLIS = 4000L
+        private const val ACTION_STOP_WAKE_SERVICE =
+            "org.stypox.dicio.io.wake.WakeService.ACTION_STOP"
     }
 }

@@ -82,7 +82,7 @@ class MainActivity : BaseActivity() {
 
         // TODO request notifications permission
         // TODO make main activity show on lock screen
-        // TODO add button to stop service
+        // TODO train "Hey Dicio" wake word
 
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
