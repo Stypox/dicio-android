@@ -66,16 +66,10 @@ import org.stypox.dicio.ui.util.loadingProgressString
 fun SttFab(
     state: SttState,
     onClick: () -> Unit,
-    onSttLoadAfterPermissionRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val microphonePermission by rememberPermissionState(Manifest.permission.RECORD_AUDIO)
-    val launcher = rememberPermissionFlowRequestLauncher { isGranted ->
-        if (isGranted.values.all { it }) {
-            // if the STT failed to lead because of the missing permission, this will try again
-            onSttLoadAfterPermissionRequest()
-        }
-    }
+    val launcher = rememberPermissionFlowRequestLauncher()
 
     // the NoMicrophonePermission state should override any other state, except for the NotAvailable
     // state which indicates that the STT engine can't be made available for this locale

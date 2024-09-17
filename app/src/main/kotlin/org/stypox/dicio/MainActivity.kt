@@ -1,5 +1,6 @@
 package org.stypox.dicio
 
+import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_ASSIST
 import android.content.Intent.ACTION_VOICE_COMMAND
@@ -14,7 +15,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import dev.shreyaspatil.permissionFlow.PermissionFlow
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.stypox.dicio.di.SttInputDeviceWrapper
@@ -22,6 +26,7 @@ import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.io.wake.WakeService
 import org.stypox.dicio.io.wake.WakeState
+import org.stypox.dicio.ui.home.wakeWordPermissions
 import org.stypox.dicio.ui.nav.Navigation
 import org.stypox.dicio.util.BaseActivity
 import java.time.Instant
@@ -37,6 +42,7 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var wakeDevice: WakeDeviceWrapper
 
+    private var sttPermissionJob: Job? = null
     private var wakeServiceJob: Job? = null
 
     private var nextAssistAllowed = Instant.MIN
@@ -117,8 +123,22 @@ class MainActivity : BaseActivity() {
         wakeServiceJob?.cancel()
         wakeServiceJob = lifecycleScope.launch {
             wakeDevice.state
-                .filter { it == WakeState.NotLoaded }
+                .combine(
+                    PermissionFlow.getInstance().getMultiplePermissionState(*wakeWordPermissions)
+                ) { wakeState, permGranted ->
+                    wakeState == WakeState.NotLoaded && permGranted.allGranted
+                }
+                .filter { it }
                 .collect { WakeService.start(this@MainActivity) }
+        }
+
+        sttPermissionJob?.cancel()
+        sttPermissionJob = lifecycleScope.launch {
+            // if the STT failed to load because of the missing permission, this will try again
+            PermissionFlow.getInstance().getPermissionState(Manifest.permission.RECORD_AUDIO)
+                .drop(1)
+                .filter { it.isGranted }
+                .collect { sttInputDevice.tryLoad(null) }
         }
 
         composeSetContent {

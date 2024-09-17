@@ -35,6 +35,11 @@ import org.stypox.dicio.ui.util.LoadingProgress
 import org.stypox.dicio.ui.util.WakeStatesPreviews
 import org.stypox.dicio.ui.util.loadingProgressString
 
+val wakeWordPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS)
+else
+    arrayOf(Manifest.permission.RECORD_AUDIO)
+
 /**
  * Calls [WakeWordWidgetImpl] with the data from the view model, and handles the permissions.
  * Will not show anything if there's no setup needed.
@@ -45,18 +50,13 @@ fun WakeWordWidget(
     onWakeDownload: () -> Unit,
     onWakeDisable: () -> Unit,
 ) {
-    val neededPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-        arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS)
-    else
-        arrayOf(Manifest.permission.RECORD_AUDIO)
-
-    val permissionsState by rememberMultiplePermissionState(*neededPermissions)
+    val permissionsState by rememberMultiplePermissionState(*wakeWordPermissions)
     val launcher = rememberPermissionFlowRequestLauncher()
 
     if (!permissionsState.allGranted) {
         WakeWordWidgetImpl(
             wakeState = NoMicOrNotificationPermission,
-            onWakeGrantPermissions = { launcher.launch(neededPermissions) },
+            onWakeGrantPermissions = { launcher.launch(wakeWordPermissions) },
             onWakeDownload = onWakeDownload,
             onWakeDisable = onWakeDisable,
         )
