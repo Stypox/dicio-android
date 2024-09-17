@@ -1,9 +1,6 @@
 package org.stypox.dicio.ui.home
 
 import android.Manifest
-import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,7 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
+import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
+import dev.shreyaspatil.permissionflow.compose.rememberPermissionState
 import org.stypox.dicio.R
 import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.io.input.SttState.Downloaded
@@ -66,27 +64,16 @@ import org.stypox.dicio.ui.util.loadingProgressString
  */
 @Composable
 fun SttFab(state: SttState, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    var microphonePermissionGranted by remember { mutableStateOf(true) }
-    val context = LocalContext.current
-    LaunchedEffect(null) {
-        microphonePermissionGranted =
-            ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) ==
-                    PackageManager.PERMISSION_GRANTED
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        microphonePermissionGranted = isGranted
-    }
+    val microphonePermission by rememberPermissionState(Manifest.permission.RECORD_AUDIO)
+    val launcher = rememberPermissionFlowRequestLauncher()
 
     // the NoMicrophonePermission state should override any other state, except for the NotAvailable
     // state which indicates that the STT engine can't be made available for this locale
-    val useNoMicPermState = !microphonePermissionGranted && state != NotAvailable
+    val useNoMicPermState = !microphonePermission.isGranted && state != NotAvailable
     SttFabImpl(
         state = if (useNoMicPermState) NoMicrophonePermission else state,
         onClick = if (useNoMicPermState)
-            { -> launcher.launch(Manifest.permission.RECORD_AUDIO) }
+            { -> launcher.launch(arrayOf(Manifest.permission.RECORD_AUDIO)) }
         else
             onClick,
         modifier = modifier,

@@ -168,6 +168,10 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.accompanist.drawablepainter)
 
+    // Permission Flow https://github.com/PatilShreyas/permission-flow-android
+    implementation(libs.permission.flow.android)
+    implementation(libs.permission.flow.compose)
+
     // Miscellaneous
     implementation(libs.unbescape)
     implementation(libs.jsoup)
