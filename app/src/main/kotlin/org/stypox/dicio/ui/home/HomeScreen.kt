@@ -85,6 +85,9 @@ fun HomeScreen(
         onSttClick = {
             viewModel.sttInputDevice.onClick(viewModel.skillEvaluator::processInputEvent)
         },
+        onSttLoadAfterPermissionRequest = {
+            viewModel.sttInputDevice.tryLoad(null)
+        },
         wakeState = wakeState.value,
         onWakeDownload = {
             viewModel.wakeDevice.download()
@@ -109,6 +112,7 @@ fun HomeScreen(
     // if the STT state is null, it means the user disabled the STT
     sttState: SttState?,
     onSttClick: () -> Unit,
+    onSttLoadAfterPermissionRequest: () -> Unit,
     wakeState: WakeState?,
     onWakeDownload: () -> Unit,
     onWakeDisable: () -> Unit,
@@ -155,6 +159,7 @@ fun HomeScreen(
                 SttFab(
                     state = sttState,
                     onClick = onSttClick,
+                    onSttLoadAfterPermissionRequest = onSttLoadAfterPermissionRequest,
                 )
             }
         },
@@ -176,6 +181,7 @@ private fun HomeScreenPreview(@PreviewParameter(InteractionLogPreviews::class) i
             interactionLog = interactionLog,
             sttState = sttStatesPreviews[i % sttStatesPreviews.size],
             onSttClick = { i += 1 },
+            onSttLoadAfterPermissionRequest = {},
             wakeState = null,
             onWakeDownload = {},
             onWakeDisable = {},

@@ -226,7 +226,7 @@ class VoskInputDevice(
      */
     override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
         val s = _state.value
-        if (s == NotLoaded) {
+        if (s == NotLoaded || s is ErrorLoading) {
             load(thenStartListeningEventListener)
             return true
         } else if (thenStartListeningEventListener != null && s is Loaded) {

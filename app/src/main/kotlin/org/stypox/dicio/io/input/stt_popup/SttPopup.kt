@@ -106,6 +106,7 @@ fun SttPopupBottomSheet(
             onDismissRequest = onDismissRequest,
             sttState = sttState,
             onSttClick = viewModel::onSttClick,
+            onSttLoadAfterPermissionRequest = viewModel::onSttLoadAfterPermissionRequest,
             textFieldValue = textFieldValue.value,
             onTextFieldChange = viewModel::setTextFieldValue,
             modifier = Modifier.padding(insets),
@@ -120,6 +121,7 @@ private fun SttPopupBottomSheet(
     onDismissRequest: () -> Unit,
     sttState: SttState,
     onSttClick: () -> Unit,
+    onSttLoadAfterPermissionRequest: () -> Unit,
     textFieldValue: String,
     onTextFieldChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -164,6 +166,7 @@ private fun SttPopupBottomSheet(
                 SttFab(
                     state = sttState,
                     onClick = onSttClick,
+                    onSttLoadAfterPermissionRequest = onSttLoadAfterPermissionRequest,
                 )
             }
 
@@ -259,6 +262,7 @@ private fun SttPopupBottomSheetPreview() {
                     onDismissRequest = {},
                     sttState = SttState.NotAvailable,
                     onSttClick = {},
+                    onSttLoadAfterPermissionRequest = {},
                     textFieldValue = textFieldValue,
                     onTextFieldChange = { textFieldValue = it },
                 )

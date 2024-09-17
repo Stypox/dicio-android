@@ -63,9 +63,19 @@ import org.stypox.dicio.ui.util.loadingProgressString
  * Calls [SttFabImpl] with the data from the view model, and handles the microhone permission.
  */
 @Composable
-fun SttFab(state: SttState, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun SttFab(
+    state: SttState,
+    onClick: () -> Unit,
+    onSttLoadAfterPermissionRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val microphonePermission by rememberPermissionState(Manifest.permission.RECORD_AUDIO)
-    val launcher = rememberPermissionFlowRequestLauncher()
+    val launcher = rememberPermissionFlowRequestLauncher { isGranted ->
+        if (isGranted.values.all { it }) {
+            // if the STT failed to lead because of the missing permission, this will try again
+            onSttLoadAfterPermissionRequest()
+        }
+    }
 
     // the NoMicrophonePermission state should override any other state, except for the NotAvailable
     // state which indicates that the STT engine can't be made available for this locale
