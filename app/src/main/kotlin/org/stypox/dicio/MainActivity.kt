@@ -53,9 +53,6 @@ class MainActivity : BaseActivity() {
      * intent to the app twice in a row.
      */
     private fun onAssistIntentReceived() {
-        // the wake word triggered notification is not needed anymore
-        WakeService.cancelTriggeredNotification(this)
-
         val now = Instant.now()
         if (nextAssistAllowed < now) {
             nextAssistAllowed = now.plusMillis(INTENT_BACKOFF_MILLIS)
@@ -66,7 +63,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun turnOnScreenIfNeeded(intent: Intent?) {
+    private fun handleWakeWordTurnOnScreen(intent: Intent?) {
+        // the wake word triggered notification is not needed anymore
+        WakeService.cancelTriggeredNotification(this)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 &&
             intent?.action == ACTION_WAKE_WORD
         ) {
@@ -80,14 +80,20 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        turnOnScreenIfNeeded(intent)
+        handleWakeWordTurnOnScreen(intent)
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
         }
     }
 
+    override fun onStart() {
+        isInForeground += 1
+        super.onStart()
+    }
+
     override fun onStop() {
         super.onStop()
+        isInForeground -= 1
 
         // once the activity is swiped away from the lock screen (or put in the background in any
         // other way), we don't want to show it on the lock screen anymore
@@ -99,19 +105,15 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onWakeWordDetected = {
-            sttInputDevice.tryLoad(skillEvaluator::processInputEvent)
-        }
 
-        // TODO request notifications and microphone permission
         // TODO train "Hey Dicio" wake word
         // TODO also use "Display over other apps" permission?
         // TODO remove unneeded native architectures included in the APK
 
-        turnOnScreenIfNeeded(intent)
+        handleWakeWordTurnOnScreen(intent)
         if (isAssistIntent(intent)) {
             onAssistIntentReceived()
-        } else {
+        } else if (intent.action != ACTION_WAKE_WORD) {
             // load the input device, without starting to listen
             sttInputDevice.tryLoad(null)
         }
@@ -152,22 +154,17 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onDestroy() {
-        onWakeWordDetected = null
-        super.onDestroy()
-    }
-
     companion object {
         private const val INTENT_BACKOFF_MILLIS = 100L
         private val TAG = MainActivity::class.simpleName
         const val ACTION_WAKE_WORD = "org.stypox.dicio.MainActivity.ACTION_WAKE_WORD"
 
-        var onWakeWordDetected: (() -> Unit)? = null
+        var isInForeground: Int = 0
             private set
 
         private fun isAssistIntent(intent: Intent?): Boolean {
             return when (intent?.action) {
-                ACTION_ASSIST, ACTION_VOICE_COMMAND, ACTION_WAKE_WORD -> true
+                ACTION_ASSIST, ACTION_VOICE_COMMAND -> true
                 else -> false
             }
         }

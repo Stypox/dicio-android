@@ -29,7 +29,9 @@ import kotlinx.coroutines.launch
 import org.stypox.dicio.MainActivity
 import org.stypox.dicio.MainActivity.Companion.ACTION_WAKE_WORD
 import org.stypox.dicio.R
+import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.WakeDeviceWrapper
+import org.stypox.dicio.eval.SkillEvaluator
 import java.time.Instant
 import javax.inject.Inject
 
@@ -41,7 +43,12 @@ class WakeService : Service() {
 
     private var alreadyStarted = false
 
-    @Inject lateinit var wakeDevice: WakeDeviceWrapper
+    @Inject
+    lateinit var skillEvaluator: SkillEvaluator
+    @Inject
+    lateinit var sttInputDevice: SttInputDeviceWrapper
+    @Inject
+    lateinit var wakeDevice: WakeDeviceWrapper
 
     private lateinit var notificationManager: NotificationManager
 
@@ -189,11 +196,15 @@ class WakeService : Service() {
         intent.setAction(ACTION_WAKE_WORD)
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
 
-        if (MainActivity.onWakeWordDetected?.invoke() != null) {
-            // MainActivity's onWakeWordDetected will start listening even from the background
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            // start the activity directly on versions prior to Android 10
+        // Start listening and pass STT events to the skill evaluator.
+        // Note that this works even if the MainActivity is opened later!
+        sttInputDevice.tryLoad(skillEvaluator::processInputEvent)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || MainActivity.isInForeground > 0) {
+            // start the activity directly on versions prior to Android 10,
+            // or if the MainActivity is already running in the foreground
             startActivity(intent)
+
         } else {
             // Android 10+ does not allow starting activities from the background,
             // so show a full-screen notification instead, which does actually result in starting
