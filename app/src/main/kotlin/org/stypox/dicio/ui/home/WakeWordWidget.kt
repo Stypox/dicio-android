@@ -1,5 +1,7 @@
 package org.stypox.dicio.ui.home
 
+import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,28 +13,73 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import dev.shreyaspatil.permissionflow.compose.rememberMultiplePermissionState
+import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import org.stypox.dicio.R
 import org.stypox.dicio.error.ErrorInfo
 import org.stypox.dicio.error.ErrorUtils
 import org.stypox.dicio.error.ExceptionUtils
 import org.stypox.dicio.error.UserAction
 import org.stypox.dicio.io.wake.WakeState
+import org.stypox.dicio.io.wake.WakeState.NoMicOrNotificationPermission
 import org.stypox.dicio.ui.util.LoadingProgress
 import org.stypox.dicio.ui.util.WakeStatesPreviews
 import org.stypox.dicio.ui.util.loadingProgressString
 
+/**
+ * Calls [WakeWordWidgetImpl] with the data from the view model, and handles the permissions.
+ * Will not show anything if there's no setup needed.
+ */
 @Composable
 fun WakeWordWidget(
     wakeState: WakeState,
+    onWakeDownload: () -> Unit,
+    onWakeDisable: () -> Unit,
+) {
+    val neededPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS)
+    else
+        arrayOf(Manifest.permission.RECORD_AUDIO)
+
+    val permissionsState by rememberMultiplePermissionState(*neededPermissions)
+    val launcher = rememberPermissionFlowRequestLauncher()
+
+    if (!permissionsState.allGranted) {
+        WakeWordWidgetImpl(
+            wakeState = NoMicOrNotificationPermission,
+            onWakeGrantPermissions = { launcher.launch(neededPermissions) },
+            onWakeDownload = onWakeDownload,
+            onWakeDisable = onWakeDisable,
+        )
+
+    } else when (wakeState) {
+        WakeState.NotDownloaded,
+        is WakeState.Downloading,
+        is WakeState.ErrorDownloading,
+        is WakeState.ErrorLoading -> WakeWordWidgetImpl(
+            wakeState = wakeState,
+            onWakeGrantPermissions = {},
+            onWakeDownload = onWakeDownload,
+            onWakeDisable = onWakeDisable,
+        )
+
+        else -> {}
+    }
+}
+
+@Composable
+fun WakeWordWidgetImpl(
+    wakeState: WakeState,
+    onWakeGrantPermissions: () -> Unit,
     onWakeDownload: () -> Unit,
     onWakeDisable: () -> Unit,
 ) {
@@ -95,6 +142,11 @@ fun WakeWordWidget(
             }
 
             when {
+                wakeState == NoMicOrNotificationPermission ->
+                    ElevatedButton(onClick = onWakeGrantPermissions) {
+                        Text(text = stringResource(R.string.grant_permissions))
+                    }
+
                 wakeState is WakeState.NotDownloaded ->
                     ElevatedButton(onClick = onWakeDownload) {
                         Text(text = stringResource(R.string.download))
@@ -133,8 +185,9 @@ fun WakeWordWidget(
 @Preview
 @Composable
 private fun WakeWordWidgetPreview(@PreviewParameter(WakeStatesPreviews::class) wakeState: WakeState) {
-    WakeWordWidget(
+    WakeWordWidgetImpl(
         wakeState = wakeState,
+        onWakeGrantPermissions = {},
         onWakeDownload = {},
         onWakeDisable = {},
     )

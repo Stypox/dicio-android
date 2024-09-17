@@ -185,4 +185,5 @@
     <string name="disable">Disable</string>
     <string name="retry">Retry</string>
     <string name="stop">Stop</string>
+    <string name="grant_permissions">Grant permissions</string>
 </resources>

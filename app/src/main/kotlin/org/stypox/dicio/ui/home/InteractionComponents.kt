@@ -92,16 +92,12 @@ fun InteractionList(
         state = listState,
     ) {
         countedItem(canBeAnchor = false) {
-            when (wakeState) {
-                WakeState.NotDownloaded,
-                is WakeState.Downloading,
-                is WakeState.ErrorDownloading,
-                is WakeState.ErrorLoading -> WakeWordWidget(
+            if (wakeState != null) {
+                WakeWordWidget(
                     wakeState = wakeState,
                     onWakeDownload = onWakeDownload,
                     onWakeDisable = onWakeDisable,
                 )
-                else -> {}
             }
         }
 
