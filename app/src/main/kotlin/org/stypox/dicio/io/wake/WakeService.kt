@@ -33,6 +33,7 @@ import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import java.time.Instant
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,7 +42,7 @@ class WakeService : Service() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
-    private var alreadyStarted = false
+    private var listening = AtomicBoolean(false)
 
     @Inject
     lateinit var skillEvaluator: SkillEvaluator
@@ -63,7 +64,7 @@ class WakeService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP_WAKE_SERVICE) {
-            stopWithMessage()
+            listening.set(false)
             return START_NOT_STICKY
         }
 
@@ -74,10 +75,9 @@ class WakeService : Service() {
             return START_NOT_STICKY
         }
 
-        if (alreadyStarted) {
-            return START_STICKY
+        if (listening.getAndSet(true)) {
+            return START_STICKY // if we were already listening, do nothing more
         }
-        alreadyStarted = true
 
         if (ContextCompat.checkSelfPermission(this, RECORD_AUDIO) != PERMISSION_GRANTED) {
             stopWithMessage("Could not start WakeService: microphone permission not granted")
@@ -97,6 +97,7 @@ class WakeService : Service() {
         scope.launch {
             try {
                 listenForWakeWord()
+                stopWithMessage()
             } catch (t: Throwable) {
                 stopWithMessage("Cannot continue listening for wake word", t)
             }
@@ -170,7 +171,7 @@ class WakeService : Service() {
 
         try {
             ar.startRecording()
-            while (true) {
+            while (listening.get()) {
                 if (audio.size != wakeDevice.frameSize()) {
                     audio = ShortArray(wakeDevice.frameSize())
                 }
