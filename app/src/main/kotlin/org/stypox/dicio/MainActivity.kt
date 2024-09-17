@@ -86,14 +86,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onStart() {
-        isActivityRunning += 1
-        super.onStart()
-    }
-
     override fun onStop() {
         super.onStop()
-        isActivityRunning -= 1
 
         // once the activity is swiped away from the lock screen (or put in the background in any
         // other way), we don't want to show it on the lock screen anymore
@@ -105,6 +99,9 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onWakeWordDetected = {
+            sttInputDevice.tryLoad(skillEvaluator::processInputEvent)
+        }
 
         // TODO request notifications and microphone permission
         // TODO train "Hey Dicio" wake word
@@ -155,12 +152,17 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onDestroy() {
+        onWakeWordDetected = null
+        super.onDestroy()
+    }
+
     companion object {
         private const val INTENT_BACKOFF_MILLIS = 100L
         private val TAG = MainActivity::class.simpleName
         const val ACTION_WAKE_WORD = "org.stypox.dicio.MainActivity.ACTION_WAKE_WORD"
 
-        var isActivityRunning: Int = 0
+        var onWakeWordDetected: (() -> Unit)? = null
             private set
 
         private fun isAssistIntent(intent: Intent?): Boolean {

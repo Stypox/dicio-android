@@ -189,7 +189,9 @@ class WakeService : Service() {
         intent.setAction(ACTION_WAKE_WORD)
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK)
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || MainActivity.isActivityRunning > 0) {
+        if (MainActivity.onWakeWordDetected?.invoke() != null) {
+            // MainActivity's onWakeWordDetected will start listening even from the background
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             // start the activity directly on versions prior to Android 10
             startActivity(intent)
         } else {
