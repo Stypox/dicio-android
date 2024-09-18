@@ -31,6 +31,8 @@ interface WakeDeviceWrapper {
     fun processFrame(audio16bitPcm: ShortArray): Boolean
 
     fun frameSize(): Int
+
+    fun releaseResources()
 }
 
 typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
@@ -43,7 +45,8 @@ class WakeDeviceWrapperImpl(
     private val scope = CoroutineScope(Dispatchers.Default)
     private var stateJob: Job? = null
 
-    private var wakeDevice: WakeDevice? = null
+    private var currentSetting: DataStoreWakeDevice
+    private var wakeDevice: WakeDevice?
     private var lastFrameHadWrongSize = false
 
     // null means that the user has not enabled any STT input device
@@ -59,20 +62,24 @@ class WakeDeviceWrapperImpl(
             .map { it.wakeDevice }
             .distinctUntilChangedBlockingFirst()
 
+        currentSetting = firstWakeDevice
         wakeDevice = buildInputDevice(firstWakeDevice)
         scope.launch {
             restartUiStateJob()
         }
 
         scope.launch {
-            nextWakeDeviceFlow.collect { setting ->
-                val prevWakeDevice = wakeDevice
-                wakeDevice = buildInputDevice(setting)
-                lastFrameHadWrongSize = false
-                prevWakeDevice?.destroy()
-                restartUiStateJob()
-            }
+            nextWakeDeviceFlow.collect(::changeWakeDeviceTo)
         }
+    }
+
+    private suspend fun changeWakeDeviceTo(setting: DataStoreWakeDevice) {
+        val prevWakeDevice = wakeDevice
+        currentSetting = setting
+        wakeDevice = buildInputDevice(setting)
+        lastFrameHadWrongSize = false
+        prevWakeDevice?.destroy()
+        restartUiStateJob()
     }
 
     private fun buildInputDevice(setting: DataStoreWakeDevice): WakeDevice? {
@@ -123,6 +130,12 @@ class WakeDeviceWrapperImpl(
 
     override fun frameSize(): Int {
         return wakeDevice?.frameSize() ?: 0
+    }
+
+    override fun releaseResources() {
+        scope.launch {
+            changeWakeDeviceTo(currentSetting)
+        }
     }
 }
 

@@ -9,12 +9,15 @@ class FakeSttInputDeviceWrapper : SttInputDeviceWrapper {
     override val uiState: MutableStateFlow<SttState> = MutableStateFlow(SttState.NotInitialized)
 
     override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
-        return TODO("Provide the return value")
+        return true
     }
 
     override fun stopListening() {
     }
 
     override fun onClick(eventListener: (InputEvent) -> Unit) {
+    }
+
+    override fun releaseResources() {
     }
 }

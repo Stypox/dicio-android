@@ -14,7 +14,9 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -50,6 +52,15 @@ class WakeService : Service() {
     lateinit var sttInputDevice: SttInputDeviceWrapper
     @Inject
     lateinit var wakeDevice: WakeDeviceWrapper
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val releaseSttResourcesRunnable = Runnable {
+        if (MainActivity.isCreated <= 0) {
+            // if the main activity is neither visible nor in the background,
+            // then unload the STT after a while because it would be using resources uselessly
+            sttInputDevice.releaseResources()
+        }
+    }
 
     private lateinit var notificationManager: NotificationManager
 
@@ -97,7 +108,7 @@ class WakeService : Service() {
         scope.launch {
             try {
                 listenForWakeWord()
-                stopWithMessage()
+                stopWithMessage() // exit normally, as the user just stopped the service
             } catch (t: Throwable) {
                 stopWithMessage("Cannot continue listening for wake word", t)
             }
@@ -107,8 +118,10 @@ class WakeService : Service() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        listening.set(false)
         job.cancel()
+        wakeDevice.releaseResources()
+        super.onDestroy()
     }
 
     private fun stopWithMessage(message: String = "", throwable: Throwable? = null) {
@@ -200,6 +213,10 @@ class WakeService : Service() {
         // Start listening and pass STT events to the skill evaluator.
         // Note that this works even if the MainActivity is opened later!
         sttInputDevice.tryLoad(skillEvaluator::processInputEvent)
+
+        // Unload the STT after a while because it would be using RAM uselessly
+        handler.removeCallbacks(releaseSttResourcesRunnable)
+        handler.postDelayed(releaseSttResourcesRunnable, RELEASE_STT_RESOURCES_MILLIS)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || MainActivity.isInForeground > 0) {
             // start the activity directly on versions prior to Android 10,
@@ -313,5 +330,6 @@ class WakeService : Service() {
         private const val WAKE_WORD_BACKOFF_MILLIS = 4000L
         private const val ACTION_STOP_WAKE_SERVICE =
             "org.stypox.dicio.io.wake.WakeService.ACTION_STOP"
+        private const val RELEASE_STT_RESOURCES_MILLIS = 1000L * 60 * 5 // 5 minutes
     }
 }

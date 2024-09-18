@@ -39,6 +39,8 @@ interface SttInputDeviceWrapper {
     fun stopListening()
 
     fun onClick(eventListener: (InputEvent) -> Unit)
+
+    fun releaseResources()
 }
 
 class SttInputDeviceWrapperImpl(
@@ -49,7 +51,8 @@ class SttInputDeviceWrapperImpl(
 ) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    private var sttInputDevice: SttInputDevice? = null
+    private var currentSetting: InputDevice
+    private var sttInputDevice: SttInputDevice?
 
     // null means that the user has not enabled any STT input device
     private val _uiState: MutableStateFlow<SttState?> = MutableStateFlow(null)
@@ -64,19 +67,23 @@ class SttInputDeviceWrapperImpl(
             .map { it.inputDevice }
             .distinctUntilChangedBlockingFirst()
 
+        currentSetting = firstInputDevice
         sttInputDevice = buildInputDevice(firstInputDevice)
         scope.launch {
             restartUiStateJob()
         }
 
         scope.launch {
-            nextInputDeviceFlow.collect { setting ->
-                val prevSttInputDevice = sttInputDevice
-                sttInputDevice = buildInputDevice(setting)
-                prevSttInputDevice?.destroy()
-                restartUiStateJob()
-            }
+            nextInputDeviceFlow.collect(::changeInputDeviceTo)
         }
+    }
+
+    private suspend fun changeInputDeviceTo(setting: InputDevice) {
+        val prevSttInputDevice = sttInputDevice
+        currentSetting = setting
+        sttInputDevice = buildInputDevice(setting)
+        prevSttInputDevice?.destroy()
+        restartUiStateJob()
     }
 
     private fun buildInputDevice(setting: InputDevice): SttInputDevice? {
@@ -128,6 +135,10 @@ class SttInputDeviceWrapperImpl(
 
     override fun onClick(eventListener: (InputEvent) -> Unit) {
         sttInputDevice?.onClick(eventListener)
+    }
+
+    override fun releaseResources() {
+        scope.launch { changeInputDeviceTo(currentSetting) }
     }
 }
 
