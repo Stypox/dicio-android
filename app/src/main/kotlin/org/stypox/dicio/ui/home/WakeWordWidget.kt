@@ -162,18 +162,8 @@ fun WakeWordWidgetImpl(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        LoadingProgress(
-                            currentBytes = wakeState.currentBytes,
-                            totalBytes = wakeState.totalBytes,
-                        )
-
-                        Text(
-                            text = loadingProgressString(
-                                LocalContext.current,
-                                wakeState.currentBytes,
-                                wakeState.totalBytes,
-                            )
-                        )
+                        Text(loadingProgressString(LocalContext.current, wakeState.progress))
+                        LoadingProgress(wakeState.progress)
                     }
             }
         }

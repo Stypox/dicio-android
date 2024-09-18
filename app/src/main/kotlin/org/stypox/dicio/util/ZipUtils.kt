@@ -19,21 +19,70 @@
 
 package org.stypox.dicio.util
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
+import org.stypox.dicio.ui.util.Progress
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
+import java.util.zip.ZipFile
 
-/**
- * Cycles through every entry of the zip file.
- */
-inline fun ZipInputStream.useEntries(forEachEntry: ZipInputStream.(entry: ZipEntry) -> Unit) {
-    use { zipInputStream ->
-        // cycles through all entries
-        while (true) {
-            val entry: ZipEntry = zipInputStream.nextEntry ?: break
-            forEachEntry(entry)
-            zipInputStream.closeEntry()
+private const val CHUNK_SIZE = 1024 * 256 // 0.25 MB
+
+suspend fun extractZip(
+    sourceZip: File,
+    destinationDirectory: File,
+    progressCallback: (Progress) -> Unit,
+) {
+    withContext(Dispatchers.IO) { ZipFile(sourceZip) }.use { zipFile ->
+        // counting just files
+        var currentCount = 0
+        var totalCount = 0
+        for (entry in zipFile.entries()) {
+            if (!entry.isDirectory) {
+                totalCount += 1
+            }
+        }
+
+        for (entry in zipFile.entries()) {
+            val destinationFile = withContext(Dispatchers.IO) {
+                getDestinationFile(destinationDirectory, entry.name)
+            }
+
+            if (entry.isDirectory) {
+                // create directory
+                if (withContext(Dispatchers.IO) {
+                        !destinationFile.exists() && !destinationFile.mkdirs()
+                    }) {
+                    throw IOException("mkdirs failed: $destinationFile")
+                }
+                continue
+            }
+
+            // else copy file
+            zipFile.getInputStream(entry).use { inputStream ->
+                BufferedOutputStream(FileOutputStream(destinationFile)).use { outputStream ->
+                    val buffer = ByteArray(CHUNK_SIZE)
+                    var length: Int
+                    var currentBytes: Long = 0
+                    progressCallback(Progress(currentCount, totalCount, 0, entry.size))
+
+                    while (inputStream.read(buffer).also { length = it } > 0) {
+                        yield() // manually yield because the input/output streams are blocking
+                        outputStream.write(buffer, 0, length)
+                        currentBytes += length
+                        progressCallback(
+                            Progress(currentCount, totalCount, currentBytes, entry.size)
+                        )
+                    }
+                    outputStream.flush()
+                }
+            }
+
+            currentCount += 1
         }
     }
 }

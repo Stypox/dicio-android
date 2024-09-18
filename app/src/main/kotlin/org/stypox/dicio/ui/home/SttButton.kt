@@ -119,11 +119,7 @@ private fun sttFabText(state: SttState): String {
         NotInitialized -> ""
         NotAvailable -> stringResource(R.string.stt_not_available)
         NotDownloaded -> stringResource(R.string.stt_download)
-        is Downloading -> loadingProgressString(
-            LocalContext.current,
-            state.currentBytes,
-            state.totalBytes,
-        )
+        is Downloading -> loadingProgressString(LocalContext.current, state.progress)
         is ErrorDownloading -> stringResource(R.string.error_downloading)
         Downloaded -> stringResource(R.string.stt_unzip)
         is Unzipping -> stringResource(R.string.unzipping)
@@ -143,10 +139,10 @@ private fun SttFabIcon(state: SttState, contentDescription: String) {
         NotInitialized -> SmallCircularProgressIndicator()
         NotAvailable -> Icon(Icons.Default.Warning, contentDescription)
         NotDownloaded -> Icon(Icons.Default.Download, contentDescription)
-        is Downloading -> LoadingProgress(state.currentBytes, state.totalBytes)
+        is Downloading -> LoadingProgress(state.progress)
         is ErrorDownloading -> Icon(Icons.Default.Error, contentDescription)
         Downloaded -> Icon(Icons.Default.FolderZip, contentDescription)
-        is Unzipping -> LoadingProgress(state.currentBytes, state.totalBytes)
+        is Unzipping -> LoadingProgress(state.progress)
         is ErrorUnzipping -> Icon(Icons.Default.Error, contentDescription)
         NotLoaded -> Icon(Icons.Default.MicNone, stringResource(R.string.start_listening))
         is Loading -> if (state.thenStartListening)
@@ -190,8 +186,8 @@ private fun SttFabPreviewAll() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             for (state in SttStatesPreviews().values) {
-                if ((state is Downloading && state.totalBytes == 0L) ||
-                    (state is Unzipping && state.totalBytes == 0L)) {
+                if ((state is Downloading && state.progress.totalBytes == 0L) ||
+                    (state is Unzipping && state.progress.totalBytes == 0L)) {
                     continue // not useful in screenshots
                 }
                 SttFabImpl(

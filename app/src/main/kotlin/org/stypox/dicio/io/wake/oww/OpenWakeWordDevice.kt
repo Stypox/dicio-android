@@ -12,7 +12,10 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.stypox.dicio.io.wake.WakeDevice
 import org.stypox.dicio.io.wake.WakeState
+import org.stypox.dicio.ui.util.Progress
+import org.stypox.dicio.util.FileToDownload
 import org.stypox.dicio.util.downloadBinaryFileWithPartial
+import org.stypox.dicio.util.downloadBinaryFilesWithPartial
 import org.stypox.dicio.util.getResponse
 import java.io.File
 import java.io.IOException
@@ -26,9 +29,10 @@ class OpenWakeWordDevice(
 
     private val cacheDir: File = appContext.cacheDir
     private val owwFolder = File(appContext.filesDir, "openWakeWord")
-    private val melFile = File(owwFolder, "melspectrogram.tflite")
-    private val embFile = File(owwFolder, "embedding.tflite")
-    private val wakeFile = File(owwFolder, "wake.tflite")
+    private val melFile = FileToDownload(MEL_URL, File(owwFolder, "melspectrogram.tflite"))
+    private val embFile = FileToDownload(EMB_URL, File(owwFolder, "embedding.tflite"))
+    private val wakeFile = FileToDownload(WAKE_URL, File(owwFolder, "wake.tflite"))
+    private val allModelFiles = listOf(melFile, embFile, wakeFile)
 
     private val audio = FloatArray(OwwModel.MEL_INPUT_COUNT)
     private var model: OwwModel? = null
@@ -36,23 +40,27 @@ class OpenWakeWordDevice(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
-        _state = if (melFile.exists() && embFile.exists() && wakeFile.exists()) {
-            MutableStateFlow(WakeState.NotLoaded)
-        } else {
+        _state = if (allModelFiles.any(FileToDownload::needsToBeDownloaded)) {
             MutableStateFlow(WakeState.NotDownloaded)
+        } else {
+            MutableStateFlow(WakeState.NotLoaded)
         }
         state = _state
     }
 
     override fun download() {
-        _state.value = WakeState.Downloading(0, 0)
+        _state.value = WakeState.Downloading(Progress.UNKNOWN)
 
         scope.launch {
             try {
                 owwFolder.mkdirs()
-                downloadModelFileIfNeeded(melFile, MEL_URL)
-                downloadModelFileIfNeeded(embFile, EMB_URL)
-                downloadModelFileIfNeeded(wakeFile, WAKE_URL)
+                downloadBinaryFilesWithPartial(
+                    urlsFiles = allModelFiles,
+                    httpClient = okHttpClient,
+                    cacheDir = cacheDir,
+                ) { progress ->
+                    _state.value = WakeState.Downloading(progress)
+                }
             } catch (e: Throwable) {
                 Log.e(TAG, "Can't download OpenWakeWord model", e)
                 _state.value = WakeState.ErrorDownloading(e)
@@ -60,20 +68,6 @@ class OpenWakeWordDevice(
             }
 
             _state.value = WakeState.NotLoaded
-        }
-    }
-
-    private suspend fun downloadModelFileIfNeeded(file: File, url: String) {
-        if (file.exists()) {
-            return
-        }
-
-        downloadBinaryFileWithPartial(
-            response = okHttpClient.getResponse(url),
-            file = file,
-            cacheDir = cacheDir,
-        ) { currentBytes, totalBytes ->
-            _state.value = WakeState.Downloading(currentBytes, totalBytes)
         }
     }
 
@@ -91,7 +85,7 @@ class OpenWakeWordDevice(
 
             try {
                 _state.value = WakeState.Loading
-                model = OwwModel(melFile, embFile, wakeFile)
+                model = OwwModel(melFile.file, embFile.file, wakeFile.file)
                 _state.value = WakeState.Loaded
             } catch (t: Throwable) {
                 _state.value = WakeState.ErrorLoading(t)

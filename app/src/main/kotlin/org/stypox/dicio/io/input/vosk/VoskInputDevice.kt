@@ -23,20 +23,6 @@ import android.content.Context
 import android.util.Log
 import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.stypox.dicio.io.input.vosk.VoskState.Downloaded
-import org.stypox.dicio.io.input.vosk.VoskState.Downloading
-import org.stypox.dicio.io.input.vosk.VoskState.ErrorDownloading
-import org.stypox.dicio.io.input.vosk.VoskState.ErrorLoading
-import org.stypox.dicio.io.input.vosk.VoskState.ErrorUnzipping
-import org.stypox.dicio.io.input.vosk.VoskState.Listening
-import org.stypox.dicio.io.input.vosk.VoskState.Loaded
-import org.stypox.dicio.io.input.vosk.VoskState.Loading
-import org.stypox.dicio.io.input.vosk.VoskState.NotDownloaded
-import org.stypox.dicio.io.input.vosk.VoskState.NotLoaded
-import org.stypox.dicio.io.input.vosk.VoskState.Unzipping
-import org.stypox.dicio.util.downloadBinaryFileWithPartial
-import org.stypox.dicio.util.getDestinationFile
-import org.stypox.dicio.util.useEntries
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,31 +31,39 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
-import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
-import org.stypox.dicio.io.input.vosk.VoskState.NotInitialized
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.input.vosk.VoskState.Downloaded
+import org.stypox.dicio.io.input.vosk.VoskState.Downloading
+import org.stypox.dicio.io.input.vosk.VoskState.ErrorDownloading
+import org.stypox.dicio.io.input.vosk.VoskState.ErrorLoading
+import org.stypox.dicio.io.input.vosk.VoskState.ErrorUnzipping
+import org.stypox.dicio.io.input.vosk.VoskState.Listening
+import org.stypox.dicio.io.input.vosk.VoskState.Loaded
+import org.stypox.dicio.io.input.vosk.VoskState.Loading
+import org.stypox.dicio.io.input.vosk.VoskState.NotAvailable
+import org.stypox.dicio.io.input.vosk.VoskState.NotDownloaded
+import org.stypox.dicio.io.input.vosk.VoskState.NotInitialized
+import org.stypox.dicio.io.input.vosk.VoskState.NotLoaded
+import org.stypox.dicio.io.input.vosk.VoskState.Unzipping
+import org.stypox.dicio.ui.util.Progress
+import org.stypox.dicio.util.FileToDownload
 import org.stypox.dicio.util.LocaleUtils
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
-import org.stypox.dicio.util.getResponse
+import org.stypox.dicio.util.downloadBinaryFilesWithPartial
+import org.stypox.dicio.util.extractZip
 import org.vosk.BuildConfig
 import org.vosk.LibVosk
 import org.vosk.LogLevel
 import org.vosk.Model
 import org.vosk.Recognizer
 import org.vosk.android.SpeechService
-import java.io.BufferedOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Locale
-import java.util.zip.ZipInputStream
 
 class VoskInputDevice(
     @ApplicationContext appContext: Context,
@@ -283,30 +277,31 @@ class VoskInputDevice(
      * with downloading progress, until either [ErrorDownloading] or [Downloaded] are set as state.
      */
     private fun download(modelUrl: String) {
-        _state.value = Downloading(0, 0)
+        _state.value = Downloading(Progress.UNKNOWN)
 
         operationsJob = scope.launch(Dispatchers.IO) {
             try {
-                downloadBinaryFileWithPartial(
-                    response = okHttpClient.getResponse(modelUrl),
-                    file = modelZipFile,
+                downloadBinaryFilesWithPartial(
+                    urlsFiles = listOf(FileToDownload(modelUrl, modelZipFile, sameModelUrlCheck)),
+                    httpClient = okHttpClient,
                     cacheDir = cacheDir,
-                ) { currentBytes, totalBytes ->
-                    _state.value = Downloading(currentBytes, totalBytes)
+                ) { progress ->
+                    _state.value = Downloading(progress)
                 }
 
-                // now that the zip file with the correct model url is in place, we can safely
-                // update the model url saved to disk, since even if the app were closed after this
+                // downloadBinaryFilesWithPartial will update the sameModelUrlCheck file contents
+                // with the correct model url. We can do this safely now that the zip file with the
+                // correct model url is in place, since even if the app were closed after this
                 // step, the correct .zip will be extracted afterwards, even if modelExistFileCheck
-                // already exists
-                sameModelUrlCheck.writeText(modelUrl)
+                // already exists.
+
             } catch (e: IOException) {
                 Log.e(TAG, "Can't download Vosk model", e)
                 _state.value = ErrorDownloading(modelUrl, e)
                 return@launch
             }
 
-            _state.value = Unzipping(0, 0)
+            _state.value = Unzipping(Progress.UNKNOWN)
             unzipImpl() // reuse same job
         }
     }
@@ -315,7 +310,7 @@ class VoskInputDevice(
      * Sets the state to [Unzipping] and calls [unzipImpl] in the background.
      */
     private fun unzip() {
-        _state.value = Unzipping(0, 0)
+        _state.value = Unzipping(Progress.UNKNOWN)
 
         operationsJob = scope.launch {
             unzipImpl()
@@ -332,37 +327,11 @@ class VoskInputDevice(
         try {
             // delete the model directory in case there are leftover files from other models
             modelDirectory.deleteRecursively()
-
-            ZipInputStream(modelZipFile.inputStream()).useEntries { entry ->
-                val destinationFile = withContext(Dispatchers.IO) {
-                    getDestinationFile(modelDirectory, entry.name)
-                }
-
-                if (entry.isDirectory) {
-                    // create directory
-                    if (withContext(Dispatchers.IO) {
-                        !destinationFile.exists() && !destinationFile.mkdirs()
-                    }) {
-                        throw IOException("mkdirs failed: $destinationFile")
-                    }
-                    return@useEntries
-                }
-
-                // else copy file
-                BufferedOutputStream(FileOutputStream(destinationFile)).use { outputStream ->
-                    val buffer = ByteArray(CHUNK_SIZE)
-                    var length: Int
-                    var currentBytes: Long = 0
-                    _state.value = Unzipping(0, entry.size)
-
-                    while (read(buffer).also { length = it } > 0) {
-                        yield() // manually yield because the input/output streams are blocking
-                        outputStream.write(buffer, 0, length)
-                        currentBytes += length
-                        _state.value = Unzipping(currentBytes, entry.size)
-                    }
-                    outputStream.flush()
-                }
+            extractZip(
+                sourceZip = modelZipFile,
+                destinationDirectory = modelDirectory,
+            ) { progress ->
+                _state.value = Unzipping(progress)
             }
         } catch (e: Throwable) {
             Log.e(TAG, "Can't unzip Vosk model", e)
@@ -486,7 +455,6 @@ class VoskInputDevice(
     }
 
     companion object {
-        private const val CHUNK_SIZE = 1024 * 256 // 0.25 MB
         private const val SAMPLE_RATE = 44100.0f
         private const val ALTERNATIVE_COUNT = 5
         private val TAG = VoskInputDevice::class.simpleName

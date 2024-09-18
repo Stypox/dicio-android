@@ -21,6 +21,7 @@ package org.stypox.dicio.io.input.vosk
 
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.ui.util.Progress
 import org.vosk.android.SpeechService
 
 /**
@@ -49,8 +50,7 @@ sealed interface VoskState {
     ) : VoskState
 
     data class Downloading(
-        val currentBytes: Long,
-        val totalBytes: Long,
+        val progress: Progress,
     ) : VoskState
 
     data class ErrorDownloading(
@@ -64,8 +64,7 @@ sealed interface VoskState {
      * Vosk models are distributed in Zip files that need unzipping to be ready.
      */
     data class Unzipping(
-        val currentBytes: Long,
-        val totalBytes: Long,
+        val progress: Progress
     ) : VoskState
 
     data class ErrorUnzipping(
@@ -129,10 +128,10 @@ sealed interface VoskState {
             NotInitialized -> SttState.NotInitialized
             NotAvailable -> SttState.NotAvailable
             is NotDownloaded -> SttState.NotDownloaded
-            is Downloading -> SttState.Downloading(currentBytes, totalBytes)
+            is Downloading -> SttState.Downloading(progress)
             is ErrorDownloading -> SttState.ErrorDownloading(throwable)
             Downloaded -> SttState.Downloaded
-            is Unzipping -> SttState.Unzipping(currentBytes, totalBytes)
+            is Unzipping -> SttState.Unzipping(progress)
             is ErrorUnzipping -> SttState.ErrorUnzipping(throwable)
             NotLoaded -> SttState.NotLoaded
             is Loading -> SttState.Loading(thenStartListening != null)
