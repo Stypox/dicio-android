@@ -51,8 +51,8 @@ class SttPopupActivity : BaseActivity() {
         maybeSpeechExtras: Bundle?,
     ) {
         // calculate how many items to return
-        val maxResults = maybeSpeechExtras?.getInt(RecognizerIntent.EXTRA_MAX_RESULTS)
-        val filteredUtterances = if (maxResults == null || maxResults > utterances.size) {
+        val maxResults = maybeSpeechExtras?.getInt(RecognizerIntent.EXTRA_MAX_RESULTS, 0) ?: 0
+        val filteredUtterances = if (maxResults <= 0 || maxResults > utterances.size) {
             utterances // keep all utterances provided by the STT device
         } else {
             utterances.take(maxResults) // only keep the best maxResults
