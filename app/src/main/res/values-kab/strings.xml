@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="clear">Sfeḍ</string>
+    <string name="open_with">Ldi s</string>
+    <string name="copy_to_clipboard">Nɣel ɣef afus</string>
+    <string name="text_input_hint">Steqsi-iyi-d ɣef ayen tebɣiḍ…</string>
+    <string name="download">Sider</string>
+    <string name="listening">Yettmaḥsis …</string>
+    <string name="downloaded">Yettwasider-d</string>
+    <string name="loaded">Yuli-d</string>
+    <string name="vosk_model_notification_description">Tutlayt: %1$s</string>
+    <string name="error_details_headline">Talqayt :</string>
+    <string name="pref_general">Amatu</string>
+    <string name="pref_appearance">Agrudem</string>
+    <string name="expand">Simɣur</string>
+    <string name="reduce">Semẓi</string>
+    <string name="pref_theme">Asentel</string>
+    <string name="pref_theme_dark">Ubrik</string>
+    <string name="pref_theme_black">Aberkan</string>
+    <string name="pref_language">Tutlayt</string>
+    <string name="skill_name_search">Nadi</string>
+    <string name="stt_say_something">Ini-d kra …</string>
+    <string name="skill_name_weather">Tignewt</string>
+    <string name="skill_name_lyrics">Awalen n tezlatin</string>
+    <string name="skill_sentence_example_open">Ldi-d NewPipe</string>
+    <string name="skill_sentence_example_telephone">Siwels-as i Tom</string>
+    <string name="skill_name_current_time">Ssaɛa tura</string>
+    <string name="share">Bḍu</string>
+    <string name="done">Immed</string>
+    <string name="settings">Iɣewwaṛen</string>
+    <string name="pref_theme_light">Aceɛlal</string>
+    <string name="error_report">Aneqqis</string>
+    <string name="pref_speech_output_method_nothing">Ulac</string>
+    <string name="skill_name_calculator">Tamsiḍent</string>
+    <string name="skill_name_telephone">Tiliɣri</string>
+    <string name="pref_weather_default_city">Tamnaḍt tamezwrut</string>
+    <string name="eval_network_error">Tuccḍa deg uẓeṭṭa</string>
+    <string name="skill_telephone_calling">Yessawal-as I %1$s…</string>
+    <string name="copied_to_clipboard">Yettwanɣel ɣef afus</string>
+</resources>

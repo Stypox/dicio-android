@@ -4,7 +4,7 @@
     <string name="drawer_open">Abrir gaveta de navegação</string>
     <string name="drawer_header_subtitle">Posso te ajudar\?</string>
     <string name="share">Compartilhar</string>
-    <string name="no_app_to_open_intent">Nenhum dos seus apps pode abrir isso</string>
+    <string name="no_app_to_open_intent">Nenhuma das suas apps pode abrir isso</string>
     <string name="copied_to_clipboard">Copiado para a área de transferência</string>
     <string name="permission_denied">Permissão negada</string>
     <string name="microphone_error">Sem acesso ao microfone, é provável que já esteja em uso ou a permissão necessária foi negada.</string>
@@ -17,11 +17,11 @@
     <string name="settings">Definições</string>
     <string name="error_sorry">Desculpe, ocorreu um erro</string>
     <string name="error_details_headline">Detalhes:</string>
-    <string name="error_report">Relatar</string>
+    <string name="error_report">Submeter</string>
     <string name="error_title">Relatório de erro</string>
     <string name="error_copy_formatted">Copiar o relatório formatado</string>
-    <string name="error_report_github">Relatar no GitHub</string>
-    <string name="error_report_notification_title">Dicio encontrou um erro, toque para relatá-lo</string>
+    <string name="error_report_github">Submeter no GitHub</string>
+    <string name="error_report_notification_title">Dicio encontrou um erro, toque para submeter</string>
     <string name="error_report_channel_name">Notificação do relatório de erros</string>
     <string name="pref_io">Métodos de entrada e saída</string>
     <string name="pref_appearance">Aparência</string>
@@ -33,7 +33,7 @@
     <string name="pref_language_system">Usar o idioma do sistema</string>
     <string name="pref_input_method">Método de entrada</string>
     <string name="pref_input_method_summary">Escola o serviço que será usado para falar com o Dicio</string>
-    <string name="pref_input_method_text">Caixa de texto</string>
+    <string name="pref_input_method_text">Apenas caixa de texto</string>
     <string name="pref_input_method_vosk">Reconhecimento de fala offline da Vosk</string>
     <string name="pref_language_summary">Que idioma o Dicio deve usar para te ouvir e procurar por respostas\?</string>
     <string name="pref_speech_output_method_android">Mecanismo de texto para voz do Android</string>
@@ -84,12 +84,12 @@
     <string name="skill_timer_none_canceled">OK, nenhum alarme foi cancelado</string>
     <string name="drawer_close">Fechar gaveta de navegação</string>
     <string name="open_with">Abrir com</string>
-    <string name="listening">Ouvindo…</string>
-    <string name="text_input_hint">Me pergunte qualquer coisa…</string>
-    <string name="here_is_what_i_can_do">É isso o que eu posso fazer!</string>
+    <string name="listening">A ouvir…</string>
+    <string name="text_input_hint">Pergunte-me qualquer coisa…</string>
+    <string name="here_is_what_i_can_do">Aqui está o que eu posso fazer!</string>
     <string name="action_text_input">Entrada de texto</string>
     <string name="action_voice_input">Entrada de voz</string>
-    <string name="vosk_model_notification_description">Idioma:%1$s</string>
+    <string name="vosk_model_notification_description">Idioma: %1$s</string>
     <string name="android_tts_unsupported_language">O idioma atual não é suportado pelo mecanismo de texto para voz do Android</string>
     <string name="android_tts_error">Ocorreu um erro ao iniciar o mecanismo de texto para voz do Android</string>
     <string name="error_details_labels">Acção:
@@ -98,7 +98,7 @@
 \nPacote:
 \nVersão:
 \nVersão do SO:</string>
-    <string name="error_crash_log_headline">Registro de travamento:</string>
+    <string name="error_crash_log_headline">Registro de erro:</string>
     <string name="error_github_notice">Por favor veja se já existe uma questão discutindo o seu travamento. Quando se cria uma questão duplicada, você toma o tempo que poderia ser usado para resolver o problema.</string>
     <string name="error_report_notification_toast">Ocorreu um erro, veja a notificação</string>
     <string name="error_report_channel_description">Notificações para relatar erros</string>
@@ -137,4 +137,34 @@
     <string name="skill_name_navigation">Navegação</string>
     <string name="pref_stt_auto_finish_summary_off">Aguardar confirmação manual antes de enviar o resultado da fala para a app solicitante</string>
     <string name="skill_navigation_navigating_to">A navegar para %1$s</string>
+    <string name="back">Voltar</string>
+    <string name="clear">Limpar</string>
+    <string name="copy_to_clipboard">Copiar para Área de Transferência</string>
+    <string name="done">Feito</string>
+    <string name="grant_microphone_permission">Conceder permissão do microfone</string>
+    <string name="error_loading">Erro ao carregar</string>
+    <string name="error_unzipping">Erro ao extrair</string>
+    <string name="error_downloading">Erro ao descarregar</string>
+    <string name="unzipping">A extrair…</string>
+    <string name="download">Descarregar</string>
+    <string name="stt_not_available">Voz para Texto não disponível</string>
+    <string name="stt_download">Descarregar Voz para Texto</string>
+    <string name="stt_unzip">Extrair Voz para Texto</string>
+    <string name="start_listening">Iniciar a audição</string>
+    <string name="downloaded">Descarregado</string>
+    <string name="loaded">Carregado</string>
+    <string name="all_skills_disabled_title">Todas as habilidades estão desativadas</string>
+    <string name="all_skills_disabled_description">Por favor ativem algumas habilidades nas definições, caso contrário o Dicio não poderá fazer nada</string>
+    <string name="pref_general">Geral</string>
+    <string name="pref_skills_summary">Ativar/desativar habilidades e ajustar o comportamento das mesmas</string>
+    <string name="expand">Expandir</string>
+    <string name="reduce">Reduzir</string>
+    <string name="pref_theme_system">Usar o tema do sistema</string>
+    <string name="pref_theme_black">Preto</string>
+    <string name="pref_dynamic_colors_title">Cores dinâmicas</string>
+    <string name="pref_dynamic_colors_summary">Utilize as cores dinâmicas do Material You fornecidas pelo sistema</string>
+    <string name="skill_open_could_not_understand">Não consigo entender a app</string>
+    <string name="settings_description_with_value">%1$s — %2$s</string>
+    <string name="stt_service_label">Reconhecimento de voz offline Dicio</string>
+    <string name="pref_theme_system_dark_black">Usar o tema do sistema (usar Preto no tema escuro)</string>
 </resources>

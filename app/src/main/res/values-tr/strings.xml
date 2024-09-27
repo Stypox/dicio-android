@@ -126,7 +126,7 @@
     <string name="skill_name_current_time">Geçerli saat</string>
     <string name="skill_sentence_example_current_time">Saat kaç\?</string>
     <string name="skill_time_current_time">Şu anda %1$s</string>
-    <string name="pref_stt_auto_finish_title">Konuşmanın sonucunu doğrudan metin hizmetine gönder</string>
+    <string name="pref_stt_auto_finish_title">Konuşmanın sonucunu doğrudan metin açılır penceresine gönder</string>
     <string name="stt_say_something">Bir şey söyleyin…</string>
     <string name="pref_stt_auto_finish_summary_on">Dinleme bittiğinde konuşma sonucunu istekte bulunan uygulamaya otomatik olarak gönder</string>
     <string name="pref_stt_auto_finish_summary_off">İstekte bulunan uygulamaya konuşma sonucunu göndermeden önce elle onay için bekle</string>
@@ -166,4 +166,5 @@
     <string name="pref_general">Genel</string>
     <string name="pref_skills_title">Yetenekler</string>
     <string name="pref_dynamic_colors_title">Değişken renkler</string>
+    <string name="stt_service_label">Dicio çevrim dışı konuşma tanıma</string>
 </resources>

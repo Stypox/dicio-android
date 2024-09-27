@@ -21,7 +21,7 @@
     <string name="skill_fallback_name_text">Message textuel</string>
     <string name="skill_sentence_example_calculator">Combien font cinq fois quatre moins un million \?</string>
     <string name="skill_name_calculator">Calculatrice</string>
-    <string name="skill_sentence_example_open">Ouvrer NewPipe</string>
+    <string name="skill_sentence_example_open">Ouvrir NewPipe</string>
     <string name="skill_name_open">Ouvreur d\'appli</string>
     <string name="skill_sentence_example_lyrics">Quelle est la chanson qui dit « we will we will rock you » \?</string>
     <string name="skill_name_lyrics">Paroles de chansons</string>
@@ -72,7 +72,7 @@
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
     <string name="vosk_model_download_error">Le téléchargement du modèle Vosk a échoué</string>
     <string name="open_with">Ouvrir avec</string>
-    <string name="no_app_to_open_intent">Aucune application installée ne peut ouvrir ce lien</string>
+    <string name="no_app_to_open_intent">Nulle application sur votre appareil ne peut ouvrir ce lien</string>
     <string name="skill_search_no_results">La recherche n\'a retourné aucun résultat. Essayez à nouveau de me dire ce que vous souhaitez rechercher</string>
     <string name="skill_search_what_question">Que recherchez-vous \?</string>
     <string name="permission_denied">Permission refusée</string>
