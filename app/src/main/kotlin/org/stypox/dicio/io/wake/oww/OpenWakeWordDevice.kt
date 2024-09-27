@@ -114,6 +114,6 @@ class OpenWakeWordDevice(
         val TAG = OpenWakeWordDevice::class.simpleName
         const val MEL_URL = "https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/melspectrogram.tflite"
         const val EMB_URL = "https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/embedding_model.tflite"
-        const val WAKE_URL = "https://github.com/Stypox/testing-apks/releases/download/8/hey_dicio_v6.0.tflite"
+        const val WAKE_URL = "https://github.com/Stypox/dicio-android/releases/download/v2.0/hey_dicio_v6.0.tflite"
     }
 }
