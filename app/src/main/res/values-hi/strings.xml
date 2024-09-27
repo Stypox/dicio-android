@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_open">Message dikhao</string>
+    <string name="drawer_close">Message band karo</string>
+    <string name="drawer_header_subtitle">Kya huwa?</string>
+    <string name="back">Bahar</string>
+    <string name="clear">Khatam</string>
+    <string name="share">Bhejo</string>
+    <string name="open_with">Ke sath khole</string>
+    <string name="no_app_to_open_intent">Nhi khul raha</string>
+    <string name="copy_to_clipboard">Copy karo</string>
+    <string name="copied_to_clipboard">Ho gaya copy</string>
+    <string name="done">Ho gaya</string>
+    <string name="permission_denied">Permission nhi hai</string>
+    <string name="download">Download ho raha hai</string>
+    <string name="stt_not_available">Speech se text nhi ho raha hai</string>
+    <string name="here_is_what_i_can_do">Abb nhi hoga!</string>
+    <string name="all_skills_disabled_title">Sab kuch band hai</string>
+    <string name="text_input_hint">Kuch bhi puchiye…</string>
+    <string name="error_unzipping">Unzip error</string>
+    <string name="error_downloading">Download error</string>
+    <string name="loaded">Load ho gaya</string>
+    <string name="grant_microphone_permission">Mic khole</string>
+    <string name="error_loading">Error hai</string>
+    <string name="start_listening">Sun na suru</string>
+    <string name="unzipping">Unzip ho raha hai…</string>
+    <string name="downloaded">Download ho gaya</string>
+    <string name="stt_download">Download speech se text</string>
+    <string name="stt_unzip">Unzip speech se text</string>
+    <string name="listening">Sun rahe hu…</string>
+</resources>

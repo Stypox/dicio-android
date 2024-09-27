@@ -126,7 +126,7 @@
     <string name="skill_name_current_time">Hora actual</string>
     <string name="skill_sentence_example_current_time">¿Qué hora es\?</string>
     <string name="skill_time_current_time">En este momento, es %1$s</string>
-    <string name="pref_stt_auto_finish_title">Enviar directamente el resultado del servicio de voz a texto</string>
+    <string name="pref_stt_auto_finish_title">Enviar directamente el resultado de la ventana de reconocimiento de voz</string>
     <string name="pref_stt_auto_finish_summary_on">Envíe automáticamente el resultado del habla a la aplicación solicitante cuando finalice la escucha</string>
     <string name="stt_say_something">Diga algo…</string>
     <string name="stt_did_not_understand">No lo he entendido, inténtalo de nuevo</string>
@@ -166,4 +166,5 @@
     <string name="pref_theme_system_dark_black">Utiliza el tema del sistema (usa la variante negra para el tema oscuro)</string>
     <string name="pref_dynamic_colors_title">Colores dinámicos</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
+    <string name="stt_service_label">Dicio, reconocimiento de voz sin conexión</string>
 </resources>

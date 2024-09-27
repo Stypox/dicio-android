@@ -79,7 +79,7 @@
     <string name="pref_skill_missing_permissions">דורש את ההרשאות האלו: %1$s</string>
     <string name="pref_search_engine">מנוע חיפוש</string>
     <string name="pref_weather_default_city">עיר ברירת מחדל</string>
-    <string name="pref_stt_auto_finish_title">שליחת תוצאת שירות ההקראה ישירות</string>
+    <string name="pref_stt_auto_finish_title">שליחת תוצאת חלונית ההקראה ישירות</string>
     <string name="pref_dynamic_colors_title">צבעים דינמיים</string>
     <string name="pref_dynamic_colors_summary">להשתמש בצבעים הדינמיים של Material You שסופקו על ידי המערכת</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
@@ -158,4 +158,13 @@
     <string name="pref_skill_grant_permissions">הענקת גישה</string>
     <string name="skill_name_weather">מזג אוויר</string>
     <string name="skill_sentence_example_weather">מה מזג האוויר בפריז?</string>
+    <string name="pref_skill_number_library_not_available">ספריית תבנית ופענוח המספרים <i>dicio-numbers</i> עדיין לא מתורגמת לשפה שלך, מה שאומר שכל המיומנויות שקשורות במספרים, פרקי זמן ותאריכים לא זמינות. <b>נא לתרום</b> אם יש לך איך, בנגיעה כאן!</string>
+    <string name="pref_stt_auto_finish_summary_off">להמתין לאישור ידני בטרם שליחת תוצאות ההקראה ליישום שביקש אותן</string>
+    <string name="pref_stt_auto_finish_summary_on">לשלוח את תוצאות ההקראה ליישום שביקש עם סיום ההאזנה</string>
+    <string name="pref_weather_default_city_using_ip_info">הגדרת העיר לשימוש למזג אוויר אם לא ציינת אחת. ההתנהגות הנוכחית היא לקבל את המקום מפרטי ה־IP.</string>
+    <string name="eval_network_error_description">Dicio לא הצליח לגשת לאינטרנט. נא לבדוק שהחיבור שלך תקין ולנסות שוב.</string>
+    <string name="skill_weather_min_max_wind">טמפרטורה מזערית: ‎%1$.1f°C
+\nטמפרטורה מרבית: ‎%2$.1f°C
+\nמהירות הרוח: %3$.1f מ׳ לשנייה</string>
+    <string name="stt_service_label">זיהוי דיבור בלתי מקוון של Dicio</string>
 </resources>

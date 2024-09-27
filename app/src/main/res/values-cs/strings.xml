@@ -126,7 +126,7 @@
     <string name="skill_sentence_example_current_time">Kolik je hodin\?</string>
     <string name="skill_name_current_time">Aktuální čas</string>
     <string name="skill_time_current_time">Právě teď je %1$s</string>
-    <string name="pref_stt_auto_finish_title">Přímo odesílat výsledek služby převodu řeči na text</string>
+    <string name="pref_stt_auto_finish_title">Přímo odesílat výsledek nabídky převodu řeči na text</string>
     <string name="pref_stt_auto_finish_summary_on">Automatické odeslání výsledku řeči do vyžadující aplikace po ukončení poslechu</string>
     <string name="stt_say_something">Řekněte něco…</string>
     <string name="pref_stt_auto_finish_summary_off">Před odesláním výsledku řeči do žádající aplikace počkejte na ruční potvrzení</string>
@@ -166,4 +166,5 @@
     <string name="pref_skills_summary">Povolte/zakažte funkce a upravte jejich chování</string>
     <string name="pref_theme_black">Černý</string>
     <string name="skill_open_could_not_understand">Nepodařilo se pochopit aplikaci</string>
+    <string name="stt_service_label">Offline rozpoznávání řeči Dicio</string>
 </resources>

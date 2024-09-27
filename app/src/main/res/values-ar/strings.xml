@@ -94,7 +94,7 @@
     <string name="skill_timer_query">تنتهي صلاحية المؤقت في %1$s</string>
     <string name="skill_timer_query_name">تنتهي صلاحية المؤقت %1$s في %2$s</string>
     <string name="skill_timer_none_canceled">حسنا ، لم يتم إلغاء أي مؤقت</string>
-    <string name="pref_stt_auto_finish_title">إرسال نتائج الخطاب مباشرة إلى خدمة النص</string>
+    <string name="pref_stt_auto_finish_title">إرسال نتيجة الكلام مباشرة إلى نافذة نص منبثقة</string>
     <string name="open_with">فتح بواسطة</string>
     <string name="no_app_to_open_intent">لا يمكن لأي تطبيق على جهازك فتح هذا</string>
     <string name="permission_denied">تم رفض الإذن</string>
@@ -166,4 +166,5 @@
     <string name="pref_theme_system">استخدم سمة النظام</string>
     <string name="pref_theme_black">اسود</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
+    <string name="stt_service_label">Dicio التعرف على الكلام دون اتصال بالإنترنت</string>
 </resources>

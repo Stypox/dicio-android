@@ -137,4 +137,7 @@
     <string name="skill_navigation_navigating_to">Построение маршрута к %1$s</string>
     <string name="skill_name_current_time">Текущее время</string>
     <string name="skill_sentence_example_current_time">Который час?</string>
+    <string name="back">Назад</string>
+    <string name="clear">Очистить</string>
+    <string name="copy_to_clipboard">Копировать в буфер обмена</string>
 </resources>

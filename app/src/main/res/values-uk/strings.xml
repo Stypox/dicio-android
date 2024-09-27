@@ -94,8 +94,8 @@
     <string name="pref_skill_number_library_not_available">Бібліотека для розкладання та форматування чисел <i>dicio-numbers</i> ще не перекладена на вашу мову, це означає, що всі навички, пов\'язані з числами, тривалістю та датами – недоступні. <b>Будь ласка, внесіть свій внесок</b>, якщо можете, натиснувши тут!</string>
     <string name="pref_search_engine">Пошукова система</string>
     <string name="pref_weather_default_city">Місто за замовчуванням</string>
-    <string name="pref_weather_default_city_using_ip_info">Встановіть місто, яке буде використовуватися для прогнозу погоди, коли ви не вказуєте конкретне місто. За замовчуванням місто визначається за вашою IP адресою.</string>
-    <string name="pref_stt_auto_finish_title">Надсилати результат напряму до сервісу Speech to Text</string>
+    <string name="pref_weather_default_city_using_ip_info">Встановіть місто, яке буде використовуватися для прогнозу погоди, коли ви не вказуєте конкретне місто. Типово місто визначається за вашою IP адресою.</string>
+    <string name="pref_stt_auto_finish_title">Надсилати результат напряму до спливаючого вікна Speech to Text</string>
     <string name="pref_stt_auto_finish_summary_off">Чекати на підтвердження перед надсиланням результату мовлення до запитуючого застосунку</string>
     <string name="pref_dynamic_colors_title">Динамічні кольори</string>
     <string name="pref_dynamic_colors_summary">Використовувати динамічні кольори Material You, надані системою</string>
@@ -110,7 +110,7 @@
     <string name="skill_name_search">Пошук</string>
     <string name="skill_sentence_example_search">Пошук, як годувати кота</string>
     <string name="skill_name_weather">Погода</string>
-    <string name="skill_sentence_example_weather">Яка погода в Києві?</string>
+    <string name="skill_sentence_example_weather">Яка погода у Римі?</string>
     <string name="skill_name_lyrics">Тексти пісень</string>
     <string name="skill_sentence_example_lyrics">В котрій пісні співають \"we will we will rock you\"?</string>
     <string name="skill_navigation_specify_where">Уточніть, куди саме ви хочете, щоб я побудував маршрут</string>
@@ -166,4 +166,5 @@
     <string name="skill_timer_all_canceled">Всі таймери були вимкнені</string>
     <string name="skill_timer_query_last">Останній таймер завершується через %1$s</string>
     <string name="skill_timer_none_canceled">Гаразд, жодний таймер не був вимкнений</string>
+    <string name="stt_service_label">Офлайн розпізнавання мови Dicio</string>
 </resources>
