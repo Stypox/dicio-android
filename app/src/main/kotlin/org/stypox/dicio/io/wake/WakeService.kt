@@ -227,6 +227,7 @@ class WakeService : Service() {
             // Android 10+ does not allow starting activities from the background,
             // so show a full-screen notification instead, which does actually result in starting
             // the activity from the background if the phone is off and Do Not Disturb is not active
+            // Maybe we could also use the "Display over other apps" permission?
 
             val channel = NotificationChannel(
                 TRIGGERED_NOTIFICATION_CHANNEL_ID,

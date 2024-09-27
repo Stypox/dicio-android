@@ -69,9 +69,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleWakeWordTurnOnScreen(intent: Intent?) {
-        // the wake word triggered notification is not needed anymore
-        WakeService.cancelTriggeredNotification(this)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 &&
             intent?.action == ACTION_WAKE_WORD
         ) {
@@ -80,6 +77,9 @@ class MainActivity : BaseActivity() {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
         }
+
+        // the wake word triggered notification is not needed anymore
+        WakeService.cancelTriggeredNotification(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -111,10 +111,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isCreated += 1
-
-        // TODO train "Hey Dicio" wake word
-        // TODO also use "Display over other apps" permission?
-        // TODO remove unneeded native architectures included in the APK
 
         handleWakeWordTurnOnScreen(intent)
         if (isAssistIntent(intent)) {
