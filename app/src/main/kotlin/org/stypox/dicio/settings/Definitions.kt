@@ -2,7 +2,9 @@ package org.stypox.dicio.settings
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.BreakfastDining
+import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DarkMode
@@ -13,6 +15,8 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Minimize
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.SpeakerPhone
 import androidx.compose.runtime.Composable
@@ -22,6 +26,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
+import org.stypox.dicio.settings.datastore.SttPlaySound
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.WakeDevice
 import org.stypox.dicio.settings.ui.BooleanSetting
@@ -161,4 +166,32 @@ fun sttAutoFinish() = BooleanSetting(
     icon = Icons.AutoMirrored.Filled.Send,
     descriptionOff = stringResource(R.string.pref_stt_auto_finish_summary_off),
     descriptionOn = stringResource(R.string.pref_stt_auto_finish_summary_on),
+)
+
+@Composable
+fun sttPlaySound() = ListSetting(
+    title = stringResource(R.string.pref_stt_play_sound_title),
+    icon = Icons.Default.Campaign,
+    description = stringResource(R.string.pref_stt_play_sound_summary),
+    possibleValues = listOf(
+        ListSetting.Value(
+            value = SttPlaySound.STT_PLAY_SOUND_NOTIFICATION,
+            name = stringResource(R.string.pref_stt_play_sound_notification),
+            icon = Icons.Default.Notifications,
+        ),
+        ListSetting.Value(
+            value = SttPlaySound.STT_PLAY_SOUND_ALARM,
+            name = stringResource(R.string.pref_stt_play_sound_alarm),
+            icon = Icons.Default.Alarm,
+        ),
+        ListSetting.Value(
+            value = SttPlaySound.STT_PLAY_SOUND_MEDIA,
+            name = stringResource(R.string.pref_stt_play_sound_media),
+            icon = Icons.Default.MusicNote,
+        ),
+        ListSetting.Value(
+            value = SttPlaySound.STT_PLAY_SOUND_NONE,
+            name = stringResource(R.string.pref_stt_play_sound_none),
+        ),
+    ),
 )

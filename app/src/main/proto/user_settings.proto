@@ -5,6 +5,7 @@ import "language.proto";
 import "input_device.proto";
 import "speech_output_device.proto";
 import "wake_device.proto";
+import "stt_play_sound.proto";
 
 option java_package = "org.stypox.dicio.settings.datastore";
 option java_multiple_files = true;
@@ -18,4 +19,5 @@ message UserSettings {
     bool auto_finish_stt_popup = 6;
     map<string, bool> enabled_skills = 7;
     WakeDevice wake_device = 8;
+    SttPlaySound stt_play_sound = 9;
 }

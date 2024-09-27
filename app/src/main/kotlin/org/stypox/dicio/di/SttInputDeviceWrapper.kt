@@ -1,6 +1,7 @@
 package org.stypox.dicio.di
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import androidx.datastore.core.DataStore
 import dagger.Module
@@ -26,6 +27,7 @@ import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_NOTHING
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_UNSET
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_VOSK
 import org.stypox.dicio.settings.datastore.InputDevice.UNRECOGNIZED
+import org.stypox.dicio.settings.datastore.SttPlaySound
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import javax.inject.Singleton
@@ -51,7 +53,8 @@ class SttInputDeviceWrapperImpl(
 ) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    private var currentSetting: InputDevice
+    private var inputDeviceSetting: InputDevice
+    private var sttPlaySoundSetting: SttPlaySound
     private var sttInputDevice: SttInputDevice?
 
     // null means that the user has not enabled any STT input device
@@ -63,24 +66,30 @@ class SttInputDeviceWrapperImpl(
     init {
         // Run blocking, because the data store is always available right away since LocaleManager
         // also initializes in a blocking way from the same data store.
-        val (firstInputDevice, nextInputDeviceFlow) = dataStore.data
-            .map { it.inputDevice }
+        val (firstSettings, nextSettingsFlow) = dataStore.data
+            .map { Pair(it.inputDevice, it.sttPlaySound) }
             .distinctUntilChangedBlockingFirst()
 
-        currentSetting = firstInputDevice
-        sttInputDevice = buildInputDevice(firstInputDevice)
+        inputDeviceSetting = firstSettings.first
+        sttPlaySoundSetting = firstSettings.second
+        sttInputDevice = buildInputDevice(inputDeviceSetting)
         scope.launch {
             restartUiStateJob()
         }
 
         scope.launch {
-            nextInputDeviceFlow.collect(::changeInputDeviceTo)
+            nextSettingsFlow.collect { (inputDevice, sttPlaySound) ->
+                sttPlaySoundSetting = sttPlaySound
+                if (inputDeviceSetting != inputDevice) {
+                    changeInputDeviceTo(inputDevice)
+                }
+            }
         }
     }
 
     private suspend fun changeInputDeviceTo(setting: InputDevice) {
         val prevSttInputDevice = sttInputDevice
-        currentSetting = setting
+        inputDeviceSetting = setting
         sttInputDevice = buildInputDevice(setting)
         prevSttInputDevice?.destroy()
         restartUiStateJob()
@@ -116,12 +125,20 @@ class SttInputDeviceWrapperImpl(
     }
 
     private fun playSoundWhenStartsListening() {
-        // in case we need to play the sound on a different channel:
-        // val attributes = AudioAttributes.Builder()
-        //     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-        //     .build()
-        val mediaPlayer = MediaPlayer.create(appContext, R.raw.listening_sound)
-        mediaPlayer.setVolume(0.5f, 0.5f)
+        val attributes = AudioAttributes.Builder()
+            .setUsage(
+                when (sttPlaySoundSetting) {
+                    SttPlaySound.UNRECOGNIZED,
+                    SttPlaySound.STT_PLAY_SOUND_UNSET,
+                    SttPlaySound.STT_PLAY_SOUND_NOTIFICATION -> AudioAttributes.USAGE_NOTIFICATION
+                    SttPlaySound.STT_PLAY_SOUND_ALARM -> AudioAttributes.USAGE_ALARM
+                    SttPlaySound.STT_PLAY_SOUND_MEDIA -> AudioAttributes.USAGE_MEDIA
+                    SttPlaySound.STT_PLAY_SOUND_NONE -> return // do not play any sound
+                }
+            )
+            .build()
+        val mediaPlayer = MediaPlayer.create(appContext, R.raw.listening_sound, attributes, 0)
+        mediaPlayer.setVolume(0.75f, 0.75f)
         mediaPlayer.start()
     }
 
@@ -138,7 +155,7 @@ class SttInputDeviceWrapperImpl(
     }
 
     override fun releaseResources() {
-        scope.launch { changeInputDeviceTo(currentSetting) }
+        scope.launch { changeInputDeviceTo(inputDeviceSetting) }
     }
 }
 

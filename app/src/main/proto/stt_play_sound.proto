@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "org.stypox.dicio.settings.datastore";
+option java_multiple_files = true;
+
+enum SttPlaySound {
+  STT_PLAY_SOUND_UNSET = 0;
+  STT_PLAY_SOUND_NOTIFICATION = 1;
+  STT_PLAY_SOUND_ALARM = 2;
+  STT_PLAY_SOUND_MEDIA = 3;
+  STT_PLAY_SOUND_NONE = 4;
+}

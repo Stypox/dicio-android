@@ -102,6 +102,12 @@
     <string name="pref_stt_auto_finish_summary_off">Wait for manual confirmation before sending speech result to requesting app</string>
     <string name="pref_dynamic_colors_title">Dynamic colors</string>
     <string name="pref_dynamic_colors_summary">Use the Material You dynamic colors provided by the system</string>
+    <string name="pref_stt_play_sound_title">Play sound when starting to listen</string>
+    <string name="pref_stt_play_sound_summary">Choose whether to play a sound when your voice starts being recognized, and select the audio channel to play the sound on</string>
+    <string name="pref_stt_play_sound_notification">Notification channel</string>
+    <string name="pref_stt_play_sound_alarm">Alarm channel</string>
+    <string name="pref_stt_play_sound_media">Default/media channel</string>
+    <string name="pref_stt_play_sound_none">Do not play sound</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
     <string name="eval_missing_permissions">The skill \"%1$s\" needs these permissions to work: %2$s</string>
     <string name="eval_fatal_error">Could not evaluate your request</string>

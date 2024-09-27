@@ -31,6 +31,7 @@ import org.stypox.dicio.R
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
+import org.stypox.dicio.settings.datastore.SttPlaySound
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
 import org.stypox.dicio.settings.datastore.WakeDevice
@@ -139,6 +140,16 @@ private fun MainSettingsScreen(
                     else -> speechOutputDevice
                 },
                 viewModel::setSpeechOutputDevice,
+            )
+        }
+        item {
+            sttPlaySound().Render(
+                when (val sttPlaySound = settings.sttPlaySound) {
+                    SttPlaySound.UNRECOGNIZED,
+                    SttPlaySound.STT_PLAY_SOUND_UNSET -> SttPlaySound.STT_PLAY_SOUND_NOTIFICATION
+                    else -> sttPlaySound
+                },
+                viewModel::setSttPlaySound
             )
         }
         item {
