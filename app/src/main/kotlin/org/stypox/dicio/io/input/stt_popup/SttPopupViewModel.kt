@@ -50,6 +50,10 @@ class SttPopupViewModel @Inject constructor(
         sttInputDevice.onClick(this::onReceiveInputEvent)
     }
 
+    fun onSttLoadAfterPermissionRequest() {
+        sttInputDevice.tryLoad(null)
+    }
+
     private fun onReceiveInputEvent(inputEvent: InputEvent) {
         when (inputEvent) {
             is InputEvent.Partial -> {

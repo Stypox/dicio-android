@@ -1,9 +1,6 @@
 package org.stypox.dicio.ui.home
 
 import android.Manifest
-import android.content.pm.PackageManager
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,22 +33,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
+import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
+import dev.shreyaspatil.permissionflow.compose.rememberPermissionState
 import org.stypox.dicio.R
-import org.stypox.dicio.ui.home.SttState.Downloaded
-import org.stypox.dicio.ui.home.SttState.Downloading
-import org.stypox.dicio.ui.home.SttState.ErrorDownloading
-import org.stypox.dicio.ui.home.SttState.ErrorLoading
-import org.stypox.dicio.ui.home.SttState.ErrorUnzipping
-import org.stypox.dicio.ui.home.SttState.Listening
-import org.stypox.dicio.ui.home.SttState.Loaded
-import org.stypox.dicio.ui.home.SttState.Loading
-import org.stypox.dicio.ui.home.SttState.NoMicrophonePermission
-import org.stypox.dicio.ui.home.SttState.NotAvailable
-import org.stypox.dicio.ui.home.SttState.NotDownloaded
-import org.stypox.dicio.ui.home.SttState.NotInitialized
-import org.stypox.dicio.ui.home.SttState.NotLoaded
-import org.stypox.dicio.ui.home.SttState.Unzipping
+import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.input.SttState.Downloaded
+import org.stypox.dicio.io.input.SttState.Downloading
+import org.stypox.dicio.io.input.SttState.ErrorDownloading
+import org.stypox.dicio.io.input.SttState.ErrorLoading
+import org.stypox.dicio.io.input.SttState.ErrorUnzipping
+import org.stypox.dicio.io.input.SttState.Listening
+import org.stypox.dicio.io.input.SttState.Loaded
+import org.stypox.dicio.io.input.SttState.Loading
+import org.stypox.dicio.io.input.SttState.NoMicrophonePermission
+import org.stypox.dicio.io.input.SttState.NotAvailable
+import org.stypox.dicio.io.input.SttState.NotDownloaded
+import org.stypox.dicio.io.input.SttState.NotInitialized
+import org.stypox.dicio.io.input.SttState.NotLoaded
+import org.stypox.dicio.io.input.SttState.Unzipping
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.LoadingProgress
 import org.stypox.dicio.ui.util.SmallCircularProgressIndicator
@@ -64,28 +63,21 @@ import org.stypox.dicio.ui.util.loadingProgressString
  * Calls [SttFabImpl] with the data from the view model, and handles the microhone permission.
  */
 @Composable
-fun SttFab(state: SttState, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    var microphonePermissionGranted by remember { mutableStateOf(true) }
-    val context = LocalContext.current
-    LaunchedEffect(null) {
-        microphonePermissionGranted =
-            ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) ==
-                    PackageManager.PERMISSION_GRANTED
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        microphonePermissionGranted = isGranted
-    }
+fun SttFab(
+    state: SttState,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val microphonePermission by rememberPermissionState(Manifest.permission.RECORD_AUDIO)
+    val launcher = rememberPermissionFlowRequestLauncher()
 
     // the NoMicrophonePermission state should override any other state, except for the NotAvailable
     // state which indicates that the STT engine can't be made available for this locale
-    val useNoMicPermState = !microphonePermissionGranted && state != NotAvailable
+    val useNoMicPermState = !microphonePermission.isGranted && state != NotAvailable
     SttFabImpl(
         state = if (useNoMicPermState) NoMicrophonePermission else state,
         onClick = if (useNoMicPermState)
-            { -> launcher.launch(Manifest.permission.RECORD_AUDIO) }
+            { -> launcher.launch(arrayOf(Manifest.permission.RECORD_AUDIO)) }
         else
             onClick,
         modifier = modifier,
@@ -127,11 +119,7 @@ private fun sttFabText(state: SttState): String {
         NotInitialized -> ""
         NotAvailable -> stringResource(R.string.stt_not_available)
         NotDownloaded -> stringResource(R.string.stt_download)
-        is Downloading -> loadingProgressString(
-            LocalContext.current,
-            state.currentBytes,
-            state.totalBytes,
-        )
+        is Downloading -> loadingProgressString(LocalContext.current, state.progress)
         is ErrorDownloading -> stringResource(R.string.error_downloading)
         Downloaded -> stringResource(R.string.stt_unzip)
         is Unzipping -> stringResource(R.string.unzipping)
@@ -151,10 +139,10 @@ private fun SttFabIcon(state: SttState, contentDescription: String) {
         NotInitialized -> SmallCircularProgressIndicator()
         NotAvailable -> Icon(Icons.Default.Warning, contentDescription)
         NotDownloaded -> Icon(Icons.Default.Download, contentDescription)
-        is Downloading -> LoadingProgress(state.currentBytes, state.totalBytes)
+        is Downloading -> LoadingProgress(state.progress)
         is ErrorDownloading -> Icon(Icons.Default.Error, contentDescription)
         Downloaded -> Icon(Icons.Default.FolderZip, contentDescription)
-        is Unzipping -> LoadingProgress(state.currentBytes, state.totalBytes)
+        is Unzipping -> LoadingProgress(state.progress)
         is ErrorUnzipping -> Icon(Icons.Default.Error, contentDescription)
         NotLoaded -> Icon(Icons.Default.MicNone, stringResource(R.string.start_listening))
         is Loading -> if (state.thenStartListening)
@@ -198,8 +186,8 @@ private fun SttFabPreviewAll() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             for (state in SttStatesPreviews().values) {
-                if ((state is Downloading && state.totalBytes == 0L) ||
-                    (state is Unzipping && state.totalBytes == 0L)) {
+                if ((state is Downloading && state.progress.totalBytes == 0L) ||
+                    (state is Unzipping && state.progress.totalBytes == 0L)) {
                     continue // not useful in screenshots
                 }
                 SttFabImpl(

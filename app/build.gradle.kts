@@ -39,6 +39,10 @@ android {
         sourceSets["main"].java {
             srcDir("build/generated/source/sentences/main")
         }
+
+        ndk {
+            abiFilters += arrayOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
     }
 
     buildTypes {
@@ -157,6 +161,9 @@ dependencies {
     implementation(libs.jna) { artifact { type = "aar" } }
     implementation(libs.vosk.android)
 
+    // LiteRT / Tensorflow Lite
+    implementation(libs.litert)
+
     // OkHttp
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
@@ -164,6 +171,10 @@ dependencies {
     // Image loading
     implementation(libs.coil.compose)
     implementation(libs.accompanist.drawablepainter)
+
+    // Permission Flow https://github.com/PatilShreyas/permission-flow-android
+    implementation(libs.permission.flow.android)
+    implementation(libs.permission.flow.compose)
 
     // Miscellaneous
     implementation(libs.unbescape)

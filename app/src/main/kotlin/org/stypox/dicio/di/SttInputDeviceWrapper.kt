@@ -1,6 +1,7 @@
 package org.stypox.dicio.di
 
 import android.content.Context
+import android.media.MediaPlayer
 import androidx.datastore.core.DataStore
 import dagger.Module
 import dagger.Provides
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import org.stypox.dicio.R
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
+import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.io.input.vosk.VoskInputDevice
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_NOTHING
@@ -24,9 +27,9 @@ import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_UNSET
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_VOSK
 import org.stypox.dicio.settings.datastore.InputDevice.UNRECOGNIZED
 import org.stypox.dicio.settings.datastore.UserSettings
-import org.stypox.dicio.ui.home.SttState
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import javax.inject.Singleton
+
 
 interface SttInputDeviceWrapper {
     val uiState: StateFlow<SttState?>
@@ -36,6 +39,8 @@ interface SttInputDeviceWrapper {
     fun stopListening()
 
     fun onClick(eventListener: (InputEvent) -> Unit)
+
+    fun releaseResources()
 }
 
 class SttInputDeviceWrapperImpl(
@@ -46,7 +51,8 @@ class SttInputDeviceWrapperImpl(
 ) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    private var sttInputDevice: SttInputDevice? = null
+    private var currentSetting: InputDevice
+    private var sttInputDevice: SttInputDevice?
 
     // null means that the user has not enabled any STT input device
     private val _uiState: MutableStateFlow<SttState?> = MutableStateFlow(null)
@@ -61,19 +67,23 @@ class SttInputDeviceWrapperImpl(
             .map { it.inputDevice }
             .distinctUntilChangedBlockingFirst()
 
+        currentSetting = firstInputDevice
         sttInputDevice = buildInputDevice(firstInputDevice)
         scope.launch {
             restartUiStateJob()
         }
 
         scope.launch {
-            nextInputDeviceFlow.collect { setting ->
-                val prevSttInputDevice = sttInputDevice
-                sttInputDevice = buildInputDevice(setting)
-                prevSttInputDevice?.destroy()
-                restartUiStateJob()
-            }
+            nextInputDeviceFlow.collect(::changeInputDeviceTo)
         }
+    }
+
+    private suspend fun changeInputDeviceTo(setting: InputDevice) {
+        val prevSttInputDevice = sttInputDevice
+        currentSetting = setting
+        sttInputDevice = buildInputDevice(setting)
+        prevSttInputDevice?.destroy()
+        restartUiStateJob()
     }
 
     private fun buildInputDevice(setting: InputDevice): SttInputDevice? {
@@ -91,14 +101,29 @@ class SttInputDeviceWrapperImpl(
         uiStateJob?.cancel()
         val newSttInputDevice = sttInputDevice
         if (newSttInputDevice == null) {
+            uiStateJob = null
             _uiState.emit(null)
         } else {
             uiStateJob = scope.launch {
-                newSttInputDevice.uiState.collect { _uiState.emit(it) }
+                newSttInputDevice.uiState.collect {
+                    _uiState.emit(it)
+                    if (it == SttState.Listening) {
+                        playSoundWhenStartsListening()
+                    }
+                }
             }
         }
     }
 
+    private fun playSoundWhenStartsListening() {
+        // in case we need to play the sound on a different channel:
+        // val attributes = AudioAttributes.Builder()
+        //     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+        //     .build()
+        val mediaPlayer = MediaPlayer.create(appContext, R.raw.listening_sound)
+        mediaPlayer.setVolume(0.5f, 0.5f)
+        mediaPlayer.start()
+    }
 
     override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
         return sttInputDevice?.tryLoad(thenStartListeningEventListener) ?: false
@@ -110,6 +135,10 @@ class SttInputDeviceWrapperImpl(
 
     override fun onClick(eventListener: (InputEvent) -> Unit) {
         sttInputDevice?.onClick(eventListener)
+    }
+
+    override fun releaseResources() {
+        scope.launch { changeInputDeviceTo(currentSetting) }
     }
 }
 

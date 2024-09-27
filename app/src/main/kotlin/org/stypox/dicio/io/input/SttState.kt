@@ -17,7 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package org.stypox.dicio.ui.home
+package org.stypox.dicio.io.input
+
+import org.stypox.dicio.ui.util.Progress
 
 /**
  * This is almost symmetrical to [org.stypox.dicio.io.input.vosk.VoskState], except that there are
@@ -48,8 +50,7 @@ sealed interface SttState {
     data object NotDownloaded : SttState
 
     data class Downloading(
-        val currentBytes: Long,
-        val totalBytes: Long,
+        val progress: Progress,
     ) : SttState
 
     data class ErrorDownloading(
@@ -62,8 +63,7 @@ sealed interface SttState {
      * Vosk models are distributed in Zip files that need unzipping to be ready.
      */
     data class Unzipping(
-        val currentBytes: Long,
-        val totalBytes: Long,
+        val progress: Progress,
     ) : SttState
 
     data class ErrorUnzipping(

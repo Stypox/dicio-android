@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import org.dicio.skill.context.SkillContext
-import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.skills.calculator.CalculatorInfo
@@ -27,7 +25,8 @@ import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.PendingQuestion
 import org.stypox.dicio.ui.home.QuestionAnswer
-import org.stypox.dicio.ui.home.SttState
+import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.wake.WakeState
 import java.io.IOException
 
 
@@ -119,12 +118,13 @@ class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
     SttState.NotInitialized,
     SttState.NotAvailable,
     SttState.NotDownloaded,
-    SttState.Downloading(987654, 0),
-    SttState.Downloading(987654, 1234567),
+    SttState.Downloading(Progress(0, 3, 987654, 0)),
+    SttState.Downloading(Progress(5, 0, 987654, 0)),
+    SttState.Downloading(Progress(0, 1, 987654, 1234567)),
     SttState.ErrorDownloading(IOException("ErrorDownloading exception")),
     SttState.Downloaded,
-    SttState.Unzipping(765432, 0),
-    SttState.Unzipping(3365432, 9876543),
+    SttState.Unzipping(Progress(0, 0, 765432, 0)),
+    SttState.Unzipping(Progress(2, 3, 3365432, 9876543)),
     SttState.ErrorUnzipping(Exception("ErrorUnzipping exception")),
     SttState.NotLoaded,
     SttState.Loading(true),
@@ -132,4 +132,14 @@ class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
     SttState.ErrorLoading(Exception("ErrorLoading exception")),
     SttState.Loaded,
     SttState.Listening,
+))
+
+class WakeStatesPreviews : CollectionPreviewParameterProvider<WakeState>(listOf(
+    WakeState.NotDownloaded,
+    WakeState.Downloading(Progress(0, 0, 987654, 0)),
+    WakeState.Downloading(Progress(1, 2, 987654, 1234567)),
+    WakeState.ErrorDownloading(Exception("ErrorDownloading exception")),
+    WakeState.Loading,
+    WakeState.ErrorLoading(Exception("ErrorLoading exception")),
+    WakeState.Loaded,
 ))

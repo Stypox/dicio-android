@@ -22,7 +22,10 @@ package org.stypox.dicio.util
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.Response
+import org.stypox.dicio.ui.util.Progress
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.IOException
@@ -31,6 +34,50 @@ import java.io.OutputStream
 private const val CHUNK_SIZE = 1024 * 256 // 0.25 MB
 private const val CONTENT_LENGTH = "Content-Length"
 private const val DOT_PART_SUFFIX = ".part"
+private const val LAST_DOWNLOAD_URL_CHECK = ".url.txt"
+
+
+data class FileToDownload(
+    val url: String,
+    val file: File,
+    val lastDownloadedUrlFile: File = File(file.parentFile, file.name + LAST_DOWNLOAD_URL_CHECK)
+) {
+    fun needsToBeDownloaded(): Boolean {
+        return try {
+            lastDownloadedUrlFile.readText() != url
+        } catch (e: IOException) {
+            // lastDownloadedUrlFile file does not exist
+            true
+        }
+    }
+}
+
+suspend fun downloadBinaryFilesWithPartial(
+    urlsFiles: List<FileToDownload>,
+    httpClient: OkHttpClient,
+    cacheDir: File,
+    progressCallback: (Progress) -> Unit,
+) {
+    progressCallback(Progress.UNKNOWN)
+    val filesNeedingDownload = urlsFiles.filter(FileToDownload::needsToBeDownloaded)
+
+    for ((i, f) in filesNeedingDownload.withIndex()) {
+        yield()
+        progressCallback(Progress(i, filesNeedingDownload.size, 0, 0))
+
+        downloadBinaryFileWithPartial(
+            response = httpClient.getResponse(f.url),
+            file = f.file,
+            cacheDir = cacheDir,
+        ) { currentBytes, totalBytes ->
+            progressCallback(Progress(i, filesNeedingDownload.size, currentBytes, totalBytes))
+        }
+
+        f.lastDownloadedUrlFile.writeText(f.url)
+    }
+
+    progressCallback(Progress(filesNeedingDownload.size, filesNeedingDownload.size, 0, 0))
+}
 
 /**
  * Deletes any partial files in the application's cache directory.
@@ -107,4 +154,9 @@ suspend fun downloadBinaryFile(
             progressCallback(currentBytes, totalBytes)
         }
     }
+}
+
+fun OkHttpClient.getResponse(url: String): Response {
+    val request: Request = Request.Builder().url(url).build()
+    return this.newCall(request).execute()
 }

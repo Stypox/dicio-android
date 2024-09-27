@@ -30,6 +30,8 @@ protobufPlugin = "0.9.4"
 protoc = "4.26.1"
 unbescape = "1.1.6.RELEASE"
 voskAndroid = "0.3.32"
+litert = "1.0.1"
+permissionFlow = "2.0.0"
 
 [libraries]
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist" }
@@ -79,6 +81,9 @@ test-runner = { module = "androidx.test:runner", version.ref = "androidxTest" }
 test-ui-automator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "androidxTestUiAutomator" }
 unbescape = { module = "org.unbescape:unbescape", version.ref = "unbescape" }
 vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
+litert = { module = "com.google.ai.edge.litert:litert", version.ref = "litert" }
+permission-flow-android = { module = "dev.shreyaspatil.permission-flow:permission-flow-android", version.ref = "permissionFlow" }
+permission-flow-compose = { module = "dev.shreyaspatil.permission-flow:permission-flow-compose", version.ref = "permissionFlow" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "gradle" }

@@ -33,6 +33,7 @@ import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
+import org.stypox.dicio.settings.datastore.WakeDevice
 import org.stypox.dicio.settings.ui.SettingsCategoryTitle
 import org.stypox.dicio.settings.ui.SettingsItem
 import org.stypox.dicio.ui.theme.AppTheme
@@ -117,6 +118,16 @@ private fun MainSettingsScreen(
                     else -> inputDevice
                 },
                 viewModel::setInputDevice,
+            )
+        }
+        item {
+            wakeDevice().Render(
+                when (val wakeDevice = settings.wakeDevice) {
+                    WakeDevice.UNRECOGNIZED,
+                    WakeDevice.WAKE_DEVICE_UNSET -> WakeDevice.WAKE_DEVICE_OWW
+                    else -> wakeDevice
+                },
+                viewModel::setWakeDevice,
             )
         }
         item {

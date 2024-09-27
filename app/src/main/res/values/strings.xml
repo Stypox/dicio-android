@@ -85,6 +85,10 @@
     <string name="pref_speech_output_method_toast">Toast (popup message)</string>
     <string name="pref_speech_output_method_snackbar">Snackbar (message at the bottom)</string>
     <string name="pref_speech_output_method_nothing">Nothing</string>
+    <string name="pref_wake_method">Wake word recognition method</string>
+    <string name="pref_wake_method_summary">Choose the service to use to listen for the \"Hey Dicio\" wakeup word in the background</string>
+    <string name="pref_wake_method_disabled">Disabled</string>
+    <string name="pref_wake_method_openwakeword">OpenWakeWord offline audio processing</string>
     <string name="pref_skill_not_available">This skill is not yet available for your language. Contributions are welcome!</string>
     <string name="pref_skill_missing_permissions">Requires these permissions: %1$s</string>
     <string name="pref_skill_grant_permissions">Grant</string>
@@ -163,4 +167,23 @@
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
     <string name="stt_service_label">Dicio offline speech recognition</string>
+    <string name="wake_service_label">Dicio wake word service</string>
+    <string name="wake_service_foreground_notification_summary">This notification allows the Dicio
+        wake word service to listen to the microphone in the background</string>
+    <string name="wake_service_foreground_notification">Listening for the \"Hey Dicio\" wake-up word</string>
+    <string name="wake_service_start_notification">Tap to start Dicio wake word service</string>
+    <string name="wake_service_triggered_notification">Dicio wake word triggered, tap to open</string>
+    <string name="wake_service_start_notification_summary">In Android 11+ Dicio can\'t start the service without a manual interaction from the user.</string>
+    <string name="wake_service_triggered_notification_summary">In Android 10+ Dicio can\'t start when a wake word is detected without showing a notification.</string>
+    <string name="wake_word_setup_title">Setup wake word</string>
+    <string name="wake_word_setup_description">Dicio will wake up automatically whenever you say \"Hey Dicio\".
+        This works by starting a service that always listens in the background.
+        All speech processing happens locally, that\'s why you need to download the AI model in advance.</string>
+    <string name="wake_word_error_downloading">An unexpected error occurred while downloading</string>
+    <string name="wake_word_error_downloading_network">Dicio could not reach the internet. Please check your connection and retry.</string>
+    <string name="wake_word_error_loading">An unexpected error occurred while loading</string>
+    <string name="disable">Disable</string>
+    <string name="retry">Retry</string>
+    <string name="stop">Stop</string>
+    <string name="grant_permissions">Grant permissions</string>
 </resources>
