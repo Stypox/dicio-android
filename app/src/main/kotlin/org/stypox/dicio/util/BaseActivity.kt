@@ -10,19 +10,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.datastore.core.DataStore
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.stypox.dicio.di.LocaleManager
+import org.stypox.dicio.di.LocaleManagerModule
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.ui.theme.AppTheme
 import java.util.Locale
 import javax.inject.Inject
 
 abstract class BaseActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var localeManager: LocaleManager
 
     @Inject
     lateinit var dataStore: DataStore<UserSettings>
@@ -48,6 +49,18 @@ abstract class BaseActivity : ComponentActivity() {
             window.isNavigationBarContrastEnforced = false
         }
 
+        // can't use @Inject because Hilt initializes only when super.onCreate() is called
+        val localeManager =
+            EntryPointAccessors.fromApplication(this, LocaleManagerModule::class.java)
+        val (firstLocale, nextLocaleFlow) = localeManager.getLocaleManager().locale
+            .distinctUntilChangedBlockingFirst()
+        setLocale(firstLocale)
+        lifecycleScope.launch {
+            nextLocaleFlow.collect {
+                recreate()
+            }
+        }
+
         super.onCreate(savedInstanceState)
     }
 
@@ -62,9 +75,6 @@ abstract class BaseActivity : ComponentActivity() {
      */
     fun composeSetContent(content: @Composable () -> Unit) {
         setContent {
-            val locale = localeManager.locale.collectAsState()
-            setLocale(locale.value)
-
             val theme = dataStore.data
                 .map { Pair(it.theme, it.dynamicColors) }
                 .collectAsState(

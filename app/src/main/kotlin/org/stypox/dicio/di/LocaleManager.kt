@@ -3,7 +3,10 @@ package org.stypox.dicio.di
 import android.content.Context
 import android.util.Log
 import androidx.datastore.core.DataStore
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,4 +87,14 @@ class LocaleManager @Inject constructor(
             )
         }
     }
+}
+
+/**
+ * This module allows getting an instance of [LocaleManager] outside of @Inject using
+ * `EntryPointAccessors.fromApplication()`, which can be used before an activity's `onCreate()`.
+ */
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface LocaleManagerModule {
+    fun getLocaleManager(): LocaleManager
 }
