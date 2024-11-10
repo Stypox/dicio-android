@@ -71,7 +71,7 @@ fun generateCapturingGroup(capturingGroup: CapturingGroup): CodeBlock {
         "%T(%S, %Lf)",
         ClassName("org.dicio.skill.standard.construct", "CapturingConstruct"),
         capturingGroup.name,
-        1.0f // TODO allow specifying weight
+        0.0f // TODO allow specifying weight
     )
 }
 
