@@ -71,7 +71,7 @@ object ErrorUtils {
         )
             .setSmallIcon(R.drawable.ic_bug_report_white)
             .setContentTitle(context.getString(R.string.error_report_notification_title))
-            .setContentText(errorInfo.userAction.message)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(errorInfo.userAction.message))
             .setAutoCancel(true)
             .setContentIntent(
                 PendingIntent.getActivity(

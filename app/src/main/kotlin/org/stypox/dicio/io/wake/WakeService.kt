@@ -247,7 +247,8 @@ class WakeService : Service() {
             val notification = NotificationCompat.Builder(this, TRIGGERED_NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_hearing_white)
                 .setContentTitle(getString(R.string.wake_service_triggered_notification))
-                .setContentText(getString(R.string.wake_service_triggered_notification_summary))
+                .setStyle(NotificationCompat.BigTextStyle().bigText(
+                    getString(R.string.wake_service_triggered_notification_summary)))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setFullScreenIntent(pendingIntent, true)
                 .build()
@@ -287,7 +288,8 @@ class WakeService : Service() {
             val notification = NotificationCompat.Builder(context, START_NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_hearing_white)
                 .setContentTitle(context.getString(R.string.wake_service_start_notification))
-                .setContentText(context.getString(R.string.wake_service_start_notification_summary))
+                .setStyle(NotificationCompat.BigTextStyle().bigText(
+                    context.getString(R.string.wake_service_start_notification_summary)))
                 .setOngoing(false)
                 .setShowWhen(false)
                 .setAutoCancel(true)
