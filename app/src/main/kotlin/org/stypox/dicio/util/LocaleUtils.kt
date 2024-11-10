@@ -1,9 +1,6 @@
 package org.stypox.dicio.util
 
-import android.content.Context
-import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
-import org.stypox.dicio.settings.datastore.Language
 import java.util.Locale
 
 object LocaleUtils {
@@ -85,31 +82,22 @@ object LocaleUtils {
         throw UnsupportedLocaleException(locale)
     }
 
-    fun getAvailableLocalesFromLanguage(context: Context, language: Language): LocaleListCompat {
-        return when (language) {
-            Language.LANGUAGE_SYSTEM,
-            Language.UNRECOGNIZED -> {
-                ConfigurationCompat.getLocales(context.resources.configuration)
-            }
-            else -> {
-                val languageCountry = language
-                    .toString()
-                    .lowercase()
-                    .split("_".toRegex())
-                    .drop(1)
-                    .dropLastWhile { it.isEmpty() }
-                    .toTypedArray()
-                if (languageCountry.size == 1) {
-                    LocaleListCompat.create(Locale(languageCountry[0]))
-                } else {
-                    LocaleListCompat.create(
-                        Locale(
-                            languageCountry[0],
-                            languageCountry[1]
-                        )
-                    )
-                }
-            }
+    /**
+     * Parses a `LANGUAGE` or `LANGUAGE_COUNTRY` string string into a [Locale],
+     * e.g. "EN" -> [Locale]`("en")`, "EN_IN" -> [Locale]`("en", "in")`.
+     */
+    fun parseLanguageCountry(languageCountry: String): Locale {
+        val languageCountryArr = languageCountry
+            .lowercase()
+            .split("_".toRegex())
+            .drop(1)
+            .dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+
+        return if (languageCountryArr.size == 1) {
+            Locale(languageCountryArr[0])
+        } else {
+            Locale(languageCountryArr[0], languageCountryArr[1])
         }
     }
 
