@@ -1,0 +1,4 @@
+query:
+  - (szukam|poszukuję|sprawdzam) (wiedz<y|ę>|co wiadomo|co wiemy|co się da|co piszą) (w sieci|w internecie) (o|na temat) .what.
+  - (sprawdź|<po|wy|prze?>szukaj|znajdź) mi? (w internecie|w sieci)? .what.
+  - pokaż mi? (w internecie|w sieci) .what.

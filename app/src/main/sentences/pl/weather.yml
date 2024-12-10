@@ -1,0 +1,6 @@
+current:
+  - (jaka jest pogoda)|(jaką mamy pogodę)|(jakie są warunki pogodowe?) w|przy|blisko|nad|obok .where.
+  - pogoda (w|przy|blisko|nad|obok)? .where.
+  - (jak jest)|pogoda na zewnątrz|dworze|polu
+  - (jak jest)|pogoda za oknem
+  - (czy jest?)|(czy? jest) bardzo? zimno|mroźnie|mróz|ciepło|gorąco|skwar|pochmurno|zachmurzenie|słonecznie|(świeci słońce)|deszczowo|(pada deszcz?)|mgła|(pada? śnieg) (w|przy|blisko|nad|obok .where.)|(na zewnątrz|dworze|polu)?

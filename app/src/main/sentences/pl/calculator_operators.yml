@@ -1,0 +1,18 @@
+addition:
+  - plus|i|(doda<j|wanie|ć>|sum<owanie|a> do?)
+
+subtraction:
+  - minus|(odejmij|odjąć|odejmowanie od?)
+
+multiplication:
+  - razy|(pomnoż<one|yć?>|mnożenie przez?)
+
+division:
+  - przez|(<po?>dziel<ić|one|enie?> przez|na|po?)
+
+power:
+  - do potęgi?
+
+square_root:
+  - pierwiastek kwadratowy? z?
+  - pierwiast<kuj|kowanie> z?
