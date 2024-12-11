@@ -1,4 +1,4 @@
 query:
-  - (szukam|poszukuję|sprawdzam) (wiedz<y|ę>|co wiadomo|co wiemy|co się da|co piszą) (w sieci|w internecie) (o|na temat) .what.
-  - (sprawdź|<po|wy|prze?>szukaj|znajdź) mi? (w internecie|w sieci)? .what.
-  - pokaż mi? (w internecie|w sieci) .what.
+  - szukam|<po|prze>szukuję|(sprawd<zam|źmy|ź>|pokaż mi?) wiedz<y|ę>|(co wiadomo|wiemy)|(co się da)|(co piszą|jest)|czegoś|informacji|danych (w sieci|interne<cie|tach>)? o|(dotycząc<ych|ego> tematu?)|(na temat)|(o|w temacie) .what.
+  - <po|wy|prze?>szukaj|znajdź mi? (w interne<cie|tach>|sieci)? .what.
+  - sprawdź<my?>|pokaż mi? (w interne<cie|tach>|sieci) .what.

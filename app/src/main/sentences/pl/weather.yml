@@ -3,4 +3,4 @@ current:
   - pogoda (w|przy|blisko|nad|obok)? .where.
   - (jak jest)|pogoda na zewnątrz|dworze|polu
   - (jak jest)|pogoda za oknem
-  - (czy jest?)|(czy? jest) bardzo? zimno|mroźnie|mróz|ciepło|gorąco|skwar|pochmurno|zachmurzenie|słonecznie|(świeci słońce)|deszczowo|(pada deszcz?)|mgła|(pada? śnieg) (w|przy|blisko|nad|obok .where.)|(na zewnątrz|dworze|polu)?
+  - czy|jak jest? dzi<ś|siaj>? jest? bardzo|mocn<e|o|a|y>|siln<ie|a|e|y>|wyjątkow<e|o>|nieprzyzwoicie|super|duż<e|o>? jest? dzi<ś|siaj>? jest? zimno|mroźnie|mróz|ciepło|gorąco|skwar|upalnie|pochmurno|zachmurzenie|chmur|słonecznie|słoneczko|(świeci|wali? słońce)|deszczowo|<na?>pada<ło?>|deszcz|(<na?>pada<ło?> deszcz<u?>)|mgła|mgli<ście|sto>|(<na?>pada<ło?>? śnie<g|gu|żnie|ży|żku|żek>)|(<na?>pada<ło?> śnie<g|gu|żnie|ży|żku|żek>?)|wiatr|wieje|zawierucha|wietrznie jest? dzi<ś|siaj>? jest? (w|przy|blisko|nad|obok .where.)|(na zewnątrz|dworze|polu)?
