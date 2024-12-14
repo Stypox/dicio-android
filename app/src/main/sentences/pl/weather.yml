@@ -1,6 +1,5 @@
 current:
-  - (jaka jest pogoda)|(jaką mamy pogodę)|(jakie są warunki pogodowe?) w|przy|blisko|nad|obok .where.
+  - (jaka jest pogoda)|(jaką mamy pogodę)|(jakie są warunki pogodowe?) (w|przy|blisko|nad|obok .where.)?
   - pogoda (w|przy|blisko|nad|obok)? .where.
-  - (jak jest)|pogoda na zewnątrz|dworze|polu
-  - (jak jest)|pogoda za oknem
-  - czy|jak jest? dzi<ś|siaj>? jest? bardzo|mocn<e|o|a|y>|siln<ie|a|e|y>|wyjątkow<e|o>|nieprzyzwoicie|super|duż<e|o>? jest? dzi<ś|siaj>? jest? zimno|mroźnie|mróz|ciepło|gorąco|skwar|upalnie|pochmurno|zachmurzenie|chmur|słonecznie|słoneczko|(świeci|wali? słońce)|deszczowo|<na?>pada<ło?>|deszcz|(<na?>pada<ło?> deszcz<u?>)|mgła|mgli<ście|sto>|(<na?>pada<ło?>? śnie<g|gu|żnie|ży|żku|żek>)|(<na?>pada<ło?> śnie<g|gu|żnie|ży|żku|żek>?)|wiatr|wieje|zawierucha|wietrznie jest? dzi<ś|siaj>? jest? (w|przy|blisko|nad|obok .where.)|(na zewnątrz|dworze|polu)?
+  - (jak jest)|pogoda (na zewnątrz|dworze|polu)|(za oknem)
+  - czy|jak jest|(spodziewać się)? dzi<ś|siaj>? jest|(spodziewać się)? bardzo|mocn<e|o|a|y>|siln<ie|a|e|y>|wyjątkow<e|o>|nieprzyzwoicie|super|duż<e|o>? jest? dzi<ś|siaj>? jest? zimno|mroźnie|mróz|ciepło|gorąco|skwar|upalnie|pochmurno|zachmurzenie|chmur|słonecznie|słoneczko|(świeci|wali? słońce)|mż<awka|y>|dżdż<a|u|y|ysto>|deszczowo|<na?>pada<ło?>|deszcz|(<na?>pada<ło?> deszcz<u?>)|mgła|mgli<ście|sto>|(<na?>pada<ło?>? śnie<g|gu|żnie|ży|żku|żek>)|(<na?>pada<ło?> śnie<g|gu|żnie|ży|żku|żek>?)|wiatr|wieje|zawierucha|wietrznie jest? dzi<ś|siaj>? jest? (w|przy|blisko|nad|obok .where.)|(na zewnątrz|dworze|polu)?
