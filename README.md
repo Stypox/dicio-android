@@ -207,7 +207,7 @@ Create an `object` named `$SkillId$Info` (e.g. `WeatherInfo`) overriding `SkillI
 Under `org.stypox.dicio.Skills.SkillHandler`, update the `allSkillInfoList` by adding `$SkillId$Info`; this will make the new skill finally visible to Dicio.
 
 #### **Notes**
-- The `ctx: SkillContext` object, that appears here and there in the implementation, allows accessing the Android context, the number parser/formatter and other **resources** and services, similarly to Andorid's `context`.
+- The `ctx: SkillContext` object, that appears here and there in the implementation, allows accessing the Android context, the number parser/formatter and other **resources** and services, similarly to Android's `context`.
 - The **names** used for things (files, classes, packages, sections, etc.) are not mandatory, but they help **avoiding confusion**, so try to stick to them.
 - When committing changes about a skill, prefix the commit message with "[\$SkillId\$]", e.g. "[Weather] Fix crash".
 - Add your skill with a short description and an example in the README under [Skills](https://github.com/Stypox/dicio-android#skills) and in the [fastlane's long description](https://github.com/Stypox/dicio-android/tree/master/fastlane/metadata/android/en-US/full_description.txt).
