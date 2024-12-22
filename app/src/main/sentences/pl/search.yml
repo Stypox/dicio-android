@@ -1,3 +1,3 @@
 query:
-  - szukam|<po|prze>szukuję|(sprawd<zam|źmy|ź>|pokaż mi|(dla mnie)?) wiedz<y|ę>|(co wiadomo|wiemy)|(co się da)|(co piszą|jest)|czegoś|informacji|danych (w sieci|interne<cie|tach>)? o|(dotycząc<ych|ego> tematu?)|(na temat)|(o|w temacie) .what.
+  - szukam|<po|prze>szukuję|(sprawd<zam|źmy|ź>|pokaż mi|(dla mnie)?) wiedz<y|ę>|(co wiadomo|wiemy)|(co się da)|(co piszą|jest)|czegoś|informacji|danych (w sieci|interne<cie|tach>)? o|(dotycząc<ych|ego> tematu?)|(na temat)|(o|w temacie)|(w|o|pod ha<słem|śle>) .what.
   - <po|wy|prze?>szukaj<my?>|znajdź<my?>|sprawdź<my?>|pokaż mi|(dla mnie)? (w interne<cie|tach>|sieci)? .what.
