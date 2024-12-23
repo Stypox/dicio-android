@@ -1,0 +1,8 @@
+query:
+  - sprawdź|pobierz|ściągnij|pokaż|wyświetl|znajdź|<wy?>szukaj mi|(dla? mnie)? (treśc<i?>|słów|słowa|wers<y|ety>)? tekstu|piosenki|pieśni|utworu|dzieła .song.
+  - zaśpiewaj|zanuć (piosenkę|pieśń|utwór|dzieło)? .song.
+  - sprawdź piosenkę|pieśń|utwór|dzieło .song.
+  - z jakiej|której|czyjej piosenki jest .song.
+  - .song. treść|tekst|słowa|wers<y|ety> piosenki|pieśni|utworu|dzieła
+  - jak leci<ała?>|brzmi<ała?>|idzie|szła (ta|ten|to)? tekst|piosenka|pieśń|utwór|dzieło? .song.
+  - jak lec<ą|iały>|brzmi<ą|ały>|idą|szły słowa|wers<y|ety> (tej|tego)? tekstu|piosenki|pieśń|utworu|dzieła? .song.

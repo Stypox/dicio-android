@@ -1,6 +1,6 @@
 # Dicio assistant
 
-Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It interprets user input and (when possible) generates user output entirely **on-device**, providing privacy by design. It has **multilanguage** support, and is currently available in these languages: Czech, English, French, German, Greek, Italian, Russian, Slovenian, Spanish and Ukrainian. Open to contributions :-D
+Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It interprets user input and (when possible) generates user output entirely **on-device**, providing privacy by design. It has **multilanguage** support, and is currently available in these languages: Czech, English, French, German, Greek, Italian, Polish, Russian, Slovenian, Spanish and Ukrainian. Open to contributions :-D
 
 <p align="center">
     <img height="80" alt="Dicio logo" src="./app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
