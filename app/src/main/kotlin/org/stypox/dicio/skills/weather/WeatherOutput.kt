@@ -36,7 +36,7 @@ sealed interface WeatherOutput : SkillOutput {
         val windSpeed: Double,
     ) : WeatherOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
-            R.string.skill_weather_in_city_there_is_description, city, description
+            R.string.skill_weather_in_city_the_temperature_is_temp_degrees_Celsius_and_there_is_description, city, description, temp
         )
 
         @Composable
