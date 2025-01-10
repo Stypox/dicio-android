@@ -5,6 +5,9 @@ option java_multiple_files = true;
 
 // keep this list ordered alphabetically, even if this implies
 // not having it ordered by enum value
+// Warning
+// If you change existing values, current users will encounter
+// a sudden change of selected language. Please avoid that.
 enum Language {
   LANGUAGE_SYSTEM = 0;
   LANGUAGE_CS = 1; // Czech
@@ -15,6 +18,7 @@ enum Language {
   LANGUAGE_EL = 6; // Greek
   LANGUAGE_FR = 7; // French
   LANGUAGE_IT = 8; // Italian
+  LANGUAGE_PL = 12; // Polish
   LANGUAGE_RU = 9; // Russian
   LANGUAGE_SL = 10; // Slovene
   LANGUAGE_UK = 11; // Ukrainian
