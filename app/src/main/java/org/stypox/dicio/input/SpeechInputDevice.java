@@ -2,6 +2,7 @@ package org.stypox.dicio.input;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -98,6 +99,11 @@ public abstract class SpeechInputDevice extends InputDevice {
      */
     @Override
     public void tryToGetInput(final boolean manual) {
+        if (voiceFab != null) {
+            final MediaPlayer music = MediaPlayer.create(voiceFab.getContext(), R.raw.beep_up);
+            music.start();
+        }
+
         super.tryToGetInput(manual); // overridden just to provide a more detailed documentation ^
     }
 
@@ -168,6 +174,9 @@ public abstract class SpeechInputDevice extends InputDevice {
                 case INACTIVE: default:
                     voiceFab.setIcon(AppCompatResources.getDrawable(voiceFab.getContext(),
                             R.drawable.ic_mic_none_white));
+                    final MediaPlayer music = MediaPlayer.create(voiceFab.getContext(),
+                            R.raw.beep_down);
+                    music.start();
                     voiceFab.shrink();
                     voiceLoading.setVisibility(View.GONE);
                     break;
