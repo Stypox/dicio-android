@@ -10,4 +10,6 @@ interface SkillOutput {
 
     @Composable
     fun GraphicalOutput(ctx: SkillContext)
+
+    fun getKeepListening(ctx: SkillContext): Boolean = getNextSkills(ctx).isNotEmpty()
 }

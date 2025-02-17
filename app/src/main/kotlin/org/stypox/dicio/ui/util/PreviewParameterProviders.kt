@@ -24,10 +24,10 @@ import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.timer.TimerOutput
 import org.stypox.dicio.skills.weather.WeatherInfo
-import org.stypox.dicio.ui.home.Interaction
-import org.stypox.dicio.ui.home.InteractionLog
-import org.stypox.dicio.ui.home.PendingQuestion
-import org.stypox.dicio.ui.home.QuestionAnswer
+import org.dicio.skill.skill.Interaction
+import org.dicio.skill.skill.InteractionLog
+import org.dicio.skill.skill.PendingQuestion
+import org.dicio.skill.skill.QuestionAnswer
 import java.io.IOException
 
 
@@ -53,7 +53,7 @@ class SkillInfoPreviews : CollectionPreviewParameterProvider<SkillInfo>(listOf(
 ))
 
 class SkillOutputPreviews : CollectionPreviewParameterProvider<SkillOutput>(listOf(
-    TextFallbackOutput(),
+    TextFallbackOutput(false),
 ))
 
 class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog>(listOf(
@@ -88,7 +88,7 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
             Interaction(
                 skill = TimerInfo,
                 questionsAnswers = listOf(
-                    QuestionAnswer("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput() })
+                    QuestionAnswer("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput(false) })
                 )
             )
         ),

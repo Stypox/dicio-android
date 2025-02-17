@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.InteractionLog
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.di.SkillContextImpl
@@ -118,7 +119,7 @@ fun InteractionList(
                     // (and therefore the error was not caused by the input, but e.g. by the STT)
                     countedItem(canBeAnchor = true) {
                         ConfirmedQuestionCard(
-                            userInput = it.question,
+                            userInput = it.question!!,
                             onClick = onConfirmedQuestionClick,
                         )
                     }
@@ -157,7 +158,7 @@ fun InteractionList(
                     )
                 }
                 countedItem(canBeAnchor = false) {
-                    LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated)
+                    LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated!!)
                 }
             }
         }

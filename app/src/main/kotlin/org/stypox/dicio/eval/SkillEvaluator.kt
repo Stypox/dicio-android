@@ -18,10 +18,10 @@ import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
-import org.stypox.dicio.ui.home.Interaction
-import org.stypox.dicio.ui.home.InteractionLog
-import org.stypox.dicio.ui.home.PendingQuestion
-import org.stypox.dicio.ui.home.QuestionAnswer
+import org.dicio.skill.skill.Interaction
+import org.dicio.skill.skill.InteractionLog
+import org.dicio.skill.skill.PendingQuestion
+import org.dicio.skill.skill.QuestionAnswer
 import javax.inject.Singleton
 
 interface SkillEvaluator {
@@ -148,6 +148,8 @@ class SkillEvaluatorImpl(
                 }
             } else {
                 skillRanker.addBatchToTop(nextSkills)
+            }
+            if (output.getKeepListening(skillContext)) {
                 skillContext.speechOutputDevice.runWhenFinishedSpeaking {
                     sttInputDevice.tryLoad(this::processInputEvent)
                 }
