@@ -26,6 +26,8 @@ import javax.inject.Singleton
 interface WakeDeviceWrapper {
     val state: StateFlow<WakeState?>
 
+    val openWakeWordDevice: OpenWakeWordDevice?
+
     fun download()
 
     fun processFrame(audio16bitPcm: ShortArray): Boolean
@@ -90,6 +92,9 @@ class WakeDeviceWrapperImpl(
             WAKE_DEVICE_NOTHING -> null
         }
     }
+
+    override val openWakeWordDevice: OpenWakeWordDevice?
+        get() = wakeDevice as? OpenWakeWordDevice
 
     private suspend fun restartUiStateJob() {
         stateJob?.cancel()

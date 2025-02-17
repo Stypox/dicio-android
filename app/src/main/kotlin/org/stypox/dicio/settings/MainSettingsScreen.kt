@@ -2,6 +2,8 @@ package org.stypox.dicio.settings
 
 import android.app.Application
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -9,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Extension
+import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -70,6 +74,11 @@ private fun MainSettingsScreen(
     modifier: Modifier = Modifier,
 ) {
     val settings by viewModel.settingsState.collectAsState()
+    val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
+        if (it != null) {
+            viewModel.addUserWakeFile(it)
+        }
+    }
 
     LazyColumn(modifier) {
         item { SettingsCategoryTitle(stringResource(R.string.pref_general), topPadding = 4.dp) }
@@ -121,15 +130,41 @@ private fun MainSettingsScreen(
                 viewModel::setInputDevice,
             )
         }
+        val wakeDevice = when (val wakeDevice = settings.wakeDevice) {
+            WakeDevice.UNRECOGNIZED,
+            WakeDevice.WAKE_DEVICE_UNSET -> WakeDevice.WAKE_DEVICE_OWW
+            else -> wakeDevice
+        }
         item {
             wakeDevice().Render(
-                when (val wakeDevice = settings.wakeDevice) {
-                    WakeDevice.UNRECOGNIZED,
-                    WakeDevice.WAKE_DEVICE_UNSET -> WakeDevice.WAKE_DEVICE_OWW
-                    else -> wakeDevice
-                },
+                wakeDevice,
                 viewModel::setWakeDevice,
             )
+        }
+        val device = viewModel.openWakeWordDevice
+        if (wakeDevice == WakeDevice.WAKE_DEVICE_OWW && device != null) {
+            item {
+                val hasUserWakeFile by device.hasUserWakeFile.collectAsState()
+                if (hasUserWakeFile) {
+                    SettingsItem(
+                        modifier = Modifier.clickable {
+                            device.removeUserWakeFile()
+                        },
+                        title = stringResource(R.string.pref_wakeword_custom_delete),
+                        icon = Icons.Default.DeleteSweep,
+                        description = stringResource(R.string.pref_wakeword_custom_delete_summary),
+                    )
+                } else {
+                    SettingsItem(
+                        modifier = Modifier.clickable {
+                            importLauncher.launch(arrayOf("*/*"))
+                        },
+                        title = stringResource(R.string.pref_wakeword_custom_import),
+                        icon = Icons.Default.UploadFile,
+                        description = stringResource(R.string.pref_wakeword_custom_import_summary),
+                    )
+                }
+            }
         }
         item {
             speechOutputDevice().Render(
@@ -176,6 +211,7 @@ private fun MainSettingsScreenPreview() {
                 navigateToSkillSettings = {},
                 viewModel = MainSettingsViewModel(
                     application = Application(),
+                    wakeDeviceWrapper = null,
                     dataStore = newDataStoreForPreviews(),
                 ),
             )
@@ -202,6 +238,7 @@ private fun MainSettingsScreenWithTopBarPreview() {
                 navigateToSkillSettings = {},
                 viewModel = MainSettingsViewModel(
                     application = Application(),
+                    wakeDeviceWrapper = null,
                     dataStore = newDataStoreForPreviews()
                 )
             )
