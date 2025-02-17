@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.stypox.dicio.R
@@ -56,8 +55,7 @@ class SttInputDeviceWrapperImpl(
 ) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
-    private var inputDeviceSetting: InputDevice
-    private var sttPlaySoundSetting: SttPlaySound
+    private var settings: UserSettings
     private var sttInputDevice: SttInputDevice?
 
     // null means that the user has not enabled any STT input device
@@ -69,22 +67,20 @@ class SttInputDeviceWrapperImpl(
     init {
         // Run blocking, because the data store is always available right away since LocaleManager
         // also initializes in a blocking way from the same data store.
-        val (firstSettings, nextSettingsFlow) = dataStore.data
-            .map { Pair(it.inputDevice, it.sttPlaySound) }
-            .distinctUntilChangedBlockingFirst()
+        val (firstSettings, nextSettingsFlow) = dataStore.data.distinctUntilChangedBlockingFirst()
 
-        inputDeviceSetting = firstSettings.first
-        sttPlaySoundSetting = firstSettings.second
-        sttInputDevice = buildInputDevice(inputDeviceSetting)
+        settings = firstSettings
+        sttInputDevice = buildInputDevice(settings.inputDevice)
         scope.launch {
             restartUiStateJob()
         }
 
         scope.launch {
-            nextSettingsFlow.collect { (inputDevice, sttPlaySound) ->
-                sttPlaySoundSetting = sttPlaySound
-                if (inputDeviceSetting != inputDevice) {
-                    changeInputDeviceTo(inputDevice)
+            nextSettingsFlow.collect { newSettings ->
+                val oldSettings = settings
+                settings = newSettings
+                if (oldSettings.inputDevice != newSettings.inputDevice) {
+                    changeInputDeviceTo(newSettings.inputDevice)
                 }
             }
         }
@@ -92,7 +88,6 @@ class SttInputDeviceWrapperImpl(
 
     private suspend fun changeInputDeviceTo(setting: InputDevice) {
         val prevSttInputDevice = sttInputDevice
-        inputDeviceSetting = setting
         sttInputDevice = buildInputDevice(setting)
         prevSttInputDevice?.destroy()
         restartUiStateJob()
@@ -102,7 +97,7 @@ class SttInputDeviceWrapperImpl(
         return when (setting) {
             UNRECOGNIZED,
             INPUT_DEVICE_UNSET,
-            INPUT_DEVICE_VOSK -> VoskInputDevice(appContext, okHttpClient, localeManager)
+            INPUT_DEVICE_VOSK -> VoskInputDevice(appContext, okHttpClient, localeManager, settings)
             INPUT_DEVICE_EXTERNAL_POPUP ->
                 ExternalPopupInputDevice(appContext, activityForResultManager, localeManager)
             INPUT_DEVICE_NOTHING -> null
@@ -130,7 +125,7 @@ class SttInputDeviceWrapperImpl(
     private fun playSound(resid: Int) {
         val attributes = AudioAttributes.Builder()
             .setUsage(
-                when (sttPlaySoundSetting) {
+                when (settings.sttPlaySound!!) {
                     SttPlaySound.UNRECOGNIZED,
                     SttPlaySound.STT_PLAY_SOUND_UNSET,
                     SttPlaySound.STT_PLAY_SOUND_NOTIFICATION -> AudioAttributes.USAGE_NOTIFICATION
@@ -169,7 +164,7 @@ class SttInputDeviceWrapperImpl(
     }
 
     override fun reinitializeToReleaseResources() {
-        scope.launch { changeInputDeviceTo(inputDeviceSetting) }
+        scope.launch { changeInputDeviceTo(settings.inputDevice) }
     }
 }
 
