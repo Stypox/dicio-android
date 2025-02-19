@@ -2,7 +2,7 @@
 accompanist = "0.34.0"
 activityCompose = "1.10.0"
 androidGradlePlugin = "8.8.1"
-androidxTest = "1.6.2"
+androidxTest = "1.6.1" # if Android Studio suggests it, 1.6.2 does not exist
 androidxTestUiAutomator = "2.3.0"
 appcompat = "1.7.0"
 coilCompose = "2.6.0"
