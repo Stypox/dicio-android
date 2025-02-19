@@ -30,7 +30,7 @@
     <string name="skill_open_opening">Apro %1$s…</string>
     <string name="skill_search_here_is_what_i_found">Ecco cosa ho trovato</string>
     <string name="skill_weather_could_not_find_city">Non ho trovato la città %1$s</string>
-    <string name="skill_weather_in_city_there_is_description">Al momento a %1$s c\'è %2$s</string>
+    <string name="skill_weather_in_city_there_is_description">Ci sono %2$s e %3$s gradi a %1$s al momento</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="skill_weather_min_max_wind">Temperatura minima: %1$.1f °C
 \nTemperatura massima: %2$.1f °C
