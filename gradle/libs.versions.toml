@@ -1,36 +1,35 @@
 [versions]
 accompanist = "0.34.0"
-activityCompose = "1.9.0"
-androidGradlePlugin = "8.2.2"
-androidxTest = "1.6.1"
+activityCompose = "1.10.0"
+androidGradlePlugin = "8.8.1"
+androidxTest = "1.6.2"
 androidxTestUiAutomator = "2.3.0"
 appcompat = "1.7.0"
 coilCompose = "2.6.0"
-composeBom = "2024.06.00"
-composeKotlinCompilerExtension = "1.5.13"
-datastore = "1.1.1"
-desugarJdkLibs = "2.0.4"
+composeBom = "2025.02.00"
+datastore = "1.1.2"
+desugarJdkLibs = "2.1.4"
 exp4j = "0.4.8"
-gradle = "8.4.2"
-dagger = "2.50"
+gradle = "8.8.1"
+dagger = "2.55"
 hilt = "1.2.0"
 jacksonDataformatYaml = "2.15.2"
 jacksonModuleKotlin = "2.15.2"
-java = "17"
+java = "21"
 jna = "5.14.0"
-jsoup = "1.17.2"
+jsoup = "1.18.3"
 kotest = "5.8.1"
-kotlin = "1.9.23"
+kotlin = "2.1.10"
 kotlinpoet = "1.16.0"
 kotlinSerialization = "1.6.3"
-ksp = "1.9.23-1.0.20"
-navigation = "2.8.0-beta03"
+ksp = "2.1.10-1.0.30"
+navigation = "2.8.7"
 okhttp = "4.12.0"
 protobufPlugin = "0.9.4"
-protoc = "4.26.1"
+protoc = "4.29.3"
 unbescape = "1.1.6.RELEASE"
 voskAndroid = "0.3.32"
-litert = "1.0.1"
+litert = "1.1.2"
 permissionFlow = "2.0.0"
 
 [libraries]
@@ -89,6 +88,7 @@ permission-flow-compose = { module = "dev.shreyaspatil.permission-flow:permissio
 com-android-application = { id = "com.android.application", version.ref = "gradle" }
 com-android-library = { id = "com.android.library", version.ref = "gradle" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+org-jetbrains-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
