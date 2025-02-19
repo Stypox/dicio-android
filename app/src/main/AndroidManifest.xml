@@ -119,5 +119,15 @@
             android:foregroundServiceType="microphone"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/wake_service_label" />
+
+        <service
+            android:name=".skills.media.MediaNotificationListener"
+            android:label="@string/notification_listener_label"
+            android:exported="false"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

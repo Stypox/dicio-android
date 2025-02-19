@@ -1,5 +1,6 @@
 package org.stypox.dicio.eval
 
+import android.provider.Settings
 import android.util.Log
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,7 @@ import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
+import org.stypox.dicio.io.graphical.MissingSecureSettingsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
@@ -126,6 +128,22 @@ class SkillEvaluatorImpl(
                 // permissions were not granted, show message
                 addInteractionFromPending(MissingPermissionsSkillOutput(skillInfo))
                 return
+            }
+
+            val secureSettings = skillInfo.neededSecureSettings.toTypedArray()
+            if (secureSettings.isNotEmpty()) {
+                secureSettings.forEach {
+                    val enabledNotificationListeners = Settings.Secure.getString(
+                        skillContext.android.contentResolver,
+                        it
+                    )
+                    if (enabledNotificationListeners
+                        ?.contains(skillContext.android.packageName) != true
+                    ) {
+                        addInteractionFromPending(MissingSecureSettingsSkillOutput(skillInfo))
+                        return
+                    }
+                }
             }
 
             val output = chosenSkill.generateOutput(skillContext)

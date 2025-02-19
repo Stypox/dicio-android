@@ -47,6 +47,18 @@ abstract class SkillInfo(
     open val neededPermissions: List<String> = listOf()
 
     /**
+     * Provides all of the secure settings this skill needs in order to run. For example, the media
+     * skill needs the `enabled_notification_listeners` settings to run. The
+     * permissions expressed here will be requested to the user when the skill is first used, or
+     * via settings. A skill should therefore be able to be built with [.build]
+     * without any secure setting, and a skill's input scoring (i.e. [Skill.score] and the
+     * related methods) should also work without secure settings.
+     * @return all of the secure settings this skill requires, or an empty list if no special
+     * secure settings are needed
+     */
+    open val neededSecureSettings: List<String> = listOf()
+
+    /**
      * Use this method to signal that the skill is not available in case, for example, the user
      * locale is not supported.
      * @param ctx the skill context with useful resources, see [SkillContext]

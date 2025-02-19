@@ -1,0 +1,11 @@
+play:
+  - (joue|jouer|jouez)|(mets|mais|mettez|mettre sur play) la|le chanson|média|piste
+
+pause:
+  - mais|mets|mettez|mettre (la|le chanson|média|piste sur pause)|(sur pause la|le chanson|média|piste)
+
+previous:
+  - (joue|jouer|jouez|mais|mets|mettez|mettre)? (la|le)? (chanson|média|piste précédent<e?>)|(précédent<e?> chanson|média|piste)
+
+next:
+  - (joue|jouer|jouez|mais|mets|mettez|mettre)? (la|le)? chanson|média|piste suivant<e?>

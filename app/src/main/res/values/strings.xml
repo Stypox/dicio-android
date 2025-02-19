@@ -125,6 +125,8 @@
     <string name="skill_sentence_example_lyrics">What\'s the song that goes we will we will rock you?</string>
     <string name="skill_name_open">App opener</string>
     <string name="skill_sentence_example_open">Open NewPipe</string>
+    <string name="skill_name_media">Media control</string>
+    <string name="skill_sentence_example_media">Next song</string>
     <string name="skill_name_calculator">Calculator</string>
     <string name="skill_sentence_example_calculator">What is five times four minus a million?</string>
     <string name="skill_name_navigation">Navigation</string>
@@ -150,6 +152,10 @@
     <string name="skill_open_could_not_understand">Could not understand app</string>
     <string name="skill_open_unknown_app">Unknown app %1$s</string>
     <string name="skill_open_opening">Opening %1$s…</string>
+    <string name="skill_media_playing">Playing media…</string>
+    <string name="skill_media_pausing">Pausing media…</string>
+    <string name="skill_media_previous">Previous media…</string>
+    <string name="skill_media_next">Next media…</string>
     <string name="skill_calculator_could_not_calculate">I could not calculate your request</string>
     <string name="skill_telephone_unknown_contact">No contact found, try again</string>
     <string name="skill_telephone_found_contacts">I found %1$d contacts, which one shall I call?</string>
@@ -173,6 +179,7 @@
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
     <string name="stt_service_label">Dicio offline speech recognition</string>
+    <string name="notification_listener_label">Dicio notification event listener</string>
     <string name="wake_service_label">Dicio wake word service</string>
     <string name="wake_service_foreground_notification_summary">This notification allows the Dicio
         wake word service to listen to the microphone in the background</string>

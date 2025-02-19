@@ -74,4 +74,13 @@ object PermissionUtils {
         }
         return commaJoinedPermissions.toString()
     }
+
+    /**
+     * @param skillInfo the skill info for which to create the secure settings string
+     * @return comma-separated list of the secure settings the provided
+     * skill info requires
+     */
+    fun getCommaJoinedSecureSettings(skillInfo: SkillInfo): String {
+        return skillInfo.neededSecureSettings.joinToString(", ")
+    }
 }

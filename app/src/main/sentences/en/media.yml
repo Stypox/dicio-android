@@ -1,0 +1,11 @@
+play:
+  - play the? (song|media|track)
+
+pause:
+  - pause the? (song|media|track)
+
+previous:
+  - play? the? previous (song|media|track)
+
+next:
+  - play? the? next (song|media|track)

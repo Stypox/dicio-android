@@ -1,6 +1,10 @@
 package org.stypox.dicio.settings
 
+import android.Manifest
 import android.app.Application
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -29,12 +33,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
@@ -148,8 +155,11 @@ fun SkillSettingsItem(
     expanded: Boolean,
     toggleExpanded: () -> Unit,
 ) {
-    val canExpand = isAvailable &&
-            (skill.renderSettings != null || skill.neededPermissions.isNotEmpty())
+    val canExpand = isAvailable && (
+        skill.renderSettings != null ||
+            skill.neededPermissions.isNotEmpty() ||
+            skill.neededSecureSettings.isNotEmpty()
+        )
 
     Card(
         modifier = Modifier
@@ -179,6 +189,9 @@ fun SkillSettingsItem(
         } else if (expanded) {
             if (skill.neededPermissions.isNotEmpty()) {
                 SkillSettingsItemPermissionLine(skill)
+            }
+            if (skill.neededSecureSettings.isNotEmpty()) {
+                SkillSettingsItemSecureSettingsLine(skill)
             }
 
             skill.renderSettings?.invoke()
@@ -295,6 +308,82 @@ private fun SkillSettingsItemPermissionLine(@PreviewParameter(SkillInfoPreviews:
 
             ElevatedButton(
                 onClick = { launcher.launch(skill.neededPermissions.toTypedArray()) },
+            ) {
+                Text(text = stringResource(R.string.pref_skill_grant_permissions))
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SkillSettingsItemSecureSettingsLine(@PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo) {
+    val context = LocalContext.current
+    val secureSettingsState = remember {
+        skill.neededSecureSettings.associateWith {
+            Settings.Secure.getString(context.contentResolver, it)
+                ?.contains(context.packageName) == true
+        }.toMutableMap()
+    }
+
+    val needingPermissionsString = if (LocalInspectionMode.current) {
+        // getCommaJoinedPermissions doesn't work inside @Preview
+        "Requires these permissions: enabled_notification_listeners"
+    } else {
+        stringResource(
+            R.string.pref_skill_missing_permissions,
+            PermissionUtils.getCommaJoinedSecureSettings(skill)
+        )
+    }
+
+    if (!secureSettingsState.any { !it.value }) {
+        Text(
+            text = needingPermissionsString,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+        )
+    } else {
+        val launcher = rememberPermissionFlowRequestLauncher()
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+        ) {
+            Text(
+                text = needingPermissionsString,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1.0f)
+                    .padding(end = 8.dp),
+            )
+
+            ElevatedButton(
+                onClick = {
+                    skill.neededSecureSettings.forEach {
+                        when (it) {
+                            "enabled_notification_listeners" -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                    context.startActivity(
+                                        Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                                    )
+                                } else {
+                                    launcher.launch(
+                                        arrayOf(
+                                            Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+                                        )
+                                    )
+                                }
+                            }
+                            else -> {
+                                // TODO: Toast or something
+                            }
+                        }
+                    }
+                },
             ) {
                 Text(text = stringResource(R.string.pref_skill_grant_permissions))
             }
