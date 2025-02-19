@@ -19,7 +19,6 @@ import coil.compose.AsyncImage
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
-import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.util.getString
 import org.stypox.dicio.util.lowercaseCapitalized
@@ -33,10 +32,11 @@ sealed interface WeatherOutput : SkillOutput {
         val temp: Double,
         val tempMin: Double,
         val tempMax: Double,
+        val tempString: String,
         val windSpeed: Double,
     ) : WeatherOutput {
         override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
-            R.string.skill_weather_in_city_the_temperature_is_temp_degrees_Celsius_and_there_is_description, city, description, temp
+            R.string.skill_weather_in_city_there_is_description, city, description, tempString
         )
 
         @Composable

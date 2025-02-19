@@ -12,6 +12,7 @@ import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.StringUtils
 import java.io.FileNotFoundException
 import java.util.Locale
+import kotlin.math.roundToInt
 
 class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Weather>) :
     StandardRecognizerSkill<Weather>(correspondingSkillInfo, data) {
@@ -47,14 +48,18 @@ class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDa
         val mainObject = weatherData.getJSONObject("main")
         val windObject = weatherData.getJSONObject("wind")
 
+        val temp = mainObject.getDouble("temp")
         return WeatherOutput.Success(
             city = weatherData.getString("name"),
             description = weatherObject.getString("description")
                 .apply { this[0].uppercaseChar() + this.substring(1) },
             iconUrl = ICON_BASE_URL + weatherObject.getString("icon") + ICON_FORMAT,
-            temp = mainObject.getDouble("temp"),
+            temp = temp,
             tempMin = mainObject.getDouble("temp_min"),
             tempMax = mainObject.getDouble("temp_max"),
+            tempString = ctx.parserFormatter
+                ?.niceNumber(temp.roundToInt().toDouble())?.speech(true)?.get()
+                ?: (temp.roundToInt().toString()),
             windSpeed = windObject.getDouble("speed"),
         )
     }

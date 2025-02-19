@@ -142,7 +142,7 @@
     <string name="skill_search_no_results">The search returned no results, try telling me again what you want to search for</string>
     <string name="skill_search_what_question">What do you want to search for?</string>
     <string name="skill_weather_could_not_find_city">Could not find city %1$s</string>
-    <string name="skill_weather_in_city_the_temperature_is_temp_degrees_Celsius_and_there_is_description">Currently in %1$s the temperature is %3$s degrees Celsius and there is %2$s</string>
+    <string name="skill_weather_in_city_there_is_description">There is %2$s and %3$s degrees in %1$s right now</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
     <string name="skill_weather_min_max_wind">Minimum temperature: %1$.1f°C\nMaximum temperature: %2$.1f°C\nWind speed: %3$.1fm/s</string>
     <string name="skill_lyrics_song_not_found">Unable to find song %1$s</string>
