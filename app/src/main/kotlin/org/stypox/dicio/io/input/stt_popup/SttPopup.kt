@@ -94,7 +94,7 @@ fun SttPopupBottomSheet(
         onDismissRequest = onDismissRequest,
         // insets are applied on the content, to also draw the background under the navigation bars,
         // except for the `ime` insets which are not meant to be drawn under
-        windowInsets = WindowInsets.ime,
+        contentWindowInsets = { WindowInsets.ime },
     ) {
         SttPopupBottomSheet(
             customHint = customHint,

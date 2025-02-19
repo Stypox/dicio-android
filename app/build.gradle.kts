@@ -13,6 +13,7 @@ buildscript {
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.compose)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.parcelize)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization)
     alias(libs.plugins.com.google.devtools.ksp)
@@ -23,12 +24,12 @@ plugins {
 
 android {
     namespace = "org.stypox.dicio"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "org.stypox.dicio"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 13
         versionName = "2.0"
         testInstrumentationRunner = "org.stypox.dicio.CustomTestRunner"
@@ -71,10 +72,6 @@ android {
         viewBinding = true
         buildConfig = true
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompilerExtension.get()
     }
 }
 
