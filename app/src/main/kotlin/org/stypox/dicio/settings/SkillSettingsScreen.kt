@@ -2,6 +2,7 @@ package org.stypox.dicio.settings
 
 import android.Manifest
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
@@ -33,15 +34,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
@@ -52,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import dev.shreyaspatil.permissionflow.compose.rememberMultiplePermissionState
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import org.dicio.skill.skill.SkillInfo
@@ -318,12 +317,20 @@ private fun SkillSettingsItemPermissionLine(@PreviewParameter(SkillInfoPreviews:
 @Preview
 @Composable
 private fun SkillSettingsItemSecureSettingsLine(@PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo) {
-    val context = LocalContext.current
-    val secureSettingsState = remember {
-        skill.neededSecureSettings.associateWith {
+    fun areAllPermissionsGranted(skill: SkillInfo, context: Context): Boolean {
+        return skill.neededSecureSettings.all {
             Settings.Secure.getString(context.contentResolver, it)
                 ?.contains(context.packageName) == true
-        }.toMutableMap()
+        }
+    }
+
+    val context = LocalContext.current
+    var allPermissionsGranted by rememberSaveable {
+        mutableStateOf(areAllPermissionsGranted(skill, context))
+    }
+    LifecycleResumeEffect(null) {
+        allPermissionsGranted = areAllPermissionsGranted(skill, context)
+        onPauseOrDispose {}
     }
 
     val needingPermissionsString = if (LocalInspectionMode.current) {
@@ -336,7 +343,7 @@ private fun SkillSettingsItemSecureSettingsLine(@PreviewParameter(SkillInfoPrevi
         )
     }
 
-    if (!secureSettingsState.any { !it.value }) {
+    if (allPermissionsGranted) {
         Text(
             text = needingPermissionsString,
             textAlign = TextAlign.Center,
