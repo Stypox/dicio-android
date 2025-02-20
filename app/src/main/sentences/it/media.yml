@@ -1,0 +1,18 @@
+play:
+  - riproduc<i|e>
+  - togli (il|lo|l|la? canzone|traccia|musica|audio|brano|video)? dalla|la? pausa
+  - riproduc<i|e>|((fai partire|andare)|avvia (la riproduzione)?)|metti|(continua|riprendi (a suonare|riprodurre)?) un<o|a?>|(di un<o|a?>)|del<l|la?>|il|lo|l|la? canzone|traccia|musica|audio|brano|video
+
+pause:
+  - (metti (il|lo|l|la? canzone|traccia|musica|audio|brano|video)? in)? pausa
+  - ((metti in)? pausa)|ferma|muta|spegni|stoppa|stop|blocca (la riproduzione)? un<o|a?>|(di un<o|a?>)|del<l|la?>|il|lo|l|la? canzone|traccia|musica|audio|brano|video
+
+previous:
+  - riavvolgi|riavvolgere (il|lo|l|la? canzone|traccia|musica|audio|brano|video)?
+  - vai|butta? indietro di un<a?> canzone|traccia|musica|audio|brano|video
+  - (metti|riascolta|(riproduci (di nuovo)|nuovamente|ancora) il|lo|l|la?)|(passa|vai|torna|riavvolgi|riavvolgere al<la?>)? canzone|traccia|musica|audio|brano|video precedente|(di? prima)|scors<a|o>|passat<a|o>
+
+next:
+  - vai|butta? in? avanti di una canzone|traccia|musica|audio|brano|video
+  - (metti il|la)|(passa|vai al<la?>)? canzone|traccia|musica|audio|brano|video successiv<a|o>|dopo
+  - (metti il|la)|(passa|vai al<la?>)? successiv<a|o>|prossim<a|o> canzone|traccia|musica|audio|brano|video
