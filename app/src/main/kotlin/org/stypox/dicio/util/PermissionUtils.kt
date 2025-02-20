@@ -43,7 +43,8 @@ val PERMISSION_NOTIFICATION_LISTENER = if (Build.VERSION.SDK_INT >= Build.VERSIO
 /**
  * @param context the Android context
  * @param permissions an array of permissions to check (can be empty)
- * @return true if ALL of the provided permissions are granted when checking with [ActivityCompat.checkSelfPermission], false otherwise. So returns
+ * @return true if ALL of the provided permissions are granted when checking with
+ * [ActivityCompat.checkSelfPermission], false otherwise. So returns
  * true if the provided permissions array is empty.
  */
 fun checkPermissions(context: Context, vararg permissions: String): Boolean {
@@ -72,6 +73,9 @@ fun areAllPermissionsGranted(vararg grantResults: Int): Boolean {
     return true
 }
 
+/**
+ * Filters the given permissions by whether they are granted or not.
+ */
 fun getNonGrantedSecurePermissions(
     context: Context,
     permissions: List<Permission.SecurePermission>
@@ -82,6 +86,11 @@ fun getNonGrantedSecurePermissions(
     }
 }
 
+/**
+ * Returns the list of non-granted permissions. To be used in Compose. Will hold state within itself
+ * to connect to the `PermissionFlow` using [rememberMultiplePermissionState] and to keep track of
+ * secure settings grant state after resuming the app.
+ */
 @Composable
 fun getNonGrantedPermissions(permissions: List<Permission>): List<Permission> {
     val normalPermissions = permissions.filterIsInstance<Permission.NormalPermission>()
@@ -115,6 +124,11 @@ fun getNonGrantedPermissions(permissions: List<Permission>): List<Permission> {
     return normal + secure
 }
 
+/**
+ * @param context the Android context
+ * @param permissions the list of permissions; their localized names will be joined with commas
+ * @return comma-separated list of the localized labels of all of the permissions
+ */
 fun commaJoinPermissions(context: Context, permissions: List<Permission>): String {
     return permissions.joinToString(", ") { context.getString(it.name) }
 }
