@@ -1,11 +1,6 @@
 package org.stypox.dicio.settings
 
-import android.Manifest
 import android.app.Application
-import android.content.Context
-import android.content.Intent
-import android.os.Build
-import android.provider.Settings
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -41,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,21 +44,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
-import dev.shreyaspatil.permissionflow.compose.rememberMultiplePermissionState
 import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLauncher
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
-import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
 import org.stypox.dicio.eval.SkillHandler
+import org.stypox.dicio.settings.datastore.UserSettingsModule.Companion.newDataStoreForPreviews
 import org.stypox.dicio.skills.lyrics.LyricsInfo
 import org.stypox.dicio.skills.search.SearchInfo
 import org.stypox.dicio.skills.weather.WeatherInfo
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.SkillInfoPreviews
-import org.stypox.dicio.util.PermissionUtils
 import org.stypox.dicio.util.ShareUtils
+import org.stypox.dicio.util.getNonGrantedPermissions
+import org.stypox.dicio.util.commaJoinPermissions
+import org.stypox.dicio.util.requestAnyPermission
 
 const val DICIO_NUMBERS_LINK = "https://github.com/Stypox/dicio-numbers"
 
@@ -155,10 +149,8 @@ fun SkillSettingsItem(
     toggleExpanded: () -> Unit,
 ) {
     val canExpand = isAvailable && (
-        skill.renderSettings != null ||
-            skill.neededPermissions.isNotEmpty() ||
-            skill.neededSecureSettings.isNotEmpty()
-        )
+        skill.renderSettings != null || skill.neededPermissions.isNotEmpty()
+    )
 
     Card(
         modifier = Modifier
@@ -187,10 +179,12 @@ fun SkillSettingsItem(
 
         } else if (expanded) {
             if (skill.neededPermissions.isNotEmpty()) {
-                SkillSettingsItemPermissionLine(skill)
-            }
-            if (skill.neededSecureSettings.isNotEmpty()) {
-                SkillSettingsItemSecureSettingsLine(skill)
+                SkillSettingsItemPermissionLine(
+                    skill = skill,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                )
             }
 
             skill.renderSettings?.invoke()
@@ -263,38 +257,31 @@ private fun SkillSettingsItemHeader(
 
 @Preview
 @Composable
-private fun SkillSettingsItemPermissionLine(@PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo) {
-    val permissionsState by rememberMultiplePermissionState(
-        *skill.neededPermissions.toTypedArray()
+fun SkillSettingsItemPermissionLine(
+    @PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo,
+    modifier: Modifier = Modifier
+) {
+    val nonGrantedPermissions = getNonGrantedPermissions(skill.neededPermissions)
+
+    val needingPermissionsString = stringResource(
+        R.string.pref_skill_missing_permissions,
+        commaJoinPermissions(LocalContext.current, skill.neededPermissions)
     )
 
-    val needingPermissionsString = if (LocalInspectionMode.current) {
-        // getCommaJoinedPermissions doesn't work inside @Preview
-        "Requires these permissions: directly call contacts, whatever 123, test"
-    } else {
-        stringResource(
-            R.string.pref_skill_missing_permissions,
-            PermissionUtils.getCommaJoinedPermissions(LocalContext.current, skill)
-        )
-    }
-
-    if (permissionsState.allGranted) {
+    if (nonGrantedPermissions.isEmpty()) {
         Text(
             text = needingPermissionsString,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            modifier = modifier,
         )
 
     } else {
         val launcher = rememberPermissionFlowRequestLauncher()
+        val context = LocalContext.current
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            modifier = modifier,
         ) {
             Text(
                 text = needingPermissionsString,
@@ -306,91 +293,7 @@ private fun SkillSettingsItemPermissionLine(@PreviewParameter(SkillInfoPreviews:
             )
 
             ElevatedButton(
-                onClick = { launcher.launch(skill.neededPermissions.toTypedArray()) },
-            ) {
-                Text(text = stringResource(R.string.pref_skill_grant_permissions))
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun SkillSettingsItemSecureSettingsLine(@PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo) {
-    fun areAllPermissionsGranted(skill: SkillInfo, context: Context): Boolean {
-        return skill.neededSecureSettings.all {
-            Settings.Secure.getString(context.contentResolver, it)
-                ?.contains(context.packageName) == true
-        }
-    }
-
-    val context = LocalContext.current
-    var allPermissionsGranted by rememberSaveable {
-        mutableStateOf(areAllPermissionsGranted(skill, context))
-    }
-    LifecycleResumeEffect(null) {
-        allPermissionsGranted = areAllPermissionsGranted(skill, context)
-        onPauseOrDispose {}
-    }
-
-    val needingPermissionsString = if (LocalInspectionMode.current) {
-        // getCommaJoinedPermissions doesn't work inside @Preview
-        "Requires these permissions: enabled_notification_listeners"
-    } else {
-        stringResource(
-            R.string.pref_skill_missing_permissions,
-            PermissionUtils.getCommaJoinedSecureSettings(skill)
-        )
-    }
-
-    if (allPermissionsGranted) {
-        Text(
-            text = needingPermissionsString,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        )
-    } else {
-        val launcher = rememberPermissionFlowRequestLauncher()
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-        ) {
-            Text(
-                text = needingPermissionsString,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1.0f)
-                    .padding(end = 8.dp),
-            )
-
-            ElevatedButton(
-                onClick = {
-                    skill.neededSecureSettings.forEach {
-                        when (it) {
-                            "enabled_notification_listeners" -> {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                    context.startActivity(
-                                        Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                                    )
-                                } else {
-                                    launcher.launch(
-                                        arrayOf(
-                                            Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
-                                        )
-                                    )
-                                }
-                            }
-                            else -> {
-                                // TODO: Toast or something
-                            }
-                        }
-                    }
-                },
+                onClick = { requestAnyPermission(launcher, context, nonGrantedPermissions) },
             ) {
                 Text(text = stringResource(R.string.pref_skill_grant_permissions))
             }

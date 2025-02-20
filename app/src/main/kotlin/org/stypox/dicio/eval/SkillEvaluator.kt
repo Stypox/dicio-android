@@ -1,6 +1,5 @@
 package org.stypox.dicio.eval
 
-import android.provider.Settings
 import android.util.Log
 import dagger.Module
 import dagger.Provides
@@ -13,11 +12,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
-import org.stypox.dicio.io.graphical.MissingSecureSettingsSkillOutput
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
@@ -28,7 +27,7 @@ import javax.inject.Singleton
 interface SkillEvaluator {
     val state: StateFlow<InteractionLog>
 
-    var permissionRequester: suspend (Array<String>) -> Boolean
+    var permissionRequester: suspend (List<Permission>) -> Boolean
 
     fun processInputEvent(event: InputEvent)
 }
@@ -53,7 +52,7 @@ class SkillEvaluatorImpl(
     override val state: StateFlow<InteractionLog> = _state
 
     // must be kept up to date even when the activity is recreated, for this reason it is `var`
-    override var permissionRequester: suspend (Array<String>) -> Boolean = { false }
+    override var permissionRequester: suspend (List<Permission>) -> Boolean = { false }
 
     override fun processInputEvent(event: InputEvent) {
         scope.launch {
@@ -123,27 +122,11 @@ class SkillEvaluatorImpl(
         )
 
         try {
-            val permissions = skillInfo.neededPermissions.toTypedArray()
+            val permissions = skillInfo.neededPermissions
             if (permissions.isNotEmpty() && !permissionRequester(permissions)) {
                 // permissions were not granted, show message
                 addInteractionFromPending(MissingPermissionsSkillOutput(skillInfo))
                 return
-            }
-
-            val secureSettings = skillInfo.neededSecureSettings.toTypedArray()
-            if (secureSettings.isNotEmpty()) {
-                secureSettings.forEach {
-                    val enabledNotificationListeners = Settings.Secure.getString(
-                        skillContext.android.contentResolver,
-                        it
-                    )
-                    if (enabledNotificationListeners
-                        ?.contains(skillContext.android.packageName) != true
-                    ) {
-                        addInteractionFromPending(MissingSecureSettingsSkillOutput(skillInfo))
-                        return
-                    }
-                }
             }
 
             val output = chosenSkill.generateOutput(skillContext)

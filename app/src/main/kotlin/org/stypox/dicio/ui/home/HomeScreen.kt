@@ -29,9 +29,11 @@ import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLaun
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
+import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.io.wake.WakeState
@@ -40,7 +42,8 @@ import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.ui.util.InteractionLogPreviews
 import org.stypox.dicio.ui.util.SkillInfoPreviews
 import org.stypox.dicio.ui.util.SttStatesPreviews
-import org.stypox.dicio.util.PermissionUtils
+import org.stypox.dicio.util.checkPermissions
+import org.stypox.dicio.util.getNonGrantedSecurePermissions
 import kotlin.math.abs
 
 @Composable
@@ -56,14 +59,26 @@ fun HomeScreen(
     }
     val context = LocalContext.current
 
-    suspend fun requestPermissions(permissions: Array<String>): Boolean {
-        if (PermissionUtils.checkPermissions(context, *permissions)) {
+    suspend fun requestPermissions(permissions: List<Permission>): Boolean {
+        val nonGrantedSecurePermissions = getNonGrantedSecurePermissions(
+                context,
+                permissions.filterIsInstance<Permission.SecurePermission>()
+        )
+        if (nonGrantedSecurePermissions.isNotEmpty()) {
+            // do not request secure permissions directly, it would be confusing, so ask explicitly
+            // instead
+            return false
+        }
+
+        val normalPermissions = permissions.filterIsInstance<Permission.NormalPermission>()
+            .map { it.id }.toTypedArray()
+        if (checkPermissions(context, *normalPermissions)) {
             // permissions already granted
             return true
         }
 
         // some permission is not already granted, need to request it
-        launcher.launch(permissions)
+        launcher.launch(normalPermissions)
         return channel.receive()
     }
 
