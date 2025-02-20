@@ -1,11 +1,16 @@
 play:
-  - play the? (song|media|track)
+  - play|resume|unpause (the? song|media|track|music|audio|video|movie|stream|film)?
+  - turn on the? player
+  - continue playing (the? song|media|track|music|audio|video|movie|stream|film)?
 
 pause:
-  - pause the? (song|media|track)
+  - pause|halt|stop|hold (the? song|media|track|music|audio|video|movie|stream|film)?
+  - put the? song|media|track|music|audio|video|movie|stream|film on hold
 
 previous:
-  - play? the? previous (song|media|track)
+  - replay|play|(go|switch|return|rewind|(go? back)|(move back<ward|wards?>) to)? the? previous|last song|media|track|music|audio|video|movie|stream|film? (in the queue)?
+  - rewind
 
 next:
-  - play? the? next (song|media|track)
+  - skip the|a|one? song|media|track|music|audio|video|movie|stream|film
+  - play|(go|switch|skip|jump|(move forward) to)? the? next|following song|media|track|music|audio|video|movie|stream|film? (in the queue)?
