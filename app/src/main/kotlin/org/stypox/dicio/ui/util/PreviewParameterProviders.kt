@@ -10,9 +10,12 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
+import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.wake.WakeState
 import org.stypox.dicio.skills.calculator.CalculatorInfo
 import org.stypox.dicio.skills.fallback.text.TextFallbackOutput
 import org.stypox.dicio.skills.lyrics.LyricsInfo
+import org.stypox.dicio.skills.media.MediaInfo
 import org.stypox.dicio.skills.navigation.NavigationInfo
 import org.stypox.dicio.skills.navigation.NavigationOutput
 import org.stypox.dicio.skills.telephone.ConfirmCallOutput
@@ -25,8 +28,6 @@ import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.PendingQuestion
 import org.stypox.dicio.ui.home.QuestionAnswer
-import org.stypox.dicio.io.input.SttState
-import org.stypox.dicio.io.wake.WakeState
 import java.io.IOException
 
 
@@ -40,6 +41,8 @@ class UserInputPreviews : CollectionPreviewParameterProvider<String>(listOf(
 class SkillInfoPreviews : CollectionPreviewParameterProvider<SkillInfo>(listOf(
     WeatherInfo,
     CalculatorInfo,
+    TelephoneInfo,
+    MediaInfo,
     object : SkillInfo("test") {
         override fun name(context: Context) = "Long name lorem ipsum dolor sit amet, consectetur"
         override fun sentenceExample(context: Context) = "Long sentence ".repeat(20)

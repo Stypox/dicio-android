@@ -36,6 +36,7 @@ Currently Dicio answers questions about:
 - **timer**: set, query and cancel timers - _Set a timer for five minutes_
 - **current time**: query current time - _What time is it?_
 - **navigation**: opens the navigation app at the requested position - _Take me to New York, fifteenth avenue_
+- **media**: play, pause, previous, next song
 
 ## Speech to text
 

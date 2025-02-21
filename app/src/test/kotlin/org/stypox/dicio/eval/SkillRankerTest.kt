@@ -41,8 +41,8 @@ private fun assertRanked(
 }
 
 class SkillRankerTest : StringSpec({
-    "order is preserved and input is correct" {
-        val ac1 = MockSkill(Specificity.HIGH, 0.80f)
+    "all skills from a specificity level are evaluated even after a perfect score is found" {
+        val ac1 = MockSkill(Specificity.HIGH, 1.00f)
         val ac2 = MockSkill(Specificity.HIGH, 0.93f)
         val ac3 = MockSkill(Specificity.HIGH, 1.00f)
         val acMed = MockSkill(Specificity.MEDIUM, 1.00f)
@@ -53,26 +53,41 @@ class SkillRankerTest : StringSpec({
 
         ac1.scoreCalled.shouldBeTrue()
         ac2.scoreCalled.shouldBeTrue()
-        ac3.scoreCalled.shouldBeFalse()
+        ac3.scoreCalled.shouldBeTrue()
         acMed.scoreCalled.shouldBeFalse()
         acLow.scoreCalled.shouldBeFalse()
     }
 
-    "chosen skill has high specificity and high score, although not the highest, but is evaluated before the highest" {
+    "if any of the high-specificity skills scores high enough, none of the less-specific ones are" +
+            "evaluated, independent of the order they are passed to getRanker()" {
+        val acHigh = MockSkill(Specificity.HIGH, 1.00f)
+        val acMed = MockSkill(Specificity.MEDIUM, 1.00f)
+        val acLow = MockSkill(Specificity.LOW, 1.00f)
+
+        val cr = getRanker(MockSkill(Specificity.LOW, 0.0f), acMed, acHigh, acLow)
+        cr.getBest(MockSkillContext, INPUT)
+
+        acHigh.scoreCalled.shouldBeTrue()
+        acMed.scoreCalled.shouldBeFalse()
+        acLow.scoreCalled.shouldBeFalse()
+    }
+
+    "in a fixed specificity category, the best-score skill is chosen" {
         val fallback = MockSkill(Specificity.LOW, 0.0f)
         val best = MockSkill(Specificity.HIGH, 0.92f)
         val cr = getRanker(
             fallback,
             MockSkill(Specificity.MEDIUM, 0.95f),
             MockSkill(Specificity.HIGH, 0.71f),
+            MockSkill(Specificity.HIGH, 0.91f),
             best,
-            MockSkill(Specificity.HIGH, 1.00f),
-            MockSkill(Specificity.LOW, 1.0f)
+            MockSkill(Specificity.LOW, 1.00f)
         )
         assertRanked(cr, fallback, best)
     }
 
-    "chosen skill has high score but a low specificity, and other skills with lower score but higher specificity are not chosen" {
+    "chosen skill has high score but a low specificity, and other skills with lower score but " +
+            "higher specificity are not chosen" {
         val fallback = MockSkill(Specificity.LOW, 0.0f)
         val best = MockSkill(Specificity.LOW, 1.0f)
         val cr = getRanker(

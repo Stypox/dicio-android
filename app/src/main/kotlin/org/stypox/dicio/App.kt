@@ -6,7 +6,7 @@ import android.os.Build
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
 import dagger.hilt.android.HiltAndroidApp
-import org.stypox.dicio.util.PermissionUtils
+import org.stypox.dicio.util.checkPermissions
 
 // IMPORTANT NOTE: beware of this nasty bug related to allowBackup=true
 // https://medium.com/p/924c91bafcac
@@ -15,13 +15,13 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
-            PermissionUtils.checkPermissions(this, Manifest.permission.POST_NOTIFICATIONS)
+            checkPermissions(this, Manifest.permission.POST_NOTIFICATIONS)
         ) {
             initNotificationChannels()
         }
     }
 
-    fun initNotificationChannels() {
+    private fun initNotificationChannels() {
         NotificationManagerCompat.from(this).createNotificationChannelsCompat(
             listOf(
                 NotificationChannelCompat.Builder(

@@ -21,6 +21,7 @@ import org.stypox.dicio.skills.calculator.CalculatorInfo
 import org.stypox.dicio.skills.current_time.CurrentTimeInfo
 import org.stypox.dicio.skills.fallback.text.TextFallbackInfo
 import org.stypox.dicio.skills.lyrics.LyricsInfo
+import org.stypox.dicio.skills.media.MediaInfo
 import org.stypox.dicio.skills.navigation.NavigationInfo
 import org.stypox.dicio.skills.open.OpenInfo
 import org.stypox.dicio.skills.search.SearchInfo
@@ -47,6 +48,7 @@ class SkillHandler @Inject constructor(
         TelephoneInfo,
         TimerInfo,
         CurrentTimeInfo,
+        MediaInfo,
     )
 
     // TODO add more fallback skills (e.g. search)

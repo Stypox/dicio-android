@@ -10,9 +10,12 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.fragment.app.Fragment
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.sentences.Sentences
+import org.stypox.dicio.util.PERMISSION_CALL_PHONE
+import org.stypox.dicio.util.PERMISSION_READ_CONTACTS
 
 object TelephoneInfo : SkillInfo("telephone") {
     override fun name(context: Context) =
@@ -25,8 +28,8 @@ object TelephoneInfo : SkillInfo("telephone") {
     override fun icon() =
         rememberVectorPainter(Icons.Default.Call)
 
-    override val neededPermissions: List<String>
-            = listOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE)
+    override val neededPermissions: List<Permission>
+            = listOf(PERMISSION_READ_CONTACTS, PERMISSION_CALL_PHONE)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
         return Sentences.Telephone[ctx.sentencesLanguage] != null &&

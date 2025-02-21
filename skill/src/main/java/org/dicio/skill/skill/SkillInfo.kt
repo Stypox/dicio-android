@@ -44,7 +44,7 @@ abstract class SkillInfo(
      * @return all of the special permissions this skill requires, or an empty list if no special
      * permissions are needed
      */
-    open val neededPermissions: List<String> = listOf()
+    open val neededPermissions: List<Permission> = listOf()
 
     /**
      * Use this method to signal that the skill is not available in case, for example, the user

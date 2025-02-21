@@ -37,6 +37,14 @@ skills:
           - id: where
             type: string
 
+  - id: media
+    specificity: high
+    sentences:
+      - id: play
+      - id: pause
+      - id: previous
+      - id: next
+
   - id: open
     specificity: medium
     sentences:
