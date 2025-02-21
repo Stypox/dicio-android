@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -261,7 +262,10 @@ fun SkillSettingsItemPermissionLine(
     @PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo,
     modifier: Modifier = Modifier
 ) {
-    val nonGrantedPermissions = getNonGrantedPermissions(skill.neededPermissions)
+    val nonGrantedPermissions = if (LocalInspectionMode.current)
+        listOf() // can't use PermissionFlow in previews
+    else
+        getNonGrantedPermissions(skill.neededPermissions)
 
     val needingPermissionsString = stringResource(
         R.string.pref_skill_missing_permissions,
@@ -304,11 +308,14 @@ fun SkillSettingsItemPermissionLine(
 @Preview
 @Composable
 private fun SkillSettingsItemPreview(@PreviewParameter(SkillInfoPreviews::class) skill: SkillInfo) {
+    var expanded by rememberSaveable { mutableStateOf(true) }
     SkillSettingsItem(
         skill = skill,
         isAvailable = true,
         enabled = false,
         setEnabled = {},
+        expanded = expanded,
+        toggleExpanded = { expanded = !expanded },
     )
 }
 
