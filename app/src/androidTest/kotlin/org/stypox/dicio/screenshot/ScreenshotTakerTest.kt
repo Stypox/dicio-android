@@ -44,9 +44,9 @@ import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.timer.TimerOutput
 import org.stypox.dicio.skills.weather.WeatherInfo
 import org.stypox.dicio.skills.weather.WeatherOutput
-import org.stypox.dicio.ui.home.Interaction
-import org.stypox.dicio.ui.home.InteractionLog
-import org.stypox.dicio.ui.home.QuestionAnswer
+import org.dicio.skill.skill.Interaction
+import org.dicio.skill.skill.InteractionLog
+import org.dicio.skill.skill.QuestionAnswer
 import org.stypox.dicio.io.input.SttState
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -74,7 +74,7 @@ sealed interface TimerOutput : SkillOutput {
                 ): SkillOutput {
                     return if (inputData == null) {
                         // impossible situation
-                        TextFallbackOutput()
+                        TextFallbackOutput(true)
                     } else {
                         onGotDuration(inputData)
                     }

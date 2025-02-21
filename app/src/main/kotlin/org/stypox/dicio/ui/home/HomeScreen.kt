@@ -29,11 +29,11 @@ import dev.shreyaspatil.permissionflow.compose.rememberPermissionFlowRequestLaun
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.InteractionLog
 import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.di.SkillContextImpl
-import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttState
 import org.stypox.dicio.io.wake.WakeState

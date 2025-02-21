@@ -2,6 +2,7 @@ package org.dicio.skill.context
 
 import android.content.Context
 import org.dicio.numbers.ParserFormatter
+import org.dicio.skill.skill.InteractionLog
 import java.util.Locale
 
 /**
@@ -40,4 +41,10 @@ interface SkillContext {
      * The [SpeechOutputDevice] that should be used for skill speech output.
      */
     val speechOutputDevice: SpeechOutputDevice
+
+    /**
+     * The [InteractionLog] that tracks the recent interactions with Dicio.
+     * Do not access this while building skills, or a circular dependency will be created.
+     */
+    val interactionLog: InteractionLog
 }
