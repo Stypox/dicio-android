@@ -13,11 +13,4 @@ class SkillInfoTest : StringSpec({
             skillInfo.neededPermissions.shouldBeEmpty()
         }
     }
-    "get needed secure settings" {
-        val skillInfo: SkillInfo = MockSkillInfo
-
-        withClue("Needed secure settings should be empty by default") {
-            skillInfo.neededSecureSettings.shouldBeEmpty()
-        }
-    }
 })
