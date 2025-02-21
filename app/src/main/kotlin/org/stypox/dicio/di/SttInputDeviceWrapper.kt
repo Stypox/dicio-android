@@ -117,14 +117,14 @@ class SttInputDeviceWrapperImpl(
                 newSttInputDevice.uiState.collect {
                     _uiState.emit(it)
                     if (it == SttState.Listening) {
-                        playSoundWhenStartsListening()
+                        playSound(R.raw.listening_sound)
                     }
                 }
             }
         }
     }
 
-    private fun playSoundWhenStartsListening() {
+    private fun playSound(resid: Int) {
         val attributes = AudioAttributes.Builder()
             .setUsage(
                 when (sttPlaySoundSetting) {
@@ -137,13 +137,24 @@ class SttInputDeviceWrapperImpl(
                 }
             )
             .build()
-        val mediaPlayer = MediaPlayer.create(appContext, R.raw.listening_sound, attributes, 0)
+        val mediaPlayer = MediaPlayer.create(appContext, resid, attributes, 0)
         mediaPlayer.setVolume(0.75f, 0.75f)
         mediaPlayer.start()
     }
 
+    private fun wrapEventListener(eventListener: (InputEvent) -> Unit): (InputEvent) -> Unit = {
+        if (it is InputEvent.None) {
+            scope.launch {
+                playSound(R.raw.stop_listening)
+            }
+        }
+        eventListener(it)
+    }
+
     override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
-        return sttInputDevice?.tryLoad(thenStartListeningEventListener) ?: false
+        return sttInputDevice?.tryLoad(if (thenStartListeningEventListener != null) {
+            wrapEventListener(thenStartListeningEventListener)
+        } else { null }) ?: false
     }
 
     override fun stopListening() {
@@ -151,7 +162,7 @@ class SttInputDeviceWrapperImpl(
     }
 
     override fun onClick(eventListener: (InputEvent) -> Unit) {
-        sttInputDevice?.onClick(eventListener)
+        sttInputDevice?.onClick(wrapEventListener(eventListener))
     }
 
     override fun releaseResources() {
