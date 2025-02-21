@@ -120,6 +120,7 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/wake_service_label" />
 
+        <!-- the media skill needs to send media events -->
         <service
             android:name=".skills.media.MediaNotificationListener"
             android:label="@string/notification_listener_label"
