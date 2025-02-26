@@ -40,4 +40,6 @@ interface SkillContext {
      * The [SpeechOutputDevice] that should be used for skill speech output.
      */
     val speechOutputDevice: SpeechOutputDevice
+
+    val settingsAccess: SettingsAccess
 }
