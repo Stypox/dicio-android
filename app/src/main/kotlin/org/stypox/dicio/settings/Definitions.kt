@@ -18,9 +18,9 @@ import androidx.compose.material.icons.filled.Minimize
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.PictureInPictureAlt
 import androidx.compose.material.icons.filled.SpeakerPhone
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import org.stypox.dicio.R
 import org.stypox.dicio.settings.datastore.InputDevice
@@ -107,6 +107,11 @@ fun inputDevice() = ListSetting(
             value = InputDevice.INPUT_DEVICE_VOSK,
             name = stringResource(R.string.pref_input_method_vosk),
             icon = Icons.Default.Mic,
+        ),
+        ListSetting.Value(
+            value = InputDevice.INPUT_DEVICE_SYSTEM_POPUP,
+            name = stringResource(R.string.pref_input_method_system_popup),
+            icon = Icons.Default.PictureInPictureAlt,
         ),
         ListSetting.Value(
             value = InputDevice.INPUT_DEVICE_NOTHING,
