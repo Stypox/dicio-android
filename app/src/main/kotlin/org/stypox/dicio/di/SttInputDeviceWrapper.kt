@@ -145,7 +145,7 @@ class SttInputDeviceWrapperImpl(
     private fun wrapEventListener(eventListener: (InputEvent) -> Unit): (InputEvent) -> Unit = {
         if (it is InputEvent.None) {
             scope.launch {
-                playSound(R.raw.stop_listening)
+                playSound(R.raw.listening_no_input_sound)
             }
         }
         eventListener(it)
