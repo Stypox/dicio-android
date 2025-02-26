@@ -1,5 +1,6 @@
 package org.stypox.dicio.util
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.datastore.core.DataStore
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.stypox.dicio.di.ActivityForResultManager
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.LocaleManagerModule
 import org.stypox.dicio.settings.datastore.UserSettings
@@ -24,6 +27,12 @@ import java.util.Locale
 import javax.inject.Inject
 
 abstract class BaseActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var activityForResultManager: ActivityForResultManager
+    // this launcher is kept here just to keep a reference to it, since ActivityForResultManager
+    // only holds a WeakReference
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     @Inject
     lateinit var dataStore: DataStore<UserSettings>
@@ -62,6 +71,9 @@ abstract class BaseActivity : ComponentActivity() {
         }
 
         super.onCreate(savedInstanceState)
+
+        // this will only hold a weak reference, so no need to remove it afterwards
+        launcher = activityForResultManager.addLauncher(this)
     }
 
     /**
