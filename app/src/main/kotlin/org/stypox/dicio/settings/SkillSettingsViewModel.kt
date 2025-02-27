@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
+import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.eval.SkillHandler
 import org.stypox.dicio.util.toStateFlowDistinctBlockingFirst
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class SkillSettingsViewModel @Inject constructor(
     application: Application,
     private val dataStore: DataStore<UserSettings>,
-    val skillContext: SkillContext,
+    val skillContext: SkillContextInternal,
     private val skillHandler: SkillHandler,
 ) : AndroidViewModel(application) {
 

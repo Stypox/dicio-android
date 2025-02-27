@@ -53,7 +53,7 @@ class SkillInfoPreviews : CollectionPreviewParameterProvider<SkillInfo>(listOf(
 ))
 
 class SkillOutputPreviews : CollectionPreviewParameterProvider<SkillOutput>(listOf(
-    TextFallbackOutput(),
+    TextFallbackOutput(askToRepeat = true),
 ))
 
 class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog>(listOf(
@@ -88,7 +88,10 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
             Interaction(
                 skill = TimerInfo,
                 questionsAnswers = listOf(
-                    QuestionAnswer("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput() })
+                    QuestionAnswer(
+                        "Set a timer",
+                        TimerOutput.SetAskDuration { TextFallbackOutput(askToRepeat = true) }
+                    )
                 )
             )
         ),

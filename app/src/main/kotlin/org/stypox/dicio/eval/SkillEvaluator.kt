@@ -11,9 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillOutput
+import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
@@ -33,7 +34,7 @@ interface SkillEvaluator {
 }
 
 class SkillEvaluatorImpl(
-    private val skillContext: SkillContext,
+    private val skillContext: SkillContextInternal,
     private val skillHandler: SkillHandler,
     private val sttInputDevice: SttInputDeviceWrapper,
 ) : SkillEvaluator {
@@ -94,16 +95,12 @@ class SkillEvaluatorImpl(
     }
 
     private suspend fun evaluateMatchingSkill(utterances: List<String>) {
-        val (chosenInput, chosenSkill, isFallback) = try {
+        val (chosenInput, chosenSkill) = try {
             utterances.firstNotNullOfOrNull { input: String ->
                 skillRanker.getBest(skillContext, input)?.let { skillWithResult ->
-                    Triple(input, skillWithResult, false)
+                    Pair(input, skillWithResult)
                 }
-            } ?: Triple(
-                utterances[0],
-                skillRanker.getFallbackSkill(skillContext, utterances[0]),
-                true
-            )
+            } ?: Pair(utterances[0], skillRanker.getFallbackSkill(skillContext, utterances[0]))
         } catch (throwable: Throwable) {
             addErrorInteractionFromPending(throwable)
             return
@@ -117,7 +114,7 @@ class SkillEvaluatorImpl(
                 // the continuation of the last interaction (since continuing an
                 // interaction/conversation is done through the stack of batches)
                 continuesLastInteraction = skillRanker.hasAnyBatches(),
-                skillBeingEvaluated = chosenSkill.skill.correspondingSkillInfo,
+                skillBeingEvaluated = skillInfo,
             )
         )
 
@@ -129,8 +126,11 @@ class SkillEvaluatorImpl(
                 return
             }
 
+            skillContext.previousOutput =
+                _state.value.interactions.lastOrNull()?.questionsAnswers?.lastOrNull()?.answer
             val output = chosenSkill.generateOutput(skillContext)
 
+            val interactionPlan = output.getInteractionPlan(skillContext)
             addInteractionFromPending(output)
             output.getSpeechOutput(skillContext).let {
                 if (it.isNotBlank()) {
@@ -140,14 +140,27 @@ class SkillEvaluatorImpl(
                 }
             }
 
-            val nextSkills = output.getNextSkills(skillContext)
-            if (nextSkills.isEmpty()) {
-                if (!isFallback) {
+            when (interactionPlan) {
+                InteractionPlan.FinishInteraction -> {
                     // current conversation has ended, reset to the default batch of skills
                     skillRanker.removeAllBatches()
                 }
-            } else {
-                skillRanker.addBatchToTop(nextSkills)
+                is InteractionPlan.FinishSubInteraction -> {
+                    skillRanker.removeTopBatch()
+                }
+                is InteractionPlan.Continue -> {
+                    // nothing to do, just continue with current batches
+                }
+                is InteractionPlan.StartSubInteraction -> {
+                    skillRanker.addBatchToTop(interactionPlan.nextSkills)
+                }
+                is InteractionPlan.ReplaceSubInteraction -> {
+                    skillRanker.removeTopBatch()
+                    skillRanker.addBatchToTop(interactionPlan.nextSkills)
+                }
+            }
+
+            if (interactionPlan.reopenMicrophone) {
                 skillContext.speechOutputDevice.runWhenFinishedSpeaking {
                     sttInputDevice.tryLoad(this::processInputEvent)
                 }
@@ -203,7 +216,7 @@ class SkillEvaluatorModule {
     @Provides
     @Singleton
     fun provideSkillEvaluator(
-        skillContext: SkillContext,
+        skillContext: SkillContextInternal,
         skillHandler: SkillHandler,
         sttInputDevice: SttInputDeviceWrapper,
     ): SkillEvaluator {

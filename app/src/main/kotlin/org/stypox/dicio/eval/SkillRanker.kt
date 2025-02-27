@@ -88,7 +88,9 @@ class SkillRanker(
     }
 
     fun removeTopBatch() {
-        batches.pop()
+        if (!batches.isEmpty()) {
+            batches.pop()
+        }
     }
 
     fun removeAllBatches() {
