@@ -147,6 +147,7 @@ class OpenWakeWordDevice(
 
                     // Remove the previous file if it already exists
                     userWakeFile.delete()
+                    userWakeFile.parentFile?.mkdirs()
                     val renameOk = partialFile.renameTo(userWakeFile)
                     if (!renameOk) {
                         throw IOException("Cannot rename partial file $partialFile to actual file $userWakeFile")
