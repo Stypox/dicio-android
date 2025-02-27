@@ -16,9 +16,9 @@ class SearchSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDat
     : StandardRecognizerSkill<Search>(correspondingSkillInfo, data) {
     override suspend fun generateOutput(ctx: SkillContext, inputData: Search): SkillOutput {
         val query = when (inputData) {
-            is Search.Query -> inputData.what ?: return SearchOutput(null)
+            is Search.Query -> inputData.what ?: return SearchOutput(null, true)
         }
-        return SearchOutput(searchOnDuckDuckGo(ctx, query))
+        return SearchOutput(searchOnDuckDuckGo(ctx, query), true)
     }
 }
 

@@ -28,7 +28,8 @@ import org.stypox.dicio.util.ShareUtils
 import org.stypox.dicio.util.getString
 
 class SearchOutput(
-    private val results: List<Data>?
+    private val results: List<Data>?,
+    private val askAgain: Boolean,
 ) : SkillOutput {
     class Data (
         val title: String,
@@ -40,23 +41,32 @@ class SearchOutput(
     override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
         if (results == null)
             R.string.skill_search_what_question
-        else if (results.isEmpty())
+        else if (results.isNotEmpty())
+            R.string.skill_search_here_is_what_i_found
+        else if (askAgain)
             R.string.skill_search_no_results
         else
-            R.string.skill_search_here_is_what_i_found
+            // if the search continues to return 0 results, don't keep asking
+            R.string.skill_search_no_results_stop
     )
 
-    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = if (results.isNullOrEmpty())
-        listOf(
-            SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
-            object : RecognizeEverythingSkill(SearchInfo) {
-                override suspend fun generateOutput(ctx: SkillContext, inputData: String): SkillOutput {
-                    return SearchOutput(searchOnDuckDuckGo(ctx, inputData))
-                }
-            },
-        )
-    else
-        listOf()
+    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> =
+        if (results.isNullOrEmpty() && askAgain)
+            listOf(
+                SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
+                object : RecognizeEverythingSkill(SearchInfo) {
+                    override suspend fun generateOutput(
+                        ctx: SkillContext,
+                        inputData: String
+                    ): SkillOutput {
+                        // ask again only if this is the first time we ask the user to provide what
+                        // to search for, otherwise we could continue asking indefinitely
+                        return SearchOutput(searchOnDuckDuckGo(ctx, inputData), results == null)
+                    }
+                },
+            )
+        else
+            listOf()
 
     @Composable
     override fun GraphicalOutput(ctx: SkillContext) {
