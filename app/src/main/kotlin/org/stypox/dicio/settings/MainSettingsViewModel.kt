@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.io.wake.oww.OpenWakeWordDevice
@@ -23,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainSettingsViewModel @Inject constructor(
     application: Application,
-    wakeDeviceWrapper: WakeDeviceWrapper?,
+    private val wakeDeviceWrapper: WakeDeviceWrapper?,
     private val dataStore: DataStore<UserSettings>
 ) : AndroidViewModel(application) {
     // run blocking because the settings screen cannot start if settings have not been loaded yet
@@ -40,17 +41,19 @@ class MainSettingsViewModel @Inject constructor(
         }
     }
 
-    val wakeDevice = wakeDeviceWrapper?.currentDevice ?: MutableStateFlow(null)
+    val isHeyDicio: StateFlow<Boolean> = wakeDeviceWrapper?.isHeyDicio ?: MutableStateFlow(true)
 
     fun addOwwUserWakeFile(uri: Uri) {
         viewModelScope.launch {
-            (wakeDevice.value as? OpenWakeWordDevice)?.addUserWakeFile(uri)
+            OpenWakeWordDevice.addUserWakeFile(getApplication(), uri)
+            wakeDeviceWrapper?.reinitializeToReleaseResources()
         }
     }
 
     fun removeOwwUserWakeFile() {
         viewModelScope.launch {
-            (wakeDevice.value as? OpenWakeWordDevice)?.removeUserWakeFile()
+            OpenWakeWordDevice.removeUserWakeFile(getApplication())
+            wakeDeviceWrapper?.reinitializeToReleaseResources()
         }
     }
 

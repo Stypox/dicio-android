@@ -29,18 +29,12 @@ import javax.inject.Singleton
 
 interface WakeDeviceWrapper {
     val state: StateFlow<WakeState?>
-
-    val currentDevice: StateFlow<WakeDevice?>
+    val isHeyDicio: StateFlow<Boolean>
 
     fun download()
-
     fun processFrame(audio16bitPcm: ShortArray): Boolean
-
     fun frameSize(): Int
-
-    fun releaseResources()
-
-    fun isHeyDicio(): Boolean
+    fun reinitializeToReleaseResources()
 }
 
 typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
@@ -58,23 +52,26 @@ class WakeDeviceWrapperImpl(
     // null means that the user has not enabled any STT input device
     private val _state: MutableStateFlow<WakeState?> = MutableStateFlow(null)
     override val state: StateFlow<WakeState?> = _state
-
-    private val _currentDevice: MutableStateFlow<WakeDevice?>
-    override val currentDevice: StateFlow<WakeDevice?>
+    private val _isHeyDicio: MutableStateFlow<Boolean>
+    override val isHeyDicio: StateFlow<Boolean>
+    private val currentDevice: MutableStateFlow<WakeDevice?>
 
     init {
         // Run blocking, because the data store is always available right away since LocaleManager
         // also initializes in a blocking way from the same data store.
-        val (firstWakeDevice, nextWakeDeviceFlow) = dataStore.data
+        val (firstWakeDeviceSetting, nextWakeDeviceFlow) = dataStore.data
             .map { it.wakeDevice }
             .distinctUntilChangedBlockingFirst()
 
-        currentSetting = firstWakeDevice
-        _currentDevice = MutableStateFlow(buildInputDevice(firstWakeDevice))
-        currentDevice = _currentDevice
+        currentSetting = firstWakeDeviceSetting
+        val firstWakeDevice = buildInputDevice(firstWakeDeviceSetting)
+        currentDevice = MutableStateFlow(firstWakeDevice)
+        _isHeyDicio = MutableStateFlow(firstWakeDevice?.isHeyDicio() ?: true)
+        isHeyDicio = _isHeyDicio
 
         scope.launch {
-            _currentDevice.collectLatest { newWakeDevice ->
+            currentDevice.collectLatest { newWakeDevice ->
+                _isHeyDicio.emit(newWakeDevice?.isHeyDicio() ?: true)
                 if (newWakeDevice == null) {
                     _state.emit(null)
                 } else {
@@ -92,7 +89,7 @@ class WakeDeviceWrapperImpl(
         currentSetting = setting
         val newWakeDevice = buildInputDevice(setting)
         lastFrameHadWrongSize = false
-        _currentDevice.update { prevWakeDevice ->
+        currentDevice.update { prevWakeDevice ->
             prevWakeDevice?.destroy()
             newWakeDevice
         }
@@ -108,11 +105,11 @@ class WakeDeviceWrapperImpl(
     }
 
     override fun download() {
-        _currentDevice.value?.download()
+        currentDevice.value?.download()
     }
 
     override fun processFrame(audio16bitPcm: ShortArray): Boolean {
-        val device = _currentDevice.value
+        val device = currentDevice.value
             ?: throw IllegalArgumentException("No wake word device is enabled")
 
         if (audio16bitPcm.size != device.frameSize()) {
@@ -133,16 +130,12 @@ class WakeDeviceWrapperImpl(
     }
 
     override fun frameSize(): Int {
-        return _currentDevice.value?.frameSize() ?: 0
+        return currentDevice.value?.frameSize() ?: 0
     }
 
-    override fun releaseResources() {
+    override fun reinitializeToReleaseResources() {
         changeWakeDeviceTo(currentSetting)
     }
-
-    override fun isHeyDicio(): Boolean =
-        // true by default
-        _currentDevice.value?.isHeyDicio() ?: true
 }
 
 @Module

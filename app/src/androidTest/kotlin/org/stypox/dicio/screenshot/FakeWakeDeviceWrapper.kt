@@ -14,5 +14,5 @@ class FakeWakeDeviceWrapper : WakeDeviceWrapper {
 
     override fun frameSize(): Int = 1312
 
-    override fun releaseResources() {}
+    override fun reinitializeToReleaseResources() {}
 }

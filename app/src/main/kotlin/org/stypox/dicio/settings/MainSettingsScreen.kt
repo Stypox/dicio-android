@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.stypox.dicio.R
-import org.stypox.dicio.io.wake.oww.OpenWakeWordDevice
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
@@ -80,7 +79,6 @@ private fun MainSettingsScreen(
             viewModel.addOwwUserWakeFile(it)
         }
     }
-    val wakeDevice by viewModel.wakeDevice.collectAsState(null)
 
     LazyColumn(modifier) {
         /* GENERAL SETTINGS */
@@ -134,34 +132,36 @@ private fun MainSettingsScreen(
                 viewModel::setInputDevice,
             )
         }
-        val wakeDeviceSetting = when (val device = settings.wakeDevice) {
+        val wakeDevice = when (val device = settings.wakeDevice) {
             WakeDevice.UNRECOGNIZED,
             WakeDevice.WAKE_DEVICE_UNSET -> WakeDevice.WAKE_DEVICE_OWW
             else -> device
         }
         item {
             wakeDevice().Render(
-                wakeDeviceSetting,
+                wakeDevice,
                 viewModel::setWakeDevice,
             )
         }
-        (wakeDevice as? OpenWakeWordDevice)?.let { wakeDevice ->
+        if (wakeDevice == WakeDevice.WAKE_DEVICE_OWW) {
             /* OpenWakeWord-specific settings */
             item {
-                val hasUserWakeFile by wakeDevice.hasUserWakeFile.collectAsState()
-                if (hasUserWakeFile) {
-                    SettingsItem(
-                        modifier = Modifier.clickable { viewModel.removeOwwUserWakeFile() },
-                        title = stringResource(R.string.pref_wake_custom_delete),
-                        icon = Icons.Default.DeleteSweep,
-                        description = stringResource(R.string.pref_wake_custom_delete_summary),
-                    )
-                } else {
+                val isHeyDicio by viewModel.isHeyDicio.collectAsState(true)
+                if (isHeyDicio) {
+                    // the wake word is "Hey Dicio", so there is no custom model at the moment
                     SettingsItem(
                         modifier = Modifier.clickable { importLauncher.launch(arrayOf("*/*")) },
                         title = stringResource(R.string.pref_wake_custom_import),
                         icon = Icons.Default.UploadFile,
                         description = stringResource(R.string.pref_wake_custom_import_summary_oww),
+                    )
+                } else {
+                    // a custom model is currently set, give the option to remove it
+                    SettingsItem(
+                        modifier = Modifier.clickable { viewModel.removeOwwUserWakeFile() },
+                        title = stringResource(R.string.pref_wake_custom_delete),
+                        icon = Icons.Default.DeleteSweep,
+                        description = stringResource(R.string.pref_wake_custom_delete_summary),
                     )
                 }
             }

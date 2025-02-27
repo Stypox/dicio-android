@@ -58,7 +58,7 @@ class WakeService : Service() {
         if (MainActivity.isCreated <= 0) {
             // if the main activity is neither visible nor in the background,
             // then unload the STT after a while because it would be using resources uselessly
-            sttInputDevice.releaseResources()
+            sttInputDevice.reinitializeToReleaseResources()
         }
     }
 
@@ -120,7 +120,7 @@ class WakeService : Service() {
     override fun onDestroy() {
         listening.set(false)
         job.cancel()
-        wakeDevice.releaseResources()
+        wakeDevice.reinitializeToReleaseResources()
         super.onDestroy()
     }
 
