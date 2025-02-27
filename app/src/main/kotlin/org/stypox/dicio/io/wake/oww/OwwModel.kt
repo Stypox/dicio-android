@@ -99,17 +99,17 @@ class OwwModel(
 
     companion object {
         // mel model shape is [1,x] -> [1,1,floor((x-512)/160)+1,32]
-        const val MEL_INPUT_COUNT = 512 + 160 * 4; // chosen by us, 1152 samples @ 16kHz = 72ms
-        const val MEL_OUTPUT_COUNT = (MEL_INPUT_COUNT - 512) / 160 + 1; // formula obtained empirically
-        const val MEL_FEATURE_SIZE = 32; // also the size of features received by the emb model
+        const val MEL_INPUT_COUNT = 512 + 160 * 4 // chosen by us, 1152 samples @ 16kHz = 72ms
+        const val MEL_OUTPUT_COUNT = (MEL_INPUT_COUNT - 512) / 160 + 1 // formula obtained empirically
+        const val MEL_FEATURE_SIZE = 32 // also the size of features received by the emb model
 
         // emb model shape is [1,76,32,1] -> [1,1,1,96]
-        const val EMB_INPUT_COUNT = 76; // hardcoded in the model
-        const val EMB_OUTPUT_COUNT = 1;
-        const val EMB_FEATURE_SIZE = 96; // also the size of features received by the wake model
+        const val EMB_INPUT_COUNT = 76 // hardcoded in the model
+        const val EMB_OUTPUT_COUNT = 1
+        const val EMB_FEATURE_SIZE = 96 // also the size of features received by the wake model
 
         // wake model shape is [1,16,96] -> [1,1]
-        const val WAKE_INPUT_COUNT = 16; // hardcoded in the model
+        const val WAKE_INPUT_COUNT = 16 // hardcoded in the model
 
         private fun loadModel(modelPath: File, inputDims: IntArray? = null): Interpreter {
             val interpreter = Interpreter(modelPath)
