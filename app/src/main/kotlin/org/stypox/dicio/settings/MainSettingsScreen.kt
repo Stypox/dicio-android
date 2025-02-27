@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.stypox.dicio.R
+import org.stypox.dicio.io.wake.oww.OpenWakeWordDevice
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.Language
 import org.stypox.dicio.settings.datastore.SpeechOutputDevice
@@ -76,11 +77,13 @@ private fun MainSettingsScreen(
     val settings by viewModel.settingsState.collectAsState()
     val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
         if (it != null) {
-            viewModel.addUserWakeFile(it)
+            viewModel.addOwwUserWakeFile(it)
         }
     }
+    val wakeDevice by viewModel.wakeDevice.collectAsState(null)
 
     LazyColumn(modifier) {
+        /* GENERAL SETTINGS */
         item { SettingsCategoryTitle(stringResource(R.string.pref_general), topPadding = 4.dp) }
         item {
             languageSetting().Render(
@@ -119,6 +122,7 @@ private fun MainSettingsScreen(
             )
         }
 
+        /* INPUT AND OUTPUT METHODS */
         item { SettingsCategoryTitle(stringResource(R.string.pref_io)) }
         item {
             inputDevice().Render(
@@ -130,35 +134,31 @@ private fun MainSettingsScreen(
                 viewModel::setInputDevice,
             )
         }
-        val wakeDevice = when (val wakeDevice = settings.wakeDevice) {
+        val wakeDeviceSetting = when (val device = settings.wakeDevice) {
             WakeDevice.UNRECOGNIZED,
             WakeDevice.WAKE_DEVICE_UNSET -> WakeDevice.WAKE_DEVICE_OWW
-            else -> wakeDevice
+            else -> device
         }
         item {
             wakeDevice().Render(
-                wakeDevice,
+                wakeDeviceSetting,
                 viewModel::setWakeDevice,
             )
         }
-        val device = viewModel.openWakeWordDevice
-        if (wakeDevice == WakeDevice.WAKE_DEVICE_OWW && device != null) {
+        (wakeDevice as? OpenWakeWordDevice)?.let { wakeDevice ->
+            /* OpenWakeWord-specific settings */
             item {
-                val hasUserWakeFile by device.hasUserWakeFile.collectAsState()
+                val hasUserWakeFile by wakeDevice.hasUserWakeFile.collectAsState()
                 if (hasUserWakeFile) {
                     SettingsItem(
-                        modifier = Modifier.clickable {
-                            device.removeUserWakeFile()
-                        },
+                        modifier = Modifier.clickable { viewModel.removeOwwUserWakeFile() },
                         title = stringResource(R.string.pref_wakeword_custom_delete),
                         icon = Icons.Default.DeleteSweep,
                         description = stringResource(R.string.pref_wakeword_custom_delete_summary),
                     )
                 } else {
                     SettingsItem(
-                        modifier = Modifier.clickable {
-                            importLauncher.launch(arrayOf("*/*"))
-                        },
+                        modifier = Modifier.clickable { importLauncher.launch(arrayOf("*/*")) },
                         title = stringResource(R.string.pref_wakeword_custom_import),
                         icon = Icons.Default.UploadFile,
                         description = stringResource(R.string.pref_wakeword_custom_import_summary),
