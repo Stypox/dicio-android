@@ -5,18 +5,17 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LongState
 import org.dicio.numbers.ParserFormatter
-import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.AlwaysBestScore
 import org.dicio.skill.skill.AlwaysWorstScore
 import org.dicio.skill.skill.Score
+import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.sentences.Sentences
-import org.stypox.dicio.skills.fallback.text.TextFallbackOutput
 import org.stypox.dicio.util.RecognizeYesNoSkill
 import org.stypox.dicio.util.getString
 import java.text.DecimalFormatSymbols
@@ -73,8 +72,8 @@ sealed interface TimerOutput : SkillOutput {
                     inputData: Duration?
                 ): SkillOutput {
                     return if (inputData == null) {
-                        // impossible situation
-                        TextFallbackOutput()
+                        // impossible situation, since AlwaysWorstScore was used above
+                        throw RuntimeException("AlwaysWorstScore still triggered generateOutput")
                     } else {
                         onGotDuration(inputData)
                     }

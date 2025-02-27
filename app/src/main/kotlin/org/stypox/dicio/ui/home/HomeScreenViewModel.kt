@@ -10,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.dicio.skill.context.SkillContext
+import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.di.SpeechOutputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.WakeDeviceWrapper
@@ -25,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     application: Application,
-    val skillContext: SkillContext,
+    val skillContext: SkillContextInternal,
     val skillHandler: SkillHandler,
     val dataStore: DataStore<UserSettings>,
     val sttInputDevice: SttInputDeviceWrapper,

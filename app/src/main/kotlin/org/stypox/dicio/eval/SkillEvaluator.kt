@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillOutput
+import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.io.graphical.ErrorSkillOutput
 import org.stypox.dicio.io.graphical.MissingPermissionsSkillOutput
@@ -33,7 +33,7 @@ interface SkillEvaluator {
 }
 
 class SkillEvaluatorImpl(
-    private val skillContext: SkillContext,
+    private val skillContext: SkillContextInternal,
     private val skillHandler: SkillHandler,
     private val sttInputDevice: SttInputDeviceWrapper,
 ) : SkillEvaluator {
@@ -117,7 +117,7 @@ class SkillEvaluatorImpl(
                 // the continuation of the last interaction (since continuing an
                 // interaction/conversation is done through the stack of batches)
                 continuesLastInteraction = skillRanker.hasAnyBatches(),
-                skillBeingEvaluated = chosenSkill.skill.correspondingSkillInfo,
+                skillBeingEvaluated = skillInfo,
             )
         )
 
@@ -129,6 +129,8 @@ class SkillEvaluatorImpl(
                 return
             }
 
+            skillContext.previousOutput =
+                _state.value.interactions.lastOrNull()?.questionsAnswers?.lastOrNull()?.answer
             val output = chosenSkill.generateOutput(skillContext)
 
             addInteractionFromPending(output)
@@ -203,7 +205,7 @@ class SkillEvaluatorModule {
     @Provides
     @Singleton
     fun provideSkillEvaluator(
-        skillContext: SkillContext,
+        skillContext: SkillContextInternal,
         skillHandler: SkillHandler,
         sttInputDevice: SttInputDeviceWrapper,
     ): SkillEvaluator {

@@ -4,9 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.dicio.skill.context.SkillContext
-import org.stypox.dicio.io.input.SttInputDevice
-import org.stypox.dicio.io.input.vosk.VoskInputDevice
 import javax.inject.Singleton
 
 @Module
@@ -14,5 +11,6 @@ import javax.inject.Singleton
 class SkillContextModule {
     @Provides
     @Singleton
-    fun provideSkillContext(skillContextImpl: SkillContextImpl): SkillContext = skillContextImpl
+    fun provideSkillContext(skillContextImpl: SkillContextImpl): SkillContextInternal =
+        skillContextImpl
 }
