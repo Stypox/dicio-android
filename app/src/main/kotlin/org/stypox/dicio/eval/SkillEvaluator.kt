@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.Permission
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.di.SkillContextInternal
@@ -94,16 +95,12 @@ class SkillEvaluatorImpl(
     }
 
     private suspend fun evaluateMatchingSkill(utterances: List<String>) {
-        val (chosenInput, chosenSkill, isFallback) = try {
+        val (chosenInput, chosenSkill) = try {
             utterances.firstNotNullOfOrNull { input: String ->
                 skillRanker.getBest(skillContext, input)?.let { skillWithResult ->
-                    Triple(input, skillWithResult, false)
+                    Pair(input, skillWithResult)
                 }
-            } ?: Triple(
-                utterances[0],
-                skillRanker.getFallbackSkill(skillContext, utterances[0]),
-                true
-            )
+            } ?: Pair(utterances[0], skillRanker.getFallbackSkill(skillContext, utterances[0]))
         } catch (throwable: Throwable) {
             addErrorInteractionFromPending(throwable)
             return
@@ -133,6 +130,7 @@ class SkillEvaluatorImpl(
                 _state.value.interactions.lastOrNull()?.questionsAnswers?.lastOrNull()?.answer
             val output = chosenSkill.generateOutput(skillContext)
 
+            val interactionPlan = output.getInteractionPlan(skillContext)
             addInteractionFromPending(output)
             output.getSpeechOutput(skillContext).let {
                 if (it.isNotBlank()) {
@@ -142,14 +140,27 @@ class SkillEvaluatorImpl(
                 }
             }
 
-            val nextSkills = output.getNextSkills(skillContext)
-            if (nextSkills.isEmpty()) {
-                if (!isFallback) {
+            when (interactionPlan) {
+                InteractionPlan.FinishInteraction -> {
                     // current conversation has ended, reset to the default batch of skills
                     skillRanker.removeAllBatches()
                 }
-            } else {
-                skillRanker.addBatchToTop(nextSkills)
+                is InteractionPlan.FinishSubInteraction -> {
+                    skillRanker.removeTopBatch()
+                }
+                is InteractionPlan.Continue -> {
+                    // nothing to do, just continue with current batches
+                }
+                is InteractionPlan.StartSubInteraction -> {
+                    skillRanker.addBatchToTop(interactionPlan.nextSkills)
+                }
+                is InteractionPlan.ReplaceSubInteraction -> {
+                    skillRanker.removeTopBatch()
+                    skillRanker.addBatchToTop(interactionPlan.nextSkills)
+                }
+            }
+
+            if (interactionPlan.reopenMicrophone) {
                 skillContext.speechOutputDevice.runWhenFinishedSpeaking {
                     sttInputDevice.tryLoad(this::processInputEvent)
                 }

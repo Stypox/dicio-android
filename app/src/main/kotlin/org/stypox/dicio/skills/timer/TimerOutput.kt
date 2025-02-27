@@ -8,6 +8,7 @@ import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.AlwaysBestScore
 import org.dicio.skill.skill.AlwaysWorstScore
+import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillOutput
@@ -50,8 +51,8 @@ sealed interface TimerOutput : SkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_how_much_time)
 
-        override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-            object : Skill<Duration?>(TimerInfo, Specificity.HIGH) {
+        override fun getInteractionPlan(ctx: SkillContext): InteractionPlan {
+            val durationSkill = object : Skill<Duration?>(TimerInfo, Specificity.HIGH) {
                 override fun score(
                     ctx: SkillContext,
                     input: String
@@ -78,7 +79,13 @@ sealed interface TimerOutput : SkillOutput {
                         onGotDuration(inputData)
                     }
                 }
-            })
+            }
+
+            return InteractionPlan.StartSubInteraction(
+                reopenMicrophone = true,
+                nextSkills = listOf(durationSkill),
+            )
+        }
     }
 
     class Cancel(
@@ -93,9 +100,13 @@ sealed interface TimerOutput : SkillOutput {
         override fun getSpeechOutput(ctx: SkillContext): String =
             ctx.getString(R.string.skill_timer_confirm_cancel)
 
-        override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-            object : RecognizeYesNoSkill(TimerInfo, Sentences.UtilYesNo[ctx.sentencesLanguage]!!) {
-                override suspend fun generateOutput(ctx: SkillContext, inputData: Boolean): SkillOutput {
+        override fun getInteractionPlan(ctx: SkillContext): InteractionPlan {
+            val yesNoSentences = Sentences.UtilYesNo[ctx.sentencesLanguage]!!
+            val confirmYesNoSkill = object : RecognizeYesNoSkill(TimerInfo, yesNoSentences) {
+                override suspend fun generateOutput(
+                    ctx: SkillContext,
+                    inputData: Boolean
+                ): SkillOutput {
                     return if (inputData) {
                         onConfirm()
                     } else {
@@ -103,7 +114,12 @@ sealed interface TimerOutput : SkillOutput {
                     }
                 }
             }
-        )
+
+            return InteractionPlan.StartSubInteraction(
+                reopenMicrophone = true,
+                nextSkills = listOf(confirmYesNoSkill),
+            )
+        }
     }
 
     class Query(
