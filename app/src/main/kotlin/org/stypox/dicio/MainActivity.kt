@@ -27,7 +27,6 @@ import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.io.wake.WakeService
-import org.stypox.dicio.io.wake.WakeState
 import org.stypox.dicio.io.wake.WakeState.Loaded
 import org.stypox.dicio.io.wake.WakeState.Loading
 import org.stypox.dicio.io.wake.WakeState.NotLoaded
@@ -165,7 +164,7 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         // the wake word service remains active in the background,
         // so we need to release resources that it does not need manually
-        sttInputDevice.releaseResources()
+        sttInputDevice.reinitializeToReleaseResources()
         isCreated -= 1
         super.onDestroy()
     }

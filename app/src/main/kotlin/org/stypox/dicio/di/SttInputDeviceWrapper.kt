@@ -42,7 +42,7 @@ interface SttInputDeviceWrapper {
 
     fun onClick(eventListener: (InputEvent) -> Unit)
 
-    fun releaseResources()
+    fun reinitializeToReleaseResources()
 }
 
 class SttInputDeviceWrapperImpl(
@@ -165,7 +165,7 @@ class SttInputDeviceWrapperImpl(
         sttInputDevice?.onClick(wrapEventListener(eventListener))
     }
 
-    override fun releaseResources() {
+    override fun reinitializeToReleaseResources() {
         scope.launch { changeInputDeviceTo(inputDeviceSetting) }
     }
 }

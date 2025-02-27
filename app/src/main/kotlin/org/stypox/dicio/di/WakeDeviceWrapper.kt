@@ -9,30 +9,32 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.stypox.dicio.io.wake.WakeDevice
 import org.stypox.dicio.io.wake.WakeState
 import org.stypox.dicio.io.wake.oww.OpenWakeWordDevice
 import org.stypox.dicio.settings.datastore.UserSettings
-import org.stypox.dicio.settings.datastore.WakeDevice.*
+import org.stypox.dicio.settings.datastore.WakeDevice.UNRECOGNIZED
+import org.stypox.dicio.settings.datastore.WakeDevice.WAKE_DEVICE_NOTHING
+import org.stypox.dicio.settings.datastore.WakeDevice.WAKE_DEVICE_OWW
+import org.stypox.dicio.settings.datastore.WakeDevice.WAKE_DEVICE_UNSET
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import javax.inject.Singleton
 
 interface WakeDeviceWrapper {
     val state: StateFlow<WakeState?>
+    val isHeyDicio: StateFlow<Boolean>
 
     fun download()
-
     fun processFrame(audio16bitPcm: ShortArray): Boolean
-
     fun frameSize(): Int
-
-    fun releaseResources()
+    fun reinitializeToReleaseResources()
 }
 
 typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
@@ -43,29 +45,39 @@ class WakeDeviceWrapperImpl(
     private val okHttpClient: OkHttpClient,
 ) : WakeDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
-    private var stateJob: Job? = null
 
     private var currentSetting: DataStoreWakeDevice
-    private var wakeDevice: WakeDevice?
     private var lastFrameHadWrongSize = false
 
     // null means that the user has not enabled any STT input device
     private val _state: MutableStateFlow<WakeState?> = MutableStateFlow(null)
     override val state: StateFlow<WakeState?> = _state
-
-
+    private val _isHeyDicio: MutableStateFlow<Boolean>
+    override val isHeyDicio: StateFlow<Boolean>
+    private val currentDevice: MutableStateFlow<WakeDevice?>
 
     init {
         // Run blocking, because the data store is always available right away since LocaleManager
         // also initializes in a blocking way from the same data store.
-        val (firstWakeDevice, nextWakeDeviceFlow) = dataStore.data
+        val (firstWakeDeviceSetting, nextWakeDeviceFlow) = dataStore.data
             .map { it.wakeDevice }
             .distinctUntilChangedBlockingFirst()
 
-        currentSetting = firstWakeDevice
-        wakeDevice = buildInputDevice(firstWakeDevice)
+        currentSetting = firstWakeDeviceSetting
+        val firstWakeDevice = buildInputDevice(firstWakeDeviceSetting)
+        currentDevice = MutableStateFlow(firstWakeDevice)
+        _isHeyDicio = MutableStateFlow(firstWakeDevice?.isHeyDicio() ?: true)
+        isHeyDicio = _isHeyDicio
+
         scope.launch {
-            restartUiStateJob()
+            currentDevice.collectLatest { newWakeDevice ->
+                _isHeyDicio.emit(newWakeDevice?.isHeyDicio() ?: true)
+                if (newWakeDevice == null) {
+                    _state.emit(null)
+                } else {
+                    newWakeDevice.state.collect { _state.emit(it) }
+                }
+            }
         }
 
         scope.launch {
@@ -73,13 +85,14 @@ class WakeDeviceWrapperImpl(
         }
     }
 
-    private suspend fun changeWakeDeviceTo(setting: DataStoreWakeDevice) {
-        val prevWakeDevice = wakeDevice
+    private fun changeWakeDeviceTo(setting: DataStoreWakeDevice) {
         currentSetting = setting
-        wakeDevice = buildInputDevice(setting)
+        val newWakeDevice = buildInputDevice(setting)
         lastFrameHadWrongSize = false
-        prevWakeDevice?.destroy()
-        restartUiStateJob()
+        currentDevice.update { prevWakeDevice ->
+            prevWakeDevice?.destroy()
+            newWakeDevice
+        }
     }
 
     private fun buildInputDevice(setting: DataStoreWakeDevice): WakeDevice? {
@@ -91,25 +104,13 @@ class WakeDeviceWrapperImpl(
         }
     }
 
-    private suspend fun restartUiStateJob() {
-        stateJob?.cancel()
-        val newWakeDevice = wakeDevice
-        if (newWakeDevice == null) {
-            stateJob = null
-            _state.emit(null)
-        } else {
-            stateJob = scope.launch {
-                newWakeDevice.state.collect { _state.emit(it) }
-            }
-        }
-    }
-
     override fun download() {
-        wakeDevice?.download()
+        currentDevice.value?.download()
     }
 
     override fun processFrame(audio16bitPcm: ShortArray): Boolean {
-        val device = wakeDevice ?: throw IllegalArgumentException("No wake word device is enabled")
+        val device = currentDevice.value
+            ?: throw IllegalArgumentException("No wake word device is enabled")
 
         if (audio16bitPcm.size != device.frameSize()) {
             if (lastFrameHadWrongSize) {
@@ -129,13 +130,11 @@ class WakeDeviceWrapperImpl(
     }
 
     override fun frameSize(): Int {
-        return wakeDevice?.frameSize() ?: 0
+        return currentDevice.value?.frameSize() ?: 0
     }
 
-    override fun releaseResources() {
-        scope.launch {
-            changeWakeDeviceTo(currentSetting)
-        }
+    override fun reinitializeToReleaseResources() {
+        changeWakeDeviceTo(currentSetting)
     }
 }
 
