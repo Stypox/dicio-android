@@ -2,8 +2,11 @@ package org.stypox.dicio.di
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.provider.Settings
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.dicio.numbers.ParserFormatter
+import org.dicio.skill.context.NoSettingsAccess
+import org.dicio.skill.context.SettingsAccess
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
@@ -18,6 +21,7 @@ class SkillContextImpl private constructor(
     // this constructor can take any SpeechOutputDevice to allow newForPreviews to provide
     // NothingSpeechDevice
     override val speechOutputDevice: SpeechOutputDevice,
+    override val settingsAccess: SettingsAccess,
 ) : SkillContext {
 
     @Inject
@@ -25,7 +29,8 @@ class SkillContextImpl private constructor(
         @ApplicationContext android: Context,
         localeManager: LocaleManager,
         speechOutputDevice: SpeechOutputDeviceWrapper,
-    ) : this(android, localeManager, speechOutputDevice as SpeechOutputDevice)
+        settingsAccess: SettingsAccessWrapper,
+    ) : this(android, localeManager, speechOutputDevice as SpeechOutputDevice, settingsAccess as SettingsAccess)
 
 
     override val locale: Locale
@@ -58,6 +63,7 @@ class SkillContextImpl private constructor(
                 context,
                 localeManager,
                 NothingSpeechDevice(),
+                NoSettingsAccess(),
             )
             @SuppressLint("StateFlowValueCalledInComposition")
             res.lastParserFormatter = Pair(
