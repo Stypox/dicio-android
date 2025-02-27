@@ -52,7 +52,15 @@ internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOu
             init {
                 put(
                     "User-Agent",
-                    "Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0"
+                    "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0"
+                )
+                put(
+                    "Accept",
+                    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                )
+                put(
+                    "Host",
+                    "html.duckduckgo.com"
                 )
                 put("Cookie", "kl=$locale")
             }
