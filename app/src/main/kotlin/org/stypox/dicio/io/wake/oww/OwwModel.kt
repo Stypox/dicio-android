@@ -16,6 +16,8 @@ class OwwModel(
     private var accumulatedMelOutputs: Array<Array<FloatArray>> = Array(EMB_INPUT_COUNT) { arrayOf() }
     private var accumulatedEmbOutputs: Array<FloatArray> = Array(WAKE_INPUT_COUNT) { floatArrayOf() }
 
+    private var isClosed: Boolean = false // whether the model has just been closed
+
     init {
         melInterpreter = loadModel(melSpectrogramPath, intArrayOf(1, MEL_INPUT_COUNT))
 
@@ -36,53 +38,63 @@ class OwwModel(
     }
 
     fun processFrame(audio: FloatArray): Float {
-        if (audio.size != MEL_INPUT_COUNT) {
-            throw IllegalArgumentException(
-                "OwwModel can only process audio frames of $MEL_INPUT_COUNT samples"
-            )
-        }
-
-        val melOutput = Array(MEL_OUTPUT_COUNT) { FloatArray(MEL_FEATURE_SIZE) }
-        melInterpreter.run(arrayOf(audio), arrayOf(arrayOf(melOutput)))
-        for (i in 0..<EMB_INPUT_COUNT) {
-            accumulatedMelOutputs[i] = if (i < EMB_INPUT_COUNT - MEL_OUTPUT_COUNT) {
-                accumulatedMelOutputs[i + MEL_OUTPUT_COUNT]
-            } else {
-                melOutput[i - EMB_INPUT_COUNT + MEL_OUTPUT_COUNT]
-                    .map { floatArrayOf((it / 10.0f) + 2.0f) }
-                    .toTypedArray()
+        synchronized(this) {
+            if (isClosed) {
+                // there must have been a synchronization error, don't do anything
+                return 0.0f
             }
-        }
-        //println("melOutput[0]=${melOutput[0][0]}")
-        if (accumulatedMelOutputs[0].isEmpty()) {
-            return 0.0f // not fully initialized yet
-        }
 
-        val embOutput = Array(EMB_OUTPUT_COUNT) { FloatArray(EMB_FEATURE_SIZE) }
-        embInterpreter.run(arrayOf(accumulatedMelOutputs), arrayOf(arrayOf(embOutput)))
-        for (i in 0..<WAKE_INPUT_COUNT) {
-            accumulatedEmbOutputs[i] = if (i < WAKE_INPUT_COUNT - EMB_OUTPUT_COUNT) {
-                accumulatedEmbOutputs[i + EMB_OUTPUT_COUNT]
-            } else {
-                @Suppress("KotlinConstantConditions")
-                embOutput[i - WAKE_INPUT_COUNT + EMB_OUTPUT_COUNT]
+            if (audio.size != MEL_INPUT_COUNT) {
+                throw IllegalArgumentException(
+                    "OwwModel can only process audio frames of $MEL_INPUT_COUNT samples"
+                )
             }
-        }
-        //println("embOutput[0]=${embOutput[0][0]}")
-        if (accumulatedEmbOutputs[0].isEmpty()) {
-            return 0.0f // not fully initialized yet
-        }
 
-        val wakeOutput = FloatArray(1)
-        wakeInterpreter.run(arrayOf(accumulatedEmbOutputs), arrayOf(wakeOutput))
-        return wakeOutput[0]
+            val melOutput = Array(MEL_OUTPUT_COUNT) { FloatArray(MEL_FEATURE_SIZE) }
+            melInterpreter.run(arrayOf(audio), arrayOf(arrayOf(melOutput)))
+            for (i in 0..<EMB_INPUT_COUNT) {
+                accumulatedMelOutputs[i] = if (i < EMB_INPUT_COUNT - MEL_OUTPUT_COUNT) {
+                    accumulatedMelOutputs[i + MEL_OUTPUT_COUNT]
+                } else {
+                    melOutput[i - EMB_INPUT_COUNT + MEL_OUTPUT_COUNT]
+                        .map { floatArrayOf((it / 10.0f) + 2.0f) }
+                        .toTypedArray()
+                }
+            }
+            //println("melOutput[0]=${melOutput[0][0]}")
+            if (accumulatedMelOutputs[0].isEmpty()) {
+                return 0.0f // not fully initialized yet
+            }
+
+            val embOutput = Array(EMB_OUTPUT_COUNT) { FloatArray(EMB_FEATURE_SIZE) }
+            embInterpreter.run(arrayOf(accumulatedMelOutputs), arrayOf(arrayOf(embOutput)))
+            for (i in 0..<WAKE_INPUT_COUNT) {
+                accumulatedEmbOutputs[i] = if (i < WAKE_INPUT_COUNT - EMB_OUTPUT_COUNT) {
+                    accumulatedEmbOutputs[i + EMB_OUTPUT_COUNT]
+                } else {
+                    @Suppress("KotlinConstantConditions")
+                    embOutput[i - WAKE_INPUT_COUNT + EMB_OUTPUT_COUNT]
+                }
+            }
+            //println("embOutput[0]=${embOutput[0][0]}")
+            if (accumulatedEmbOutputs[0].isEmpty()) {
+                return 0.0f // not fully initialized yet
+            }
+
+            val wakeOutput = FloatArray(1)
+            wakeInterpreter.run(arrayOf(accumulatedEmbOutputs), arrayOf(wakeOutput))
+            return wakeOutput[0]
+        }
     }
 
 
     override fun close() {
-        melInterpreter.close()
-        embInterpreter.close()
-        wakeInterpreter.close()
+        synchronized(this) {
+            isClosed = true
+            melInterpreter.close()
+            embInterpreter.close()
+            wakeInterpreter.close()
+        }
     }
 
     companion object {
