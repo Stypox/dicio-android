@@ -157,7 +157,7 @@ fun InteractionList(
                     )
                 }
                 countedItem(canBeAnchor = false) {
-                    LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated)
+                    LoadingAnswerCard(skill = pendingQuestion.skillBeingEvaluated.first)
                 }
             }
         }

@@ -7,6 +7,7 @@ import org.dicio.numbers.ParserFormatter
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.context.SpeechOutputDevice
 import org.stypox.dicio.io.speech.NothingSpeechDevice
+import org.stypox.dicio.ui.home.InteractionLog
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +19,7 @@ class SkillContextImpl private constructor(
     // this constructor can take any SpeechOutputDevice to allow newForPreviews to provide
     // NothingSpeechDevice
     override val speechOutputDevice: SpeechOutputDevice,
-) : SkillContext {
+) : SkillContextInternal {
 
     @Inject
     constructor(
@@ -50,6 +51,8 @@ class SkillContextImpl private constructor(
 
             return lastParserFormatter?.first
         }
+
+    override var previousInteractionWasFallback: Boolean = false
 
     companion object {
         fun newForPreviews(context: Context): SkillContextImpl {

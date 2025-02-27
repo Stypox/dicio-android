@@ -53,7 +53,7 @@ class SkillInfoPreviews : CollectionPreviewParameterProvider<SkillInfo>(listOf(
 ))
 
 class SkillOutputPreviews : CollectionPreviewParameterProvider<SkillOutput>(listOf(
-    TextFallbackOutput(),
+    TextFallbackOutput(previousInteractionWasFallback = false),
 ))
 
 class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog>(listOf(
@@ -74,21 +74,24 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
         PendingQuestion(
             userInput = LoremIpsum(50).values.first(),
             continuesLastInteraction = false,
-            skillBeingEvaluated = SkillInfoPreviews().values.first(),
+            skillBeingEvaluated = Pair(SkillInfoPreviews().values.first(), false),
         ),
     ),
     InteractionLog(
         listOf(
             Interaction(
-                skill = NavigationInfo,
+                skill = Pair(NavigationInfo, false),
                 questionsAnswers = listOf(
                     QuestionAnswer("Take me to Paris", NavigationOutput("Paris"))
                 )
             ),
             Interaction(
-                skill = TimerInfo,
+                skill = Pair(TimerInfo, false),
                 questionsAnswers = listOf(
-                    QuestionAnswer("Set a timer", TimerOutput.SetAskDuration { TextFallbackOutput() })
+                    QuestionAnswer(
+                        "Set a timer",
+                        TimerOutput.SetAskDuration { TextFallbackOutput(false) }
+                    )
                 )
             )
         ),
@@ -101,7 +104,7 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
     InteractionLog(
         listOf(
             Interaction(
-                skill = TelephoneInfo,
+                skill = Pair(TelephoneInfo, false),
                 questionsAnswers = listOf(
                     QuestionAnswer("call mom", ConfirmCallOutput("Mom", "1234567890")),
                     QuestionAnswer("yes", ConfirmedCallOutput("1234567890")),
@@ -111,7 +114,7 @@ class InteractionLogPreviews : CollectionPreviewParameterProvider<InteractionLog
         PendingQuestion(
             userInput = "lyrics i'm working on a dream",
             continuesLastInteraction = false,
-            skillBeingEvaluated = LyricsInfo,
+            skillBeingEvaluated = Pair(LyricsInfo, false),
         ),
     ),
 ))

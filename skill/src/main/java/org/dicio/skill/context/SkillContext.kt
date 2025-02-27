@@ -40,4 +40,12 @@ interface SkillContext {
      * The [SpeechOutputDevice] that should be used for skill speech output.
      */
     val speechOutputDevice: SpeechOutputDevice
+
+    /**
+     * Whether the previous request made by the user could not be understood, leading to the
+     * fallback skill being used instead. Use this value inside fallback skills to determine
+     * whether to ask to repeat (if this is false) or to just say "didn't understand" (if this is
+     * true).
+     */
+    val previousInteractionWasFallback: Boolean
 }

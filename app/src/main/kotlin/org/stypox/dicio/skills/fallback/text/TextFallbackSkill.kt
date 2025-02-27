@@ -8,6 +8,6 @@ import org.stypox.dicio.util.RecognizeEverythingSkill
 class TextFallbackSkill(correspondingSkillInfo: SkillInfo) :
     RecognizeEverythingSkill(correspondingSkillInfo) {
     override suspend fun generateOutput(ctx: SkillContext, inputData: String): SkillOutput {
-        return TextFallbackOutput()
+        return TextFallbackOutput(ctx.previousInteractionWasFallback)
     }
 }

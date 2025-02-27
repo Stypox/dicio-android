@@ -9,14 +9,15 @@ data class QuestionAnswer(
 )
 
 data class Interaction(
-    val skill: SkillInfo?,
-    val questionsAnswers: List<QuestionAnswer>
+    // the second item of the pair is true if the skill is the fallback skill
+    val skill: Pair<SkillInfo, Boolean>?,
+    val questionsAnswers: List<QuestionAnswer>,
 )
 
 data class PendingQuestion(
     val userInput: String,
     val continuesLastInteraction: Boolean,
-    val skillBeingEvaluated: SkillInfo?,
+    val skillBeingEvaluated: Pair<SkillInfo, Boolean>?,
 )
 
 data class InteractionLog(
