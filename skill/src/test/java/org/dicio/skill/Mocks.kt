@@ -19,6 +19,7 @@ object MockSkillContext : SkillContext {
     override val sentencesLanguage: String get() = mocked()
     override val parserFormatter: ParserFormatter get() = mocked()
     override val speechOutputDevice: SpeechOutputDevice get() = mocked()
+    override val previousOutput: SkillOutput = mocked()
 }
 
 object MockSkillInfo : SkillInfo("") {

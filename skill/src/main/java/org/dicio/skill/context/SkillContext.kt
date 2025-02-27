@@ -2,6 +2,7 @@ package org.dicio.skill.context
 
 import android.content.Context
 import org.dicio.numbers.ParserFormatter
+import org.dicio.skill.skill.SkillOutput
 import java.util.Locale
 
 /**
@@ -40,4 +41,9 @@ interface SkillContext {
      * The [SpeechOutputDevice] that should be used for skill speech output.
      */
     val speechOutputDevice: SpeechOutputDevice
+
+    /**
+     * The previous output belonging to the same interaction.
+     */
+    val previousOutput: SkillOutput?
 }

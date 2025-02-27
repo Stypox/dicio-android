@@ -286,7 +286,7 @@ class ScreenshotTakerTest {
                             url = "https://github.com/TeamNewPipe/NewPipe",
                             thumbnailUrl = "https://external-content.duckduckgo.com/ip3/github.com.ico"
                         ),
-                    ))
+                    ), askAgain = false)
                 ),
             )),
         ), null)
