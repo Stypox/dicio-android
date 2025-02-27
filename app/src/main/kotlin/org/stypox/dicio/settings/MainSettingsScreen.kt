@@ -152,16 +152,16 @@ private fun MainSettingsScreen(
                 if (hasUserWakeFile) {
                     SettingsItem(
                         modifier = Modifier.clickable { viewModel.removeOwwUserWakeFile() },
-                        title = stringResource(R.string.pref_wakeword_custom_delete),
+                        title = stringResource(R.string.pref_wake_custom_delete),
                         icon = Icons.Default.DeleteSweep,
-                        description = stringResource(R.string.pref_wakeword_custom_delete_summary),
+                        description = stringResource(R.string.pref_wake_custom_delete_summary),
                     )
                 } else {
                     SettingsItem(
                         modifier = Modifier.clickable { importLauncher.launch(arrayOf("*/*")) },
-                        title = stringResource(R.string.pref_wakeword_custom_import),
+                        title = stringResource(R.string.pref_wake_custom_import),
                         icon = Icons.Default.UploadFile,
-                        description = stringResource(R.string.pref_wakeword_custom_import_summary),
+                        description = stringResource(R.string.pref_wake_custom_import_summary_oww),
                     )
                 }
             }

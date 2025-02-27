@@ -174,6 +174,8 @@ class OpenWakeWordDevice(
         scope.cancel()
     }
 
+    override fun isHeyDicio(): Boolean = !userWakeFile.exists()
+
     companion object {
         val TAG = OpenWakeWordDevice::class.simpleName
         const val MEL_URL = "https://github.com/dscripka/openWakeWord/releases/download/v0.5.1/melspectrogram.tflite"

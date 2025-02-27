@@ -39,6 +39,8 @@ interface WakeDeviceWrapper {
     fun frameSize(): Int
 
     fun releaseResources()
+
+    fun isHeyDicio(): Boolean
 }
 
 typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
@@ -137,6 +139,10 @@ class WakeDeviceWrapperImpl(
     override fun releaseResources() {
         changeWakeDeviceTo(currentSetting)
     }
+
+    override fun isHeyDicio(): Boolean =
+        // true by default
+        _currentDevice.value?.isHeyDicio() ?: true
 }
 
 @Module

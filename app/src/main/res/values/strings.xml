@@ -89,10 +89,10 @@
     <string name="pref_wake_method_summary">Choose the service to use to listen for the \"Hey Dicio\" wakeup word in the background</string>
     <string name="pref_wake_method_disabled">Disabled</string>
     <string name="pref_wake_method_openwakeword">OpenWakeWord offline audio processing</string>
-    <string name="pref_wakeword_custom_delete">Delete custom wake word</string>
-    <string name="pref_wakeword_custom_delete_summary">Return to default \'Hey Dicio\' wake word.</string>
-    <string name="pref_wakeword_custom_import">Import custom wake word</string>
-    <string name="pref_wakeword_custom_import_summary">Use model from TFLite file instead of default \'Hey Dicio\' wake word.</string>
+    <string name="pref_wake_custom_delete">Delete custom wake word</string>
+    <string name="pref_wake_custom_delete_summary">Return to default \"Hey Dicio\" wake word</string>
+    <string name="pref_wake_custom_import">Import custom wake word</string>
+    <string name="pref_wake_custom_import_summary_oww">Replace the default \"Hey Dicio\" wake word with a custom TFLite model; you can download some custom models from github.com/dscripka/openWakeWord/releases</string>
     <string name="pref_skill_not_available">This skill is not yet available for your language. Contributions are welcome!</string>
     <string name="pref_skill_missing_permissions">Requires these permissions: %1$s</string>
     <string name="pref_skill_grant_permissions">Grant</string>
@@ -192,6 +192,7 @@
     <string name="wake_service_foreground_notification_summary">This notification allows the Dicio
         wake word service to listen to the microphone in the background</string>
     <string name="wake_service_foreground_notification">Listening for the \"Hey Dicio\" wake-up word</string>
+    <string name="wake_custom_service_foreground_notification">Listening for custom wake-up word</string>
     <string name="wake_service_start_notification">Tap to start Dicio wake word service</string>
     <string name="wake_service_triggered_notification">Dicio wake word triggered, tap to open</string>
     <string name="wake_service_start_notification_summary">In Android 11+ Dicio can\'t start the service without a manual interaction from the user.</string>

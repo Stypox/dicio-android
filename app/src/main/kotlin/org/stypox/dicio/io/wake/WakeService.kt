@@ -148,7 +148,12 @@ class WakeService : Service() {
 
         val notification = NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_hearing_white)
-            .setContentTitle(getString(R.string.wake_service_foreground_notification))
+            .setContentTitle(
+                getString(
+                    if (wakeDevice.isHeyDicio()) R.string.wake_service_foreground_notification
+                    else R.string.wake_custom_service_foreground_notification
+                )
+            )
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setShowWhen(false)
