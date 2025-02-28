@@ -106,11 +106,13 @@ fun inputDevice() = ListSetting(
         ListSetting.Value(
             value = InputDevice.INPUT_DEVICE_VOSK,
             name = stringResource(R.string.pref_input_method_vosk),
+            description = stringResource(R.string.pref_input_method_vosk_summary),
             icon = Icons.Default.Mic,
         ),
         ListSetting.Value(
-            value = InputDevice.INPUT_DEVICE_SYSTEM_POPUP,
-            name = stringResource(R.string.pref_input_method_system_popup),
+            value = InputDevice.INPUT_DEVICE_EXTERNAL_POPUP,
+            name = stringResource(R.string.pref_input_method_external_popup),
+            description = stringResource(R.string.pref_input_method_external_popup_summary),
             icon = Icons.Default.PictureInPictureAlt,
         ),
         ListSetting.Value(

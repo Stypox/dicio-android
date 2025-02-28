@@ -1,4 +1,4 @@
-package org.stypox.dicio.io.input.system_popup
+package org.stypox.dicio.io.input.external_popup
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
@@ -24,7 +24,7 @@ import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import java.util.Locale
 
 
-class SystemPopupInputDevice(
+class ExternalPopupInputDevice(
     @ApplicationContext val context: Context,
     private val activityForResultManager: ActivityForResultManager,
     localeManager: LocaleManager,
@@ -32,7 +32,7 @@ class SystemPopupInputDevice(
 
     private var locale: Locale
 
-    private val _state: MutableStateFlow<SystemPopupState>
+    private val _state: MutableStateFlow<ExternalPopupState>
     private val _uiState: MutableStateFlow<SttState>
     override val uiState: StateFlow<SttState>
 
@@ -68,7 +68,7 @@ class SystemPopupInputDevice(
             return startListening(thenStartListeningEventListener)
         }
         return when (_state.value) {
-            SystemPopupState.NotAvailable, is SystemPopupState.ErrorStartingActivity -> false
+            ExternalPopupState.NotAvailable, is ExternalPopupState.ErrorStartingActivity -> false
             else -> true
         }
     }
@@ -101,32 +101,32 @@ class SystemPopupInputDevice(
         }
     }
 
-    private fun stateFromResolveActivity(): SystemPopupState {
+    private fun stateFromResolveActivity(): ExternalPopupState {
         return if (getIntent().resolveActivity(context.packageManager) == null) {
-            SystemPopupState.NotAvailable
+            ExternalPopupState.NotAvailable
         } else {
-            SystemPopupState.Available
+            ExternalPopupState.Available
         }
     }
 
     private fun startListening(eventListener: (InputEvent) -> Unit): Boolean {
         if (_state.compareAndSet(
-            SystemPopupState.Available,
-            SystemPopupState.WaitingForResult(eventListener)
+                ExternalPopupState.Available,
+                ExternalPopupState.WaitingForResult(eventListener)
         ) || _state.compareAndSet(
-            SystemPopupState.ErrorStartingActivity(Throwable()),
-            SystemPopupState.WaitingForResult(eventListener)
+                ExternalPopupState.ErrorStartingActivity(Throwable()),
+                ExternalPopupState.WaitingForResult(eventListener)
         ) || _state.compareAndSet(
-            SystemPopupState.ErrorActivityResult(0),
-            SystemPopupState.WaitingForResult(eventListener)
+                ExternalPopupState.ErrorActivityResult(0),
+                ExternalPopupState.WaitingForResult(eventListener)
         )) {
             try {
                 activityForResultManager.launch(getIntent(), this::onActivityResult)
             } catch (e: Throwable) {
                 Log.e(TAG, "Could not start STT activity", e)
                 _state.compareAndSet(
-                    SystemPopupState.WaitingForResult { },
-                    SystemPopupState.ErrorStartingActivity(e)
+                    ExternalPopupState.WaitingForResult { },
+                    ExternalPopupState.ErrorStartingActivity(e)
                 )
             }
         }
@@ -137,14 +137,14 @@ class SystemPopupInputDevice(
         // all activity requesters are used just once since the activity might change
         val results = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
         val confidences = result.data?.getFloatArrayExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES)
-        val eventListener = _state.value as? SystemPopupState.WaitingForResult ?: return
+        val eventListener = _state.value as? ExternalPopupState.WaitingForResult ?: return
 
         if (result.resultCode == RESULT_OK && !results.isNullOrEmpty()) {
             // this is not atomic but there is no alternative in Kotlin to compare, update and get
             // the previous value
             _state.compareAndSet(
-                SystemPopupState.WaitingForResult { },
-                SystemPopupState.Available
+                ExternalPopupState.WaitingForResult { },
+                ExternalPopupState.Available
             )
 
             if (results.size == confidences?.size) {
@@ -155,16 +155,16 @@ class SystemPopupInputDevice(
 
         } else if (result.resultCode == RESULT_CANCELED) {
             _state.compareAndSet(
-                SystemPopupState.WaitingForResult { },
-                SystemPopupState.Available
+                ExternalPopupState.WaitingForResult { },
+                ExternalPopupState.Available
             )
 
             eventListener.listener(InputEvent.None)
 
         } else {
             _state.compareAndSet(
-                SystemPopupState.WaitingForResult { },
-                SystemPopupState.ErrorActivityResult(result.resultCode)
+                ExternalPopupState.WaitingForResult { },
+                ExternalPopupState.ErrorActivityResult(result.resultCode)
             )
 
             eventListener.listener(InputEvent.Error(ResultCodeException(result.resultCode)))
@@ -172,6 +172,6 @@ class SystemPopupInputDevice(
     }
 
     companion object {
-        val TAG = SystemPopupInputDevice::class.simpleName
+        val TAG = ExternalPopupInputDevice::class.simpleName
     }
 }
