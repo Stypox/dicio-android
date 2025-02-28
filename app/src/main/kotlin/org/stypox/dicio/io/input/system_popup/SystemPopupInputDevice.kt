@@ -1,5 +1,6 @@
 package org.stypox.dicio.io.input.system_popup
 
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.ComponentName
 import android.content.Context
@@ -156,6 +157,14 @@ class SystemPopupInputDevice(
             } else {
                 eventListener.listener(InputEvent.Final(results.map { Pair(it, 1.0f) }))
             }
+
+        } else if (result.resultCode == RESULT_CANCELED) {
+            _state.compareAndSet(
+                SystemPopupState.Listening { },
+                SystemPopupState.Available
+            )
+
+            eventListener.listener(InputEvent.None)
 
         } else {
             _state.compareAndSet(
