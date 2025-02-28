@@ -2,10 +2,8 @@ package org.stypox.dicio.io.input.system_popup
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.speech.RecognizerIntent
 import android.util.Log
 import androidx.activity.result.ActivityResult
@@ -22,7 +20,6 @@ import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.SttState
-import org.stypox.dicio.io.input.stt_popup.SttPopupActivity
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import java.util.Locale
 
@@ -89,6 +86,11 @@ class SystemPopupInputDevice(
     }
 
     private fun getIntent(): Intent {
+        // Unfortunately the user could choose Dicio itself (starting SttPopupActivity), but there
+        // is no way to avoid this unless we use an Intent.createChooser() with
+        // `EXTRA_EXCLUDE_COMPONENTS`. A chooser, however, wouldn't allow the user to press
+        // "Always"/"Just once", and also wouldn't make it possible to check for availability like
+        // with .resolveIntent() (since the intent always resolves to the choooser).
         return Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -96,13 +98,6 @@ class SystemPopupInputDevice(
             )
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale)
             putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.stt_say_something))
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                // otherwise Dicio would use itself :-D
-                putExtra(
-                    Intent.EXTRA_EXCLUDE_COMPONENTS,
-                    arrayOf(ComponentName(context, SttPopupActivity::class.java))
-                )
-            }
         }
     }
 
