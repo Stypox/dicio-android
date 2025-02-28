@@ -24,6 +24,7 @@
     <string name="stt_download">Download Speech to Text</string>
     <string name="stt_unzip">Unzip Speech to Text</string>
     <string name="listening">Listening…</string>
+    <string name="waiting">Waiting…</string>
     <string name="start_listening">Start listening</string>
     <string name="downloaded">Downloaded</string>
     <string name="loaded">Loaded</string>

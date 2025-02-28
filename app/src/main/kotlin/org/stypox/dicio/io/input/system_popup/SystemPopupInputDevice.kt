@@ -117,20 +117,20 @@ class SystemPopupInputDevice(
     private fun startListening(eventListener: (InputEvent) -> Unit): Boolean {
         if (_state.compareAndSet(
             SystemPopupState.Available,
-            SystemPopupState.Listening(eventListener)
+            SystemPopupState.WaitingForResult(eventListener)
         ) || _state.compareAndSet(
             SystemPopupState.ErrorStartingActivity(Throwable()),
-            SystemPopupState.Listening(eventListener)
+            SystemPopupState.WaitingForResult(eventListener)
         ) || _state.compareAndSet(
             SystemPopupState.ErrorActivityResult(0),
-            SystemPopupState.Listening(eventListener)
+            SystemPopupState.WaitingForResult(eventListener)
         )) {
             try {
                 activityForResultManager.launch(getIntent(), this::onActivityResult)
             } catch (e: Throwable) {
                 Log.e(TAG, "Could not start STT activity", e)
                 _state.compareAndSet(
-                    SystemPopupState.Listening { },
+                    SystemPopupState.WaitingForResult { },
                     SystemPopupState.ErrorStartingActivity(e)
                 )
             }
@@ -142,13 +142,13 @@ class SystemPopupInputDevice(
         // all activity requesters are used just once since the activity might change
         val results = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
         val confidences = result.data?.getFloatArrayExtra(RecognizerIntent.EXTRA_CONFIDENCE_SCORES)
-        val eventListener = _state.value as? SystemPopupState.Listening ?: return
+        val eventListener = _state.value as? SystemPopupState.WaitingForResult ?: return
 
         if (result.resultCode == RESULT_OK && !results.isNullOrEmpty()) {
             // this is not atomic but there is no alternative in Kotlin to compare, update and get
             // the previous value
             _state.compareAndSet(
-                SystemPopupState.Listening { },
+                SystemPopupState.WaitingForResult { },
                 SystemPopupState.Available
             )
 
@@ -160,7 +160,7 @@ class SystemPopupInputDevice(
 
         } else if (result.resultCode == RESULT_CANCELED) {
             _state.compareAndSet(
-                SystemPopupState.Listening { },
+                SystemPopupState.WaitingForResult { },
                 SystemPopupState.Available
             )
 
@@ -168,7 +168,7 @@ class SystemPopupInputDevice(
 
         } else {
             _state.compareAndSet(
-                SystemPopupState.Listening { },
+                SystemPopupState.WaitingForResult { },
                 SystemPopupState.ErrorActivityResult(result.resultCode)
             )
 

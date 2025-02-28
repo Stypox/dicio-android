@@ -135,6 +135,7 @@ class SttStatesPreviews : CollectionPreviewParameterProvider<SttState>(listOf(
     SttState.ErrorLoading(Exception("ErrorLoading exception")),
     SttState.Loaded,
     SttState.Listening,
+    SttState.WaitingForResult,
 ))
 
 class WakeStatesPreviews : CollectionPreviewParameterProvider<WakeState>(listOf(

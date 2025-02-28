@@ -18,11 +18,11 @@ sealed interface SystemPopupState {
     /**
      * `startActivity(intent)` has just been called and now we are waiting for the activity result
      */
-    data class Listening(
+    data class WaitingForResult(
         internal val listener: (InputEvent) -> Unit,
     ) : SystemPopupState {
         override fun equals(other: Any?): Boolean {
-            return other is Listening
+            return other is WaitingForResult
         }
 
         override fun hashCode(): Int {
@@ -64,7 +64,7 @@ sealed interface SystemPopupState {
         return when (this) {
             NotAvailable -> SttState.NotAvailable
             Available -> SttState.Loaded
-            is Listening -> SttState.Listening
+            is WaitingForResult -> SttState.WaitingForResult
             is ErrorStartingActivity -> SttState.ErrorLoading(throwable)
             is ErrorActivityResult -> SttState.ErrorLoading(ResultCodeException(resultCode))
         }
