@@ -41,7 +41,6 @@ class OpenWakeWordDevice(
 
     private val audio = FloatArray(OwwModel.MEL_INPUT_COUNT)
     private var model: OwwModel? = null
-    private var needsReload: Boolean = false
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
@@ -91,7 +90,6 @@ class OpenWakeWordDevice(
 
             try {
                 _state.value = WakeState.Loading
-                needsReload = false
                 model = OwwModel(
                     melFile.file,
                     embFile.file,
