@@ -31,6 +31,17 @@ class ExternalPopupInputDevice(
 ) : SttInputDevice {
 
     private var locale: Locale
+    // unfortunately some apps like "speech recognition and synthesis from google" require
+    // the country to also be specified in the locale, hence this hack (hopefully other apps handle
+    // it well)
+    private val localeWithCountry: Locale
+        get() = if (locale.country.isEmpty()) {
+            Locale.getAvailableLocales()
+                .firstOrNull { it.language == locale.language && it.country.isNotEmpty() }
+                ?: locale
+        } else {
+            locale
+        }
 
     private val _state: MutableStateFlow<ExternalPopupState>
     private val _uiState: MutableStateFlow<SttState>
@@ -96,7 +107,7 @@ class ExternalPopupInputDevice(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
             )
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale)
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE, localeWithCountry.toLanguageTag())
             putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.stt_say_something))
         }
     }

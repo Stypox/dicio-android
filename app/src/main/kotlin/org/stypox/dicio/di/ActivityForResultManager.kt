@@ -34,7 +34,7 @@ class ActivityForResultManager @Inject constructor() {
             if (callback == null) {
                 callback = newCallback
             } else {
-                throw IllegalArgumentException("A an activity for result request is already active")
+                throw IllegalArgumentException("An activity for result request is already active")
             }
         }
 
