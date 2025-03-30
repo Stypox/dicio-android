@@ -6,7 +6,7 @@ import org.dicio.skill.context.SkillContext
 interface SkillOutput {
     fun getSpeechOutput(ctx: SkillContext): String
 
-    fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf()
+    fun getInteractionPlan(ctx: SkillContext): InteractionPlan = InteractionPlan.FinishInteraction
 
     @Composable
     fun GraphicalOutput(ctx: SkillContext)

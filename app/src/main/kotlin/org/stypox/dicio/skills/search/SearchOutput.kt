@@ -17,13 +17,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.SkillOutput
-import org.stypox.dicio.util.RecognizeEverythingSkill
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.Headline
 import org.stypox.dicio.sentences.Sentences
+import org.stypox.dicio.util.RecognizeEverythingSkill
 import org.stypox.dicio.util.ShareUtils
 import org.stypox.dicio.util.getString
 
@@ -50,23 +50,30 @@ class SearchOutput(
             R.string.skill_search_no_results_stop
     )
 
-    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> =
-        if (results.isNullOrEmpty() && askAgain)
-            listOf(
+    override fun getInteractionPlan(ctx: SkillContext): InteractionPlan {
+        if (!results.isNullOrEmpty() || !askAgain) {
+            return InteractionPlan.FinishInteraction
+        }
+
+        val searchAnythingSkill = object : RecognizeEverythingSkill(SearchInfo) {
+            override suspend fun generateOutput(
+                ctx: SkillContext,
+                inputData: String
+            ): SkillOutput {
+                // ask again only if this is the first time we ask the user to provide what
+                // to search for, otherwise we could continue asking indefinitely
+                return SearchOutput(searchOnDuckDuckGo(ctx, inputData), results == null)
+            }
+        }
+
+        return InteractionPlan.StartSubInteraction(
+            reopenMicrophone = true,
+            nextSkills = listOf(
                 SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
-                object : RecognizeEverythingSkill(SearchInfo) {
-                    override suspend fun generateOutput(
-                        ctx: SkillContext,
-                        inputData: String
-                    ): SkillOutput {
-                        // ask again only if this is the first time we ask the user to provide what
-                        // to search for, otherwise we could continue asking indefinitely
-                        return SearchOutput(searchOnDuckDuckGo(ctx, inputData), results == null)
-                    }
-                },
-            )
-        else
-            listOf()
+                searchAnythingSkill,
+            ),
+        )
+    }
 
     @Composable
     override fun GraphicalOutput(ctx: SkillContext) {

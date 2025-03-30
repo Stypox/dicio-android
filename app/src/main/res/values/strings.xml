@@ -120,7 +120,8 @@
     <string name="eval_fatal_error">Could not evaluate your request</string>
     <string name="eval_network_error">Network error</string>
     <string name="eval_network_error_description">Dicio could not reach the internet. Please check your connection and retry.</string>
-    <string name="eval_no_match">I did not understand, could you repeat?</string>
+    <string name="eval_no_match">I did not understand</string>
+    <string name="eval_no_match_repeat">Could you repeat?</string>
     <string name="stt_say_something">Say something…</string>
     <string name="stt_did_not_understand">I could not understand, try again</string>
     <string name="stt_popup">Speech to text popup</string>
