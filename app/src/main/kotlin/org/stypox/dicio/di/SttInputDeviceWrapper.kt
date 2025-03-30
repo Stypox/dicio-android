@@ -21,9 +21,11 @@ import org.stypox.dicio.R
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.input.external_popup.ExternalPopupInputDevice
 import org.stypox.dicio.io.input.vosk.VoskInputDevice
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_NOTHING
+import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_EXTERNAL_POPUP
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_UNSET
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_VOSK
 import org.stypox.dicio.settings.datastore.InputDevice.UNRECOGNIZED
@@ -50,6 +52,7 @@ class SttInputDeviceWrapperImpl(
     dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
     private val okHttpClient: OkHttpClient,
+    private val activityForResultManager: ActivityForResultManager,
 ) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
@@ -99,9 +102,9 @@ class SttInputDeviceWrapperImpl(
         return when (setting) {
             UNRECOGNIZED,
             INPUT_DEVICE_UNSET,
-            INPUT_DEVICE_VOSK -> VoskInputDevice(
-                appContext, okHttpClient, localeManager
-            )
+            INPUT_DEVICE_VOSK -> VoskInputDevice(appContext, okHttpClient, localeManager)
+            INPUT_DEVICE_EXTERNAL_POPUP ->
+                ExternalPopupInputDevice(appContext, activityForResultManager, localeManager)
             INPUT_DEVICE_NOTHING -> null
         }
     }
@@ -180,7 +183,10 @@ class SttInputDeviceWrapperModule {
         dataStore: DataStore<UserSettings>,
         localeManager: LocaleManager,
         okHttpClient: OkHttpClient,
+        activityForResultManager: ActivityForResultManager,
     ): SttInputDeviceWrapper {
-        return SttInputDeviceWrapperImpl(appContext, dataStore, localeManager, okHttpClient)
+        return SttInputDeviceWrapperImpl(
+            appContext, dataStore, localeManager, okHttpClient, activityForResultManager
+        )
     }
 }
