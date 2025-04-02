@@ -39,7 +39,7 @@
     <string name="eval_fatal_error">No s\'ha pogut avaluar la petició</string>
     <string name="eval_network_error">Error de xarxa</string>
     <string name="eval_network_error_description">El Dicio no pot accedir a Internet. Comproveu la connexió i torneu a intentar-ho.</string>
-    <string name="eval_no_match">No us he entès, podeu repetir-ho\?</string>
+    <string name="eval_no_match">No us he entès, podeu repetir-ho?</string>
     <string name="drawer_close">Tanca el tauler de navegació</string>
     <string name="action_text_input">Entrada de text</string>
     <string name="action_voice_input">Entrada de veu</string>

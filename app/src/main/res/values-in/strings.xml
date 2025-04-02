@@ -93,7 +93,7 @@
     <string name="eval_fatal_error">Tidak dapat mengevaluasi permintaan Anda</string>
     <string name="eval_network_error">Kesalahan jaringan</string>
     <string name="eval_network_error_description">Dicio tidak dapat menjangkau internet. Harap periksa koneksi Anda dan coba lagi.</string>
-    <string name="eval_no_match">Saya tidak mengerti, bisa Anda ulang\?</string>
+    <string name="eval_no_match">Saya tidak mengerti, bisa Anda ulang?</string>
     <string name="skill_name_search">Penelusuran</string>
     <string name="skill_sentence_example_search">Telusuri bagaimana cara memberi makan kucing</string>
     <string name="skill_name_weather">Cuaca</string>

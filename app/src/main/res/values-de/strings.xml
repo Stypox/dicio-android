@@ -5,7 +5,7 @@
     <string name="vosk_model_extraction_error">Vosk-Modell konnte aus dem Zip-Archiv nicht entpackt werden</string>
     <string name="vosk_model_downloading">Lade Vosk-Modell herunter…</string>
     <string name="text_input_hint">Frag mich irgendetwas…</string>
-    <string name="eval_no_match">Ich habe nicht verstanden, kannst du wiederholen\?</string>
+    <string name="eval_no_match">Ich habe nicht verstanden, kannst du wiederholen?</string>
     <string name="skill_calculator_could_not_calculate">Die gewünschte Berechnung konnte nicht durchgeführt werden</string>
     <string name="skill_open_opening">Öffne %1$s…</string>
     <string name="skill_open_unknown_app">Unbekannte Anwendung %1$s</string>
@@ -15,7 +15,7 @@
 \nHöchste Temperatur: %2$.1f%4$s
 \nWindgeschwindigkeit: %3$.1f%5$s</string>
     <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
-    <string name="skill_weather_in_city_there_is_description">Zurzeit haben wir es in %1$s , %2$s</string>
+    <string name="skill_weather_in_city_there_is_description">Zurzeit haben wir %2$s und %3$s Grad in %1$s</string>
     <string name="skill_weather_could_not_find_city">Ich konnte die Stadt %1$s nicht finden</string>
     <string name="skill_search_here_is_what_i_found">Das habe ich gefunden</string>
     <string name="skill_fallback_name_text">Textnachricht</string>
@@ -77,7 +77,7 @@
     <string name="skill_search_what_question">Wonach willst du suchen\?</string>
     <string name="vosk_model_download_error">Herunterladen von Vosk-Modell fehlgeschlagen</string>
     <string name="skill_name_telephone">Anrufen</string>
-    <string name="skill_sentence_example_telephone">Rufe Tom an</string>
+    <string name="skill_sentence_example_telephone">Tom anrufen</string>
     <string name="skill_telephone_unknown_contact">Es wurde kein passender Kontakt gefunden</string>
     <string name="skill_telephone_found_contacts">Ich habe %1$d Kontakte gefunden, welchen davon soll ich anrufen\?</string>
     <string name="eval_missing_permissions">Die Fähigkeit \"%1$s\" benötigt zum Funktionieren diese Genehmigungen: %2$s</string>
@@ -135,7 +135,7 @@
     <string name="skill_navigation_navigating_to">Zu %1$s navigieren</string>
     <string name="skill_name_navigation">Navigation</string>
     <string name="skill_sentence_example_navigation">Zum internationalen Flughafen von Vancouver navigieren</string>
-    <string name="skill_navigation_specify_where">Gebe an wohin soll navigiert werden soll</string>
+    <string name="skill_navigation_specify_where">Gib dein Ziel genauer an</string>
     <string name="reduce">Reduzieren</string>
     <string name="unzipping">Entpacke…</string>
     <string name="stt_download">Lade Sprache-zu-Text herunter</string>
@@ -167,4 +167,42 @@
     <string name="pref_dynamic_colors_summary">Benutze \"Material You\" dynamische Farben vom System</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
     <string name="stt_service_label">Dicio Offline-Spracherkennung</string>
+    <string name="pref_stt_play_sound_notification">Benachrichtigungskanal</string>
+    <string name="pref_stt_play_sound_alarm">Alarmkanal</string>
+    <string name="pref_stt_play_sound_media">Standard-/Medienkanal</string>
+    <string name="pref_stt_play_sound_none">Keinen Ton abspielen</string>
+    <string name="wake_service_foreground_notification_summary">Diese Benachrichtigung ermöglicht es dem Dicio Aktivierungswortdienst, im Hintergrund das Mikrofon zu hören</string>
+    <string name="wake_service_foreground_notification">Hören auf das Aktivierungswort \"Hey Dicio\"</string>
+    <string name="wake_service_triggered_notification_summary">In Android 10+ kann Dicio nicht starten, wenn ein Aktivierungswort erkannt wird, ohne eine Benachrichtigung anzuzeigen.</string>
+    <string name="wake_word_setup_title">Aktivierungswort einrichten</string>
+    <string name="wake_word_error_downloading">Ein unerwarteter Fehler ist beim Herunterladen aufgetreten</string>
+    <string name="wake_word_error_downloading_network">Dicio konnte keine Verbindung zum Internet herstellen. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+    <string name="wake_word_error_loading">Ein unerwarteter Fehler ist beim Laden aufgetreten</string>
+    <string name="disable">Deaktivieren</string>
+    <string name="pref_wake_method">Erkennungsmethode für Aktivierungswort</string>
+    <string name="pref_wake_method_summary">Wählen Sie den Dienst aus, der im Hintergrund auf das Aktivierungswort \'Hey Dicio\' hören soll</string>
+    <string name="pref_wake_method_disabled">Deaktiviert</string>
+    <string name="pref_wake_method_openwakeword">OpenWakeWord Offline-Audioverarbeitung</string>
+    <string name="wake_service_start_notification">Tippe, um den Dicio Aktivierungswortdienst zu starten</string>
+    <string name="wake_service_triggered_notification">Dicio Aktivierungswort ausgelöst, tippe, um zu öffnen</string>
+    <string name="grant_permissions">Berechtigungen gewähren</string>
+    <string name="stop">Stoppen</string>
+    <string name="pref_stt_play_sound_title">Ton abspielen, wenn mit dem Zuhören begonnen wird</string>
+    <string name="pref_stt_play_sound_summary">Wählen Sie aus, ob ein Ton abgespielt werden soll, wenn Ihre Stimme erkannt wird, und wählen Sie den Audiokanal aus, auf dem der Ton abgespielt werden soll</string>
+    <string name="wake_service_label">Dicio Aktivierungswortdienst</string>
+    <string name="wake_service_start_notification_summary">In Android 11+ kann Dicio den Dienst nicht ohne manuelle Interaktion des Benutzers starten.</string>
+    <string name="wake_word_setup_description">Dicio wird automatisch aktiv, wann immer du \"Hey Dicio\" sagst. Dies funktioniert, indem ein Dienst gestartet wird, der immer im Hintergrund zuhört. Alle Sprachverarbeitung erfolgt lokal, deshalb musst du das KI-Modell im Voraus herunterladen.</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="perm_notification_listener">Geräte- und App-Benachrichtigungen</string>
+    <string name="skill_name_media">Mediensteuerung</string>
+    <string name="skill_sentence_example_media">Nächstes Lied</string>
+    <string name="skill_media_playing">Spiele Medien…</string>
+    <string name="skill_media_pausing">Pausiere Medien…</string>
+    <string name="skill_media_previous">Vorheriges Medium…</string>
+    <string name="notification_listener_label">Dicio Benachrichtigungs-Event-Listener</string>
+    <string name="perm_call_phone">Telefonnummern direkt anrufen</string>
+    <string name="perm_read_contacts">Kontakte lesen</string>
+    <string name="skill_media_next">Nächstes Medium…</string>
+    <string name="skill_media_no_media_session">Kein Mediaplayer ist aktiv</string>
+    <string name="skill_search_no_results_stop">Die Suche ergab kein Ergebnis</string>
 </resources>

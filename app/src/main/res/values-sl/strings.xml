@@ -64,7 +64,7 @@
     <string name="eval_fatal_error">Ne moremo izračunati tvojih želj</string>
     <string name="eval_network_error">Napaka pri povezavi z internetom</string>
     <string name="eval_network_error_description">DIcio se ne more povezati z internetom. Prosim preverite svojo povezavo in poskusite znova.</string>
-    <string name="eval_no_match">Ne razumem, bi lahko ponovili\?</string>
+    <string name="eval_no_match">Ne razumem, bi lahko ponovili?</string>
     <string name="stt_say_something">Z besedo na dan…</string>
     <string name="skill_name_search">Išči</string>
     <string name="pref_input_method_text">Besedilno okence</string>

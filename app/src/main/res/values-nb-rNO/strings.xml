@@ -24,7 +24,7 @@
     <string name="skill_name_weather">Vær</string>
     <string name="skill_sentence_example_search">Søk om hvordan man mater en katt</string>
     <string name="skill_name_search">Søk</string>
-    <string name="eval_no_match">Kan du gjenta\?</string>
+    <string name="eval_no_match">Kan du gjenta?</string>
     <string name="eval_network_error_description">Sjekk at du er tilkoblet Internett og prøv igjen.</string>
     <string name="eval_network_error">Nettverksfeil</string>
     <string name="eval_fatal_error">Oppdaget en feil ved vurdering av forespørselen din</string>

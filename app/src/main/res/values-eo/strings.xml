@@ -90,7 +90,7 @@
     <string name="eval_missing_permissions">La kapablo \"%1$s\" bezonas ĉi tiujn permesojn por funkcii: %2$s</string>
     <string name="pref_weather_default_city">Defaŭlta urbo</string>
     <string name="pref_search_engine">Serĉilo</string>
-    <string name="eval_no_match">Mi ne komprenis, ĉu vi povus ripeti\?</string>
+    <string name="eval_no_match">Mi ne komprenis, ĉu vi povus ripeti?</string>
     <string name="skill_name_calculator">Kalkulilo</string>
     <string name="skill_sentence_example_calculator">Kio estas kvin oble kvar minus miliono\?</string>
     <string name="skill_name_search">Serĉu</string>
