@@ -23,9 +23,7 @@
     <string name="skill_name_calculator">الآلة الحاسبة</string>
     <string name="skill_sentence_example_calculator">ما خمسة ضرب أربعة ناقص مليون؟</string>
     <string name="skill_search_here_is_what_i_found">هذا ما وجدته</string>
-    <string name="skill_weather_min_max_wind">الحرارة الأدنى: %1$.1f درجة مئوية
-\nالحرارة القصوى: %2$.1f درجة مئوية
-\nسرعة الرياح: %3$.1f م/س</string>
+    <string name="skill_weather_min_max_wind">الحرارة الأدنى: %1$.1f درجة مئوية \nالحرارة القصوى: %2$.1f درجة مئوية \nسرعة الرياح: %3$.1f م/س</string>
     <string name="skill_weather_in_city_there_is_description">هناك %2$s و %3$s درجات في %1$s الآن</string>
     <string name="eval_network_error_description">لم يستطع Dicio الاتصال بالانترنت. رجاءً تأكّد من اتّصالك ثم حاول مجددًا.</string>
     <string name="eval_fatal_error">تعذر تقييم طلبك</string>

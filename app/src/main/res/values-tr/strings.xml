@@ -45,7 +45,7 @@
     <string name="pref_weather_default_city_using_ip_info">Açıkça söylemediğinizde hava durumu için kullanılacak şehri ayarlayın. Geçerli davranış, konumu IP bilgisinden almaktır.</string>
     <string name="eval_network_error">Ağ hatası</string>
     <string name="eval_network_error_description">Dicio internete bağlanamadı. Lütfen bağlantınızı gözden geçirin ve yeniden deneyin.</string>
-    <string name="eval_no_match">Anlamadım, tekrar eder misin\?</string>
+    <string name="eval_no_match">Anlamadım, tekrar eder misin?</string>
     <string name="skill_name_search">Ara</string>
     <string name="skill_sentence_example_search">Bir kediyi nasıl besleyeceğinizi arayın</string>
     <string name="skill_sentence_example_weather">Roma\'da hava nasıl\?</string>
