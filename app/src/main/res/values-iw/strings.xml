@@ -111,7 +111,7 @@
     <string name="skill_search_what_question">מה רצית לחפש?</string>
     <string name="skill_weather_could_not_find_city">לא ניתן למצוא את העיר %1$s</string>
     <string name="skill_weather_in_city_there_is_description">כרגע ב%1$s יש %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">לא ניתן למצוא את השיר %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">נמצא %1$s מאת %2$s</string>
     <string name="skill_open_could_not_understand">לא ניתן להבין את היישומון</string>
@@ -163,8 +163,8 @@
     <string name="pref_stt_auto_finish_summary_on">לשלוח את תוצאות ההקראה ליישום שביקש עם סיום ההאזנה</string>
     <string name="pref_weather_default_city_using_ip_info">הגדרת העיר לשימוש למזג אוויר אם לא ציינת אחת. ההתנהגות הנוכחית היא לקבל את המקום מפרטי ה־IP.</string>
     <string name="eval_network_error_description">Dicio לא הצליח לגשת לאינטרנט. נא לבדוק שהחיבור שלך תקין ולנסות שוב.</string>
-    <string name="skill_weather_min_max_wind">טמפרטורה מזערית: ‎%1$.1f°C
-\nטמפרטורה מרבית: ‎%2$.1f°C
-\nמהירות הרוח: %3$.1f מ׳ לשנייה</string>
+    <string name="skill_weather_min_max_wind">טמפרטורה מזערית: ‎%1$.1f%4$s
+\nטמפרטורה מרבית: ‎%2$.1f%4$s
+\nמהירות הרוח: %3$.1f%5$s</string>
     <string name="stt_service_label">זיהוי דיבור בלתי מקוון של Dicio</string>
 </resources>

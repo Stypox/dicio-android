@@ -53,9 +53,9 @@
     <string name="skill_search_no_results">Arama sonuç vermedi, ne aramak istediğinizi bana tekrar söyleyin</string>
     <string name="skill_search_what_question">Ne aramak istiyorsun\?</string>
     <string name="skill_weather_could_not_find_city">%1$s şehri bulunamadı</string>
-    <string name="skill_weather_min_max_wind">En düşük sıcaklık: %1$.1f°C
-\nEn yüksek sıcaklık: %2$.1f°C
-\nRüzgar hızı: %3$.1fm/sn</string>
+    <string name="skill_weather_min_max_wind">En düşük sıcaklık: %1$.1f%4$s
+\nEn yüksek sıcaklık: %2$.1f%4$s
+\nRüzgar hızı: %3$.1f%5$s</string>
     <string name="skill_lyrics_found_song_by_artist">%2$s tarafından %1$s bulundu</string>
     <string name="skill_open_unknown_app">Bilinmeyen uygulama %1$s</string>
     <string name="skill_open_opening">%1$s Açılıyor…</string>
@@ -75,7 +75,7 @@
     <string name="skill_sentence_example_calculator">Beş çarpı dört eksi bir milyon nedir\?</string>
     <string name="skill_search_here_is_what_i_found">İşte bulduklarım</string>
     <string name="skill_weather_in_city_there_is_description">Şu anda %1$s şehrinde %2$s var</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="eval_missing_permissions">\"%1$s\" yeteneğinin çalışması için şu izinlere ihtiyacı var: %2$s</string>
     <string name="pref_skill_grant_permissions">İzin ver</string>
     <string name="pref_skill_missing_permissions">Şu izinleri gerektirir: %1$s</string>

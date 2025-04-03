@@ -90,10 +90,10 @@
     <string name="skill_search_what_question">Kaj hočeš poiskati\?</string>
     <string name="skill_weather_could_not_find_city">Nisem našel mesta po imenu %1$s</string>
     <string name="skill_weather_in_city_there_is_description">V %1$s je trenutno %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s ·%2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Najnižja temperatura: %1$.1f°C
-\nNajvišja temperatura: %2$.1f°C
-\nVeter piha z %3$.1f m/s</string>
+    <string name="skill_weather_description_temperature">%1$s ·%2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Najnižja temperatura: %1$.1f%4$s
+\nNajvišja temperatura: %2$.1f%4$s
+\nVeter piha z %3$.1f %5$s</string>
     <string name="skill_lyrics_song_not_found">Nisem našel pesmi po imenu %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Našel sem %1$s, ki jo je napisal %2$s</string>
     <string name="skill_open_unknown_app">Ne najdem aplikacije po imenu %1$s</string>

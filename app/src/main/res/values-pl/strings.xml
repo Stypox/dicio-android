@@ -58,10 +58,10 @@
     <string name="skill_search_what_question">Czego mam poszukać\?</string>
     <string name="skill_weather_could_not_find_city">Nie znaleziono miasta %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Obecnie w %1$s jest %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Minimalna temperatura: %1$.1f°C
-\nMaksymalna temperatura: %2$.1f°C
-\nPrędkość wiatru: %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Minimalna temperatura: %1$.1f%4$s
+\nMaksymalna temperatura: %2$.1f%4$s
+\nPrędkość wiatru: %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">Nie znalazłem piosenki %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Znalazłem %1$s autorstwa %2$s</string>
     <string name="skill_open_unknown_app">Nieznana aplikacja %1$s</string>

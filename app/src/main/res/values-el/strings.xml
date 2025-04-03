@@ -43,10 +43,10 @@
     <string name="skill_name_calculator">Αριθμομηχανή</string>
     <string name="skill_sentence_example_calculator">Πόσο μας κάνει πέντε επί τέσσερα μείον ένα εκατομμύριο;</string>
     <string name="skill_weather_in_city_there_is_description">Αυτή τη στιγμή στην πόλη %1$s υπάρχει %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Ελάχιστη θερμοκρασία: %1$.1f°C
-\nΜέγιστη θερμοκρασία: %2$.1f°C
-\nΤαχύτητα ανέμου: %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Ελάχιστη θερμοκρασία: %1$.1f%4$s
+\nΜέγιστη θερμοκρασία: %2$.1f%4$s
+\nΤαχύτητα ανέμου: %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">Δεν βρέθηκε το τραγούδι %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Βρέθηκε %1$s από %2$s</string>
     <string name="skill_open_unknown_app">Άγνωστη εφαρμογή %1$s</string>

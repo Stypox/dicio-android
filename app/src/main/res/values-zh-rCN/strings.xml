@@ -96,10 +96,10 @@
     <string name="skill_search_what_question">您想找什么？</string>
     <string name="skill_weather_could_not_find_city">找不到城市 %1$s</string>
     <string name="skill_weather_in_city_there_is_description">目前在%1$s有%2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f摄氏度</string>
-    <string name="skill_weather_min_max_wind">最低温度：%1$.1f摄氏度
-\n最高温度：%2$.1f摄氏度
-\n风速：%3$.1f米每秒</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">最低温度：%1$.1f%4$s
+\n最高温度：%2$.1f%4$s
+\n风速：%3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">未能发现歌曲：%1$s</string>
     <string name="skill_lyrics_found_song_by_artist">通过%2$s发现%1$s</string>
     <string name="skill_open_unknown_app">未知应用%1$s</string>

@@ -52,7 +52,7 @@
     <string name="skill_search_what_question">Pentru ce vrei sa cauti\?</string>
     <string name="skill_weather_could_not_find_city">Nu am putut sa gasesc orasul %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Acuma in %1$s sunt %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">Nu se poate gasi piesa %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Gasit %1$s de %2$s</string>
     <string name="skill_open_unknown_app">Aplicatie necunoscuta %1$s</string>
@@ -93,9 +93,9 @@
     <string name="skill_name_weather">Vreme</string>
     <string name="skill_fallback_name_text">Mesaj text</string>
     <string name="skill_calculator_could_not_calculate">Eu nu am putut calcula cerinta ta</string>
-    <string name="skill_weather_min_max_wind">Temperatura minima: %1$.1f°C
-\nTemperatura maxima: %2$.1f°C
-\nViteza vantului: %3$.1fm/s</string>
+    <string name="skill_weather_min_max_wind">Temperatura minima: %1$.1f%4$s
+\nTemperatura maxima: %2$.1f%4$s
+\nViteza vantului: %3$.1f%5$s</string>
     <string name="skill_telephone_found_contacts">Am gasit %1$d contacte</string>
     <string name="skill_telephone_confirm_call">Ar trebui sa sun pe %1$s\?</string>
     <string name="skill_timer_expired">Temporizatorul a expirat!</string>

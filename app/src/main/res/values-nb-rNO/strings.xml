@@ -6,10 +6,10 @@
     <string name="skill_open_unknown_app">Ukjent program %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Fant %1$s av %2$s</string>
     <string name="skill_lyrics_song_not_found">Fant ikke sangen %1$s</string>
-    <string name="skill_weather_min_max_wind">Laveste temperatur: %1$.1f°C
-\nHøyeste temperatur: %2$.1f°C
-\nVindhastighet: %3$.1fm/s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_min_max_wind">Laveste temperatur: %1$.1f%4$s
+\nHøyeste temperatur: %2$.1f%4$s
+\nVindhastighet: %3$.1f%5$s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_weather_in_city_there_is_description">I %1$s er det nå %2$s</string>
     <string name="skill_weather_could_not_find_city">Fant ikke byen %1$s</string>
     <string name="skill_search_here_is_what_i_found">Dette ble funnet</string>

@@ -108,10 +108,10 @@
     <string name="skill_search_no_results">Penelusuran ini tidak memberikan hasil, coba beritahu saya lagi apa yang ingin Anda telusuri</string>
     <string name="skill_search_what_question">Apa yang ingin Anda telusuri\?</string>
     <string name="skill_weather_could_not_find_city">Saya tidak dapat menemukan kota %1$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Suhu minimum: %1$.1f°C
-\nSuhu maksimum: %2$.1f°C
-\nKecepatan angin: %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Suhu minimum: %1$.1f%4$s
+\nSuhu maksimum: %2$.1f%4$s
+\nKecepatan angin: %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">Tak ditemukan lagu %1$s</string>
     <string name="skill_name_current_time">Waktu saat ini</string>
     <string name="skill_sentence_example_current_time">Jam berapa sekarang\?</string>

@@ -11,10 +11,10 @@
     <string name="skill_open_unknown_app">Application inconnue %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Voici %1$s de %2$s</string>
     <string name="skill_lyrics_song_not_found">Impossible de trouver la chanson %1$s</string>
-    <string name="skill_weather_min_max_wind">Température minimale : %1$.1f °C
-\nTempérature maximale : %2$.1f °C
-\nVitesse du vent : %3$.1f m/s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f °C</string>
+    <string name="skill_weather_min_max_wind">Température minimale : %1$.1f %4$s
+\nTempérature maximale : %2$.1f %4$s
+\nVitesse du vent : %3$.1f %5$s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f %3$s</string>
     <string name="skill_weather_in_city_there_is_description">Actuellement à %1$s il y a %2$s</string>
     <string name="skill_weather_could_not_find_city">La ville de %1$s n\'a pas pu être trouvée</string>
     <string name="skill_search_here_is_what_i_found">Voici ce que j\'ai trouvé</string>

@@ -135,9 +135,9 @@
     <string name="skill_search_what_question">Що ви хочете знайти?</string>
     <string name="skill_weather_could_not_find_city">Не вдалося знайти місто \"%1$s\"</string>
     <string name="skill_weather_in_city_there_is_description">Зараз в %1$s – %2$s</string>
-    <string name="skill_weather_min_max_wind">Мінімальна температура: %1$.1f°C
-\nМаксимальна температура: %2$.1f°C
-\nШвидкість вітру: %3$.1f м/с</string>
+    <string name="skill_weather_min_max_wind">Мінімальна температура: %1$.1f%4$s
+\nМаксимальна температура: %2$.1f%4$s
+\nШвидкість вітру: %3$.1f%5$s</string>
     <string name="skill_open_could_not_understand">Не вдалося знайти застосунок</string>
     <string name="skill_open_opening">Відкриваю %1$s…</string>
     <string name="skill_telephone_found_contacts">Я знайшов %1$d контактів, якому з них ви хочете подзвонити?</string>
@@ -154,7 +154,7 @@
     <string name="skill_telephone_unknown_contact">Жодних контакту не знайдено, спробуйте ще раз</string>
     <string name="skill_timer_how_much_time">Як довго має тривати таймер?</string>
     <string name="skill_timer_set_name">Гаразд, таймер \"%1$s\" завершиться через %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">Не вдалося знайти пісню %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Знайдено пісню %1$s від %2$s</string>
     <string name="skill_timer_canceled">Таймер був вимкнений</string>

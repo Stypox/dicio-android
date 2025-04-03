@@ -44,10 +44,10 @@
     <string name="skill_sentence_example_calculator">Сколько будет пять умножить на четыре минус миллион\?</string>
     <string name="skill_search_here_is_what_i_found">Вот что я нашёл</string>
     <string name="skill_weather_in_city_there_is_description">Сейчас в городе %1$s %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Минимальная температура: %1$.1f°C
-\nМаксимальная температура: %2$.1f°C
-\nСкорость ветра: %3$.1fм/с</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Минимальная температура: %1$.1f%4$s
+\nМаксимальная температура: %2$.1f%4$s
+\nСкорость ветра: %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">Не могу найти песню %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Нашёл %1$s исполнителя %2$s</string>
     <string name="skill_open_opening">Открываю %1$s…</string>

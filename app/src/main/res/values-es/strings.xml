@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="skill_name_calculator">Calculadora</string>
-    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
-\nTemperatura máxima: %2$.1f°C
-\nVelocidad del viento: %3$.1fm/s</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f%4$s
+\nTemperatura máxima: %2$.1f%4$s
+\nVelocidad del viento: %3$.1f%5$s</string>
     <string name="drawer_header_subtitle">¿En que puedo ayudarlo\?</string>
     <string name="drawer_open">Abrir caja de navegación</string>
     <string name="vosk_model_ready">Esta listo el modelo Vosk</string>
@@ -56,7 +56,7 @@
     <string name="skill_search_here_is_what_i_found">Esto es lo que he encontrado</string>
     <string name="skill_weather_could_not_find_city">No pudo encontrar la ciudad %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Actualmente en %1$s esta %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s - %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s - %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">No se ha encontrado la canción %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Se ha encontrado la canción %1$s de %2$s</string>
     <string name="skill_open_unknown_app">Aplicación desconocida %1$s</string>

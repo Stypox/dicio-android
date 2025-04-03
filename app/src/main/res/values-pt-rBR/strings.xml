@@ -55,7 +55,7 @@
     <string name="skill_search_here_is_what_i_found">Aqui está o que eu encontrei</string>
     <string name="skill_weather_could_not_find_city">Não foi possível encontrar a cidade %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Atualmente em %1$s existe %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">Não foi possível encontrar a música %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Encontrado %1$s por %2$s</string>
     <string name="skill_open_unknown_app">App desconhecido %1$s</string>
@@ -67,9 +67,9 @@
     <string name="pref_speech_output_method_snackbar">Snackbar (mensagem na parte inferior)</string>
     <string name="pref_weather_default_city">Cidade padrão</string>
     <string name="pref_weather_default_city_using_ip_info">Definir a cidade para usar para o clima quando você não disser um explicitamente. O comportamento atual é obter a localização a partir das informações de IP.</string>
-    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
-\nTemperatura máxima: %2$.1f°C
-\nVelocidade do vento: %3$.1fm/s</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f%4$s
+\nTemperatura máxima: %2$.1f%4$s
+\nVelocidade do vento: %3$.1f%5$s</string>
     <string name="permission_denied">Permissão negada</string>
     <string name="vosk_model_download_error">O download do modelo Vosk falhou</string>
     <string name="skill_search_what_question">O que você quer pesquisar\?</string>

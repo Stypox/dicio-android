@@ -49,10 +49,10 @@
     <string name="skill_sentence_example_calculator">Quan fan cinc per quatre menys un milió\?</string>
     <string name="skill_search_here_is_what_i_found">Això és el que he trobat</string>
     <string name="skill_weather_could_not_find_city">No he pogut trobar la ciutat %1$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
-\nTemperatura màxima %2$.1f°C
-\nVelocitat del vent %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f%4$s
+\nTemperatura màxima %2$.1f%4$s
+\nVelocitat del vent %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">No s\'ha pogut trobar la cançó %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">S\'ha trobat %1$s de %2$s</string>
     <string name="skill_open_opening">S\'està obrint %1$s…</string>

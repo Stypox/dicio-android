@@ -124,7 +124,7 @@
     <string name="pref_skill_missing_permissions">يتطلب هذه الأذونات: %1$s</string>
     <string name="pref_skill_grant_permissions">السماح</string>
     <string name="skill_search_what_question">ما الذي تريد البحث عنه؟</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f درجة مئوية</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="pref_stt_auto_finish_summary_on">إرسال نتيجة الكلام تلقائيًا إلى التطبيق الذي يطلبه عند انتهاء الاستماع</string>
     <string name="pref_skill_number_library_not_available">مكتبة تحليل الأرقام وتنسيقها <i> dicio-number </i> لم تتم ترجمتها بعد إلى لغتك ، مما يعني أن جميع المهارات المتعلقة بالأرقام والمدد والتواريخ غير متوفرة. <b> الرجاء المساهمة بـ </b> إذا كان بإمكانك النقر هنا!</string>
     <string name="skill_timer_all_canceled">تم إلغاء جميع الموقتات</string>

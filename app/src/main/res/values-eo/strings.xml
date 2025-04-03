@@ -63,7 +63,7 @@
     <string name="skill_fallback_name_text">Teksta mesaĝo</string>
     <string name="skill_search_no_results">La serĉo ne donis rezultojn, provu diri al mi denove, kion vi volas serĉi</string>
     <string name="skill_weather_could_not_find_city">Mi ne povis trovi urbon %1$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">Ne eblas trovi kanton %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Trovis %1$s de %2$s</string>
     <string name="skill_telephone_calling">Vokante %1$s…</string>
@@ -101,9 +101,9 @@
     <string name="skill_search_here_is_what_i_found">Jen kion mi trovis</string>
     <string name="skill_open_unknown_app">Nekonata aplikaĵo %1$s</string>
     <string name="skill_telephone_confirm_call">Ĉu mi voku %1$s\?</string>
-    <string name="skill_weather_min_max_wind">Minimuma temperaturo: %1$.1f°C
-\nMaksimuma temperaturo: %2$.1f°C
-\nVenta rapideco: %3$.1fm/s</string>
+    <string name="skill_weather_min_max_wind">Minimuma temperaturo: %1$.1f%4$s
+\nMaksimuma temperaturo: %2$.1f%4$s
+\nVenta rapideco: %3$.1f%5$s</string>
     <string name="skill_telephone_found_contacts">Mi trovis %1$d kontaktojn</string>
     <string name="skill_telephone_unknown_contact">Neniu kontakto trovita, provu denove</string>
     <string name="skill_telephone_not_calling">Bone, mi vokas iun ajn</string>

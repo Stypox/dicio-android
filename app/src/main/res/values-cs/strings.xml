@@ -118,11 +118,11 @@
     <string name="skill_sentence_example_search">Najdi, jak nakrmit kočku</string>
     <string name="skill_name_timer">Časovač</string>
     <string name="skill_search_here_is_what_i_found">Našel jsem tohle</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">Nepodařilo se najít skladbu %1$s</string>
-    <string name="skill_weather_min_max_wind">Minimální teplota: %1$.1f°C
-\nMaximální teplota: %2$.1f°C
-\nRychlost větru: %3$.1fm/s</string>
+    <string name="skill_weather_min_max_wind">Minimální teplota: %1$.1f%4$s
+\nMaximální teplota: %2$.1f%4$s
+\nRychlost větru: %3$.1f%5$s</string>
     <string name="skill_sentence_example_current_time">Kolik je hodin\?</string>
     <string name="skill_name_current_time">Aktuální čas</string>
     <string name="skill_time_current_time">Právě teď je %1$s</string>
