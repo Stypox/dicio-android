@@ -215,4 +215,18 @@
     <string name="pref_wake_custom_import">Importovat vlastní probouzecí slovo</string>
     <string name="wake_custom_service_foreground_notification">Poslouchám vlastní probouzecí slovo</string>
     <string name="eval_no_match_repeat">Mohli byste dotaz zopakovat?</string>
+    <string name="use_system_default">Podle systému</string>
+    <string name="pref_weather_length_unit_imperial">Imperiální</string>
+    <string name="skill_weather_celsius">°C</string>
+    <string name="skill_weather_meters_per_second">m/s</string>
+    <string name="skill_weather_kelvin">K</string>
+    <string name="pref_weather_unit_system_instructions">Použije jednotku nastavenou v „Nastavení systému &gt; Systém &gt; Jazyky &gt; Regionální preference“</string>
+    <string name="pref_weather_temperature_unit_celsius">Celsius (°C)</string>
+    <string name="pref_weather_temperature_unit_fahrenheit">Fahrenheit (°F)</string>
+    <string name="pref_weather_temperature_unit_kelvin">Kelvin (K)</string>
+    <string name="pref_weather_length_unit">Jednotky délky</string>
+    <string name="skill_weather_fahrenheit">°F</string>
+    <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="pref_weather_temperature_unit">Jednotka teploty</string>
+    <string name="pref_weather_length_unit_metric">Metrické</string>
 </resources>
