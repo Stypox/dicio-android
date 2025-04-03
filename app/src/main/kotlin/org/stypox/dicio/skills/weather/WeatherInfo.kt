@@ -136,8 +136,7 @@ object WeatherInfo : SkillInfo("weather") {
                         name = stringResource(R.string.use_system_default),
                         // the setting is exposed in system settings only from Android 16
                         // https://9to5google.com/2025/02/13/android-16-beta-2-units-of-measurement/
-                        // TODO use Build.VERSION_CODES.BAKLAVA once updating SDK
-                        description = if (Build.VERSION.SDK_INT < 36) null
+                        description = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.BAKLAVA) null
                         else stringResource(R.string.pref_weather_unit_system_instructions),
                     ),
                 )) + listOf(
