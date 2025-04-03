@@ -42,7 +42,7 @@ object WeatherInfo : SkillInfo("weather") {
 
     // no need to use Hilt injection here, let DataStore take care of handling the singleton itself
     internal val Context.weatherDataStore by dataStore(
-        fileName = "settings.pb",
+        fileName = "skill_settings_weather.pb",
         serializer = SkillSettingsWeatherSerializer,
         corruptionHandler = ReplaceFileCorruptionHandler {
             SkillSettingsWeatherSerializer.defaultValue
