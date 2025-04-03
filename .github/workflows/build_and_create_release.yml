@@ -8,10 +8,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up Java JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 21
           distribution: "temurin"
           cache: 'gradle'
 
