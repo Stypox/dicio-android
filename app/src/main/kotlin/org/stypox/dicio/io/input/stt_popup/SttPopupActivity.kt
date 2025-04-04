@@ -32,6 +32,8 @@ class SttPopupActivity : BaseActivity() {
             SttPopupBottomSheet(
                 customHint = customHint,
                 onDoneClicked = if (startedForSpeechResult) { utterancesWithConfidence ->
+                    // we are going to send the result, make sure not to do it again
+                    startedForSpeechResult = false
                     sendSpeechResult(
                         utterances = utterancesWithConfidence,
                         maybeSpeechExtras = speechExtras,
@@ -40,6 +42,11 @@ class SttPopupActivity : BaseActivity() {
                     null
                 },
                 onDismissRequest = {
+                    if (startedForSpeechResult) {
+                        // we are going to send the result, make sure not to do it again
+                        startedForSpeechResult = false
+                        sendResult(RESULT_CANCELED, Intent(), speechExtras)
+                    }
                     finish()
                 }
             )
@@ -70,21 +77,30 @@ class SttPopupActivity : BaseActivity() {
         // This is for some apps, who use the Android SearchManager (e.g. ebay)
         // (in my eyes probably wrong implemented by them, however without it's not working...)
         intent.putExtra(SearchManager.QUERY, utterances[0].first)
-        setResult(RESULT_OK, intent)
+
+        // complete
+        sendResult(RESULT_OK, intent, maybeSpeechExtras)
+    }
+
+    private fun sendResult(
+        resultCode: Int,
+        intent: Intent,
+        maybeSpeechExtras: Bundle?,
+    ) {
+        setResult(resultCode, intent)
 
         // send pending intent result, if needed
         val speechExtras = maybeSpeechExtras ?: return
         if (speechExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT)) {
             if (speechExtras.containsKey(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE)) {
-                intent.extras?.putAll(speechExtras.getBundle(
-                    RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE
-                ))
+                speechExtras.getBundle(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE)
+                    ?.let { intent.putExtras(it) }
             }
             val resultIntent = speechExtras.getParcelable<PendingIntent>(
                 RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT
             )
             try {
-                resultIntent?.send(this, RESULT_OK, intent)
+                resultIntent?.send(this, resultCode, intent)
             } catch (e: CanceledException) {
                 Log.w(TAG, "Speech result pending intent canceled", e)
             }

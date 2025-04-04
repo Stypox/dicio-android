@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "org.stypox.dicio.skills.weather";
+option java_multiple_files = true;
+
+enum TemperatureUnit {
+  TEMPERATURE_UNIT_SYSTEM = 0;
+  TEMPERATURE_UNIT_CELSIUS = 1;
+  TEMPERATURE_UNIT_FAHRENHEIT = 2;
+  TEMPERATURE_UNIT_KELVIN = 3;
+}

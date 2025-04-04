@@ -15,6 +15,7 @@ import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SkillContextImpl
+import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.settings.datastore.UserSettingsModule
 import org.stypox.dicio.skills.calculator.CalculatorInfo
@@ -36,7 +37,7 @@ import javax.inject.Singleton
 class SkillHandler @Inject constructor(
     private val dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
-    private val skillContext: SkillContext,
+    private val skillContext: SkillContextInternal,
 ) {
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
     val allSkillInfoList = listOf(

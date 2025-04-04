@@ -27,18 +27,6 @@ val PERMISSION_CALL_PHONE = Permission.NormalPermission(
     name = R.string.perm_call_phone,
     id = Manifest.permission.CALL_PHONE,
 )
-val PERMISSION_NOTIFICATION_LISTENER = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-    Permission.SecurePermission(
-        name = R.string.perm_notification_listener,
-        id = "enabled_notification_listeners",
-        settingsAction = Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS,
-    )
-} else {
-    Permission.NormalPermission(
-        name = R.string.perm_notification_listener,
-        id = Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
-    )
-}
 
 /**
  * @param context the Android context

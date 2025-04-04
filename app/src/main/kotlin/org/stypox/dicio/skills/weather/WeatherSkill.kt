@@ -16,31 +16,19 @@ import kotlin.math.roundToInt
 
 class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Weather>) :
     StandardRecognizerSkill<Weather>(correspondingSkillInfo, data) {
+
     override suspend fun generateOutput(ctx: SkillContext, inputData: Weather): SkillOutput {
-        var city = when (inputData) {
-            is Weather.Current -> inputData.where
-        }
-
-        if (city.isNullOrEmpty()) {
-            city = ctx.android.weatherDataStore.data.first().defaultCity
-                .let { StringUtils.removePunctuation(it.trim { ch -> ch <= ' ' }) }
-        }
-
-        if (city.isEmpty()) {
-            city = ConnectionUtils.getPageJson(IP_INFO_URL).getString("city")
-        }
-
-        if (city.isNullOrEmpty()) {
-            return WeatherOutput.Failed(city = city ?: "")
-        }
+        val prefs = ctx.android.weatherDataStore.data.first()
+        val city = getCity(prefs, inputData) ?: return WeatherOutput.Failed(city = "")
 
         val weatherData = try {
             ConnectionUtils.getPageJson(
+                // always request in metric units (°C and m) and convert later
                 "$WEATHER_API_URL?APPID=$API_KEY&units=metric&lang=" +
                         ctx.locale.language.lowercase(Locale.getDefault()) +
                         "&q=" + ConnectionUtils.urlEncode(city)
             )
-        } catch (ignored: FileNotFoundException) {
+        } catch (_: FileNotFoundException) {
             return WeatherOutput.Failed(city = city)
         }
 
@@ -48,7 +36,9 @@ class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDa
         val mainObject = weatherData.getJSONObject("main")
         val windObject = weatherData.getJSONObject("wind")
 
+        val tempUnit = ResolvedTemperatureUnit.from(prefs)
         val temp = mainObject.getDouble("temp")
+        val tempConverted = tempUnit.convert(temp)
         return WeatherOutput.Success(
             city = weatherData.getString("name"),
             description = weatherObject.getString("description")
@@ -58,10 +48,31 @@ class WeatherSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDa
             tempMin = mainObject.getDouble("temp_min"),
             tempMax = mainObject.getDouble("temp_max"),
             tempString = ctx.parserFormatter
-                ?.niceNumber(temp.roundToInt().toDouble())?.speech(true)?.get()
-                ?: (temp.roundToInt().toString()),
+                ?.niceNumber(tempConverted.roundToInt().toDouble())?.speech(true)?.get()
+                ?: (tempConverted.roundToInt().toString()),
             windSpeed = windObject.getDouble("speed"),
+            temperatureUnit = tempUnit,
+            lengthUnit = ResolvedLengthUnit.from(prefs),
         )
+    }
+
+    private fun getCity(prefs: SkillSettingsWeather, inputData: Weather): String? {
+        var city = when (inputData) {
+            is Weather.Current -> inputData.where
+        }
+
+        if (city.isNullOrEmpty()) {
+            city = StringUtils.removePunctuation(prefs.defaultCity.trim { ch -> ch <= ' ' })
+        }
+
+        if (city.isEmpty()) {
+            city = ConnectionUtils.getPageJson(IP_INFO_URL).getString("city")
+        }
+
+        if (city.isNullOrEmpty()) {
+            return null
+        }
+        return city
     }
 
     companion object {

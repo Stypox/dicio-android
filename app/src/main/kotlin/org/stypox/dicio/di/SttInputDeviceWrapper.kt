@@ -21,9 +21,11 @@ import org.stypox.dicio.R
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.io.input.external_popup.ExternalPopupInputDevice
 import org.stypox.dicio.io.input.vosk.VoskInputDevice
 import org.stypox.dicio.settings.datastore.InputDevice
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_NOTHING
+import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_EXTERNAL_POPUP
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_UNSET
 import org.stypox.dicio.settings.datastore.InputDevice.INPUT_DEVICE_VOSK
 import org.stypox.dicio.settings.datastore.InputDevice.UNRECOGNIZED
@@ -42,7 +44,7 @@ interface SttInputDeviceWrapper {
 
     fun onClick(eventListener: (InputEvent) -> Unit)
 
-    fun releaseResources()
+    fun reinitializeToReleaseResources()
 }
 
 class SttInputDeviceWrapperImpl(
@@ -50,6 +52,7 @@ class SttInputDeviceWrapperImpl(
     dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
     private val okHttpClient: OkHttpClient,
+    private val activityForResultManager: ActivityForResultManager,
 ) : SttInputDeviceWrapper {
     private val scope = CoroutineScope(Dispatchers.Default)
 
@@ -99,9 +102,9 @@ class SttInputDeviceWrapperImpl(
         return when (setting) {
             UNRECOGNIZED,
             INPUT_DEVICE_UNSET,
-            INPUT_DEVICE_VOSK -> VoskInputDevice(
-                appContext, okHttpClient, localeManager
-            )
+            INPUT_DEVICE_VOSK -> VoskInputDevice(appContext, okHttpClient, localeManager)
+            INPUT_DEVICE_EXTERNAL_POPUP ->
+                ExternalPopupInputDevice(appContext, activityForResultManager, localeManager)
             INPUT_DEVICE_NOTHING -> null
         }
     }
@@ -117,14 +120,14 @@ class SttInputDeviceWrapperImpl(
                 newSttInputDevice.uiState.collect {
                     _uiState.emit(it)
                     if (it == SttState.Listening) {
-                        playSoundWhenStartsListening()
+                        playSound(R.raw.listening_sound)
                     }
                 }
             }
         }
     }
 
-    private fun playSoundWhenStartsListening() {
+    private fun playSound(resid: Int) {
         val attributes = AudioAttributes.Builder()
             .setUsage(
                 when (sttPlaySoundSetting) {
@@ -137,13 +140,24 @@ class SttInputDeviceWrapperImpl(
                 }
             )
             .build()
-        val mediaPlayer = MediaPlayer.create(appContext, R.raw.listening_sound, attributes, 0)
+        val mediaPlayer = MediaPlayer.create(appContext, resid, attributes, 0)
         mediaPlayer.setVolume(0.75f, 0.75f)
         mediaPlayer.start()
     }
 
+    private fun wrapEventListener(eventListener: (InputEvent) -> Unit): (InputEvent) -> Unit = {
+        if (it is InputEvent.None) {
+            scope.launch {
+                playSound(R.raw.listening_no_input_sound)
+            }
+        }
+        eventListener(it)
+    }
+
     override fun tryLoad(thenStartListeningEventListener: ((InputEvent) -> Unit)?): Boolean {
-        return sttInputDevice?.tryLoad(thenStartListeningEventListener) ?: false
+        return sttInputDevice?.tryLoad(if (thenStartListeningEventListener != null) {
+            wrapEventListener(thenStartListeningEventListener)
+        } else { null }) ?: false
     }
 
     override fun stopListening() {
@@ -151,10 +165,10 @@ class SttInputDeviceWrapperImpl(
     }
 
     override fun onClick(eventListener: (InputEvent) -> Unit) {
-        sttInputDevice?.onClick(eventListener)
+        sttInputDevice?.onClick(wrapEventListener(eventListener))
     }
 
-    override fun releaseResources() {
+    override fun reinitializeToReleaseResources() {
         scope.launch { changeInputDeviceTo(inputDeviceSetting) }
     }
 }
@@ -169,7 +183,10 @@ class SttInputDeviceWrapperModule {
         dataStore: DataStore<UserSettings>,
         localeManager: LocaleManager,
         okHttpClient: OkHttpClient,
+        activityForResultManager: ActivityForResultManager,
     ): SttInputDeviceWrapper {
-        return SttInputDeviceWrapperImpl(appContext, dataStore, localeManager, okHttpClient)
+        return SttInputDeviceWrapperImpl(
+            appContext, dataStore, localeManager, okHttpClient, activityForResultManager
+        )
     }
 }

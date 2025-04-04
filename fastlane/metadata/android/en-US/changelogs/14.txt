@@ -1,0 +1,16 @@
+New:
+• Add Polish language
+• Add media control skill
+• Allow using external Speech-To-Text apps as input device
+• Allow importing a custom wake word model
+• Play stop sound when no speech is detected
+
+Improved:
+• [Weather] Shorten speech responses and support imperial units
+• Ask to repeat and reopen microphone
+• Small improvements to sentence matching
+
+Fixed:
+• Fix inconsistent language after resuming app
+• Fix notification not expandable
+• [Search] Fix DuckDuckGo scraper

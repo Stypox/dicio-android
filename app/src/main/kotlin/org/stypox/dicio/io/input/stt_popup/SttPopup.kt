@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -54,12 +57,13 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.stypox.dicio.R
-import org.stypox.dicio.ui.home.SttFab
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.ui.home.SttFab
 import org.stypox.dicio.ui.theme.AppTheme
 import org.stypox.dicio.util.ShareUtils
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun SttPopupBottomSheet(
     customHint: String?,
     onDoneClicked: ((List<Pair<String, Float>>) -> Unit)?,
@@ -74,22 +78,25 @@ fun SttPopupBottomSheet(
     // Use `systemBars + displayCutout` instead of `safeDrawing` because `safeDrawing` also includes
     // the `ime`, which is instead added as insets directly to the `ModalBottomSheet` window,
     // since these insets are not really meant to be drawn under.
-    val insets = WindowInsets.systemBars.union(WindowInsets.displayCutout)
-        .only(
-            WindowInsetsSides.Horizontal.let {
-                // put the bottom insets to draw background under the navigation bars, but only
-                // if the keyboard is not open, because in that case the navigation bars would be
-                // below the keyboard and the keyboard insets are handled by ModalBottomSheet
-                if (WindowInsets.ime.getBottom(LocalDensity.current) > 0) {
-                    it
+    val isKeyboardOpen = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+    val isLandscape = // no horizontal padding if the dialog will not stretch the whole screen
+        LocalConfiguration.current.screenWidthDp.dp > BottomSheetDefaults.SheetMaxWidth
+    val insets = if (isLandscape && isKeyboardOpen) {
+        PaddingValues(0.dp)
+    } else {
+        WindowInsets.systemBars.union(WindowInsets.displayCutout)
+            .only(
+                if (isLandscape) {
+                    WindowInsetsSides.Bottom
+                } else if (isKeyboardOpen) {
+                    WindowInsetsSides.Horizontal
                 } else {
-                    it + WindowInsetsSides.Bottom
+                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
                 }
-            }
-        )
-        .asPaddingValues()
+            )
+            .asPaddingValues()
+    }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         // insets are applied on the content, to also draw the background under the navigation bars,

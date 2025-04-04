@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="skill_name_calculator">Calculadora</string>
-    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
-\nTemperatura máxima: %2$.1f°C
-\nVelocidad del viento: %3$.1fm/s</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f%4$s
+\nTemperatura máxima: %2$.1f%4$s
+\nVelocidad del viento: %3$.1f%5$s</string>
     <string name="drawer_header_subtitle">¿En que puedo ayudarlo\?</string>
     <string name="drawer_open">Abrir caja de navegación</string>
     <string name="vosk_model_ready">Esta listo el modelo Vosk</string>
     <string name="share">Compartir</string>
-    <string name="copied_to_clipboard">Copiar al portapapeles</string>
+    <string name="copied_to_clipboard">Copiado al portapapeles</string>
     <string name="text_input_hint">Preguntame algo…</string>
     <string name="here_is_what_i_can_do">¡Esto es lo que puedo hacer!</string>
     <string name="action_text_input">Entrada de texto</string>
@@ -42,7 +42,7 @@
     <string name="pref_weather_default_city">Ciudad por defecto</string>
     <string name="eval_fatal_error">No se pudo evaluar su solicitud</string>
     <string name="eval_network_error_description">Dicio no pudo acceder a Internet. Comprueba tu conexión y vuelve a intentarlo.</string>
-    <string name="eval_no_match">No entendí, ¿podrías repetirlo\?</string>
+    <string name="eval_no_match">No entendí, ¿podrías repetirlo?</string>
     <string name="skill_name_search">Buscar</string>
     <string name="skill_sentence_example_search">Buscar como alimentar a un gato</string>
     <string name="skill_name_weather">Clima</string>
@@ -56,7 +56,7 @@
     <string name="skill_search_here_is_what_i_found">Esto es lo que he encontrado</string>
     <string name="skill_weather_could_not_find_city">No pudo encontrar la ciudad %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Actualmente en %1$s esta %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s - %2$.1f°C</string>
+    <string name="skill_weather_description_temperature">%1$s - %2$.1f%3$s</string>
     <string name="skill_lyrics_song_not_found">No se ha encontrado la canción %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">Se ha encontrado la canción %1$s de %2$s</string>
     <string name="skill_open_unknown_app">Aplicación desconocida %1$s</string>
@@ -139,7 +139,7 @@
     <string name="start_listening">Empieza a escuchar</string>
     <string name="skill_open_could_not_understand">No entiendo la aplicación</string>
     <string name="all_skills_disabled_description">Por favor, activa algunas funciones desde la configuración; de lo contrario, Dicio no podrá hacer nada</string>
-    <string name="pref_theme_black">Oscuro</string>
+    <string name="pref_theme_black">Negro</string>
     <string name="pref_dynamic_colors_summary">Utiliza los colores dinámicos de Material You proporcionados por el sistema</string>
     <string name="back">Atrás</string>
     <string name="clear">Limpiar</string>
@@ -166,5 +166,31 @@
     <string name="pref_theme_system_dark_black">Utiliza el tema del sistema (usa la variante negra para el tema oscuro)</string>
     <string name="pref_dynamic_colors_title">Colores dinámicos</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
-    <string name="stt_service_label">Dicio, reconocimiento de voz sin conexión</string>
+    <string name="stt_service_label">Reconocimiento de voz sin conexión Dicio</string>
+    <string name="pref_stt_play_sound_notification">Canal de notificaciones</string>
+    <string name="pref_stt_play_sound_alarm">Canal de alarma</string>
+    <string name="pref_stt_play_sound_media">Por defecto/canal multimedia</string>
+    <string name="pref_stt_play_sound_none">No reproducir sonido</string>
+    <string name="wake_service_foreground_notification">Escuchando la palabra de activación \"Hey Dicio\"</string>
+    <string name="wake_service_start_notification">Toque para iniciar el servicio de palabras de activación de Dicio</string>
+    <string name="wake_word_error_downloading_network">Dicio no pudo conectarse a Internet. Verifique su conexión y vuelva a intentarlo.</string>
+    <string name="wake_word_error_loading">Se produjo un error inesperado durante la carga</string>
+    <string name="disable">Desactivar</string>
+    <string name="retry">Reintentar</string>
+    <string name="stop">Detener</string>
+    <string name="grant_permissions">Conceder permisos</string>
+    <string name="pref_wake_method">Método de reconocimiento de palabras en reposo</string>
+    <string name="pref_wake_method_summary">Elija el servicio que desea utilizar para escuchar la palabra de activación \"Hey Dicio\" en segundo plano</string>
+    <string name="pref_wake_method_disabled">Desactivado</string>
+    <string name="pref_wake_method_openwakeword">Procesamiento de audio sin conexión OpenWakeWord</string>
+    <string name="wake_service_foreground_notification_summary">Esta notificación permite que las palabras para activar Dicio escuche el micrófono en segundo plano</string>
+    <string name="wake_service_label">Palabras para activar Dicio</string>
+    <string name="wake_word_error_downloading">Se produjo un error inesperado durante la descarga</string>
+    <string name="wake_service_triggered_notification_summary">En Android 10+ Dicio no puede iniciarse cuando se detecta una palabra de despertador sin mostrar una notificación.</string>
+    <string name="wake_word_setup_title">Configurar palabra de activación</string>
+    <string name="wake_word_setup_description">Dicio se activará automáticamente cada vez que digas \"Hey Dicio\". Esto funciona iniciando un servicio que siempre escucha en segundo plano. Todo el procesamiento de voz se realiza de forma local, por eso es necesario descargar el modelo de IA con antelación.</string>
+    <string name="pref_stt_play_sound_summary">Elija si desea reproducir un sonido cuando su voz empiece a ser reconocida y seleccione el canal de audio en el que se reproducirá el sonido</string>
+    <string name="pref_stt_play_sound_title">Reproducir sonido al empezar a escuchar</string>
+    <string name="wake_service_triggered_notification">Palabra de activación de Dicio activada, toque para abrir</string>
+    <string name="wake_service_start_notification_summary">En Android 11+ Dicio no puede iniciar el servicio sin una interacción manual del usuario.</string>
 </resources>
