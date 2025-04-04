@@ -36,6 +36,7 @@ import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import java.time.Instant
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,7 +45,7 @@ class WakeService : Service() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
-    private var listening = AtomicBoolean(false)
+    private val listening = AtomicBoolean(false)
 
     @Inject
     lateinit var skillEvaluator: SkillEvaluator
@@ -196,6 +197,8 @@ class WakeService : Service() {
                     nextWakeWordAllowed = Instant.now().plusMillis(WAKE_WORD_BACKOFF_MILLIS)
                     onWakeWordDetected()
                 }
+
+                lastHeard.set(Instant.now())
             }
         } finally {
             ar.stop()
@@ -309,6 +312,18 @@ class WakeService : Service() {
             ContextCompat.startForegroundService(context, intent)
         }
 
+        fun stop(context: Context) {
+            try {
+                context.startService(Intent(context, WakeService::class.java)
+                    .apply { action = ACTION_STOP_WAKE_SERVICE })
+            } catch (e: IllegalStateException) {
+                // Must not have been running. No problem with that.
+            }
+        }
+
+        // Consider the service running if it processed any audio data within the past half second.
+        fun isRunning(): Boolean = lastHeard.get().isAfter(Instant.now().minusMillis(500))
+
         /**
          * On Android 10+ cancels any notification telling the user that the Dicio wake word was
          * triggered, which is not needed anymore after the main activity starts.
@@ -319,6 +334,8 @@ class WakeService : Service() {
                     ?.cancel(TRIGGERED_NOTIFICATION_ID)
             }
         }
+
+        private val lastHeard = AtomicReference<Instant>()
 
         private val TAG = WakeService::class.simpleName
         private const val FOREGROUND_NOTIFICATION_CHANNEL_ID =

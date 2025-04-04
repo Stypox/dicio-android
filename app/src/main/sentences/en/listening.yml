@@ -1,13 +1,9 @@
 stop:
   - stop listening
-  - mute
-  - mute microphone
+  - mute microphone?
   - turn off microphone
 
 start:
   - start listening
-  - unmute
-  - on mute
-  - unmute microphone
-  - on mute microphone
+  - unmute|(on mute) microphone?
   - turn on microphone
