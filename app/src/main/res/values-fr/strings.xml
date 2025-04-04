@@ -190,7 +190,6 @@
     <string name="wake_word_setup_description">Dicio se réveillera automatiquement chaque fois que vous dites « Hey Dicio ». Cela fonctionne en démarrant un service qui écoute en permanence en arrière-plan. Tout le traitement vocal se fait sur votre appareil, c’est pourquoi vous devez télécharger le modèle d’IA à au préalable.</string>
     <string name="perm_read_contacts">lire vos contacts</string>
     <string name="perm_call_phone">passer directement des appels téléphoniques</string>
-    <string name="perm_notification_listener">notifications de l\'appareil et des applications</string>
     <string name="skill_name_media">Contrôle des médias</string>
     <string name="skill_sentence_example_media">Musique suivante</string>
     <string name="skill_media_playing">Média en cours de lecture…</string>

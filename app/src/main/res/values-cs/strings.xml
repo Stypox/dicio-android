@@ -193,7 +193,6 @@
     <string name="wake_word_setup_description">Dicio se automaticky probudí, kdykoli řeknete „Hey Dicio“. Funguje to tak, že se spustí služba, která vždy naslouchá na pozadí. Veškeré zpracování řeči probíhá lokálně, proto je třeba předem stáhnout model umělé inteligence.</string>
     <string name="wake_word_setup_title">Nastavit probouzecí slovo</string>
     <string name="retry">Zkusit znovu</string>
-    <string name="perm_notification_listener">oznámení zařízení a aplikací</string>
     <string name="skill_media_pausing">Pozastavování médií…</string>
     <string name="skill_media_no_media_session">Není aktivní žádná multimediální relace</string>
     <string name="notification_listener_label">Posluchač oznámení Dicio</string>

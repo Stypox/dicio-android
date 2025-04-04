@@ -196,7 +196,6 @@
     <string name="skill_search_no_results_stop">Пошук не дав результатів</string>
     <string name="perm_read_contacts">читати ваші контакти</string>
     <string name="perm_call_phone">прямий телефонний номер телефону</string>
-    <string name="perm_notification_listener">сповіщення пристрою та програми</string>
     <string name="skill_name_media">Контроль ЗМІ</string>
     <string name="skill_sentence_example_media">Наступна пісня</string>
     <string name="skill_media_playing">Відтворення медіафайлів…</string>

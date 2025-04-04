@@ -195,7 +195,6 @@
     <string name="disable">停用</string>
     <string name="perm_read_contacts">读取联系人</string>
     <string name="perm_call_phone">直接呼叫号码</string>
-    <string name="perm_notification_listener">设备和应用通知</string>
     <string name="skill_name_media">媒体控制</string>
     <string name="skill_sentence_example_media">下一首歌</string>
     <string name="skill_media_playing">播放媒体中…</string>

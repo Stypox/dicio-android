@@ -193,7 +193,6 @@
     <string name="wake_service_start_notification_summary">In Android 11+ kann Dicio den Dienst nicht ohne manuelle Interaktion des Benutzers starten.</string>
     <string name="wake_word_setup_description">Dicio wird automatisch aktiv, wann immer du \"Hey Dicio\" sagst. Dies funktioniert, indem ein Dienst gestartet wird, der immer im Hintergrund zuhört. Alle Sprachverarbeitung erfolgt lokal, deshalb musst du das KI-Modell im Voraus herunterladen.</string>
     <string name="retry">Erneut versuchen</string>
-    <string name="perm_notification_listener">Geräte- und App-Benachrichtigungen</string>
     <string name="skill_name_media">Mediensteuerung</string>
     <string name="skill_sentence_example_media">Nächstes Lied</string>
     <string name="skill_media_playing">Spiele Medien…</string>

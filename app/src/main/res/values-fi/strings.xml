@@ -137,7 +137,6 @@
     <string name="settings_description_with_value">%1$s — %2$s</string>
     <string name="perm_read_contacts">lue yhteystietosi</string>
     <string name="perm_call_phone">soittaa suoraan puhelinnumeroihin</string>
-    <string name="perm_notification_listener">laite- ja sovellusilmoitukset</string>
     <string name="skill_name_search">Etsi</string>
     <string name="skill_sentence_example_search">Etsi kuinka ruokkia kissa</string>
     <string name="skill_name_weather">Sää</string>

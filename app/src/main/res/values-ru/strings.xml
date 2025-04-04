@@ -195,7 +195,6 @@
     <string name="skill_open_could_not_understand">Не удалось найти приложение</string>
     <string name="perm_read_contacts">чтение контактов</string>
     <string name="perm_call_phone">совершать звоки</string>
-    <string name="perm_notification_listener">уведомления устройств и приложений</string>
     <string name="skill_name_media">Управление мультимедиа</string>
     <string name="skill_media_playing">Воспроизведение мультимедии…</string>
     <string name="skill_sentence_example_media">Следующая песня</string>

@@ -188,7 +188,6 @@
     <string name="wake_word_setup_description">\"Hey Dicio\" dediğinizde Dicio otomatik olarak uyanacaktır. Bu, her zaman arka planda dinleyen bir hizmet başlatarak çalışır. Tüm konuşma işleme yerel olarak gerçekleşir, bu yüzden AI modelini önceden indirmeniz gerekir.</string>
     <string name="perm_read_contacts">kişilerinizi okuyun</string>
     <string name="perm_call_phone">doğrudan telefon numaralarını arayın</string>
-    <string name="perm_notification_listener">cihaz ve uygulama bildirimleri</string>
     <string name="skill_name_media">Medya kontrol</string>
     <string name="skill_sentence_example_media">Sıradaki şarkı</string>
     <string name="skill_media_pausing">Medya durduruluyor…</string>

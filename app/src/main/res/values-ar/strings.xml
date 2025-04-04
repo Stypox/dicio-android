@@ -193,7 +193,6 @@
     <string name="wake_word_setup_title">إعداد كلمة الاستيقاظ</string>
     <string name="perm_read_contacts">قراءة جهات الاتصال</string>
     <string name="perm_call_phone">اتصال مباشر بأرقام الهواتف</string>
-    <string name="perm_notification_listener">الإخطارات المتعلقة بالأجهزة والتطبيق</string>
     <string name="skill_name_media">التحكم في الوسائط</string>
     <string name="skill_sentence_example_media">الأغنية التالية</string>
     <string name="skill_media_playing">تشغيل الوسائط…</string>

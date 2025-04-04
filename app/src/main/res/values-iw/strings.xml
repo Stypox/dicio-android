@@ -208,7 +208,6 @@
     <string name="pref_input_method_vosk_summary">הורדת והרצה של מודל הכתבה של Vosk באופן בלתי מקוון בתוך Dicio</string>
     <string name="pref_input_method_external_popup">חלונית הכתבה חיצונית</string>
     <string name="skill_sentence_example_media">השיר הבא</string>
-    <string name="perm_notification_listener">התראות מכשיר ויישום</string>
     <string name="skill_name_media">בקרת מדיה</string>
     <string name="skill_media_pausing">המדיה מושהית…</string>
     <string name="notification_listener_label">מאזין אירועי התראות Dicio</string>
