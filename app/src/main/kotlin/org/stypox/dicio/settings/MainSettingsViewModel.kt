@@ -71,6 +71,8 @@ class MainSettingsViewModel @Inject constructor(
         updateData { it.setSpeechOutputDevice(value) }
     fun setSttPlaySound(value: SttPlaySound) =
         updateData { it.setSttPlaySound(value) }
+    fun setSttSilenceDuration(value: Int) =
+        updateData { it.setSttSilenceDuration(value) }
     fun setAutoFinishSttPopup(value: Boolean) =
         updateData { it.setAutoFinishSttPopup(value) }
 }
