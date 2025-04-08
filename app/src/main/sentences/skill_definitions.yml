@@ -53,6 +53,12 @@ skills:
           - id: what
             type: string
 
+  - id: listening
+    specificity: high
+    sentences:
+      - id: stop
+      - id: start
+
   - id: search
     specificity: low
     sentences:

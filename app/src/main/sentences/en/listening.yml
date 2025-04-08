@@ -1,0 +1,9 @@
+stop:
+  - stop listening
+  - mute microphone?
+  - turn off microphone
+
+start:
+  - start listening
+  - unmute|(on mute) microphone?
+  - turn on microphone
