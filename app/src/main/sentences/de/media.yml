@@ -1,0 +1,15 @@
+play:
+  - spiel<e?>|mach<e?> (das|den|die? lied|song|track|musik|audio|video|film|stream)? wieder? ab|an?
+
+pause:
+  - pausier<e<n?>?>|halt<e<n?>?>|stopp<e<n?>?> (das|den|die? lied|song|track|musik|audio|video|film|stream)?
+  - mach<e?>? das|den|die? lied|song|track|musik|audio|video|film|stream auf pause
+
+previous:
+  - speil<e?>? das|den|die? letzte<n?> lied|song|track|musik|audio|video|film|stream? (in der <warte?>schlange)?
+  - geh<e?>? zurück|zurueck (zum|zur letzten lied|song|track|musik|audio|video|film|stream)
+  - wiederhol<e?> das|den|die? letzte<n?> lied|song|track|musik|audio|video|film|stream
+
+next:
+  - skip<e?>|überspring<e?>|ueberspring<e?> das|den|die|ein<e<n?>?>? lied|song|track|musik|audio|video|film|stream
+  - spiel<e?>|spring<e?>|geh<e?>? das|den|die|zu<m|r>? nächste<s|n?>|folgende<s|n?> lied|song|track|musik|audio|video|film|stream? (in der <warte?>schlange)?
