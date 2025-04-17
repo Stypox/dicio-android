@@ -45,6 +45,11 @@ skills:
       - id: previous
       - id: next
 
+  - id: joke
+    specificity: low
+    sentences:
+      - id: command
+
   - id: open
     specificity: medium
     sentences:
