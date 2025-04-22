@@ -1,5 +1,5 @@
 query:
-  - dame|obtiene|muestra|mostrar|carga<r?>|ve<r?>|encuentra|(buscar la?)? me? el|la? letra|texto (del|de|desde|acerca (la cancion)?)? .song.
+  - dame|obtiene|obten<er?>|muestra|mostrar|carga<r?>|ve<r?>|encuentra|encontrar|(buscar la?)? me? el|la? letra|texto (del|de|desde|acerca (la cancion)?)? .song.
   - canta<r?>|sing (el tema)? .song.
   - .song. letra<s?>|texto<s?>|cancionero
   - cancionero|letra<s?>|textos .song.
