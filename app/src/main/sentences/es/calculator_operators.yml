@@ -14,4 +14,5 @@ power:
   - elevado? a la (potencia<do?>|exponente)? (por|de)?
 
 square_root:
-  - a? la? raiz cuadrada de?
+  - la? raiz cuadrada de?
+  - radical cuadrado de?
