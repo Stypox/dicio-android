@@ -1,0 +1,18 @@
+play:
+  - reproducir|(dejar de pausar) ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+  - enciend<a|e>|inicializar|inicialic<a|e> el reproductor
+  - continu<e|a|ar> reproduciendo ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+
+pause:
+  - pausar|detener|(dejar en pausa) ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+  - pon (el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream en pausa
+
+previous:
+  - reproducir el|la? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream anterior|antecesor<a?> (de|en la cola|fila)?
+  - reproducir el|la? anterior|antecesor<a?> cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream (de|en la cola|fila)?
+  - retroceder|(ir a la anterior|antecesor)
+
+next:
+  - saltar el|la? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream
+  - reproducir|pasar el|la? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream? siguiente|antecesor<a?> (de|en la cola|fila)?
+  - ir a la siguiente|sucesor<a?>
