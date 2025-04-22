@@ -1,4 +1,4 @@
 current:
-  - (que|cual es el?)? clima (en? .where.)?
+  - (como|cual es el?)? clima (en? .where.)?
   - como esta ahora|hoy mismo?
-  - esta|hay frio|congelado|calor|caliente|soleado|lluvioso|lloviendo|nevando|nieve afuera|(en? .where.)?
+  - esta|hay|hace frio|congelado|calor|caliente|soleado|lluvioso|lloviendo|nevando|nieve afuera|(en? .where.)?
