@@ -1,6 +1,7 @@
 play:
-  - reproducir|sonar|(dejar de pausar) ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
-  - enciend<a|e>|inicializar|inicialic<a|e> el reproductor
+  - reproducir|reproduzca|sonar|(dejar de pausar) ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+  - reanuda<r?>|continua<r?> ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)
+  - activ<a|e>|enciend<a|e>|inicializar|inicialic<a|e> el reproductor
   - continu<e|a|ar> reproduciendo ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
 
 pause:
