@@ -1,0 +1,22 @@
+Dicio es un <b>asistente de voz</b> <i>libre y de código abierto</i>. Soporta varias <b>habilidades</b> y métodos de entrada/salida, y ofrece una respuesta tanto <b>sonora</b> como <b>gráfica</b> a cada pregunta. Recurre a <a href="https://github.com/alphacep/vosk-api/">Vosk</a> para <i>reconocimiento de voz</i>. Cuenta con soporte <b>multilingüe</b>, y actualmente está disponible en alemán, checo, esloveno, español, francés, griego, inglés, italiano, polaco, ruso y ucraniano.
+
+Dicio puede atender respuestas sobre:
+<ul>
+<li><b>búsqueda</b>: busca información vía <b>DuckDuckGo</b> (y otros buscadores en el futuro) - <i>Busca sobre Dicio</i></li>
+<li><b>clima</b>: obtiene información desde <b>OpenWeatherMap</b> - <i>¿Cuál es el clima de hoy?</i></li>
+<li><b>cancionero</b>: muestra letras de canciones por <b>Genius</b> - <i>¿Cuál es la canción que tiene la letra "we will we will rock you"?</i></li>
+<li><b>abrir apps</b>: abre una app desde su dispositivo - <i>Abre NewPipe</i></li>
+<li><b>calculadora</b>: evaluates basic calculations - <i>Cuánto es cuatro mil dos por tres menos un millón dividido entre trescientos?</i></li>
+<li><b>teléfono</b>: visualiza y llama a contactos telefónicos - <i>Llama a Tom</i></li>
+<li><b>temporizador</b>: establece, pregunta y cancela temporizadores - <i>Establece un contador de diez minutos</i></li>
+<li><b>hora actual</b>: pregunta la hora - <i>¿Qué hora es?</i></li>
+<li><b>navegación</b>: ejecuta la app de navegación para solicitar lugares - <i>Llévame a la estatua de Nueva York</i></li>
+</ul>
+
+Dicio puede recibir órdenes a través de un cuadro de texto o a través del <i>reconocimiento de voz</i> <a href="https://github.com/alphacep/vosk-api/">Vosk</a>, y puede conversar mediante cajas de texto o el <i>sintetizador de voz</i> de Android. La <b>respuesta visual interactiva</b> se basa en las habilidades requeridas para atender preguntas.
+
+Cada habilidad puede activarse, desactivarse o personalizarse mediante la pantalla de ajuste correspondiente. Hay disponibles temas de color oscuro, negro y dinámico.
+
+La entrada del usuario se interpreta mediante bibliotecas específicas, aunque reutilizables: <a href="https://github.com/Stypox/dicio-sentences-compiler">dicio-sentences-compiler</a> y <a href="https://github.com/Stypox/dicio-numbers">dicio-numbers</a>.
+
+La app depende de características <i>NonFreeNet</i> porque algunas habilidades requiere de servidores web no libres para mostrar información pedida por el usuario. Puede desactivar fácilmente las habilidades no deseadas o elegir servicios alternativos a través de los ajustes.

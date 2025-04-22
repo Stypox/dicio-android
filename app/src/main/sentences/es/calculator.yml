@@ -1,3 +1,3 @@
 calculate:
-  - calculadora|caculadora|determina|halla (el? valor de)|(cuanto vale|es|fa)? .calculation.
+  - calcule|cacula<r|dora?>|determin<a|e>|hall<a|e>|encuentr<a|e>|operar|oper<a|e> (el? valor de)|(cuanto vale|es|fa)? .calculation.
   - cuanto vale|es|fa .calculation.

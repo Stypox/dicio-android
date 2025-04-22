@@ -1,17 +1,18 @@
 addition:
-  - más|(sumar|suma|sumando|suma|añade|agrega|añadiendo|añadir a?)
+  - más|(suma<r|ando?>|añad<a|e|ir|ido|iendo>|agrega<r?> (a|con)?)
 
 subtraction:
   - menos|sustraer|restar|restando
 
 multiplication:
-  - por|(multiplicar|miltiplicando|multiplicando|moltiplicar por?)
+  - por|(m<o|i|u>ltiplica<r|ndo|do> por?)
 
 division:
-  - (dividir|division|dividendo|dividi do|por?)
+  - entre|(dividir|division|dividendo|dividido por|entre?)
 
 power:
-  - elevado? a la (potenciado por)?
+  - elevado? a la (potencia<do?>|exponente)? (por|de)?
 
 square_root:
-  - raiz cuadrada de?
+  - la? raiz cuadrada de?
+  - radical cuadrado de?
