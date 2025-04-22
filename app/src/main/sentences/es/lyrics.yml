@@ -3,4 +3,4 @@ query:
   - canta<r?>|sing (el tema)? .song.
   - .song. letra<s?>|texto<s?>|cancionero
   - cancionero|letra<s?>|textos .song.
-  - (que|cual esa|es|fue|s la?)? cancion (esta|cual|que dice|tiene|lleva)|(con|la|el letra|texto) .song.
+  - (que|cual esa|es|fue|s la?)? cancion (esta|cual|que dice|tiene|lleva)|(con|cuy<a|o>|la|el letra|texto es?) .song.
