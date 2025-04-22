@@ -1,6 +1,6 @@
 set:
   - notifica<r?>me|alerta<r?>me en .duration.
-  - ajusta<r?>|configura<r?>|inicia<r?>|crea<r?> un? temporizador|cronometro|contador (con duracion)? de .duration. ((denominado|llamado|(con el nombre de?)) .name.)?
+  - establece<r?>|ajusta<r?>|configura<r?>|inicia<r?>|crea<r?> un? temporizador|cronometro|contador (con duracion)? de .duration. ((denominado|llamado|(con el nombre de?)) .name.)?
 
 cancel:
   - cancela<r?>|deten<er?> ((el? temporizador|cronometro|contador llamado|(con el nombre de?))|(los? temporizadores|cronometros|contadores (llamados|(con el nombre de?))))? .name.

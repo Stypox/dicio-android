@@ -1,5 +1,5 @@
 addition:
-  - más|(suma<r|ando?>|añad<a|e|ir|iendo>|agrega<r?> (a|con)?)
+  - más|(suma<r|ando?>|añad<a|e|ir|ido|iendo>|agrega<r?> (a|con)?)
 
 subtraction:
   - menos|sustraer|restar|restando
@@ -8,7 +8,7 @@ multiplication:
   - por|(m<o|i|u>ltiplica<r|ndo|do> por?)
 
 division:
-  - (dividir|division|dividendo|dividi do|por?)
+  - entre|(dividir|division|dividendo|dividido por|entre?)
 
 power:
   - elevado? a la (potencia<do?>|exponente)? (por|de)?
