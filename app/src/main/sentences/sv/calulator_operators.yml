@@ -1,17 +1,17 @@
 addition:
-  - plus|(add|adding|addition|sum|summing to?)|(in addition to?)
+  - pluss|(addera|adderat|addition|summera med?)|(lägg till)
 
 subtraction:
-  - minus|(subtract|subtracting|subtraction from?)
+  - minus|(subtrahera|(dra av|ifrån)|subtraherat från|med?)
 
 multiplication:
-  - times|of|(multiply|multiplying|multiplied|multiplication by?)
+  - gånger|(multiplicera|multiplicerat|multiplikation med?)
 
 division:
-  - (divide|division|dividing|divided by?)|over
+  - (dividera|dela) med?|division|(dividerat|delat) med?
 
 power:
-  - (to? the? power of?)|(to the)
+  - upphöjt i|till|med
 
 square_root:
-  - square root of?
+  - roten av?
