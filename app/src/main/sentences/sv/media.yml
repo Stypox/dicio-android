@@ -1,16 +1,14 @@
 play:
-  - play|resume|unpause (the? song|media|track|music|audio|video|movie|stream|film)?
-  - turn on the? player
-  - continue playing (the? song|media|track|music|audio|video|movie|stream|film)?
-
+  - spela|återuppta|fortsätt|starta spela? sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>?
+  - (sätt|slå på)|starta spelaren
+ 
 pause:
-  - pause|halt|stop|hold (the? song|media|track|music|audio|video|movie|stream|film)?
-  - put the? song|media|track|music|audio|video|movie|stream|film on hold
+  - pausa|stoppa|stanna sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>?
 
 previous:
-  - replay|play|(go|switch|return|rewind|(go? back)|(move back<ward|wards?>) to)? the? previous|last song|media|track|music|audio|video|movie|stream|film? (in the queue)?
-  - rewind
+  - spela|(gå|byt|återvänd|(spola tillbaka)|backa till)? förra|föregående|tidigare sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>? (i kön)?
+  - spola tillbaka
 
 next:
-  - skip the|a|one? song|media|track|music|audio|video|movie|stream|film
-  - play|(go|switch|skip|jump|(move forward) to)? the? next|following song|media|track|music|audio|video|movie|stream|film? (in the queue)?
+  - skippa|(hoppa över?) en|nästa? sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>
+  - spela|(byt|hoppa|växla till) nästa|följande sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?> (i kön)?
