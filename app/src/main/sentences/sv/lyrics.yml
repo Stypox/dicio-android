@@ -1,5 +1,5 @@
 query:
-  - get|show|load|display|find? me? the? lyrics|text (for|of|from|about (the song)?)? .song.
-  - sing (the song)? .song.
-  - .song. lyrics|text
-  - sing|whats|(what is|s) that|the song going|(that|which goes|says|tells|sings)|(with lyrics) .song.
+  - hämta|visa|(ta fram)|hitta? mig? texten|låttexten|sångtexten (för|till|i (sången|låten)?)? .song.
+  - sjung (sången|låten)? .song.
+  - .song. texten|låttexten|sångtexten
+  - sjung|(hur går)|(vad heter) den|(den där)? sången|låten (som går|är)|(med texten|orden) .song.
