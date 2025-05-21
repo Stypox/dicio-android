@@ -21,6 +21,6 @@ enum Language {
   LANGUAGE_PL = 12; // Polish
   LANGUAGE_RU = 9; // Russian
   LANGUAGE_SL = 10; // Slovene
-  LANGUAGE_SE = 13; // Swedish
+  LANGUAGE_SV = 13; // Swedish
   LANGUAGE_UK = 11; // Ukrainian  
 }
