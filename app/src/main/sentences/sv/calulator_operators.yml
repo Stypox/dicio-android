@@ -8,7 +8,7 @@ multiplication:
   - gånger|(multiplicera|multiplicerat|multiplikation med?)
 
 division:
-  - (dividera|dela) med?|division|(dividerat|delat) med?
+  - dividera<t?>|dela<t?>|division med?
 
 power:
   - upphöjt i|till|med
