@@ -49,6 +49,8 @@
     <string name="skill_sentence_example_weather">¿Cuál es el clima en Roma\?</string>
     <string name="skill_name_lyrics">Letras de canciones</string>
     <string name="skill_sentence_example_lyrics">¿Cuál es la canción que dice we will we will rock you\?</string>
+    <string name="skill_name_app_search">Búsqueda en Aplicaciones</string>
+    <string name="skill_sentence_example_app_search">En YouTube buscar gatos lindos</string>
     <string name="skill_name_open">Abrir aplicaciones</string>
     <string name="skill_sentence_example_open">Abrir newpipe</string>
     <string name="skill_sentence_example_calculator">¿Cuánto es cinco por cuatro menos un millón\?</string>
@@ -61,6 +63,10 @@
     <string name="skill_lyrics_found_song_by_artist">Se ha encontrado la canción %1$s de %2$s</string>
     <string name="skill_open_unknown_app">Aplicación desconocida %1$s</string>
     <string name="skill_open_opening">Abriendo %1$s…</string>
+    <string name="skill_app_search_could_not_understand">No pude entender la aplicación</string>
+    <string name="skill_app_search_unknown_app">Aplicación desconocida %1$s</string>
+    <string name="skill_app_search_searching">Buscando %2$s en %1$s</string>
+    <string name="skill_app_search_failed">No se pudo buscar %2$s en %1$s</string>
     <string name="skill_calculator_could_not_calculate">No pude calcular tu solicitud</string>
     <string name="eval_network_error">Error de la red</string>
     <string name="drawer_close">Cerrar la caja de navegación</string>

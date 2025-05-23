@@ -149,6 +149,8 @@
     <string name="skill_name_timer">Timer</string>
     <string name="skill_sentence_example_timer">Set a timer for five minutes</string>
     <string name="skill_name_current_time">Current time</string>
+    <string name="skill_name_app_search">App Search</string>
+    <string name="skill_sentence_example_app_search">In YouTube search for cute cats</string>
     <string name="skill_sentence_example_current_time">What time is it?</string>
     <string name="skill_fallback_name_text">Text message</string>
     <string name="skill_search_here_is_what_i_found">Here is what I found</string>
@@ -164,6 +166,10 @@
     <string name="skill_open_could_not_understand">Could not understand app</string>
     <string name="skill_open_unknown_app">Unknown app %1$s</string>
     <string name="skill_open_opening">Opening %1$s…</string>
+    <string name="skill_app_search_could_not_understand">Could not understand app</string>
+    <string name="skill_app_search_unknown_app">Unknown app %1$s</string>
+    <string name="skill_app_search_searching">Searching for %2$s on %1$s</string>
+    <string name="skill_app_search_failed">Failed to search for %2$s on %1$s</string>
     <string name="skill_media_playing">Playing media…</string>
     <string name="skill_media_pausing">Pausing media…</string>
     <string name="skill_media_previous">Previous media…</string>
