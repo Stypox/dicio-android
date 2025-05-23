@@ -1,4 +1,14 @@
 skills:
+  - id: app_search
+    specificity: high
+    sentences:
+      - id: query
+        captures:
+          - id: app
+            type: string
+          - id: query
+            type: string
+            
   - id: current_time
     specificity: high
     sentences:
