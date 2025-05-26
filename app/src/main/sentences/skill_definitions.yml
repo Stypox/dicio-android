@@ -64,6 +64,11 @@ skills:
       - id: stop
       - id: start
 
+  - id: notify
+    specificity: low
+    sentences:
+      - id: notifications
+
   - id: search
     specificity: low
     sentences:
