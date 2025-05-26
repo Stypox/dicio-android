@@ -53,6 +53,11 @@ skills:
           - id: what
             type: string
 
+  - id: notify
+    specificity: low
+    sentences:
+      - id: notifications
+
   - id: search
     specificity: low
     sentences:
