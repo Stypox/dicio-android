@@ -48,7 +48,10 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            applicationIdSuffix = ".debug.${gitBranch()}"
+            versionNameSuffix = "-debug-${gitBranch()}"
+
+            resValue("string", "app_name", "Dicio-${gitBranch()}")
         }
         release {
             isMinifyEnabled = false
@@ -195,4 +198,10 @@ configurations.configureEach {
     resolutionStrategy {
         force(libs.test.core)
     }
+}
+
+fun gitBranch(): String {
+    return providers.exec {
+        commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+    }.standardOutput.asText.get().trim()
 }
