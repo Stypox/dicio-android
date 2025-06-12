@@ -3,3 +3,4 @@ query:
   - sing (the song)? .song.
   - .song. lyrics|text
   - sing|whats|(what is|s) that|the song going|(that|which goes|says|tells|sings)|(with lyrics) .song.
+  - (what are)|whats the? lyrics|text for|to .song.
