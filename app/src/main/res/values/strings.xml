@@ -213,6 +213,12 @@
     <string name="retry">Retry</string>
     <string name="stop">Stop</string>
     <string name="grant_permissions">Grant permissions</string>
+    <string name="skill_listening_already_listening">I am still listening for the wake word</string>
+    <string name="skill_listening_started_listening">Okay, I\'ll listen for the wake word</string>
+    <string name="skill_listening_not_listening">I wasn\'t listening</string>
+    <string name="skill_listening_stop_listening">Okay</string>
+    <string name="skill_name_listening">Control wake word listening</string>
+    <string name="skill_sentence_example_listening">Stop listening</string>
     <string name="pref_weather_temperature_unit">Temperature unit</string>
     <string name="use_system_default">Use system default</string>
     <string name="pref_weather_unit_system_instructions">Uses the unit configured in \"System settings > System > Languages &amp; input > Regional preferences\"</string>
