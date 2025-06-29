@@ -217,6 +217,7 @@
     <string name="skill_listening_started_listening">Okay, I\'ll listen for the wake word</string>
     <string name="skill_listening_not_listening">I wasn\'t listening</string>
     <string name="skill_listening_stop_listening">Okay</string>
+    <string name="skill_listening_disabled">The wake word service is disabled in settings</string>
     <string name="skill_name_listening">Control wake word listening</string>
     <string name="skill_sentence_example_listening">Stop listening</string>
     <string name="pref_weather_temperature_unit">Temperature unit</string>

@@ -5,13 +5,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Hearing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.datastore.core.DataStore
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.R
 import org.stypox.dicio.sentences.Sentences
+import org.stypox.dicio.settings.datastore.UserSettings
 
-object ListeningInfo : SkillInfo("listening") {
+class ListeningInfo(
+    val dataStore: DataStore<UserSettings>,
+) : SkillInfo("listening") {
     override fun name(context: Context) =
         context.getString(R.string.skill_name_listening)
 
@@ -27,6 +31,6 @@ object ListeningInfo : SkillInfo("listening") {
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
-        return ListeningSkill(ListeningInfo, Sentences.Listening[ctx.sentencesLanguage]!!)
+        return ListeningSkill(this, Sentences.Listening[ctx.sentencesLanguage]!!)
     }
 }
