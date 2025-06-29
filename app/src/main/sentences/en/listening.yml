@@ -1,9 +1,9 @@
 stop:
-  - stop listening
+  - stop listening (the? wake word)?
   - mute microphone?
-  - turn off microphone
+  - turn off the? microphone
 
 start:
-  - start listening
+  - start listening (the? wake word)?
   - unmute|(on mute) microphone?
-  - turn on microphone
+  - turn on the? microphone
