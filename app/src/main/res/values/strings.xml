@@ -213,10 +213,10 @@
     <string name="retry">Retry</string>
     <string name="stop">Stop</string>
     <string name="grant_permissions">Grant permissions</string>
-    <string name="skill_listening_already_listening">I am still listening for the wake word</string>
-    <string name="skill_listening_started_listening">Okay, I\'ll listen for the wake word</string>
+    <string name="skill_listening_already_listening">I am already listening for the wake word</string>
+    <string name="skill_listening_started_listening">OK, I\'ll listen for the wake word</string>
     <string name="skill_listening_not_listening">I wasn\'t listening</string>
-    <string name="skill_listening_stop_listening">Okay</string>
+    <string name="skill_listening_stop_listening">OK</string>
     <string name="skill_listening_disabled">The wake word service is disabled in settings</string>
     <string name="skill_name_listening">Control wake word listening</string>
     <string name="skill_sentence_example_listening">Stop listening</string>
