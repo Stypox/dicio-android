@@ -331,13 +331,13 @@ class WakeService : Service() {
             try {
                 context.startService(Intent(context, WakeService::class.java)
                     .apply { action = ACTION_STOP_WAKE_SERVICE })
-            } catch (e: IllegalStateException) {
+            } catch (_: IllegalStateException) {
                 // Must not have been running. No problem with that.
             }
         }
 
         // Consider the service running if it processed any audio data within the past half second.
-        fun isRunning(): Boolean = lastHeard.get().isAfter(Instant.now().minusMillis(500))
+        fun isRunning(): Boolean = lastHeard.get()?.isAfter(Instant.now().minusMillis(500)) == true
 
         /**
          * On Android 10+ cancels any notification telling the user that the Dicio wake word was
