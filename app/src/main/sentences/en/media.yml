@@ -1,8 +1,7 @@
 play:
-  - play|resume|unpause (the? song|media|track|music|audio|video|movie|stream|film)?
+  - play|resume|unpause|start|restart (the? song|media|track|music|audio|video|movie|stream|film)?
   - turn on the? player
   - continue playing (the? song|media|track|music|audio|video|movie|stream|film)?
-  - restart|start (the? song|media|track|music|audio|video|movie|stream|film)?
 
 pause:
   - pause|halt|stop|hold (the? song|media|track|music|audio|video|movie|stream|film)?
