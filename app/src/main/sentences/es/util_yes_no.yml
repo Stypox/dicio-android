@@ -1,5 +1,5 @@
 yes:
-  - si|(claro (que si)?)|afirmativo|(por supuesto (que si)?)|adelante|segur<o|a>|vamos|procede|continua|hagamoslo
+  - si|(claro (que si)?)|afirmativo|(por supuesto (que si)?)|adelante|segur<o|a>|va<le|mos>|procede|continua|sig<a|ue>|correcto|hagamoslo gracias|(por favor)?
 
 no:
-  - (((por supuesto que)|(claro que)|(mejor))? no)|negativo|para<r?>|deten<te|er>|(no continuar|proceder)|alto|basta
+  - (((por supuesto que)|(claro que)|mejor|ya)? no)|negativo|para<r?>|deten<te|er>|(no continuar|proceder)|alto|basta|cancela<r?> gracias|(por favor)?
