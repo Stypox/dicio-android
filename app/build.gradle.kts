@@ -48,7 +48,11 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            var normalizedGitBranch = gitBranch().replaceFirst("^[^A-Za-z]+", "").replace(Regex("[^0-9A-Za-z]+"), "")
+            applicationIdSuffix = ".$normalizedGitBranch"
+            versionNameSuffix = "-$normalizedGitBranch"
+
+            resValue("string", "app_name", "Dicio-${gitBranch()}")
         }
         release {
             isMinifyEnabled = false
@@ -194,5 +198,16 @@ dependencies {
 configurations.configureEach {
     resolutionStrategy {
         force(libs.test.core)
+    }
+}
+
+fun gitBranch(): String {
+    return try {
+        providers.exec {
+            commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+        }.standardOutput.asText.get().trim()
+    } catch (e: Exception) {
+        logger.warn("Git isn't installed, using default name for debug app.")
+        "debug"
     }
 }
