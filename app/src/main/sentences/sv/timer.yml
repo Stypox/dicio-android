@@ -1,0 +1,10 @@
+set:
+  - timer|(säg till om) .duration.
+  - (ställ in?)|starta|aktivera|skapa|sätt en? (.duration. time<r|rs?>)|(time<r|rs?> (med|på .duration.)? (kallad|(med namnet) .name.)?)
+
+cancel:
+  - avbryt|stanna|inaktivera|stoppa|(ta bort) (.name.? time<r|rs?>)|(time<r|rs?> kallad|(med namnet) .name.)
+
+query:
+  - hur länge|(mycket tid?) är det? kvar? på (.name.? time<r|rs?>)|(time<r|rs?> kallad|(med namnet) .name.)
+  - när kommer|är (.name.? time<r|rs?>)|(time<r|rs?> kallad|(med namnet) .name.) vara? färdig|klar|slut

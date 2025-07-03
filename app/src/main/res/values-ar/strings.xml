@@ -23,10 +23,8 @@
     <string name="skill_name_calculator">الآلة الحاسبة</string>
     <string name="skill_sentence_example_calculator">ما خمسة ضرب أربعة ناقص مليون؟</string>
     <string name="skill_search_here_is_what_i_found">هذا ما وجدته</string>
-    <string name="skill_weather_min_max_wind">الحرارة الأدنى: %1$.1f درجة مئوية
-\nالحرارة القصوى: %2$.1f درجة مئوية
-\nسرعة الرياح: %3$.1f م/س</string>
-    <string name="skill_weather_in_city_there_is_description">حاليًّا في %1$s هناك %2$s</string>
+    <string name="skill_weather_min_max_wind">الحرارة الأدنى: %1$.1f درجة مئوية \nالحرارة القصوى: %2$.1f درجة مئوية \nسرعة الرياح: %3$.1f م/س</string>
+    <string name="skill_weather_in_city_there_is_description">هناك %2$s و %3$s درجات في %1$s الآن</string>
     <string name="eval_network_error_description">لم يستطع Dicio الاتصال بالانترنت. رجاءً تأكّد من اتّصالك ثم حاول مجددًا.</string>
     <string name="eval_fatal_error">تعذر تقييم طلبك</string>
     <string name="skill_calculator_could_not_calculate">لم أستطع حساب طلبك</string>
@@ -124,7 +122,7 @@
     <string name="pref_skill_missing_permissions">يتطلب هذه الأذونات: %1$s</string>
     <string name="pref_skill_grant_permissions">السماح</string>
     <string name="skill_search_what_question">ما الذي تريد البحث عنه؟</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f درجة مئوية</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="pref_stt_auto_finish_summary_on">إرسال نتيجة الكلام تلقائيًا إلى التطبيق الذي يطلبه عند انتهاء الاستماع</string>
     <string name="pref_skill_number_library_not_available">مكتبة تحليل الأرقام وتنسيقها <i> dicio-number </i> لم تتم ترجمتها بعد إلى لغتك ، مما يعني أن جميع المهارات المتعلقة بالأرقام والمدد والتواريخ غير متوفرة. <b> الرجاء المساهمة بـ </b> إذا كان بإمكانك النقر هنا!</string>
     <string name="skill_timer_all_canceled">تم إلغاء جميع الموقتات</string>
@@ -167,4 +165,41 @@
     <string name="pref_theme_black">اسود</string>
     <string name="settings_description_with_value">%1$s — %2$s</string>
     <string name="stt_service_label">Dicio التعرف على الكلام دون اتصال بالإنترنت</string>
+    <string name="wake_word_setup_description">سيستيقظ Dicio تلقائيًا كلما قلت \"يا ديسيو\". يعمل هذا عن طريق بدء خدمة تستمع دائمًا في الخلفية. تحدث جميع عمليات معالجة الكلام محليًا، ولهذا السبب تحتاج إلى تنزيل نموذج الذكاء الاصطناعي مسبقًا.</string>
+    <string name="pref_stt_play_sound_title">تشغيل الصوت عند بدء الاستماع</string>
+    <string name="pref_stt_play_sound_summary">اختر ما إذا كنت تريد تشغيل صوت عند بدء التعرف على صوتك، وحدد قناة الصوت لتشغيل الصوت</string>
+    <string name="pref_stt_play_sound_notification">قناة الإشعارات</string>
+    <string name="pref_stt_play_sound_alarm">قناة التنبيه</string>
+    <string name="pref_stt_play_sound_media">القناة الافتراضية/الإعلامية</string>
+    <string name="pref_stt_play_sound_none">عدم تشغيل الصوت</string>
+    <string name="wake_service_label">خدمة كلمات التنبيه Dicio</string>
+    <string name="wake_word_error_downloading">حدث خطأ غير متوقع أثناء التحميل</string>
+    <string name="wake_word_error_downloading_network">لم يتمكن Dicio من الوصول إلى الإنترنت. يرجى التحقق من اتصالك وإعادة المحاولة.</string>
+    <string name="wake_word_error_loading">حدث خطأ غير متوقع أثناء التجهيز</string>
+    <string name="disable">معطل</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="stop">توقف</string>
+    <string name="grant_permissions">منح الأذونات</string>
+    <string name="pref_wake_method">طريقة التعرف على كلمة التنبيه</string>
+    <string name="pref_wake_method_summary">اختر الخدمة التي تريد استخدامها للاستماع إلى كلمة التنبيه \"Hey Dicio\" في الخلفية</string>
+    <string name="pref_wake_method_disabled">مُعطّل</string>
+    <string name="pref_wake_method_openwakeword">معالجة الصوت في وضع عدم الاتصال OpenWakeWord</string>
+    <string name="wake_service_start_notification">انقر لبدء خدمة كلمة الاستيقاظ Dicio</string>
+    <string name="wake_service_triggered_notification">تم تشغيل كلمة التنبيه Dicio، انقر للفتح</string>
+    <string name="wake_service_start_notification_summary">في Android 11+ لا يمكن لـ Dicio بدء الخدمة دون تفاعل يدوي من المستخدم.</string>
+    <string name="wake_service_foreground_notification_summary">يسمح هذا الإشعار لخدمة Dicio wake word بالاستماع إلى الميكروفون في الخلفية</string>
+    <string name="wake_service_foreground_notification">الاستماع إلى كلمة الاستيقاظ \"Hey Dicio\"</string>
+    <string name="wake_service_triggered_notification_summary">في Android 10+ Dicio لا يمكن أن يبدأ عند اكتشاف كلمة تنبيه دون إظهار إشعار.</string>
+    <string name="wake_word_setup_title">إعداد كلمة الاستيقاظ</string>
+    <string name="perm_read_contacts">قراءة جهات الاتصال</string>
+    <string name="perm_call_phone">اتصال مباشر بأرقام الهواتف</string>
+    <string name="skill_name_media">التحكم في الوسائط</string>
+    <string name="skill_sentence_example_media">الأغنية التالية</string>
+    <string name="skill_media_playing">تشغيل الوسائط…</string>
+    <string name="skill_media_pausing">ايقاف الوسائط…</string>
+    <string name="skill_media_previous">الوسائط السابقة…</string>
+    <string name="skill_media_next">الوسائط التالية…</string>
+    <string name="skill_media_no_media_session">لاتوجد جلسة وسائط نشطة</string>
+    <string name="notification_listener_label">مستمع لحدث الإخطارات المتعلق بديسيو</string>
+    <string name="skill_search_no_results_stop">البحث لم يُرد أي نتائج</string>
 </resources>

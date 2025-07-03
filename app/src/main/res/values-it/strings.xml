@@ -31,10 +31,10 @@
     <string name="skill_search_here_is_what_i_found">Ecco cosa ho trovato</string>
     <string name="skill_weather_could_not_find_city">Non ho trovato la città %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Ci sono %2$s e %3$s gradi a %1$s al momento</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Temperatura minima: %1$.1f °C
-\nTemperatura massima: %2$.1f °C
-\nVelocità del vento: %3$.1f m/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Temperatura minima: %1$.1f %4$s
+\nTemperatura massima: %2$.1f %4$s
+\nVelocità del vento: %3$.1f %5$s</string>
     <string name="pref_theme_light">Chiaro</string>
     <string name="pref_theme_dark">Scuro</string>
     <string name="pref_input_method_text">Solo casella di testo</string>

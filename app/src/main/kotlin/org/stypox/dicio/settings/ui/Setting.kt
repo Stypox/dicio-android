@@ -3,6 +3,7 @@ package org.stypox.dicio.settings.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +35,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
@@ -85,6 +88,7 @@ class ListSetting<T>(
     data class Value<T>(
         val value: T,
         val name: String,
+        val description: String? = null,
         val icon: ImageVector? = null,
     )
 
@@ -150,6 +154,7 @@ class ListSetting<T>(
                     items(possibleValues) {
                         ListSettingChooserDialogItem(
                             name = it.name,
+                            description = it.description,
                             icon = it.icon,
                             selected = it.value == value,
                             onClick = {
@@ -174,6 +179,7 @@ class ListSetting<T>(
 @Composable
 fun ListSettingChooserDialogItem(
     name: String,
+    description: String?,
     icon: ImageVector?,
     selected: Boolean,
     onClick: () -> Unit,
@@ -189,14 +195,24 @@ fun ListSettingChooserDialogItem(
             selected = selected,
             onClick = null,
         )
-        Text(
-            text = name,
-            style = MaterialTheme.typography.bodyMedium,
-            lineHeight = MaterialTheme.typography.bodyMedium.fontSize * 1.1,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1.0f)
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            modifier = Modifier.weight(1.0f)
+        ) {
+            Text(
+                text = name,
+                style = MaterialTheme.typography.bodyMedium,
+                lineHeight = MaterialTheme.typography.bodyMedium.fontSize * 1.1,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (description != null) {
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
         if (icon != null) {
             Icon(
                 imageVector = icon,
@@ -210,7 +226,12 @@ fun ListSettingChooserDialogItem(
 @Composable
 private fun ListSettingChooserDialogItemPreview() {
     ListSettingChooserDialogItem(
-        name = "Some item", icon = Icons.Default.Pets, selected = true, onClick = {})
+        name = "Some item",
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+        icon = Icons.Default.Pets,
+        selected = true,
+        onClick = {}
+    )
 }
 
 @Preview
@@ -219,7 +240,7 @@ private fun ListSettingChooserDialogPreview() {
     ListSetting(
         title = "List of things",
         possibleValues = listOf(
-            ListSetting.Value(true, "True!", icon = Icons.Default.BookmarkAdded),
+            ListSetting.Value(true, "True!", "Lorem ".repeat(13), icon = Icons.Default.BookmarkAdded),
             ListSetting.Value(false, "False :-( ".repeat(20), icon = Icons.Default.BookmarkRemove),
         )
     ).ChooserDialog(true, {}, {})
@@ -331,7 +352,7 @@ class StringSetting(
 @Composable
 private fun ListSettingEditDialogPreview() {
     StringSetting(
-        title = "List of things",
+        title = "A string setting",
         descriptionWhenEmpty = LoremIpsum(20).values.first()
     ).EditDialog("Initial value", {}, {})
 }

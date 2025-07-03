@@ -191,10 +191,12 @@ class ScreenshotTakerTest {
                         description = "Few clouds",
                         iconUrl = "https://openweathermap.org/img/wn/02d@2x.png",
                         temp = 8.8,
-                        tempString = "nine",
                         tempMin = 7.2,
                         tempMax = 10.2,
+                        tempString = "nine",
                         windSpeed = 1.8,
+                        temperatureUnit = ResolvedTemperatureUnit.from(prefs),
+                        lengthUnit = ResolvedLengthUnit.from(prefs),
                     )
                 )
             )),
@@ -286,7 +288,7 @@ class ScreenshotTakerTest {
                             url = "https://github.com/TeamNewPipe/NewPipe",
                             thumbnailUrl = "https://external-content.duckduckgo.com/ip3/github.com.ico"
                         ),
-                    ))
+                    ), askAgain = false)
                 ),
             )),
         ), null)

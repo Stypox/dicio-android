@@ -1,0 +1,19 @@
+play:
+  - reproducir|reproduzca|sonar|(dejar de pausar) ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+  - reanuda<r?>|continua<r?> ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)
+  - activ<a|e>|enciend<a|e>|inicializar|inicialic<a|e> el reproductor
+  - continu<e|a|ar> reproduciendo ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+
+pause:
+  - pausar|detener|(dejar en pausa) ((el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream)?
+  - pon (el|la)? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream en pausa|suspension
+
+previous:
+  - reproducir|sonar|pasar el|la? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream|transmision anterior|antecesor<a?> (de|en la cola|fila)?
+  - reproducir|sonar|pasar el|la? anterior|antecesor<a?> cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream|transmision (de|en la cola|fila)?
+  - retroceder|ir (a el)|al|la anterior|antecesor<a?>
+
+next:
+  - reproducir|sonar|saltar el|la? cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream|transmision siguiente|posterior<a?>|sucesor<a?> (de|en la cola|fila)?
+  - reproducir|sonar|saltar el|la? siguiente|posterior<a?>|sucesor<a?> cancion|<multi?>media|pista|musica|audio|video|film|peli<cula?>|stream|transmision (de|en la cola|fila)?
+  - ir|saltar|omitir (a el)|al|la siguiente|sucesor<a?>

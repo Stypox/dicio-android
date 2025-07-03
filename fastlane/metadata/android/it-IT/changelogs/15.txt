@@ -1,0 +1,15 @@
+Novità:
+• Lingua polacca
+• Abilità per controllare la riproduzione
+• Ora puoi usare app esterne come Speech-To-Text
+• Modelli personalizzati per la parola di attivazione
+• Suono di stop se nessuna voce rilevata
+
+Miglioramenti:
+• [Meteo] Risposte più brevi, supporto unità imperiali
+• Chiede di ripetere e riapre il microfono
+
+Correzioni:
+• Lingua dell'app a volte incoerente
+• Il testo nella notifica è ora espandibile
+• [Ricerca] Sistemato lo scraper di DuckDuckGo

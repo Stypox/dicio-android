@@ -1,0 +1,4 @@
+query:
+  - (navega<r|me?>)|(lleva<me?>)|localiza|((dame la|las?)? direccion<es?>) a|de? el|la? .where.
+  - sabe<s?>|dime? donde esta|(se encuentra) .where.
+  - puede<s?> explicar<me?> como llegar|ir a .where.

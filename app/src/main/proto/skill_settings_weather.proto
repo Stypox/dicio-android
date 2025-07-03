@@ -1,8 +1,13 @@
 syntax = "proto3";
 
+import "temperature_unit.proto";
+import "length_unit.proto";
+
 option java_package = "org.stypox.dicio.skills.weather";
 option java_multiple_files = true;
 
 message SkillSettingsWeather {
   string default_city = 1;
+  TemperatureUnit temperature_unit = 2;
+  LengthUnit length_unit = 3;
 }

@@ -1,0 +1,8 @@
+stop:
+  - smetti di ascoltar<e|mi> (la? parola di attivazione)?
+  - spegn<e|i>|muta|disattiva il microfono
+
+start:
+  - ascolta<mi?> (la? parola di attivazione)?
+  - mettiti a<d?> ascoltar<e|mi> (la? parola di attivazione)?
+  - accendi|attiva il microfono

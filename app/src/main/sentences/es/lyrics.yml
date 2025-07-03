@@ -1,6 +1,6 @@
 query:
-  - obtiene|muestra|carga|ver|encuentra|(buscar la?)? me? el|la? letra|texto (del|de|desde|acerca (la cancion)?)? .song.
-  - sing (el tema)? .song.
-  - .song. letras|textos
-  - letras|textos .song.
-  - (que|cual esa|es|s la?)? cancion (esta|cual|que dice|decime|sings)|(con letra|texto) .song.
+  - dame|obtiene|obten<er?>|muestra|mostrar|carga<r?>|ve<r?>|encuentra|encontrar|(buscar la?)? me? el|la? letra|texto (del|de|desde|acerca (la cancion)?)? .song.
+  - canta<r?>|sing (el tema)? .song.
+  - .song. letra<s?>|texto<s?>|cancionero
+  - cancionero|letra<s?>|textos .song.
+  - (que|cual esa|es|fue|s la?)? cancion (esta|cual|que dice|tiene|lleva)|(con|cuy<a|o>|la|el letra|texto es?) .song.

@@ -96,4 +96,12 @@ sealed interface SttState {
      * The model is listening.
      */
     data object Listening : SttState
+
+    /**
+     * An external Android app has been asked to listen (e.g. through
+     * `RecognizerIntent.ACTION_RECOGNIZE_SPEECH`), and may be listening but we don't know for
+     * sure (maybe it's still loading). Therefore in the UI a "Waiting..." message should be shown
+     * instead of "Listening..." to not confuse the user.
+     */
+    data object WaitingForResult : SttState
 }

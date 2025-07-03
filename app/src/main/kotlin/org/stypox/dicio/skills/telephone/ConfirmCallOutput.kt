@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.Body
@@ -23,9 +23,13 @@ class ConfirmCallOutput(
     override fun getSpeechOutput(ctx: SkillContext): String =
         ctx.getString(R.string.skill_telephone_confirm_call, name)
 
-    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> = listOf(
-        object : RecognizeYesNoSkill(TelephoneInfo, Sentences.UtilYesNo[ctx.sentencesLanguage]!!) {
-            override suspend fun generateOutput(ctx: SkillContext, inputData: Boolean): SkillOutput {
+    override fun getInteractionPlan(ctx: SkillContext): InteractionPlan {
+        val yesNoSentences = Sentences.UtilYesNo[ctx.sentencesLanguage]!!
+        val confirmYesNoSkill = object : RecognizeYesNoSkill(TelephoneInfo, yesNoSentences) {
+            override suspend fun generateOutput(
+                ctx: SkillContext,
+                inputData: Boolean
+            ): SkillOutput {
                 return if (inputData) {
                     TelephoneSkill.call(ctx.android, number)
                     ConfirmedCallOutput(number)
@@ -34,7 +38,12 @@ class ConfirmCallOutput(
                 }
             }
         }
-    )
+
+        return InteractionPlan.ReplaceSubInteraction(
+            reopenMicrophone = true,
+            nextSkills = listOf(confirmYesNoSkill),
+        )
+    }
 
     @Composable
     override fun GraphicalOutput(ctx: SkillContext) {

@@ -10,7 +10,7 @@
     <string name="eval_fatal_error">Je verzoek kon niet worden verwerkt</string>
     <string name="eval_network_error">Netwerkfout</string>
     <string name="eval_network_error_description">Dicio kan niet verbinden met het internet. Controleer je netwerkverbinding en probeer opnieuw.</string>
-    <string name="eval_no_match">Ik heb je niet verstaan, kan je dat herhalen\?</string>
+    <string name="eval_no_match">Ik heb je niet verstaan, kan je dat herhalen?</string>
     <string name="stt_say_something">Zeg iets…</string>
     <string name="stt_did_not_understand">Ik heb je niet begrepen, probeer opnieuw</string>
     <string name="stt_popup">Spraak-naar-tekst service</string>
@@ -107,10 +107,10 @@
     <string name="skill_search_what_question">Waar ben je naar op zoek\?</string>
     <string name="skill_weather_could_not_find_city">Ik heb de stad %1$s niet kunnen terugvinden</string>
     <string name="skill_weather_in_city_there_is_description">In %1$s is er momenteel %2$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f °C</string>
-    <string name="skill_weather_min_max_wind">Minimumtemperatuur: %1$.1f°C
-\nMaximumtemperatuur: %2$.1f°C
-\nWindsnelheid: %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f %3$s</string>
+    <string name="skill_weather_min_max_wind">Minimumtemperatuur: %1$.1f%4$s
+\nMaximumtemperatuur: %2$.1f%4$s
+\nWindsnelheid: %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">Het liedje %1$s werd niet gevonden</string>
     <string name="skill_lyrics_found_song_by_artist">%1$s van %2$s werd teruggevonden</string>
     <string name="skill_open_unknown_app">Ongekende app %1$s</string>
