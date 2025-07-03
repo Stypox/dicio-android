@@ -1,0 +1,5 @@
+yes:
+  - ja|japp|javisst|absolut|kör|bekräftas|fortsätt|(gå vidare)
+
+no:
+  - nej|(gör inte)|stopp|avsluta|sluta|negativt|inte|stanna

@@ -1,3 +1,3 @@
 query:
-  - busca|investiga|revisa|busca<r?>|encuentra (que es?)? .what. online|(en la? internet|web)?
-  - mira<r?> .what. subir
+  - busca<r?>|investiga<r?>|revisa<r?>|busca<r?>|encuentra (que|como es?)|(informacion de|sobre)? .what. online|(en|por (el|la)? internet|(motor|buscador? web))?
+  - señala<r|me|rme?>|mira<r?> (que|como es?)? .what. (ahora|ya mismo?)?
