@@ -82,11 +82,21 @@ if (localProperties.getOrDefault("useLocalDicioLibraries", "") == "true") {
 } else {
     // if the repo has already been cloned, the gitRepositories plugin is buggy and doesn't
     // fetch the remote repo before trying to checkout the commit (in case the commit has changed),
-    // so we need to do it manually
+    // and doesn't clone the repo again if the remote changed, so we need to do it manually
     for (repo in includeGitRepos) {
         val file = File("$rootDir/checkouts/${repo.name}")
         if (file.isDirectory) {
-            Git.open(file).fetch().call()
+            val git = Git.open(file)
+            val sameRemote = git.remoteList().call()
+                .any { rem -> rem.urIs.any { uri -> uri.toString() == repo.uri } }
+            if (sameRemote) {
+                // the commit may have changed, fetch again
+                git.fetch().call()
+            } else {
+                // the remote changed, delete the repository and start from scratch
+                println("Git: remote for ${repo.name} changed, deleting the current folder")
+                file.deleteRecursively()
+            }
         }
     }
 
