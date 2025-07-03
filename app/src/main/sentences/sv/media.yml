@@ -1,0 +1,14 @@
+play:
+  - spela|återuppta|fortsätt|starta spela? sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>?
+  - (sätt|slå på)|starta spelaren
+ 
+pause:
+  - pausa|stoppa|stanna sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>?
+
+previous:
+  - spela|(gå|byt|återvänd|(spola tillbaka)|backa till)? förra|föregående|tidigare sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>? (i kön)?
+  - spola tillbaka
+
+next:
+  - skippa|(hoppa över?) en|nästa? sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?>
+  - spela|(byt|hoppa|växla till) nästa|följande sång<en?>|media|låt<en?>|musik<en?>|audio|video<n?>|film<en?>|stream<en?> (i kön)?
