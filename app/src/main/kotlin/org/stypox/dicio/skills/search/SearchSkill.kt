@@ -1,5 +1,6 @@
 package org.stypox.dicio.skills.search
 
+import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
@@ -41,7 +42,7 @@ internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOu
         resolvedLocale = LocaleUtils.resolveSupportedLocale(
             LocaleListCompat.create(ctx.locale), DUCK_DUCK_GO_SUPPORTED_LOCALES
         )
-    } catch (ignored: LocaleUtils.UnsupportedLocaleException) {
+    } catch (_: LocaleUtils.UnsupportedLocaleException) {
     }
     val locale = resolvedLocale?.supportedLocaleString ?: ""
 
@@ -72,18 +73,20 @@ internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOu
     val result: MutableList<SearchOutput.Data> = ArrayList()
     for (element in elements) {
         try {
+            // the url is under the "uddg" query parameter
+            val ddgUrl = element.select("a[class=result__a]").first()!!.attr("href")
+            val url = ddgUrl.toUri().getQueryParameter("uddg")!!
+
             result.add(
                 SearchOutput.Data(
                     title = element.select("a[class=result__a]").first()!!.text(),
                     thumbnailUrl = "https:" + element.select("img[class=result__icon__img]")
                         .first()!!.attr("src"),
-                    url = ConnectionUtils.urlDecode(
-                        element.select("a[class=result__a]").first()!!.attr("href")
-                    ),
+                    url = url,
                     description = element.select("a[class=result__snippet]").first()!!.text(),
                 )
             )
-        } catch (ignored: NullPointerException) {
+        } catch (_: NullPointerException) {
         }
     }
 
