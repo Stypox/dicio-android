@@ -48,6 +48,8 @@ import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.QuestionAnswer
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.skills.weather.ResolvedLengthUnit
+import org.stypox.dicio.skills.weather.ResolvedTemperatureUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -195,8 +197,8 @@ class ScreenshotTakerTest {
                         tempMax = 10.2,
                         tempString = "nine",
                         windSpeed = 1.8,
-                        temperatureUnit = ResolvedTemperatureUnit.from(prefs),
-                        lengthUnit = ResolvedLengthUnit.from(prefs),
+                        temperatureUnit = ResolvedTemperatureUnit.CELSIUS,
+                        lengthUnit = ResolvedLengthUnit.METRIC,
                     )
                 )
             )),
