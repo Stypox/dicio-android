@@ -203,7 +203,6 @@
     <string name="skill_media_previous">Попередні медіа…</string>
     <string name="skill_media_next">Наступний медіа…</string>
     <string name="skill_media_no_media_session">Жоден медіа-сеанс не активний</string>
-    <string name="notification_listener_label">Я викликаю слухач подій сповіщень</string>
     <string name="pref_input_method_external_popup_summary">Відкриває інтерфейс іншої програми за допомогою ACTION​_​RECOGNIZE​_​SPEECH, наприклад whisperIME, Kõnele, Futo Voice Input</string>
     <string name="waiting">Очікування…</string>
     <string name="pref_input_method_external_popup">Зовнішнє спливаюче вікно SpeechToText</string>

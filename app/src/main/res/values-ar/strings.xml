@@ -200,7 +200,6 @@
     <string name="skill_media_previous">الوسائط السابقة…</string>
     <string name="skill_media_next">الوسائط التالية…</string>
     <string name="skill_media_no_media_session">لاتوجد جلسة وسائط نشطة</string>
-    <string name="notification_listener_label">مستمع لحدث الإخطارات المتعلق بديسيو</string>
     <string name="skill_search_no_results_stop">البحث لم يُرد أي نتائج</string>
     <string name="pref_weather_temperature_unit">وحدة درجة الحرارة</string>
     <string name="eval_no_match_repeat">هلا أعدت ما قلته؟</string>

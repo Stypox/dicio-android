@@ -186,7 +186,6 @@
     <string name="skill_weather_could_not_find_city">Kunde inte hitta staden %1$s</string>
     <string name="skill_weather_in_city_there_is_description">Just nu är det %2$s och %3$s grader i / på %1$s</string>
     <string name="pref_stt_auto_finish_title">Skicka taligenkänningsresultat direkt till popup-meddelandet</string>
-    <string name="notification_listener_label">Dicio notishändelselyssnare</string>
     <string name="wake_custom_service_foreground_notification">Lyssnar efter anpassat väckningsord</string>
     <string name="pref_weather_temperature_unit">Temperaturenhet</string>
     <string name="pref_weather_temperature_unit_celsius">Celsius (°C)</string>

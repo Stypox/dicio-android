@@ -194,7 +194,6 @@
     <string name="skill_media_previous">Önceki medya…</string>
     <string name="skill_media_next">Sıradaki medya…</string>
     <string name="skill_media_no_media_session">Hiçbir medya oturumu etkin değil</string>
-    <string name="notification_listener_label">Dicio bildirim olay dinleyicisi</string>
     <string name="wake_service_foreground_notification_summary">Bu bildirim, Dicio kelime uyanma hizmetinin arka planda mikrofonu dinlemesini sağlar</string>
     <string name="wake_service_foreground_notification">\"Hey Dicio\" uyandırma kelimesi dinleniyor</string>
     <string name="wake_service_start_notification">Dicio kelime uyandırma hizmetini başlatmak için dokunun</string>

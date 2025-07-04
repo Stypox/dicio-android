@@ -201,7 +201,6 @@
     <string name="skill_media_pausing">媒体播放暂停中…</string>
     <string name="skill_media_next">下个媒体…</string>
     <string name="skill_media_no_media_session">没有媒体会话处于活跃状态</string>
-    <string name="notification_listener_label">Dicio 通知事件侦听器</string>
     <string name="skill_media_previous">上个媒体…</string>
     <string name="skill_search_no_results_stop">搜索未返回结果</string>
     <string name="pref_input_method_vosk_summary">在 Dicio 内下载并离线运行 Vosk 语音转文本模型</string>

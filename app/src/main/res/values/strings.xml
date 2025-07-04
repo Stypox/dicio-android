@@ -192,7 +192,6 @@
     <string name="skill_timer_query_last">The last timer expires in %1$s</string>
     <string name="skill_timer_none_canceled">OK, no timer was canceled</string>
     <string name="stt_service_label">Dicio offline speech recognition</string>
-    <string name="notification_listener_label">Dicio notification event listener</string>
     <string name="wake_service_label">Dicio wake word service</string>
     <string name="wake_service_foreground_notification_summary">This notification allows the Dicio
         wake word service to listen to the microphone in the background</string>

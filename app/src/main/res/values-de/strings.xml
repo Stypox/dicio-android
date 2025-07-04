@@ -198,7 +198,6 @@
     <string name="skill_media_playing">Spiele Medien…</string>
     <string name="skill_media_pausing">Pausiere Medien…</string>
     <string name="skill_media_previous">Vorheriges Medium…</string>
-    <string name="notification_listener_label">Dicio Benachrichtigungs-Event-Listener</string>
     <string name="perm_call_phone">Telefonnummern direkt anrufen</string>
     <string name="perm_read_contacts">Kontakte lesen</string>
     <string name="skill_media_next">Nächstes Medium…</string>

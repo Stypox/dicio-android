@@ -197,7 +197,6 @@
     <string name="skill_media_previous">Média précédent…</string>
     <string name="skill_media_next">Média suivant…</string>
     <string name="skill_media_no_media_session">Aucune session média active</string>
-    <string name="notification_listener_label">Gestionnaire d\' événement de notifications Dicio</string>
     <string name="skill_search_no_results_stop">La recherche n\'a donné aucun résultat</string>
     <string name="wake_custom_service_foreground_notification">A l\'écoute du mot de réveil personnalisé</string>
     <string name="pref_input_method_external_popup_summary">Ouvre l\'interface d\'une autre appli via ACTION​_​RECOGNIZE​_​SPEECH, comme par exemple whisperIME, Kõnele, Futo Voice Input</string>

@@ -195,7 +195,6 @@
     <string name="retry">Zkusit znovu</string>
     <string name="skill_media_pausing">Pozastavování médií…</string>
     <string name="skill_media_no_media_session">Není aktivní žádná multimediální relace</string>
-    <string name="notification_listener_label">Posluchač oznámení Dicio</string>
     <string name="skill_media_playing">Přehrávání médií…</string>
     <string name="perm_read_contacts">číst vaše kontakty</string>
     <string name="skill_sentence_example_media">Další skladba</string>

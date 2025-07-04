@@ -162,7 +162,6 @@
     <string name="skill_media_no_media_session">Mikään mediaistunto ei ole aktiivinen</string>
     <string name="skill_telephone_confirm_call">Pitäisikö minun soittaa %1$s:lle?</string>
     <string name="skill_timer_no_active_name">Ei ole aktiivista ajastinta nimeltä %1$s</string>
-    <string name="notification_listener_label">Dicio-ilmoitustapahtumien kuuntelija</string>
     <string name="wake_service_foreground_notification_summary">Tämän ilmoituksen avulla Dicio-herätyssanapalvelu voi kuunnella mikrofonia taustalla</string>
     <string name="wake_service_start_notification">Napauta käynnistääksesi Dicio-herätyssanapalvelun</string>
     <string name="wake_word_setup_title">Aseta herätyssana</string>

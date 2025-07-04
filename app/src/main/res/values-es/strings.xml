@@ -192,7 +192,6 @@
     <string name="skill_sentence_example_media">Sig. canción</string>
     <string name="eval_no_match_repeat">¿Podría repetirlo?</string>
     <string name="skill_search_no_results_stop">La búsqueda no arrojó resultados</string>
-    <string name="notification_listener_label">Receptor de eventos de notificación de Dicio</string>
     <string name="wake_custom_service_foreground_notification">Escuchando la palabra de activación personalizada</string>
     <string name="pref_weather_temperature_unit">Unidad de temperatura</string>
     <string name="pref_weather_temperature_unit_celsius">Celsius (°C)</string>

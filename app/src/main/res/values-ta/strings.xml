@@ -211,7 +211,6 @@
     <string name="skill_name_media">ஊடக கட்டுப்பாடு</string>
     <string name="skill_media_playing">மீடியா விளையாடுவது…</string>
     <string name="skill_media_next">அடுத்த மீடியா…</string>
-    <string name="notification_listener_label">டிசியோ அறிவிப்பு நிகழ்வு கேட்பவர்</string>
     <string name="pref_input_method_external_popup_summary">செயலின் மூலம் மற்றொரு பயன்பாட்டின் இடைமுகம் ஐத் திறக்கிறது _ அங்கீகரிக்க _ பேச்சை, எடுத்துக்காட்டாக விச்பரைம், கோனேல், புட்டோ குரல் உள்ளீடு</string>
     <string name="pref_wake_custom_delete_summary">இயல்புநிலைக்குத் திரும்பு \"ஏ டிசியோ\" வேக் வேர்ட்</string>
     <string name="pref_wake_custom_import">தனிப்பயன் விழிப்புணர்வு வார்த்தையை இறக்குமதி செய்க</string>

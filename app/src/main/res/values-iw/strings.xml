@@ -210,7 +210,6 @@
     <string name="skill_sentence_example_media">השיר הבא</string>
     <string name="skill_name_media">בקרת מדיה</string>
     <string name="skill_media_pausing">המדיה מושהית…</string>
-    <string name="notification_listener_label">מאזין אירועי התראות Dicio</string>
     <string name="perm_call_phone">חיוג ישיר למספרי טלפון</string>
     <string name="perm_read_contacts">קריאת אנשי הקשר שלך</string>
     <string name="skill_media_next">המדיה הבאה…</string>
