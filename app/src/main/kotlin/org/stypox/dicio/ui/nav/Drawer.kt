@@ -95,6 +95,7 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
+                    maxLines = 1,
                 )
                 Text(
                     text = stringResource(R.string.drawer_header_subtitle),
