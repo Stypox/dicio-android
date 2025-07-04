@@ -228,4 +228,11 @@
     <string name="skill_weather_miles_per_hour">mph</string>
     <string name="pref_weather_temperature_unit">Jednotka teploty</string>
     <string name="pref_weather_length_unit_metric">Metrické</string>
+    <string name="skill_listening_already_listening">Již poslouchám na probouzecí slovo</string>
+    <string name="skill_listening_started_listening">OK, budu poslouchat na probouzecí slovo</string>
+    <string name="skill_listening_not_listening">Neposlouchal jsem</string>
+    <string name="skill_listening_stop_listening">OK</string>
+    <string name="skill_listening_disabled">Služba probouzecího slova je zakázána v nastavení</string>
+    <string name="skill_name_listening">Ovládání poslechu na probouzecí slovo</string>
+    <string name="skill_sentence_example_listening">Přestat poslouchat</string>
 </resources>

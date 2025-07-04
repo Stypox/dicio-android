@@ -137,4 +137,27 @@
     <string name="skill_sentence_example_navigation">Navegar a l\'aeroport del Prat</string>
     <string name="skill_navigation_specify_where">Especifiqueu on voleu anar</string>
     <string name="skill_navigation_navigating_to">Navegant cap a %1$s</string>
+    <string name="all_skills_disabled_title">Totes les funcions estan deshabilitades</string>
+    <string name="waiting">Esperant…</string>
+    <string name="pref_general">General</string>
+    <string name="expand">Ampliar</string>
+    <string name="reduce">Reduir</string>
+    <string name="pref_theme_system">Utilitzar el mateix tema que el sistema</string>
+    <string name="back">Retrocedir</string>
+    <string name="clear">Netejar</string>
+    <string name="copy_to_clipboard">Copiar al porta-retalls</string>
+    <string name="done">Finalitzar</string>
+    <string name="grant_microphone_permission">Permetre acces al micrófon</string>
+    <string name="error_loading">Error al carregar</string>
+    <string name="error_unzipping">Error durant la descompressió</string>
+    <string name="error_downloading">Error durant la descarrega</string>
+    <string name="unzipping">Descomprimint…</string>
+    <string name="download">Descarregar</string>
+    <string name="stt_not_available">Reconeixement de veu no disponible</string>
+    <string name="stt_download">Descarregar reconeixement de veu</string>
+    <string name="stt_unzip">Extreure reconeixedor de veu</string>
+    <string name="start_listening">Començar a escoltar</string>
+    <string name="downloaded">Descarregant</string>
+    <string name="loaded">Carregant</string>
+    <string name="all_skills_disabled_description">Siusplau activi algunes funcions dels ajustaments, d\'altra banda, Dicio no sera capaç de realizar ninguna acció</string>
 </resources>

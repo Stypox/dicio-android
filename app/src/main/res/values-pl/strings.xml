@@ -193,4 +193,19 @@
     <string name="disable">Wyłącz</string>
     <string name="stop">Zatrzymaj</string>
     <string name="wake_word_error_loading">Wystąpił nieoczekiwany błąd podczas wczytywania</string>
+    <string name="pref_weather_length_unit">Jednostka długości</string>
+    <string name="skill_weather_kelvin">K</string>
+    <string name="pref_weather_length_unit_metric">Metryczne</string>
+    <string name="pref_weather_length_unit_imperial">Imperialne</string>
+    <string name="skill_weather_celsius">°C</string>
+    <string name="skill_weather_fahrenheit">°F</string>
+    <string name="skill_weather_meters_per_second">m/s</string>
+    <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="pref_weather_temperature_unit">Jednostka temperatury</string>
+    <string name="pref_weather_temperature_unit_celsius">Stopnie Celsjusza (°C)</string>
+    <string name="pref_weather_temperature_unit_fahrenheit">Stopnie Fahrenheita (°F)</string>
+    <string name="pref_weather_temperature_unit_kelvin">Stopnie Kelvina (K)</string>
+    <string name="waiting">Oczekiwanie…</string>
+    <string name="skill_name_media">Kontrola multimediów</string>
+    <string name="skill_sentence_example_media">Następna piosenka</string>
 </resources>

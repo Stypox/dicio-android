@@ -209,4 +209,25 @@
     <string name="pref_wake_custom_delete_summary">Rétablir le mot de réveil par défaut \"Hey Dicio\"</string>
     <string name="pref_wake_custom_import">Importer un mot de réveil personnalisé</string>
     <string name="eval_no_match_repeat">Pouvez-vous répéter ?</string>
+    <string name="pref_weather_temperature_unit">Unité de température</string>
+    <string name="skill_weather_kelvin">K</string>
+    <string name="pref_weather_temperature_unit_fahrenheit">Fahrenheit (°F)</string>
+    <string name="pref_weather_temperature_unit_kelvin">Kelvin (K)</string>
+    <string name="pref_weather_length_unit">Unité de longueur</string>
+    <string name="skill_weather_fahrenheit">°F</string>
+    <string name="skill_weather_meters_per_second">m/s</string>
+    <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="skill_weather_celsius">°C</string>
+    <string name="pref_weather_unit_system_instructions">Applique les unités configurées dans \"Paramètres &gt; Système &gt; Langues &amp; saisies &gt; Préférences régionales\"</string>
+    <string name="pref_weather_length_unit_metric">Métrique</string>
+    <string name="use_system_default">Utiliser valeurs du système</string>
+    <string name="pref_weather_temperature_unit_celsius">Celsius (°C)</string>
+    <string name="pref_weather_length_unit_imperial">Impérial</string>
+    <string name="skill_listening_already_listening">Je suis déjà à l\'écoute du mot d\'activation</string>
+    <string name="skill_listening_started_listening">Ok, je me mets à l\'écoute du mot d\'activation</string>
+    <string name="skill_listening_not_listening">Je n\'écoutais pas</string>
+    <string name="skill_listening_stop_listening">OK</string>
+    <string name="skill_listening_disabled">Le service d\'écoute du mot d\'activation est désactivé dans les paramètres</string>
+    <string name="skill_name_listening">Contrôler l\'écoute du mot d\'activation</string>
+    <string name="skill_sentence_example_listening">Arrêter l\'écoute</string>
 </resources>

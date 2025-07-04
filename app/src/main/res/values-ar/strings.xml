@@ -15,7 +15,7 @@
     <string name="pref_language_system">استخدم لغة النظام</string>
     <string name="pref_search_engine">محرك البحث</string>
     <string name="pref_weather_default_city">المدينة الافتراضية</string>
-    <string name="eval_no_match">لم أفهمك، هلا كررت؟</string>
+    <string name="eval_no_match">لم أفهم</string>
     <string name="skill_name_search">البحث</string>
     <string name="skill_name_weather">الطقس</string>
     <string name="skill_sentence_example_weather">كيف الطقس في روما؟</string>
@@ -23,7 +23,7 @@
     <string name="skill_name_calculator">الآلة الحاسبة</string>
     <string name="skill_sentence_example_calculator">ما خمسة ضرب أربعة ناقص مليون؟</string>
     <string name="skill_search_here_is_what_i_found">هذا ما وجدته</string>
-    <string name="skill_weather_min_max_wind">الحرارة الأدنى: %1$.1f درجة مئوية \nالحرارة القصوى: %2$.1f درجة مئوية \nسرعة الرياح: %3$.1f م/س</string>
+    <string name="skill_weather_min_max_wind">أدنى درجة حرارة: %1$.1f%4$s\nأقصى درجة حرارة: %2$.1f%4$s\nسرعة الرياح: %3$.1f%5$s</string>
     <string name="skill_weather_in_city_there_is_description">هناك %2$s و %3$s درجات في %1$s الآن</string>
     <string name="eval_network_error_description">لم يستطع Dicio الاتصال بالانترنت. رجاءً تأكّد من اتّصالك ثم حاول مجددًا.</string>
     <string name="eval_fatal_error">تعذر تقييم طلبك</string>
@@ -202,4 +202,28 @@
     <string name="skill_media_no_media_session">لاتوجد جلسة وسائط نشطة</string>
     <string name="notification_listener_label">مستمع لحدث الإخطارات المتعلق بديسيو</string>
     <string name="skill_search_no_results_stop">البحث لم يُرد أي نتائج</string>
+    <string name="pref_weather_temperature_unit">وحدة درجة الحرارة</string>
+    <string name="eval_no_match_repeat">هلا أعدت ما قلته؟</string>
+    <string name="wake_custom_service_foreground_notification">الاستماع إلى كلمة إيقاظ مخصصة</string>
+    <string name="use_system_default">استخدام النظام الافتراضي</string>
+    <string name="pref_weather_unit_system_instructions">يستخدم الوحدة التي تم تكوينها في ”إعدادات النظام &gt; النظام &gt; اللغات والإدخال &gt; التفضيلات الإقليمية“</string>
+    <string name="pref_weather_temperature_unit_celsius">درجة مئوية (°م)</string>
+    <string name="pref_weather_temperature_unit_fahrenheit">فهرنهايت ( ° ف)</string>
+    <string name="pref_weather_temperature_unit_kelvin">كلفن (ك)</string>
+    <string name="pref_weather_length_unit">وحدة الطول</string>
+    <string name="pref_weather_length_unit_metric">متري</string>
+    <string name="pref_weather_length_unit_imperial">إمبريالي</string>
+    <string name="skill_weather_celsius">°م</string>
+    <string name="skill_weather_fahrenheit">°ف</string>
+    <string name="skill_weather_kelvin">ك</string>
+    <string name="skill_weather_meters_per_second">م/ث</string>
+    <string name="skill_weather_miles_per_hour">ميل في الساعة</string>
+    <string name="waiting">انتظار…</string>
+    <string name="pref_input_method_vosk_summary">تنزيل وتشغيل نموذج Vosk لتحويل الكلام إلى نص دون اتصال بالإنترنت داخل Dicio</string>
+    <string name="pref_input_method_external_popup">نافذة منبثقة خارجية لتحويل الكلام إلى نص</string>
+    <string name="pref_input_method_external_popup_summary">يفتح واجهة المستخدم لتطبيق آخر من خلال ACTION_RECOGNIZE_SPEECH، على سبيل المثال whisperIME، Kõnele، Futo Voice Input</string>
+    <string name="pref_wake_custom_delete">حذف كلمة الإيقاظ المخصصة</string>
+    <string name="pref_wake_custom_delete_summary">العودة إلى كلمة الإيقاظ الافتراضية مرحبا ديسيو \"Hey Dicio\"</string>
+    <string name="pref_wake_custom_import">استيراد كلمة إيقاظ مخصصة</string>
+    <string name="pref_wake_custom_import_summary_oww">استبدل كلمة الإيقاظ الافتراضية \"Hey Dicio\" بنموذج TFLite مخصص؛ يمكنك تنزيل بعض النماذج المخصصة من github.com/dscripka/openWakeWord/releases</string>
 </resources>

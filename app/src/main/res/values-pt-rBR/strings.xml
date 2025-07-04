@@ -198,4 +198,11 @@
     <string name="perm_call_phone">ligar diretamente para números de telefone</string>
     <string name="skill_name_media">Controle de mídia</string>
     <string name="skill_sentence_example_media">Próxima canção</string>
+    <string name="pref_input_method_vosk_summary">Baixa e executa o modelo de entrada por voz off-line pelo Dicio</string>
+    <string name="pref_input_method_external_popup">Pop-up externo de entrada por voz</string>
+    <string name="pref_input_method_external_popup_summary">Abre a interface de outro APP pelo ACTION_RECOGNIZE_SPEECH, por exemplo whisperIME, Kõnele, Entrada por Voz do FUTO</string>
+    <string name="pref_wake_custom_delete">Apagar palavra ativadora customizada</string>
+    <string name="pref_wake_custom_delete_summary">Retorna à palavra ativadora \"Hey Dicio\" padrão</string>
+    <string name="pref_wake_custom_import">Importar palavra ativadora customizada</string>
+    <string name="waiting">Aguardando…</string>
 </resources>

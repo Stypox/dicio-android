@@ -41,7 +41,7 @@
     <string name="vosk_model_extraction_error">חילוץ מודל Vosk מ־Zip נכשל</string>
     <string name="vosk_model_ready">מודל Vosk מוכן</string>
     <string name="android_tts_unsupported_language">השפה הנוכחית לא נתמכת על ידי מנגנון ההקראה של Android</string>
-    <string name="android_tts_error">אירעה שגיאה בהזנקת מנגנון ההקראה של Android</string>
+    <string name="android_tts_error">אירעה שגיאה בהתחלת מנגנון ההקראה של Android</string>
     <string name="settings">הגדרות</string>
     <string name="error_report">דיווח</string>
     <string name="error_title">דוח שגיאה</string>
@@ -65,7 +65,7 @@
     <string name="pref_theme_black">שחורה</string>
     <string name="pref_language">שפה</string>
     <string name="pref_language_summary">באיזו שפה ישתמש Dicio כדי להאזין לך ולספק לך תשובות?</string>
-    <string name="pref_language_system">להשתמש בשפת המערכת</string>
+    <string name="pref_language_system">שימוש בשפת המערכת</string>
     <string name="pref_input_method">שיטת קלט</string>
     <string name="pref_input_method_summary">נא לבחור באיזה שירות להשתמש כדי לדבר עם Dicio</string>
     <string name="error_github_notice">נא לבדוק אם כבר קיים דיווח שדן בקריסה שלך. יצירת דיווחים כפולים גוזלת מאתנו זמן שיכולנו להשקיע בתיקון התקלה בפועל.</string>
@@ -214,4 +214,18 @@
     <string name="perm_call_phone">חיוג ישיר למספרי טלפון</string>
     <string name="perm_read_contacts">קריאת אנשי הקשר שלך</string>
     <string name="skill_media_next">המדיה הבאה…</string>
+    <string name="pref_weather_temperature_unit">יחידת טמפרטורה</string>
+    <string name="pref_weather_unit_system_instructions">שימוש ביחידות המוגדרות ב„הגדרות מערכת &gt; מערכת &gt; שפות וקלט &gt; העדפות מחוזיות”</string>
+    <string name="pref_weather_temperature_unit_celsius">צלזיוס (‎°C)</string>
+    <string name="pref_weather_temperature_unit_fahrenheit">פרנהייט (‎°F)</string>
+    <string name="pref_weather_temperature_unit_kelvin">קלווין (K)</string>
+    <string name="pref_weather_length_unit">יחידת אורך</string>
+    <string name="use_system_default">שימוש בברירת המחדל של המערכת</string>
+    <string name="pref_weather_length_unit_metric">מטרית</string>
+    <string name="pref_weather_length_unit_imperial">אימפריאלית</string>
+    <string name="skill_weather_celsius">‎°C</string>
+    <string name="skill_weather_fahrenheit">‎°F</string>
+    <string name="skill_weather_kelvin">K</string>
+    <string name="skill_weather_meters_per_second">מ׳/שנ׳</string>
+    <string name="skill_weather_miles_per_hour">מייל לשעה</string>
 </resources>

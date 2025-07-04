@@ -15,7 +15,7 @@
     <string name="error_unzipping">Onglema zip-paketin purkamisessa</string>
     <string name="stt_not_available">Puhe tekstiksi ei ole saatavilla</string>
     <string name="stt_unzip">Pura puhe tekstiksi</string>
-    <string name="downloaded">Lataa</string>
+    <string name="downloaded">Ladattu</string>
     <string name="loaded">Ladattu</string>
     <string name="all_skills_disabled_title">Kaikki taidot ovat pois käytöstä</string>
     <string name="all_skills_disabled_description">Ole hyvä ja ota joitain taitoja käyttöön sovelluksen aseutksista. Dicio ei voi muuten tehdä mitään</string>
@@ -109,7 +109,7 @@
     <string name="error_report_channel_name">Virheraportin ilmoitus</string>
     <string name="pref_general">Yleinen</string>
     <string name="pref_stt_auto_finish_title">Lähetä puheen tulos suoraan tekstiponnahdusikkunaan</string>
-    <string name="eval_no_match">En ymmärtänyt, voitko toistaa?</string>
+    <string name="eval_no_match">En ymmärtänyt</string>
     <string name="skill_name_navigation">Navigointi</string>
     <string name="skill_sentence_example_navigation">Navigoi Vancouverin kansainväliselle lentokentälle</string>
     <string name="skill_name_timer">Ajastin</string>
@@ -118,7 +118,7 @@
     <string name="skill_name_telephone">Puhelin</string>
     <string name="skill_sentence_example_telephone">Soita Tomille</string>
     <string name="skill_weather_could_not_find_city">Kaupunkia %1$s ei löytynyt</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f °C</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
     <string name="skill_lyrics_found_song_by_artist">Löytyi %1$s tekijältä %2$s</string>
     <string name="skill_open_could_not_understand">Ei voinut ymmärtää sovellusta</string>
     <string name="skill_calculator_could_not_calculate">En voinut laskea pyyntöäsi</string>
@@ -144,7 +144,7 @@
     <string name="skill_name_lyrics">Laulujen sanoitukset</string>
     <string name="skill_name_open">Sovelluksen avaaja</string>
     <string name="skill_sentence_example_open">Avaa NewPipe</string>
-    <string name="skill_weather_min_max_wind">Vähimmäislämpötila: %1$.1f °C\nEnimmäislämpötila: %2$.1f °C\nTuulen nopeus: %3$.1f m/s</string>
+    <string name="skill_weather_min_max_wind">Vähimmäislämpötila: %1$.1f%4$s\nEnimmäislämpötila: %2$.1f%4$s\nTuulen nopeus: %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">Kappaletta %1$s ei löytynyt</string>
     <string name="skill_name_media">Median ohjaus</string>
     <string name="skill_sentence_example_media">Seuraava kappale</string>
@@ -197,4 +197,28 @@
     <string name="grant_permissions">Myönnä luvat</string>
     <string name="stt_popup">Puhe tekstiponnahdusikkunaksi</string>
     <string name="skill_search_no_results_stop">Haku ei tuottanut tulosta</string>
+    <string name="pref_weather_temperature_unit">Lämpötilayksikkö</string>
+    <string name="skill_weather_kelvin">K</string>
+    <string name="pref_weather_temperature_unit_celsius">Celsius (°C)</string>
+    <string name="pref_weather_temperature_unit_fahrenheit">Fahrenheit (°F)</string>
+    <string name="pref_weather_temperature_unit_kelvin">Kelvin (K)</string>
+    <string name="pref_weather_length_unit">Pituusyksikkö</string>
+    <string name="pref_weather_length_unit_imperial">Keisarillinen</string>
+    <string name="skill_weather_celsius">°C</string>
+    <string name="skill_weather_fahrenheit">°F</string>
+    <string name="skill_weather_meters_per_second">m/s</string>
+    <string name="skill_weather_miles_per_hour">mt</string>
+    <string name="pref_wake_custom_import_summary_oww">Korvaa oletusarvoinen \"Hei Dicio\" -herätyssana mukautetulla TFLite-mallilla; voit ladata joitain mukautettuja malleja github.com/dscripka/openWakeWord/releases :sta</string>
+    <string name="pref_input_method_vosk_summary">Lataa ja käyttää Vosk SpeechToText -mallia ei-verkkotilassa Dicion sisällä</string>
+    <string name="eval_no_match_repeat">Voisitko toistaa?</string>
+    <string name="pref_input_method_external_popup_summary">Avaa toisen sovelluksen käyttöliittymän ACTION​_​RECOGNIZE​_​SPEECH:n kautta, esimerkiksi whisperIME, Kõnele, Futo Voice Input</string>
+    <string name="pref_weather_length_unit_metric">Metrinen</string>
+    <string name="use_system_default">Käytä järjestelmän oletusarvoa</string>
+    <string name="pref_weather_unit_system_instructions">Käyttää kohdassa \"Järjestelmäasetukset &gt; Järjestelmä &gt; Kielet ja syöttö &gt; Alueelliset asetukset\" määritettyä yksikköä</string>
+    <string name="waiting">Odotetaan…</string>
+    <string name="pref_input_method_external_popup">Ulkoinen SpeechToText-ponnahdusikkuna</string>
+    <string name="pref_wake_custom_delete">Poista mukautettu herätyssana</string>
+    <string name="pref_wake_custom_delete_summary">Palaa oletusarvoiseen \"Hei Dicio\" -herätyssanaan</string>
+    <string name="pref_wake_custom_import">Tuo mukautettu herätyssana</string>
+    <string name="wake_custom_service_foreground_notification">Kuunnellaan mukautettua herätyssanaa</string>
 </resources>
