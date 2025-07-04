@@ -56,7 +56,7 @@ jobs:
           cat "__changelog_file__" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease --stacktrace
 
       - name: Move APK to folder for upload
         env:
