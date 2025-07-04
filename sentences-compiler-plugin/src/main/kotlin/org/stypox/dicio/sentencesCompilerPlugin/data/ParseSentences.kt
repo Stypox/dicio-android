@@ -13,8 +13,8 @@ fun parseSentences(extractedSkill: ExtractedSkill): ParsedSkill {
         specificity = extractedSkill.specificity,
         sentenceDefinitions = extractedSkill.sentenceDefinitions,
         languageToSentences = extractedSkill.languageToSentences
-            .mapValues { (_, sentences) ->
-                sentences.map(::parseSentence)
+            .map { (language, sentences) ->
+                Pair(language, sentences.map(::parseSentence))
             }
     )
 }

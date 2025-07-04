@@ -12,7 +12,8 @@ data class ExtractedSkill(
     val id: String,
     val specificity: Specificity,
     val sentenceDefinitions: List<SentenceDefinition>,
-    val languageToSentences: Map<String, List<RawSentence>>,
+    // use a list of pairs instead of a map to ensure that the code is generated deterministically
+    val languageToSentences: List<Pair<String, List<RawSentence>>>,
 )
 
 data class ParsedData(
@@ -24,7 +25,8 @@ data class ParsedSkill(
     val id: String,
     val specificity: Specificity,
     val sentenceDefinitions: List<SentenceDefinition>,
-    val languageToSentences: Map<String, List<ParsedSentence>>
+    // use a list of pairs instead of a map to ensure that the code is generated deterministically
+    val languageToSentences: List<Pair<String, List<ParsedSentence>>>
 )
 
 data class RawSentence(
