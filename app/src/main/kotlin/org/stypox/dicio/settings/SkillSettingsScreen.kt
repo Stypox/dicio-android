@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -209,7 +210,13 @@ private fun SkillSettingsItemHeader(
 
     Row(
         modifier = Modifier
-            .let { if (toggleExpanded != null) it.clickable(onClick = toggleExpanded) else it }
+            .let { it ->
+                if (toggleExpanded != null)
+                    it.clickable(onClick = toggleExpanded)
+                else
+                    // still group items together for better accessibility
+                    it.semantics(mergeDescendants = true) {}
+            }
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -220,7 +227,8 @@ private fun SkillSettingsItemHeader(
         }
         Icon(
             painter = skill.icon(),
-            contentDescription = skill.name(LocalContext.current),
+            // no content description here as it would be duplicate with the text below
+            contentDescription = null,
             modifier = Modifier
                 .padding(start = 12.dp)
                 .size(24.dp),

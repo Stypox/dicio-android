@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,12 +62,12 @@ private fun SkillRow(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = skill.icon(),
-            contentDescription = skill.name(LocalContext.current),
+            contentDescription = null,
             modifier = Modifier.size(36.dp)
         )
         Spacer(modifier = Modifier.width(12.dp))
