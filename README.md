@@ -3,16 +3,16 @@
 Dicio is a *free and open source* **voice assistant** running on Android. It supports many different **skills** and input/output methods, and it provides both **speech** and **graphical** feedback to a question. It interprets user input and (when possible) generates user output entirely **on-device**, providing privacy by design. It has **multilanguage** support, and is currently available in these languages: Czech, English, French, German, Greek, Italian, Polish, Russian, Slovenian, Spanish, Swedish and Ukrainian. Open to contributions :-D
 
 <p align="center">
-    <img height="80" alt="Dicio logo" src="./app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
+    <img width="80" alt="Dicio logo" src="./app/src/main/res/mipmap-xxxhdpi/ic_launcher.png">
     &emsp;
     <a href="https://f-droid.org/packages/org.stypox.dicio">
-        <img height="80" alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
+        <img width="206" alt="Get it on F-Droid" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
     </a>
     <a href="https://github.com/Stypox/dicio-android/releases">
-        <img height="80" alt="Get it on GitHub" src="./meta/get-it-on-github.png">
+        <img width="206" alt="Get it on GitHub" src="./meta/get-it-on-github.png">
     </a>
     <a href="https://play.google.com/store/apps/details?id=org.stypox.dicio">
-        <img height="80" alt="Get it on Play Store" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png">
+        <img width="206" alt="Get it on Play Store" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png">
     </a>
 </p>
 
