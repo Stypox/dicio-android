@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -81,7 +82,7 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
     Surface(
         shape = MaterialTheme.shapes.extraLarge,
         color = MaterialTheme.colorScheme.primary,
-        modifier = modifier
+        modifier = modifier.clearAndSetSemantics {}
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -95,6 +96,7 @@ private fun DrawerHeader(modifier: Modifier = Modifier) {
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
+                    maxLines = 1,
                 )
                 Text(
                     text = stringResource(R.string.drawer_header_subtitle),
