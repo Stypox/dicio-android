@@ -11,6 +11,7 @@ Dicio answers questions about:
 <li><b>timer</b>: set, query and cancel timers - <i>Set a timer for eleven minutes</i></li>
 <li><b>current time</b>: query current time - <i>What time is it?</i></li>
 <li><b>navigation</b>: opens the navigation app at the requested position - <i>Take me to New York, fifteenth avenue</i></li>
+<li><b>jokes</b>: tells you a joke - <i>Tell me a joke</i></li>
 <li><b>media</b>: play, pause, previous, next song - <i>Next Song</i></li>
 </ul>
 

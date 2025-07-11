@@ -29,6 +29,7 @@ import org.stypox.dicio.skills.search.SearchInfo
 import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.weather.WeatherInfo
+import org.stypox.dicio.skills.joke.JokeInfo
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,7 +51,9 @@ class SkillHandler @Inject constructor(
         TimerInfo,
         CurrentTimeInfo,
         MediaInfo,
+        JokeInfo,
         ListeningInfo(dataStore),
+
     )
 
     // TODO add more fallback skills (e.g. search)
