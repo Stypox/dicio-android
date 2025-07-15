@@ -123,3 +123,11 @@ skills:
             type: string
           - id: target
             type: string
+
+  - id: calendar
+    specificity: high
+    sentences:
+      - id: set
+        captures:
+          - id: when
+            type: string

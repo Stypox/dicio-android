@@ -245,4 +245,6 @@
     <string name="skill_weather_miles_per_hour">mph</string>
     <string name="failed_to_copy">Failed to copy to clipboard</string>
     <string name="skill_translation_auto">Auto</string>
+    <string name="skill_name_calendar">Calendar</string>
+    <string name="skill_sentence_example_calendar">Event 15th of July</string>
 </resources>

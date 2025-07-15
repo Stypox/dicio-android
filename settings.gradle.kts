@@ -67,7 +67,7 @@ fun findInVersionCatalog(versionIdentifier: String): String {
 val includeGitRepos = listOf(
     IncludeGitRepo(
         name = "dicio-numbers",
-        uri = "https://github.com/Stypox/dicio-numbers",
+        uri = "https://github.com/sguinetti/dicio-numbers",
         projectPath = ":numbers",
         commit = findInVersionCatalog("dicioNumbers"),
     ),
