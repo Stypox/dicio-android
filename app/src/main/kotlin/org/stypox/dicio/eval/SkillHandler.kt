@@ -18,6 +18,7 @@ import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.settings.datastore.UserSettingsModule
 import org.stypox.dicio.skills.calculator.CalculatorInfo
+import org.stypox.dicio.skills.calendar.CalendarInfo
 import org.stypox.dicio.skills.current_time.CurrentTimeInfo
 import org.stypox.dicio.skills.fallback.text.TextFallbackInfo
 import org.stypox.dicio.skills.listening.ListeningInfo
@@ -51,6 +52,7 @@ class SkillHandler @Inject constructor(
         CurrentTimeInfo,
         MediaInfo,
         ListeningInfo(dataStore),
+        CalendarInfo,
     )
 
     // TODO add more fallback skills (e.g. search)

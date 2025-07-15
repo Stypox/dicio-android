@@ -233,4 +233,6 @@
     <string name="skill_weather_kelvin">K</string>
     <string name="skill_weather_meters_per_second">m/s</string>
     <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="skill_name_calendar">Calendar</string>
+    <string name="skill_sentence_example_calendar">Event 15th of July</string>
 </resources>

@@ -49,9 +49,9 @@ data class IncludeGitRepo(
 val includeGitRepos = listOf(
     IncludeGitRepo(
         name = "dicio-numbers",
-        uri = "https://github.com/Stypox/dicio-numbers",
+        uri = "https://github.com/sguinetti/dicio-numbers",
         projectPath = ":numbers",
-        commit = "66fd44b79585f952b76d16e5578d4d6aa5bc030c",
+        commit = "5765339e81f84f2c71793cd056ce2052d61afe44",
     ),
     IncludeGitRepo(
         name = "dicio-sentences-compiler",
