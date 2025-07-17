@@ -1,17 +1,17 @@
 addition:
-  - plus|(add|adding|addition|sum|summing to?)|(in addition to?)
+  - plus|som|sommeer|erbij|(voeg toe|erbij)|(tel erbij? op)
 
 subtraction:
-  - minus|(subtract|subtracting|subtraction from?)
+  - minus|min|aftrekken|aftrekken van?|trek af
 
 multiplication:
-  - times|of|(multiply|multiplying|multiplied|multiplication by?)
+  - keer|maal|(product van?)|(vermenigvuldig met?)
 
 division:
-  - (divide|division|dividing|divided by?)|over
+  - deel|(gedeeld door?)|delen|(quotiënt van?)
 
 power:
-  - (to? the? power of?)|(to the)
+  - (tot de macht van?)|macht|(verheffen tot de macht van?)|(verhef tot de macht van?)
 
 square_root:
-  - square root of?
+  - de? wortel|vierkantswortel uit|van?
