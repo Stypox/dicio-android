@@ -1,2 +1,3 @@
 query:
-  - open|run|execute|view|see|launch the? (app|application? .what.)|(.what. app|application?)
+  - open|run|start|bekijk|begin de? (app|applicatie? .what.)|(.what. app|applicatie?)
+  - de? (app|applicatie? .what.)|(.what. app|applicatie?) starten|openen|runnen|beginnen
