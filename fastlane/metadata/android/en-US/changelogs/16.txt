@@ -1,0 +1,9 @@
+New:
+• Add Swedish language (note: the Vosk model for Swedish is big and might run slowly)
+• Add skill to enable/disable listening for wake word
+
+Improved:
+• Add Spanish translations of more skills
+• Add German translation of Media skill
+• Improve English sentences for Media and Lyrics skills
+• [Vosk] Update list of models

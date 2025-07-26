@@ -3,7 +3,7 @@ package org.stypox.dicio.sentencesCompilerPlugin.data
 import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginException
 
 fun checkSentences(parsedSkill: ParsedSkill) {
-    for (sentence in parsedSkill.languageToSentences.values.flatten()) {
+    for (sentence in parsedSkill.languageToSentences.map { it.second }.flatten()) {
         val definition = parsedSkill.sentenceDefinitions
             .find { definition -> definition.id == sentence.id }
         if (definition == null) {

@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import org.stypox.dicio.MainActivity
 import org.stypox.dicio.MainActivity.Companion.ACTION_WAKE_WORD
@@ -36,6 +37,7 @@ import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.eval.SkillEvaluator
 import java.time.Instant
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,7 +46,7 @@ class WakeService : Service() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
-    private var listening = AtomicBoolean(false)
+    private val listening = AtomicBoolean(false)
 
     @Inject
     lateinit var skillEvaluator: SkillEvaluator
@@ -58,7 +60,7 @@ class WakeService : Service() {
         if (MainActivity.isCreated <= 0) {
             // if the main activity is neither visible nor in the background,
             // then unload the STT after a while because it would be using resources uselessly
-            sttInputDevice.releaseResources()
+            sttInputDevice.reinitializeToReleaseResources()
         }
     }
 
@@ -71,6 +73,15 @@ class WakeService : Service() {
     override fun onCreate() {
         super.onCreate()
         notificationManager = getSystemService(this, NotificationManager::class.java)!!
+
+        scope.launch {
+            // Recreate the notification so that it says the correct thing (i.e. there is a
+            // different string for the "Hey Dicio" wake word and for a custom one).
+            // Ignore the first one (i.e. the current value), which is handled in onStartCommand.
+            wakeDevice.isHeyDicio.drop(1).collect { isHeyDicio ->
+                createForegroundNotification(isHeyDicio)
+            }
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -80,7 +91,7 @@ class WakeService : Service() {
         }
 
         try {
-            createForegroundNotification()
+            createForegroundNotification(wakeDevice.isHeyDicio.value)
         } catch (t: Throwable) {
             stopWithMessage("could not create WakeService foreground notification", t)
             return START_NOT_STICKY
@@ -120,7 +131,7 @@ class WakeService : Service() {
     override fun onDestroy() {
         listening.set(false)
         job.cancel()
-        wakeDevice.releaseResources()
+        wakeDevice.reinitializeToReleaseResources()
         super.onDestroy()
     }
 
@@ -135,7 +146,7 @@ class WakeService : Service() {
         }
     }
 
-    private fun createForegroundNotification() {
+    private fun createForegroundNotification(isHeyDicio: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 FOREGROUND_NOTIFICATION_CHANNEL_ID,
@@ -148,7 +159,12 @@ class WakeService : Service() {
 
         val notification = NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_hearing_white)
-            .setContentTitle(getString(R.string.wake_service_foreground_notification))
+            .setContentTitle(
+                getString(
+                    if (isHeyDicio) R.string.wake_service_foreground_notification
+                    else R.string.wake_custom_service_foreground_notification
+                )
+            )
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setShowWhen(false)
@@ -196,6 +212,8 @@ class WakeService : Service() {
                     nextWakeWordAllowed = Instant.now().plusMillis(WAKE_WORD_BACKOFF_MILLIS)
                     onWakeWordDetected()
                 }
+
+                lastHeard.set(Instant.now())
             }
         } finally {
             ar.stop()
@@ -309,6 +327,18 @@ class WakeService : Service() {
             ContextCompat.startForegroundService(context, intent)
         }
 
+        fun stop(context: Context) {
+            try {
+                context.startService(Intent(context, WakeService::class.java)
+                    .apply { action = ACTION_STOP_WAKE_SERVICE })
+            } catch (_: IllegalStateException) {
+                // Must not have been running. No problem with that.
+            }
+        }
+
+        // Consider the service running if it processed any audio data within the past half second.
+        fun isRunning(): Boolean = lastHeard.get()?.isAfter(Instant.now().minusMillis(500)) == true
+
         /**
          * On Android 10+ cancels any notification telling the user that the Dicio wake word was
          * triggered, which is not needed anymore after the main activity starts.
@@ -319,6 +349,8 @@ class WakeService : Service() {
                     ?.cancel(TRIGGERED_NOTIFICATION_ID)
             }
         }
+
+        private val lastHeard = AtomicReference<Instant>()
 
         private val TAG = WakeService::class.simpleName
         private const val FOREGROUND_NOTIFICATION_CHANNEL_ID =

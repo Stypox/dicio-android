@@ -9,6 +9,7 @@
 /models
 /aars/build
 /checkouts
+.kotlin
 
 # Fastlane
 fastlane/report.xml

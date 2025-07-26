@@ -10,16 +10,17 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.di.SkillContextImpl
+import org.stypox.dicio.di.SkillContextInternal
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.settings.datastore.UserSettingsModule
 import org.stypox.dicio.skills.calculator.CalculatorInfo
 import org.stypox.dicio.skills.current_time.CurrentTimeInfo
 import org.stypox.dicio.skills.fallback.text.TextFallbackInfo
+import org.stypox.dicio.skills.listening.ListeningInfo
 import org.stypox.dicio.skills.lyrics.LyricsInfo
 import org.stypox.dicio.skills.media.MediaInfo
 import org.stypox.dicio.skills.navigation.NavigationInfo
@@ -36,7 +37,7 @@ import javax.inject.Singleton
 class SkillHandler @Inject constructor(
     private val dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
-    private val skillContext: SkillContext,
+    private val skillContext: SkillContextInternal,
 ) {
     // TODO improve id handling (maybe just use an int that can point to an Android resource)
     val allSkillInfoList = listOf(
@@ -51,6 +52,7 @@ class SkillHandler @Inject constructor(
         CurrentTimeInfo,
         MediaInfo,
         JokeInfo,
+        ListeningInfo(dataStore),
     )
 
     // TODO add more fallback skills (e.g. search)

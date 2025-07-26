@@ -11,10 +11,12 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import org.stypox.dicio.R
 import org.stypox.dicio.io.input.stt_popup.SttPopupActivity
 import org.stypox.dicio.settings.MainSettingsScreen
 import org.stypox.dicio.settings.SkillSettingsScreen
@@ -29,7 +31,7 @@ fun Navigation() {
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.back),
             )
         }
     }

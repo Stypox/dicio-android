@@ -1,0 +1,9 @@
+Novità:
+• Lingua svedese (nota: il modello Vosk per lo svedese è grosso e potrebbe andare lento)
+• Abilità per attivare/disattivare la parola di attivazione
+
+Miglioramenti:
+• Traduzione in spagnolo di varie abilità
+• Traduzione in tedesco dell'abilità Media riproduzione
+• Migliorate le frasi in inglese per le abilità dei testi di canzoni e per gestire la riproduzione
+• [Vosk] Aggiornata la lista di modelli

@@ -39,7 +39,7 @@
     <string name="eval_fatal_error">No s\'ha pogut avaluar la petició</string>
     <string name="eval_network_error">Error de xarxa</string>
     <string name="eval_network_error_description">El Dicio no pot accedir a Internet. Comproveu la connexió i torneu a intentar-ho.</string>
-    <string name="eval_no_match">No us he entès, podeu repetir-ho\?</string>
+    <string name="eval_no_match">No us he entès, podeu repetir-ho?</string>
     <string name="drawer_close">Tanca el tauler de navegació</string>
     <string name="action_text_input">Entrada de text</string>
     <string name="action_voice_input">Entrada de veu</string>
@@ -49,10 +49,10 @@
     <string name="skill_sentence_example_calculator">Quan fan cinc per quatre menys un milió\?</string>
     <string name="skill_search_here_is_what_i_found">Això és el que he trobat</string>
     <string name="skill_weather_could_not_find_city">No he pogut trobar la ciutat %1$s</string>
-    <string name="skill_weather_description_temperature">%1$s · %2$.1f°C</string>
-    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f°C
-\nTemperatura màxima %2$.1f°C
-\nVelocitat del vent %3$.1fm/s</string>
+    <string name="skill_weather_description_temperature">%1$s · %2$.1f%3$s</string>
+    <string name="skill_weather_min_max_wind">Temperatura mínima: %1$.1f%4$s
+\nTemperatura màxima %2$.1f%4$s
+\nVelocitat del vent %3$.1f%5$s</string>
     <string name="skill_lyrics_song_not_found">No s\'ha pogut trobar la cançó %1$s</string>
     <string name="skill_lyrics_found_song_by_artist">S\'ha trobat %1$s de %2$s</string>
     <string name="skill_open_opening">S\'està obrint %1$s…</string>
@@ -137,4 +137,27 @@
     <string name="skill_sentence_example_navigation">Navegar a l\'aeroport del Prat</string>
     <string name="skill_navigation_specify_where">Especifiqueu on voleu anar</string>
     <string name="skill_navigation_navigating_to">Navegant cap a %1$s</string>
+    <string name="all_skills_disabled_title">Totes les funcions estan deshabilitades</string>
+    <string name="waiting">Esperant…</string>
+    <string name="pref_general">General</string>
+    <string name="expand">Ampliar</string>
+    <string name="reduce">Reduir</string>
+    <string name="pref_theme_system">Utilitzar el mateix tema que el sistema</string>
+    <string name="back">Retrocedir</string>
+    <string name="clear">Netejar</string>
+    <string name="copy_to_clipboard">Copiar al porta-retalls</string>
+    <string name="done">Finalitzar</string>
+    <string name="grant_microphone_permission">Permetre acces al micrófon</string>
+    <string name="error_loading">Error al carregar</string>
+    <string name="error_unzipping">Error durant la descompressió</string>
+    <string name="error_downloading">Error durant la descarrega</string>
+    <string name="unzipping">Descomprimint…</string>
+    <string name="download">Descarregar</string>
+    <string name="stt_not_available">Reconeixement de veu no disponible</string>
+    <string name="stt_download">Descarregar reconeixement de veu</string>
+    <string name="stt_unzip">Extreure reconeixedor de veu</string>
+    <string name="start_listening">Començar a escoltar</string>
+    <string name="downloaded">Descarregant</string>
+    <string name="loaded">Carregant</string>
+    <string name="all_skills_disabled_description">Siusplau activi algunes funcions dels ajustaments, d\'altra banda, Dicio no sera capaç de realizar ninguna acció</string>
 </resources>

@@ -10,6 +10,7 @@ import org.dicio.skill.skill.FloatScore
 import org.dicio.skill.skill.Score
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.skill.Specificity
 import java.util.Locale
 
@@ -19,6 +20,7 @@ object MockSkillContext : SkillContext {
     override val sentencesLanguage: String get() = mocked()
     override val parserFormatter: ParserFormatter get() = mocked()
     override val speechOutputDevice: SpeechOutputDevice get() = mocked()
+    override val previousOutput: SkillOutput = mocked()
 }
 
 object MockSkillInfo : SkillInfo("") {

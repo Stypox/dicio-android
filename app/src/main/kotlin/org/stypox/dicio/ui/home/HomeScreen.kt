@@ -146,7 +146,7 @@ fun HomeScreen(
                 searchIcon = {
                     Icon(
                         imageVector = Icons.Default.QuestionAnswer,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.text_input_hint),
                     )
                 },
                 navigationIcon = navigationIcon,

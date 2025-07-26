@@ -48,6 +48,8 @@ import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.QuestionAnswer
 import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.skills.weather.ResolvedLengthUnit
+import org.stypox.dicio.skills.weather.ResolvedTemperatureUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -191,10 +193,12 @@ class ScreenshotTakerTest {
                         description = "Few clouds",
                         iconUrl = "https://openweathermap.org/img/wn/02d@2x.png",
                         temp = 8.8,
-                        tempString = "nine",
                         tempMin = 7.2,
                         tempMax = 10.2,
+                        tempString = "nine",
                         windSpeed = 1.8,
+                        temperatureUnit = ResolvedTemperatureUnit.CELSIUS,
+                        lengthUnit = ResolvedLengthUnit.METRIC,
                     )
                 )
             )),
@@ -286,7 +290,7 @@ class ScreenshotTakerTest {
                             url = "https://github.com/TeamNewPipe/NewPipe",
                             thumbnailUrl = "https://external-content.duckduckgo.com/ip3/github.com.ico"
                         ),
-                    ))
+                    ), askAgain = false)
                 ),
             )),
         ), null)

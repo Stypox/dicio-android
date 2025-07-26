@@ -1,0 +1,5 @@
+query:
+  - hämta|visa|(ta fram)|hitta? mig? text<en?>|låttext<en?>|sångtext<en?> (för|till|i (sång<en?>|låt<en?>)?)? .song.
+  - sjung (sång|låt)? .song.
+  - .song. text<en?>|låttext<en?>|sångtext<en?>
+  - sjung|(hur går)|(vad heter) den|(den där)? sången|låten (som går|är)|(med texten|orden) .song.

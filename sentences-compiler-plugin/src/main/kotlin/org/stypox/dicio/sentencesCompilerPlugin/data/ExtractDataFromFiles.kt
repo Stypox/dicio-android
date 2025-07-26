@@ -98,7 +98,8 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): ExtractedData {
                     id = skill.id,
                     specificity = skill.specificity,
                     sentenceDefinitions = skill.sentences,
-                    languageToSentences = languageToSentences,
+                    // sort here to ensure that the code is generated deterministically
+                    languageToSentences = languageToSentences.toList().sortedBy { it.first },
                 )
             },
         languages = languages,

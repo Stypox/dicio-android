@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.Headline
@@ -25,8 +26,8 @@ class TelephoneOutput(
         ctx.getString(R.string.skill_telephone_found_contacts, contacts.size)
     }
 
-    override fun getNextSkills(ctx: SkillContext): List<Skill<*>> {
-        val result = mutableListOf<Skill<*>>(
+    override fun getInteractionPlan(ctx: SkillContext): InteractionPlan {
+        val nextSkills = mutableListOf<Skill<*>>(
             ContactChooserName(
                 // when saying the name, there is no way to distinguish between
                 // different numbers, so just use the first one
@@ -35,7 +36,7 @@ class TelephoneOutput(
         )
 
         if (ctx.parserFormatter != null) {
-            result.add(
+            nextSkills.add(
                 ContactChooserIndex(
                     contacts.flatMap { contact ->
                         contact.second.map { number ->
@@ -46,7 +47,10 @@ class TelephoneOutput(
             )
         }
 
-        return result
+        return InteractionPlan.StartSubInteraction(
+            reopenMicrophone = true,
+            nextSkills = nextSkills,
+        )
     }
 
     @Composable
