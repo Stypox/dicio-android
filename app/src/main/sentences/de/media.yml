@@ -1,9 +1,11 @@
 play:
   - gib|geb<e?>|spiel<e?>|mach<e?>|start<e?> (das|den|die? audio|film|hör<buch|spiel>|lied|musik<stück?>|podcast|song|stream|stück|track|video)? wieder? ab|an?
+  - das|den|die? audio|film|hör<buch|spiel>|lied|musik<stück?>|podcast|song|stream|stück|track|video abspielen|fortsetzen
 
 pause:
   - pausier<e|en?>|halt<e|en?>|stopp<e|en?> (das|den|die? audio|film|hör<buch|spiel>|lied|musik<stück?>|podcast|song|stream|stück|track|video)? an?
   - mach<e?>? das|den|die? audio|film|hör<buch|spiel>|lied|musik<stück?>|podcast|song|stream|stück|track|video auf pause
+  - das|den|die? audio|film|hör<buch|spiel>|lied|musik<stück?>|podcast|song|stream|stück|track|video anhalten|pausieren|stoppen
 
 previous:
   - speil<e?>? das|den|die? letzte<n?> audio|film|hör<buch|spiel>|lied|musik<stück?>|podcast|song|stream|stück|track|video? (in der <warte?>schlange)?
