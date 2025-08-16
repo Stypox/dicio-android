@@ -245,4 +245,7 @@
     <string name="skill_weather_miles_per_hour">mph</string>
     <string name="failed_to_copy">Failed to copy to clipboard</string>
     <string name="skill_translation_auto">Auto</string>
+    <string name="skill_notify_message">You have a notification from %s. Would you like to hear it?</string>
+    <string name="skill_sentence_example_notify">What\'s my notification?</string>
+    <string name="skill_name_notify">Notify</string>
 </resources>
