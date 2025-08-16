@@ -227,4 +227,7 @@
     <string name="skill_weather_kelvin">K</string>
     <string name="skill_weather_meters_per_second">m/s</string>
     <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="skill_notify_message">You have a notification from %s. Would you like to hear it?</string>
+    <string name="skill_sentence_example_notify">What\'s my notification?</string>
+    <string name="skill_name_notify">Notify</string>
 </resources>
