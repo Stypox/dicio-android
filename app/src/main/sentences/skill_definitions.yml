@@ -54,7 +54,7 @@ skills:
             type: string
 
   - id: notify
-    specificity: low
+    specificity: high
     sentences:
       - id: notifications
 

@@ -1,2 +1,2 @@
 notifications:
-  - what|(what s|is)|whats my? notification?
+  - (read (out loud)?)|what|(what s|is)|whats my|the? notification<s?>
