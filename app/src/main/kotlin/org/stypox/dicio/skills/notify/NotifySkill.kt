@@ -9,7 +9,10 @@ import org.stypox.dicio.sentences.Sentences.Notify
 
 class NotifySkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Notify>)
     : StandardRecognizerSkill<Notify>(correspondingSkillInfo, data) {
-    override suspend fun generateOutput(ctx: SkillContext, inputData: Notify): SkillOutput {
-        TODO("Not yet implemented")
+        override suspend fun generateOutput(ctx: SkillContext, inputData: Notify): SkillOutput {
+            val notifications = NotifyHandler().getActiveNotificationsList()
+            return NotifyOutput(notifications)
     }
+
+
 }

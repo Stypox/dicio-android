@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId = "org.stypox.dicio"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 16
         versionName = "3.2"

@@ -102,6 +102,17 @@
                 android:resource="@xml/stt_service_metadata" />
         </service>
 
+        <service
+            android:name=".skills.notify.NotifyHandler"
+            android:description="@string/notify_handler_label"
+            android:label="@string/notify_handler_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
         <receiver
             android:name=".io.wake.BootBroadcastReceiver"
             android:exported="true">

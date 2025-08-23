@@ -28,6 +28,11 @@ val PERMISSION_CALL_PHONE = Permission.NormalPermission(
     id = Manifest.permission.CALL_PHONE,
 )
 
+val PERMISSION_NOTIFICATION_LISTENER = Permission.NormalPermission(
+    name = R.string.perm_notification_listener,
+    id = Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+)
+
 /**
  * @param context the Android context
  * @param permissions an array of permissions to check (can be empty)
