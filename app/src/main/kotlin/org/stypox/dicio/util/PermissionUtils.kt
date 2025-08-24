@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.runtime.Composable
@@ -28,9 +27,10 @@ val PERMISSION_CALL_PHONE = Permission.NormalPermission(
     id = Manifest.permission.CALL_PHONE,
 )
 
-val PERMISSION_NOTIFICATION_LISTENER = Permission.NormalPermission(
+val PERMISSION_NOTIFICATION_LISTENER = Permission.SecurePermission(
     name = R.string.perm_notification_listener,
-    id = Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+    id = "enabled_notification_listeners",
+    settingsAction = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
 )
 
 /**
