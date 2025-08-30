@@ -1,18 +1,41 @@
 package org.stypox.dicio.skills.notify
 
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import androidx.annotation.RequiresApi
+import android.util.Log
 
-class NotifyHandler: NotificationListenerService() {
+open class NotifyHandler: NotificationListenerService() {
+    companion object Companion {
+        var Instance: NotifyHandler? = null
+        const val TAG = "Notify"
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
+        Log.d(TAG, "onBind called")
         return null
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        Instance = this
+        Log.d(TAG, "onCreate called")
+    }
+
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        Log.d(TAG, "onListenerConnected called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Instance = null
+        Log.d(TAG, "onDestroy called")
+    }
+
     fun getActiveNotificationsList(): List<Notification> {
+        Log.d(TAG, "getActiveNotificationsList called")
         val activeStatusBarNotifications: Array<StatusBarNotification> = getActiveNotifications()
 
         val notifications = mutableListOf<Notification>()
