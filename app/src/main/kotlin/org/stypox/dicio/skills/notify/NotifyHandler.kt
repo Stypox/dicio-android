@@ -14,7 +14,7 @@ open class NotifyHandler: NotificationListenerService() {
 
     override fun onBind(intent: Intent?): IBinder? {
         Log.d(TAG, "onBind called")
-        return null
+        return super.onBind(intent)
     }
 
     override fun onCreate() {
