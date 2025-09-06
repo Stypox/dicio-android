@@ -1,10 +1,12 @@
 package org.stypox.dicio.skills.notify
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import org.stypox.dicio.R
 
 open class NotifyHandler: NotificationListenerService() {
     companion object Companion {
@@ -40,7 +42,17 @@ open class NotifyHandler: NotificationListenerService() {
 
         val notifications = mutableListOf<Notification>()
         for (statusBarNotification in activeStatusBarNotifications) {
-            val appName = statusBarNotification.packageName
+            var appName: String
+            try {
+                val pm: PackageManager = packageManager
+                val ai = pm.getApplicationInfo(statusBarNotification.packageName, 0)
+                appName = pm.getApplicationLabel(ai).toString()
+            }
+            catch(e: Exception) {
+                e.printStackTrace()
+                appName = getString(R.string.appName_error)
+            }
+
             val message = statusBarNotification.notification.extras.getString("android.text")
             notifications.add(Notification(appName, message))
         }

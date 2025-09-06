@@ -251,4 +251,5 @@
     <string name="no_notifications">No notifications</string>
     <string name="perm_notification_listener">read all notifications</string>
     <string name="notify_handler_label">read all notifications</string>
+    <string name="appName_error">appName not found</string>
 </resources>
