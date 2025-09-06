@@ -39,6 +39,7 @@ Currently Dicio answers questions about:
 - **jokes**: tells you a joke - _Tell me a joke_
 - **media**: play, pause, previous, next song
 - **translation**: translate from/to any language with **Lingva** - _How do I say Football in German?_
+- **notifications**: reads all notifications currently in the status bar - _What are my notifications?_
 
 ## Speech to text
 
