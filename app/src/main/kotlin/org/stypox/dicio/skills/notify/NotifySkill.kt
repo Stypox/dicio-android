@@ -6,8 +6,6 @@ import org.dicio.skill.skill.SkillOutput
 import org.dicio.skill.standard.StandardRecognizerData
 import org.dicio.skill.standard.StandardRecognizerSkill
 import org.stypox.dicio.sentences.Sentences.Notify
-import android.util.Log
-import org.stypox.dicio.skills.notify.NotifyHandler.Companion.TAG
 
 class NotifySkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Notify>)
     : StandardRecognizerSkill<Notify>(correspondingSkillInfo, data) {
@@ -18,7 +16,6 @@ class NotifySkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerDat
                return NotifyOutput(notifications)
            }
             else  {
-                Log.d(TAG, "handlerInstance = null")
                 return NotifyOutput(emptyList())
             }
     }
