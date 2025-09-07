@@ -233,4 +233,11 @@
     <string name="skill_weather_kelvin">K</string>
     <string name="skill_weather_meters_per_second">m/s</string>
     <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="skill_notify_message">Your notification from %1$s says %2$s</string>
+    <string name="skill_sentence_example_notify">What\'s my notification?</string>
+    <string name="skill_name_notify">Notify</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="perm_notification_listener">read all notifications</string>
+    <string name="notify_handler_label">read all notifications</string>
+    <string name="appName_error">appName not found</string>
 </resources>

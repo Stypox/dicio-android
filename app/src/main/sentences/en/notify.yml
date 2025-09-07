@@ -1,0 +1,2 @@
+notifications:
+  - (read (out loud)?)|what|(what s|is)|whats my|the? notification<s?>
