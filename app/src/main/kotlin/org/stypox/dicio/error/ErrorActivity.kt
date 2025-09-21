@@ -53,7 +53,7 @@ class ErrorActivity : BaseActivity() {
                     ShareUtils.shareText(this, getString(R.string.error_title), buildMarkdown())
                 },
                 onReport = {
-                    ShareUtils.openUrlInBrowser(this, ERROR_GITHUB_ISSUE_URL, false)
+                    ShareUtils.openUrlInBrowser(this, ERROR_GITHUB_ISSUE_URL)
                 },
                 onBack = {
                     finish()
