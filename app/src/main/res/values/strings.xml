@@ -233,4 +233,5 @@
     <string name="skill_weather_kelvin">K</string>
     <string name="skill_weather_meters_per_second">m/s</string>
     <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="failed_to_copy">Failed to copy to clipboard</string>
 </resources>
