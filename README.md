@@ -37,6 +37,7 @@ Currently Dicio answers questions about:
 - **current time**: query current time - _What time is it?_
 - **navigation**: opens the navigation app at the requested position - _Take me to New York, fifteenth avenue_
 - **media**: play, pause, previous, next song
+- **notifications**: reads all notifications currently in the status bar - _What are my notifications?_
 
 ## Speech to text
 
