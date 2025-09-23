@@ -5,8 +5,6 @@ play:
 
 pause:
   - pauzeer (de|het)? lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip
-  - pause|halt|stop|hold (the? song|media|track|music|audio|video|movie|stream|film)?
-  - put the? song|media|track|music|audio|video|movie|stream|film on hold
 
 previous:
   - speel (de|het)? (vorige|laatste)? (lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip afspelen?)? nogmaals|(nog een keer)|opnieuw|weer af?
