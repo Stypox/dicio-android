@@ -18,6 +18,7 @@ enum Language {
   LANGUAGE_EL = 6; // Greek
   LANGUAGE_FR = 7; // French
   LANGUAGE_IT = 8; // Italian
+  LANGUAGE_NL = 14; // Nederlands
   LANGUAGE_PL = 12; // Polish
   LANGUAGE_RU = 9; // Russian
   LANGUAGE_SL = 10; // Slovene

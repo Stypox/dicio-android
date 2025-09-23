@@ -1,0 +1,5 @@
+query:
+  - zoek|vind|laad de liedtekst|songtekst|lyrics|tekst van (het? liedje)|(het? nummer)|(de? song)? .song.
+  - .song. lyrics|tekst|songtekst|liedtekst
+  - zing (het? liedje)|(het? nummer)|(de? song)? .song.
+  - wat is|zijn de liedtekst|songtekst|lyrics|tekst van (het? liedje)|(het? nummer)|(de? song)? .song.

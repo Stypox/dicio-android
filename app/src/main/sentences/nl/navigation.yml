@@ -1,0 +1,7 @@
+query:
+  - (geef|toon|leid me?)|bereken (een|de)? route|weg naar .where.
+  - navigeer|(breng me) naar .where.
+  - hoe kom<en?>|moet<en?>|geraak|geraken|bereik<en?> ik|wij|we naar|bij|in|op .where.
+  - waar is|zijn (de|het)? .where.
+  - naar .where. navigeren
+  - route berekenen|geven naar .where.

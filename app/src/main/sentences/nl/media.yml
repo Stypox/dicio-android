@@ -1,0 +1,17 @@
+play:
+  - speel|start|begin|herstart|(ga verder met) (de|het)? lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip afspelen?
+  - zet de? <media?>speler|player aan
+  - speel (de|het)? lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip verder? af
+
+pause:
+  - pauzeer (de|het)? lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip
+
+previous:
+  - speel (de|het)? (vorige|laatste)? (lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip afspelen?)? nogmaals|(nog een keer)|opnieuw|weer af?
+  - ((ga? terug naar)|herhaal (de|het)?)? vorige|laatste (lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip)?
+
+next:
+  - sla (dit|een|deze)? (lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip)? over
+  - skip (dit|deze)? (lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip)?
+  - speel|start|begin|(skip naar)|(ga (verder met)|naar) (de|het)? volgende lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip afspelen?
+  - volgende (lied<je?>|nummer|song|muziek<je?>|audio|video|film<pje?>|stream|clip)?

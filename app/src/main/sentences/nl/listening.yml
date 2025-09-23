@@ -1,0 +1,13 @@
+stop:
+  - stop net? luisteren (naar? het? waakwoord)?
+  - demp|mute de? microfoon
+  - zet? de? microfooon uit
+  - microfoon dempen
+  - microfoon uitzetten
+
+start:
+  - start|begin met? luisteren (naar? het? waakwoord)?
+  - unmute|(on mute) de? microfoon?
+  - zet? de? microfoon aan
+  - microfoon aanzetten
+  - microfoon inschakelen
