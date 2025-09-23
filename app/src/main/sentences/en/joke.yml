@@ -1,0 +1,4 @@
+command:
+  - (tell me?)|(i (d|would like)|want (to hear)?)|say|(do you know|have)|(have? you? got) a|another|any? good|funny? joke<s?>|pun<s?>|gag<s?>|prank<s?>
+  - (make me laugh)|(entertain me)|(cheer me up) (with a|another|any? good|funny? joke<s?>|pun<s?>|gag<s?>|prank<s?>)?
+  - say something|anything fun|funny
