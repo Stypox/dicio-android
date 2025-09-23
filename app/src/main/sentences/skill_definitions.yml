@@ -111,3 +111,15 @@ skills:
         captures:
           - id: where
             type: string
+
+  - id: translation
+    specificity: high
+    sentences:
+      - id: translate
+        captures:
+          - id: query
+            type: string
+          - id: source
+            type: string
+          - id: target
+            type: string
