@@ -46,7 +46,7 @@ skills:
       - id: next
 
   - id: joke
-    specificity: low
+    specificity: high
     sentences:
       - id: command
 

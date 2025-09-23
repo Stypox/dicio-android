@@ -1,5 +1,6 @@
 package org.stypox.dicio.skills.joke
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -18,17 +19,23 @@ sealed interface JokeOutput : SkillOutput {
         val setup: String,
         val delivery: String,
     ) : JokeOutput {
-        override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
-            R.string.skill_joke_success, setup, delivery
-        )
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            // ensure there is a point between the sentences, so that the TTS makes a pause
+            if (setup.matches(ENDS_WITH_PUNCTUATION_REGEX))
+                "$setup $delivery"
+            else
+                "$setup. $delivery"
 
         @Composable
         override fun GraphicalOutput(ctx: SkillContext) {
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Subtitle(text = setup)
-                Spacer(modifier = Modifier.height(12.dp))
                 Body(text = delivery)
             }
+        }
+
+        companion object {
+            val ENDS_WITH_PUNCTUATION_REGEX = ".*\\p{Punct}$".toRegex()
         }
     }
 }
