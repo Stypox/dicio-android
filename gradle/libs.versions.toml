@@ -9,10 +9,13 @@ coilCompose = "2.7.0"
 composeBom = "2025.02.00"
 datastore = "1.1.2"
 desugarJdkLibs = "2.1.4"
+dicioNumbers = "66fd44b79585f952b76d16e5578d4d6aa5bc030c"
+dicioSentencesCompiler = "7d83fe5a3d6dff2fc81b5c40783a1d82ada293d3"
 exp4j = "0.4.8"
 gradle = "8.9.1"
 dagger = "2.55"
 hilt = "1.2.0"
+includegitPlugin = "0.1.6"
 jacksonDataformatYaml = "2.15.2"
 jacksonModuleKotlin = "2.15.2"
 java = "21"
@@ -94,6 +97,7 @@ org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 com-google-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+me-champeau-includegit = { id = "me.champeau.includegit", version.ref = "includegitPlugin" }
 
 # this is a local plugin, so "version" here is completely useless
 dicio-sentences-compiler-plugin = { id = "org.stypox.dicio.sentencesCompilerPlugin", version = "1.0" }
