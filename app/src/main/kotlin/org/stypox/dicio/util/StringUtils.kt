@@ -167,7 +167,14 @@ object StringUtils {
     fun customStringDistance(aNotCleaned: String, bNotCleaned: String): Int {
         val a = cleanStringForDistance(aNotCleaned)
         val b = cleanStringForDistance(bNotCleaned)
-        val stats = stringDistanceStats(a, b)
+        return customStringDistanceCleaned(a, b)
+    }
+
+    /**
+     * See [customStringDistance]; this one assumes already clean strings.
+     */
+    fun customStringDistanceCleaned(aCleaned: String, bCleaned: String): Int {
+        val stats = stringDistanceStats(aCleaned, bCleaned)
         return stats.levenshteinDistance - stats.maxSubsequentChars - stats.matchingCharCount
     }
 
