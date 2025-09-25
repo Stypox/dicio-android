@@ -12,8 +12,8 @@ import java.util.Scanner
 object ConnectionUtils {
     @Throws(IOException::class)
     fun getPage(
-        url: String?,
-        headers: Map<String?, String?>
+        url: String,
+        headers: Map<String, String?>
     ): String {
         val connection = URL(url).openConnection()
         for ((key, value) in headers) {
@@ -24,12 +24,12 @@ object ConnectionUtils {
     }
 
     @Throws(IOException::class)
-    fun getPage(url: String?): String {
-        return getPage(url, emptyMap<String?, String>())
+    fun getPage(url: String): String {
+        return getPage(url, emptyMap())
     }
 
     @Throws(IOException::class, JSONException::class)
-    fun getPageJson(url: String?): JSONObject {
+    fun getPageJson(url: String): JSONObject {
         return JSONObject(getPage(url))
     }
 
