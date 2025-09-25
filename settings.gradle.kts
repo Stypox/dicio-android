@@ -9,8 +9,9 @@ import java.util.Properties
 rootProject.name = "Dicio"
 include(":app")
 include(":skill")
-// we use includeBuild here since the plugin is a compile-time dependency
+// we use includeBuild here since the plugins are compile-time dependencies
 includeBuild("sentences-compiler-plugin")
+includeBuild("unicode-cldr-plugin")
 
 pluginManagement {
     repositories {
