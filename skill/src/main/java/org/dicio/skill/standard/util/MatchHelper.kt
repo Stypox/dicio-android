@@ -1,7 +1,13 @@
 package org.dicio.skill.standard.util
 
+import org.dicio.skill.standard.capture.LocaleAndTranslation
+
 data class MatchHelper(
     val userInput: String,
+    /**
+     * Used by [org.dicio.skill.standard.construct.LanguageNameCapturingConstruct].
+     */
+    val languageNames: List<LocaleAndTranslation>,
 ) {
     val splitWords = splitWords(userInput)
     val splitWordsIndices = splitWordsIndices(userInput, splitWords)

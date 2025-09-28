@@ -115,6 +115,6 @@ skills:
           - id: query
             type: string
           - id: source
-            type: string
+            type: language_name
           - id: target
-            type: string
+            type: language_name

@@ -13,6 +13,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+import org.stypox.dicio.sentencesCompilerPlugin.data.CaptureType
 import org.stypox.dicio.sentencesCompilerPlugin.data.ParsedData
 import org.stypox.dicio.sentencesCompilerPlugin.data.ParsedSkill
 import org.stypox.dicio.sentencesCompilerPlugin.util.CLASS_NAME
@@ -71,7 +72,6 @@ private fun generateSkillObject(skill: ParsedSkill): TypeSpec {
 }
 
 private fun generateResultTypes(skill: ParsedSkill, superinterface: ClassName): List<TypeSpec> {
-    val nullableStringType = String::class.asTypeName().copy(nullable = true)
     val resultTypes = ArrayList<TypeSpec>()
 
     for (definition in skill.sentenceDefinitions) {
@@ -83,13 +83,19 @@ private fun generateResultTypes(skill: ParsedSkill, superinterface: ClassName): 
                 .primaryConstructor(
                     FunSpec.constructorBuilder()
                         .addParameters(definition.captures.map {
-                            ParameterSpec.builder(it.id.toCamelCase(), nullableStringType).build()
+                            ParameterSpec.builder(
+                                it.id.toCamelCase(),
+                                captureTypeToOutputClass(it.type).copy(nullable = true)
+                            ).build()
                         })
                         .build()
                 )
                 .addProperties(definition.captures.map {
                     PropertySpec
-                        .builder(it.id.toCamelCase(), nullableStringType)
+                        .builder(
+                            it.id.toCamelCase(),
+                            captureTypeToOutputClass(it.type).copy(nullable = true)
+                        )
                         .initializer(it.id.toCamelCase())
                         .build()
                 })
@@ -124,7 +130,9 @@ private fun generateResultFromMatchFunction(skill: ParsedSkill, returnType: Clas
                         .repeat(definition.captures.size)
                 })",
                 definition.id,
-                *definition.captures.flatMap { sequenceOf(String::class, it.id) }.toTypedArray()
+                *definition.captures.flatMap {
+                    sequenceOf(captureTypeToOutputClass(it.type), it.id)
+                }.toTypedArray()
             )
         }
     }
@@ -163,7 +171,10 @@ private fun generateLanguageToDataProperty(skill: ParsedSkill, resultType: Class
                         *sentences.flatMap { sentence ->
                             sequenceOf(
                                 sentence.id,
-                                generateConstruct(sentence.constructs),
+                                generateConstruct(
+                                    sentence.constructs,
+                                    skill.sentenceDefinitions.first { it.id == sentence.id }.captures
+                                ),
                             )
                         }.toTypedArray()
                     )
@@ -185,6 +196,14 @@ private fun generateGetOperator(resultType: ClassName): FunSpec {
         )
         .addCode("return languageToData[language]?.value")
         .build()
+}
+
+private fun captureTypeToOutputClass(captureType: CaptureType): ClassName {
+    return when (captureType) {
+        CaptureType.STRING -> String::class.asTypeName()
+        CaptureType.DURATION -> String::class.asTypeName() // TODO still unimplemented
+        CaptureType.LANGUAGE_NAME -> ClassName("org.stypox.dicio.cldr.CldrLanguages", "LocaleAndTranslation")
+    }
 }
 
 /**

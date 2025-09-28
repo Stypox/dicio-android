@@ -1,6 +1,7 @@
 package org.dicio.skill.standard
 
 import org.dicio.skill.skill.Specificity
+import org.dicio.skill.standard.capture.LocaleAndTranslation
 import org.dicio.skill.standard.construct.Construct
 import org.dicio.skill.standard.util.MatchHelper
 import org.dicio.skill.standard.util.initialMemToEnd
@@ -9,9 +10,11 @@ open class StandardRecognizerData<out T>(
     val specificity: Specificity,
     private val converter: (input: String, sentenceId: String, matchResult: StandardScore) -> T,
     private val sentencesWithId: List<Pair<String, Construct>>,
+    // used by LanguageNameCapturingConstruct
+    private val languageNames: List<LocaleAndTranslation>,
 ) {
     fun score(input: String): Pair<StandardScore, T> {
-        val helper = MatchHelper(input)
+        val helper = MatchHelper(input, languageNames)
         val cumulativeWeight = helper.cumulativeWeight
 
         var bestRes: Pair<String, StandardScore>? = null

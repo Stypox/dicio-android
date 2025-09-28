@@ -33,5 +33,6 @@ data class CaptureDefinition(
 
 enum class CaptureType(@JsonValue val serializedValue: String) {
     STRING("string"),
-    DURATION("duration")
+    DURATION("duration"),
+    LANGUAGE_NAME("language_name"),
 }

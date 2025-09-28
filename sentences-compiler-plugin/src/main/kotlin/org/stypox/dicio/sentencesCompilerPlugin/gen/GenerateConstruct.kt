@@ -9,18 +9,21 @@ import org.dicio.sentences_compiler.construct.OrList
 import org.dicio.sentences_compiler.construct.SentenceConstructList
 import org.dicio.sentences_compiler.construct.Word
 import org.dicio.sentences_compiler.construct.WordWithVariations
-import org.dicio.sentences_compiler.util.StringNormalizer
-import org.dicio.sentences_compiler.util.StringNormalizer.nfkdNormalize
+import org.stypox.dicio.sentencesCompilerPlugin.data.CaptureDefinition
+import org.stypox.dicio.sentencesCompilerPlugin.data.CaptureType
 import org.stypox.dicio.sentencesCompilerPlugin.util.SentencesCompilerPluginException
 
-fun generateConstruct(construct: Construct): CodeBlock {
+fun generateConstruct(
+    construct: Construct,
+    captureDefinitions: List<CaptureDefinition>,
+): CodeBlock {
     return when (construct) {
         is Word -> generateWord(construct)
         is WordWithVariations -> generateWordWithVariations(construct)
-        is OrList -> generateOrList(construct)
+        is OrList -> generateOrList(construct, captureDefinitions)
         is OptionalConstruct -> generateOptionalConstruct()
-        is CapturingGroup -> generateCapturingGroup(construct)
-        is SentenceConstructList -> generateSentenceConstructList(construct)
+        is CapturingGroup -> generateCapturingGroup(construct, captureDefinitions)
+        is SentenceConstructList -> generateSentenceConstructList(construct, captureDefinitions)
         else -> throw SentencesCompilerPluginException(
             "Unexpected construct obtained from sentences compiler: type=${
                 construct::class.simpleName
@@ -51,11 +54,16 @@ fun generateWordWithVariations(word: WordWithVariations): CodeBlock {
     )
 }
 
-fun generateOrList(orList: OrList): CodeBlock {
+fun generateOrList(
+    orList: OrList,
+    captureDefinitions: List<CaptureDefinition>,
+): CodeBlock {
     return CodeBlock.of(
         "%T(listOf(${"%L,".repeat(orList.constructs.size)}))",
         ClassName("org.dicio.skill.standard.construct", "OrConstruct"),
-        *orList.constructs.map(::generateConstruct).toTypedArray(),
+        *orList.constructs.map {
+            generateConstruct(it, captureDefinitions)
+        }.toTypedArray(),
     )
 }
 
@@ -66,19 +74,35 @@ fun generateOptionalConstruct(): CodeBlock {
     )
 }
 
-fun generateCapturingGroup(capturingGroup: CapturingGroup): CodeBlock {
+fun generateCapturingGroup(
+    capturingGroup: CapturingGroup,
+    captureDefinitions: List<CaptureDefinition>,
+): CodeBlock {
     return CodeBlock.of(
         "%T(%S, %Lf)",
-        ClassName("org.dicio.skill.standard.construct", "CapturingConstruct"),
+        captureTypeToConstruct(captureDefinitions.first { it.id == capturingGroup.name }.type),
         capturingGroup.name,
         0.0f // TODO allow specifying weight
     )
 }
 
-fun generateSentenceConstructList(sentenceConstructList: SentenceConstructList): CodeBlock {
+fun generateSentenceConstructList(
+    sentenceConstructList: SentenceConstructList,
+    captureDefinitions: List<CaptureDefinition>,
+): CodeBlock {
     return CodeBlock.of(
         "%T(listOf(${"%L,".repeat(sentenceConstructList.constructs.size)}))",
         ClassName("org.dicio.skill.standard.construct", "CompositeConstruct"),
-        *sentenceConstructList.constructs.map(::generateConstruct).toTypedArray(),
+        *sentenceConstructList.constructs.map {
+            generateConstruct(it, captureDefinitions)
+        }.toTypedArray(),
     )
+}
+
+private fun captureTypeToConstruct(captureType: CaptureType): ClassName {
+    return when (captureType) {
+        CaptureType.STRING -> ClassName("org.dicio.skill.standard.construct", "CapturingConstruct")
+        CaptureType.DURATION -> ClassName("org.dicio.skill.standard.construct", "CapturingConstruct") // TODO still unimplemented
+        CaptureType.LANGUAGE_NAME -> ClassName("org.dicio.skill.standard.construct", "LanguageNameCapturingConstruct")
+    }
 }
