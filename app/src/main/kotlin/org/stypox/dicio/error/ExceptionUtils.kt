@@ -1,17 +1,26 @@
 package org.stypox.dicio.error
 
-import java.io.IOException
 import java.io.InterruptedIOException
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.net.ConnectException
 import java.net.SocketException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLException
 
 object ExceptionUtils {
     fun isNetworkError(throwable: Throwable?): Boolean {
         return hasAssignableCause(
-            throwable,  // network api cancellation
-            IOException::class.java, SocketException::class.java,  // blocking code disposed
-            InterruptedException::class.java, InterruptedIOException::class.java
+            throwable,
+
+            UnknownHostException::class.java,
+            SSLException::class.java,
+            ConnectException::class.java,
+            SocketException::class.java,
+
+            // blocking code disposed
+            InterruptedException::class.java,
+            InterruptedIOException::class.java,
         )
     }
 

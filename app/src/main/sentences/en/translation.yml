@@ -1,0 +1,4 @@
+translate:
+  - (i d|would like you? to)? please? translate .query. ((from .source.)? (<in?>to .target.)?)|(<in?>to .target. from .source.) (for me)?
+  - (i d|would like to know)|(please? tell me)? what (is|s|are .query.)(.query. is|are) in .target. (from .source.)?
+  - how <c|w|sh>ould|do|can i|one|you say|tell|speak .query. in .target.

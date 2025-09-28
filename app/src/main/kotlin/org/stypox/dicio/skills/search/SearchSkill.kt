@@ -49,23 +49,12 @@ internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOu
     // make request using headers
     val html: String = ConnectionUtils.getPage(
         DUCK_DUCK_GO_SEARCH_URL + ConnectionUtils.urlEncode(query),
-        object : HashMap<String?, String?>() {
-            init {
-                put(
-                    "User-Agent",
-                    "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0"
-                )
-                put(
-                    "Accept",
-                    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-                )
-                put(
-                    "Host",
-                    "html.duckduckgo.com"
-                )
-                put("Cookie", "kl=$locale")
-            }
-        }
+        mapOf(
+            "User-Agent" to "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+            "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Host" to "html.duckduckgo.com",
+            "Cookie" to "kl=$locale",
+        )
     )
 
     val document: Document = Jsoup.parse(html)

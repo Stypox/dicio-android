@@ -9,8 +9,9 @@ import java.util.Properties
 rootProject.name = "Dicio"
 include(":app")
 include(":skill")
-// we use includeBuild here since the plugin is a compile-time dependency
+// we use includeBuild here since the plugins are compile-time dependencies
 includeBuild("sentences-compiler-plugin")
+includeBuild("unicode-cldr-plugin")
 
 pluginManagement {
     repositories {
@@ -21,8 +22,16 @@ pluginManagement {
 }
 
 plugins {
-    // not using version catalog because it is not available in settings.gradle.kts
-    id("me.champeau.includegit") version "0.1.6"
+    // need to manually read version catalog because it is not available in settings.gradle.kts
+    // this code is duplicate with the below but there is no way to avoid it...
+    fun findInVersionCatalog(versionIdentifier: String): String {
+        val regex = "^.*$versionIdentifier *= *\"([^\"]+)\".*$".toRegex()
+        return File("gradle/libs.versions.toml")
+            .readLines()
+            .firstNotNullOf { regex.find(it)?.groupValues?.get(1) }
+    }
+
+    id("me.champeau.includegit") version findInVersionCatalog("includegitPlugin")
 }
 
 dependencyResolutionManagement {
@@ -46,18 +55,27 @@ data class IncludeGitRepo(
     val commit: String,
 )
 
+// need to manually read version catalog because it is not available in settings.gradle.kts
+// this code is duplicate with the above but there is no way to avoid it...
+fun findInVersionCatalog(versionIdentifier: String): String {
+    val regex = "^.*$versionIdentifier *= *\"([^\"]+)\".*$".toRegex()
+    return File("gradle/libs.versions.toml")
+        .readLines()
+        .firstNotNullOf { regex.find(it)?.groupValues?.get(1) }
+}
+
 val includeGitRepos = listOf(
     IncludeGitRepo(
         name = "dicio-numbers",
         uri = "https://github.com/Stypox/dicio-numbers",
         projectPath = ":numbers",
-        commit = "66fd44b79585f952b76d16e5578d4d6aa5bc030c",
+        commit = findInVersionCatalog("dicioNumbers"),
     ),
     IncludeGitRepo(
         name = "dicio-sentences-compiler",
         uri = "https://github.com/Stypox/dicio-sentences-compiler",
         projectPath = ":sentences_compiler",
-        commit = "7d83fe5a3d6dff2fc81b5c40783a1d82ada293d3",
+        commit = findInVersionCatalog("dicioSentencesCompiler"),
     ),
 )
 

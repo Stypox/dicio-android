@@ -1,0 +1,114 @@
+package org.stypox.dicio.skills.translation
+
+import androidx.core.os.LocaleListCompat
+import org.dicio.skill.context.SkillContext
+import org.dicio.skill.skill.SkillInfo
+import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.standard.StandardRecognizerData
+import org.dicio.skill.standard.StandardRecognizerSkill
+import org.stypox.dicio.cldr.CldrLanguages
+import org.stypox.dicio.cldr.CldrLanguages.LocaleAndTranslation
+import org.stypox.dicio.sentences.Sentences.Translation
+import org.stypox.dicio.sentences.Sentences.Translation.Translate
+import org.stypox.dicio.util.ConnectionUtils
+import org.stypox.dicio.util.LocaleUtils
+import org.stypox.dicio.util.codeToLanguageOrDefault
+import org.stypox.dicio.util.getLocaleByLanguageName
+
+class TranslationSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Translation>)
+    : StandardRecognizerSkill<Translation>(correspondingSkillInfo, data) {
+
+    private fun determineCurrentLocale(ctx: SkillContext): String {
+        var resolvedLocale: LocaleUtils.LocaleResolutionResult? = null
+        try {
+            resolvedLocale = LocaleUtils.resolveSupportedLocale(
+                LocaleListCompat.create(ctx.locale),
+                TRANSLATE_SUPPORTED_LOCALES
+            )
+        } catch (_: LocaleUtils.UnsupportedLocaleException) {
+        }
+        val locale = resolvedLocale?.supportedLocaleString ?: ""
+        return locale
+    }
+
+    private fun findCodeInSupportedLocales(language: LocaleAndTranslation): String? {
+        return TRANSLATE_SUPPORTED_LOCALES.firstOrNull { it.lowercase() == language.locale }
+            ?: TRANSLATE_SUPPORTED_LOCALES.firstOrNull { language.locale.startsWith(it.lowercase()) }
+    }
+
+    // This connects to lingva.ml which runs the Lingva Translate frontend to Google Translate
+    // TODO: Add more servers in like Libre Translate or DeepL
+    override suspend fun generateOutput(ctx: SkillContext, inputData: Translation): SkillOutput {
+        val input = when (inputData) { is Translate -> inputData }
+        val currentLocale = determineCurrentLocale(ctx)
+        val cldr = CldrLanguages[ctx.locale.language]!!
+
+        // extract the query from the input
+        val query = ConnectionUtils.percentEncode(
+            input.query ?: return TranslationOutput.EmptyQuery
+        )
+
+        // Extract language data from input, then convert the language's to language codes.
+        // Unfortunately we have to use duplicate code here, since it contains returns.
+        val sourceCode = input.source?.let { query: String ->
+            val language = cldr.getLocaleByLanguageName(query)
+                ?: return@generateOutput TranslationOutput.UnknownLanguage(query)
+            findCodeInSupportedLocales(language)
+                ?: return@generateOutput TranslationOutput.UnsupportedLanguage(language)
+        }
+        val targetCode = input.target?.let { query: String ->
+            val language = cldr.getLocaleByLanguageName(query)
+                ?: return@generateOutput TranslationOutput.UnknownLanguage(query)
+            findCodeInSupportedLocales(language)
+                ?: return@generateOutput TranslationOutput.UnsupportedLanguage(language)
+        }
+        val (source, target) = if (sourceCode != null && targetCode != null) {
+            Pair(sourceCode, targetCode)
+        } else if (sourceCode != null) {
+            Pair(sourceCode, currentLocale)
+        } else if (targetCode != null) {
+            Pair("auto", targetCode)
+        } else {
+            Pair("auto", currentLocale)
+        }
+
+        // these are just used to show the correct language name in the
+        val sourceLanguage = if (source == "auto") null else cldr.codeToLanguageOrDefault(source)
+        val targetLanguage = cldr.codeToLanguageOrDefault(target)
+
+        // make the API call
+        val translation = ConnectionUtils.getPageJson("$TRANSLATE_URL/$source/$target/$query")
+        if (!translation.has("translation")) {
+            return TranslationOutput.ApiError(
+                error = translation.optString("error"),
+                sourceLanguage = sourceLanguage,
+                targetLanguage = targetLanguage,
+            )
+        }
+
+        return TranslationOutput.Success(
+            translation = translation.getString("translation"),
+            sourceLanguage = sourceLanguage,
+            targetLanguage = targetLanguage,
+        )
+    }
+
+    companion object {
+        private const val TRANSLATE_URL = "https://lingva.ml/api/v1"
+        val TRANSLATE_SUPPORTED_LOCALES = listOf(
+            "af", "sq", "am", "ar", "hy", "as", "ay", "az", "bm", "eu",
+            "be", "bn", "bho", "bs", "bg", "ca", "ceb", "ny", "zh", "zh_HANT",
+            "co", "hr", "cs", "da", "dv", "doi", "nl", "en", "eo", "et", "ee",
+            "tl", "fi", "fr", "fy", "gl", "ka", "de", "el", "gn", "gu", "ht",
+            "ha", "haw", "iw", "hi", "hmn", "hu", "is", "ig", "ilo", "id", "ga",
+            "it", "ja", "jw", "kn", "kk", "km", "rw", "gom", "ko", "kri", "ku",
+            "ckb", "ky", "lo", "la", "lv", "ln", "lt", "lg", "lb", "mk", "mai",
+            "mg", "ms", "ml", "mt", "mi", "mr", "mni-Mtei", "lus", "mn", "my",
+            "ne", "no", "or", "om", "ps", "fa", "pl", "pt", "pa", "qu", "ro",
+            "ru", "sm", "sa", "gd", "nso", "sr", "st", "sn", "sd", "si", "sk",
+            "sl", "so", "es", "su", "sw", "sv", "tg", "ta", "tt", "te", "th",
+            "ti", "ts", "tr", "tk", "ak", "uk", "ur", "ug", "uz", "vi", "cy",
+            "xh", "yi", "yo", "zu"
+        )
+    }
+}

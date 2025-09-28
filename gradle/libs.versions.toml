@@ -9,13 +9,17 @@ coilCompose = "2.7.0"
 composeBom = "2025.02.00"
 datastore = "1.1.2"
 desugarJdkLibs = "2.1.4"
+dicioNumbers = "66fd44b79585f952b76d16e5578d4d6aa5bc030c"
+dicioSentencesCompiler = "7d83fe5a3d6dff2fc81b5c40783a1d82ada293d3"
 exp4j = "0.4.8"
 gradle = "8.9.1"
 dagger = "2.55"
 hilt = "1.2.0"
+includegitPlugin = "0.1.6"
 jacksonDataformatYaml = "2.15.2"
 jacksonModuleKotlin = "2.15.2"
 java = "21"
+jgit = "7.3.0.202506031305-r"
 jna = "5.14.0"
 jsoup = "1.18.3"
 kotest = "5.8.1"
@@ -28,6 +32,9 @@ okhttp = "4.12.0"
 protobufPlugin = "0.9.4"
 protoc = "4.29.3"
 unbescape = "1.1.6.RELEASE"
+# used by the UnicodeCldrLanguagesTask plugin which git commit of the
+# https://github.com/unicode-org/cldr repo to use as a source of data
+unicodeCldrGitCommit = "41283df11cce01751c29c400a8f94d1d8687210d"
 voskAndroid = "0.3.32"
 litert = "1.1.2"
 permissionFlow = "2.0.0"
@@ -52,6 +59,7 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 dicio-numbers = { module = "git.included.build:dicio-numbers" }
 dicio-sentences-compiler = { module = "git.included.build:dicio-sentences-compiler" }
 dicio-sentences-compiler-plugin = { module = "org.stypox.dicio.sentencesCompilerPlugin:sentences-compiler-plugin" }
+dicio-unicode-cldr-plugin = { module = "org.stypox.dicio.unicodeCldrPlugin:unicode-cldr-plugin" }
 exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
@@ -59,6 +67,7 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jacksonDataformatYaml" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jacksonModuleKotlin" }
+jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
@@ -94,6 +103,8 @@ org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 com-google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 com-google-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+me-champeau-includegit = { id = "me.champeau.includegit", version.ref = "includegitPlugin" }
 
-# this is a local plugin, so "version" here is completely useless
+# these are a local plugins, so "version" here is completely useless
 dicio-sentences-compiler-plugin = { id = "org.stypox.dicio.sentencesCompilerPlugin", version = "1.0" }
+dicio-unicode-cldr-plugin = { id = "org.stypox.dicio.unicodeCldrPlugin", version = "1.0" }
