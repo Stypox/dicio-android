@@ -38,6 +38,7 @@ Currently Dicio answers questions about:
 - **navigation**: opens the navigation app at the requested position - _Take me to New York, fifteenth avenue_
 - **jokes**: tells you a joke - _Tell me a joke_
 - **media**: play, pause, previous, next song
+- **translation**: translate from/to any language with **Lingva** - _How do I say Football in German?_
 
 ## Speech to text
 
