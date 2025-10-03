@@ -1,6 +1,7 @@
 package org.stypox.dicio.util
 
 import androidx.core.os.LocaleListCompat
+import org.dicio.skill.context.SkillContext
 import java.util.Locale
 
 object LocaleUtils {
@@ -99,6 +100,16 @@ object LocaleUtils {
         } else {
             Locale(languageCountryArr[0], languageCountryArr[1])
         }
+    }
+
+    fun isLanguageSupported(ctx: SkillContext, supportedLocales: List<String>): Boolean {
+        return try {
+            resolveSupportedLocale(
+                LocaleListCompat.create(ctx.locale),
+                supportedLocales
+            )
+            true
+        } catch (_: UnsupportedLocaleException) { false }
     }
 
     class UnsupportedLocaleException : Exception {
