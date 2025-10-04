@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiEmotions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.core.os.LocaleListCompat
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
@@ -25,15 +24,9 @@ object JokeInfo : SkillInfo("Joke") {
         rememberVectorPainter(Icons.Default.EmojiEmotions)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        val hasSupportedLocale = try {
-            LocaleUtils.resolveSupportedLocale(
-                LocaleListCompat.create(ctx.locale),
-                JokeSkill.JOKE_SUPPORTED_LOCALES
-            )
-            true
-        } catch (ignored: LocaleUtils.UnsupportedLocaleException) {
-            false
-        }
+        val hasSupportedLocale = LocaleUtils.isLanguageSupported(
+            ctx, JokeSkill.JOKE_SUPPORTED_LOCALES
+        )
        return (Sentences.Joke[ctx.sentencesLanguage] != null) && hasSupportedLocale
     }
 
