@@ -96,9 +96,14 @@ object LocaleUtils {
             .toTypedArray()
 
         return if (languageCountryArr.size == 1) {
-            Locale(languageCountryArr[0])
+            Locale.Builder()
+                .setLanguage(languageCountryArr[0])
+                .build()
         } else {
-            Locale(languageCountryArr[0], languageCountryArr[1])
+            Locale.Builder()
+                .setLanguage(languageCountryArr[0])
+                .setRegion(languageCountryArr[1])
+                .build()
         }
     }
 
