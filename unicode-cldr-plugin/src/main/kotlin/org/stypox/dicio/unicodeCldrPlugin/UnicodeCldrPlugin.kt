@@ -17,5 +17,8 @@ class UnicodeCldrPlugin : Plugin<Project> {
             .getByName("main")
             .kotlin
             .srcDir(languagesTask.outputDir)
+        target.tasks
+            .matching { it.name.contains("Kotlin") }
+            .configureEach { dependsOn(languagesTask) }
     }
 }

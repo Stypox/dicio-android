@@ -17,5 +17,8 @@ class SentencesCompilerPlugin : Plugin<Project> {
             .getByName("main")
             .kotlin
             .srcDir(generateResourceTask.outputDir)
+        target.tasks
+            .matching { it.name.contains("Kotlin") }
+            .configureEach { dependsOn(generateResourceTask) }
     }
 }

@@ -254,6 +254,7 @@ private fun SttPopupButton(
 @Preview
 @Composable
 private fun SttPopupBottomSheetPreview() {
+    val density = LocalDensity.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
 
     AppTheme {
@@ -274,8 +275,11 @@ private fun SttPopupBottomSheetPreview() {
             scaffoldState = BottomSheetScaffoldState(
                 SheetState(
                     skipPartiallyExpanded = true,
-                    density = Density(LocalContext.current),
+                    confirmValueChange = { true },
                     initialValue = SheetValue.Expanded,
+                    skipHiddenState = false,
+                    positionalThreshold = { with(density) { 56.dp.toPx() } } ,
+                    velocityThreshold = { with(density) { 125.dp.toPx() } },
                 ),
                 SnackbarHostState(),
             )

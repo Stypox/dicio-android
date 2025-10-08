@@ -1,5 +1,3 @@
-import org.gradle.configurationcache.extensions.capitalized
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.stypox.dicio.unicodeCldrPlugin.UnicodeCldrLanguagesTask
 
 buildscript {
@@ -106,9 +104,9 @@ protobuf {
 androidComponents {
     onVariants(selector().all()) { variant ->
         afterEvaluate {
-            val capName = variant.name.capitalized()
-            tasks.getByName<KotlinCompile>("ksp${capName}Kotlin") {
-                setSource(tasks.getByName("generate${capName}Proto").outputs)
+            val capName = variant.name.replaceFirstChar { it.uppercase() }
+            tasks.named("ksp${capName}Kotlin") {
+                dependsOn(tasks.named("generate${capName}Proto"))
             }
         }
     }
