@@ -1,0 +1,13 @@
+New:
+• Add translation skill via Lingva
+• Add jokes skill (but API only supports cs,de,en,es,fr,pt)
+• Add Dutch language, and improve German
+
+Improved:
+• Better accessibility when used through TalkBack or dpad buttons
+• Better classification of network errors
+• [Android 15+] Support 16kB pages
+
+Fixed:
+• [Search] Fix opening results in browser, fix search language, fix invalid URLs, improve error messages
+• [Listening] Fix NullPointerException when wakeword not running

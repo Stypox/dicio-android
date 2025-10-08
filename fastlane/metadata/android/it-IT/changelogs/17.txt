@@ -1,0 +1,13 @@
+Novità:
+• Aggiunta abilità traduttore
+• Aggiunta abilità barzellette (ma l'API non supporta l'italiano)
+• Lingua olandese; tedesco migliorato
+
+Miglioramenti:
+• Miglior accessibilità usando TalkBack o pulsanti dpad
+• Errori di rete classificati meglio
+• [Android 15+] Supporto per pagine da 16kB
+
+Correzioni:
+• [Ricerca] apertura nel broswer sistemata, lingua dei risultati corretta, messaggi di errore chiari
+• [Ascolto] NullPointerException se la parola di attivazione è spenta
