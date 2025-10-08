@@ -20,6 +20,7 @@ import coil.compose.AsyncImage
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.skill.Specificity
 import org.stypox.dicio.R
 import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.sentences.Sentences
@@ -87,8 +88,8 @@ sealed interface SearchOutput : SkillOutput {
                     ctx: SkillContext,
                     inputData: String
                 ): SkillOutput {
-                    // ask again only if this is the first time we ask the user to provide what
-                    // to search for, otherwise we could continue asking indefinitely
+                    // if the search fails again, do not ask the user to retry, to avoid going
+                    // on indefinitely
                     return searchOnDuckDuckGo(ctx, inputData, askAgainIfNoResult = false)
                 }
             }
@@ -96,7 +97,16 @@ sealed interface SearchOutput : SkillOutput {
             return InteractionPlan.StartSubInteraction(
                 reopenMicrophone = true,
                 nextSkills = listOf(
-                    SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
+                    SearchSkill(
+                        correspondingSkillInfo = SearchInfo,
+                        data = Sentences.Search[ctx.sentencesLanguage]!!,
+                        // increase the specificity from LOW to MEDIUM on purpose, so that this has
+                        // priority over searchAnythingSkill
+                        specificity = Specificity.MEDIUM,
+                        // if the search fails again, do not ask the user to retry, to avoid going
+                        // on indefinitely
+                        askAgainIfNoResult = false,
+                    ),
                     searchAnythingSkill,
                 ),
             )

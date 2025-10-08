@@ -4,6 +4,7 @@ import androidx.core.net.toUri
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
+import org.dicio.skill.skill.Specificity
 import org.dicio.skill.standard.StandardRecognizerData
 import org.dicio.skill.standard.StandardRecognizerSkill
 import org.jsoup.Jsoup
@@ -12,11 +13,16 @@ import org.stypox.dicio.sentences.Sentences.Search
 import org.stypox.dicio.util.ConnectionUtils
 import org.stypox.dicio.util.LocaleUtils
 
-class SearchSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Search>)
-    : StandardRecognizerSkill<Search>(correspondingSkillInfo, data) {
+class SearchSkill(
+    correspondingSkillInfo: SkillInfo,
+    data: StandardRecognizerData<Search>,
+    // the following two params are exposed because they are used in SearchOutput
+    specificity: Specificity = data.specificity,
+    private val askAgainIfNoResult: Boolean = true,
+) : StandardRecognizerSkill<Search>(correspondingSkillInfo, data, specificity) {
     override suspend fun generateOutput(ctx: SkillContext, inputData: Search): SkillOutput {
         val query = when (inputData) { is Search.Query -> inputData.what }
-        return searchOnDuckDuckGo(ctx, query, true)
+        return searchOnDuckDuckGo(ctx, query, askAgainIfNoResult)
     }
 }
 
@@ -56,7 +62,7 @@ internal fun searchOnDuckDuckGo(
     val html: String = ConnectionUtils.getPage(
         DUCK_DUCK_GO_SEARCH_URL + ConnectionUtils.urlEncode(query),
         mapOf(
-            "User-Agent" to "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+            "User-Agent" to "Mozilla/5.0 (X11; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0",
             "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Host" to "html.duckduckgo.com",
             "Cookie" to "kl=$locale",
