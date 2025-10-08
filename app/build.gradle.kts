@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.stypox.dicio.unicodeCldrPlugin.UnicodeCldrLanguagesTask
 
 buildscript {
@@ -64,9 +65,11 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.java.get())
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.java.get()
-        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.fromTarget(libs.versions.java.get())
+            freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
+        }
     }
 
     buildFeatures {
