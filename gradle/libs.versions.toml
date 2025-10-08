@@ -9,6 +9,7 @@ coilCompose = "2.7.0"
 composeBom = "2025.02.00"
 datastore = "1.1.2"
 desugarJdkLibs = "2.1.4"
+# used in settings.gradle.kts for git dependencies
 dicioNumbers = "66fd44b79585f952b76d16e5578d4d6aa5bc030c"
 dicioSentencesCompiler = "7d83fe5a3d6dff2fc81b5c40783a1d82ada293d3"
 exp4j = "0.4.8"
@@ -20,7 +21,7 @@ jacksonDataformatYaml = "2.15.2"
 jacksonModuleKotlin = "2.15.2"
 java = "21"
 jgit = "7.3.0.202506031305-r"
-jna = "5.14.0"
+jna = "5.18.1"
 jsoup = "1.18.3"
 kotest = "5.8.1"
 kotlin = "2.1.10"
@@ -32,11 +33,11 @@ okhttp = "4.12.0"
 protobufPlugin = "0.9.4"
 protoc = "4.29.3"
 unbescape = "1.1.6.RELEASE"
-# used by the UnicodeCldrLanguagesTask plugin which git commit of the
+# used by the UnicodeCldrLanguagesTask plugin as the git commit of the
 # https://github.com/unicode-org/cldr repo to use as a source of data
 unicodeCldrGitCommit = "41283df11cce01751c29c400a8f94d1d8687210d"
-voskAndroid = "0.3.32"
-litert = "1.1.2"
+voskAndroid = "0.3.70"
+litert = "1.4.0" # cannot update to 2.0.0 as its minSdk is 23
 permissionFlow = "2.0.0"
 
 [libraries]

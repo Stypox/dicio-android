@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import org.stypox.dicio.BuildConfig
 import org.stypox.dicio.di.LocaleManager
 import org.stypox.dicio.io.input.InputEvent
 import org.stypox.dicio.io.input.SttInputDevice
@@ -55,7 +56,6 @@ import org.stypox.dicio.util.LocaleUtils
 import org.stypox.dicio.util.distinctUntilChangedBlockingFirst
 import org.stypox.dicio.util.downloadBinaryFilesWithPartial
 import org.stypox.dicio.util.extractZip
-import org.vosk.BuildConfig
 import org.vosk.LibVosk
 import org.vosk.LogLevel
 import org.vosk.Model
@@ -116,14 +116,14 @@ class VoskInputDevice(
                 MODEL_URLS.keys
             )
             MODEL_URLS[localeResolutionResult.supportedLocaleString]
-        } catch (e: LocaleUtils.UnsupportedLocaleException) {
+        } catch (_: LocaleUtils.UnsupportedLocaleException) {
             null
         }
 
         // the model url may change if the user changes app language, or in case of model updates
         val modelUrlChanged = try {
             sameModelUrlCheck.readText() != modelUrl
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             // modelUrlCheck file does not exist
             true
         }
