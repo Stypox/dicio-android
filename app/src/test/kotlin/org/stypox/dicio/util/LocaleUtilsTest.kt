@@ -56,8 +56,13 @@ class LocaleUtilsTest : StringSpec({
     "locale with different lower/upper case" {
         assertLocale("it-it", "it-IT", "it", "it-it")
         assertLocale("it", "it-IT", "it", "fr", "FR-fr")
-        assertLocale("it", "it-IT", "it", "it-IT", "fr", "FR-fr")
-        assertLocaleNotFound("it", "IT", "IT-it")
+        assertLocale("it-IT", "it-IT", "it", "it-IT", "fr", "FR-fr")
+    }
+
+    "locale with underscores" {
+        assertLocale("it_it", "it-IT", "it", "it_it")
+        assertLocale("it", "it-IT", "it", "fr", "FR_fr")
+        assertLocale("it_IT", "it-IT", "it", "it_IT", "fr", "FR_fr")
     }
 
     "locale should not be found" {

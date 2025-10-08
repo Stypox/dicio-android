@@ -56,30 +56,29 @@ object LocaleUtils {
         locale: Locale,
         supportedLocales: Collection<String>
     ): String {
-        // first try with full locale name (e.g. en-US)
-        var localeString = (locale.language + "-" + locale.country).lowercase(Locale.getDefault())
-        if (supportedLocales.contains(localeString)) {
-            return localeString
+        // normalize the locales so that they are lowercase and use a dash as a separator
+        val normalizedLocales = supportedLocales.associateBy {
+            it.lowercase().replace('_', '-')
         }
+
+        // first try with full locale name (e.g. en-US)
+        val full = (locale.language + "-" + locale.country).lowercase()
+        println(full + " " + (full == "it-it") + " " + normalizedLocales["it-it"] + " " + normalizedLocales[full] + " " + normalizedLocales)
+        normalizedLocales[full]?.let { return it }
 
         // then try with only base language (e.g. en)
-        localeString = locale.language.lowercase(Locale.getDefault())
-        if (supportedLocales.contains(localeString)) {
-            return localeString
-        }
+        val onlyLanguage = locale.language.lowercase()
+        normalizedLocales[onlyLanguage]?.let { return it }
 
-        // then try with children languages of locale base language (e.g. en-US, en-GB, en-UK, ...)
-        for (supportedLocalePlus in supportedLocales) {
-            for (supportedLocale in supportedLocalePlus.split("\\+".toRegex())
-                .dropLastWhile { it.isEmpty() }
-                .toTypedArray()) {
-                if (supportedLocale.split("-".toRegex(), limit = 2)
-                        .toTypedArray()[0] == localeString
-                ) {
-                    return supportedLocalePlus
+        // then try with children languages of locale base language (e.g. en-US, en-GB, b+en+001, …)
+        for ((supportedLocalePlus, originalSupportedLocale) in normalizedLocales) {
+            for (supportedLocale in supportedLocalePlus.split("[+#]".toRegex())) {
+                if (supportedLocale.split("-".toRegex(), limit = 2)[0] == onlyLanguage) {
+                    return originalSupportedLocale
                 }
             }
         }
+
         throw UnsupportedLocaleException(locale)
     }
 
@@ -90,7 +89,7 @@ object LocaleUtils {
     fun parseLanguageCountry(languageCountry: String): Locale {
         val languageCountryArr = languageCountry
             .lowercase()
-            .split("_".toRegex())
+            .split("[_-]".toRegex())
             .drop(1)
             .dropLastWhile { it.isEmpty() }
             .toTypedArray()
