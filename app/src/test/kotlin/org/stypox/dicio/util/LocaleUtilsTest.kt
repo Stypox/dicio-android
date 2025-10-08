@@ -33,7 +33,7 @@ private fun assertLocaleNotFound(locale: String, vararg supportedLocales: String
     val localeString: String
     try {
         localeString = getLocaleString(locale, *supportedLocales)
-    } catch (e: UnsupportedLocaleException) {
+    } catch (_: UnsupportedLocaleException) {
         return
     }
     error("The locale \"$locale\" should not have been found: $localeString")

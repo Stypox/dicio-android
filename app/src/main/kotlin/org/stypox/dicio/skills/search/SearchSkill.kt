@@ -1,7 +1,6 @@
 package org.stypox.dicio.skills.search
 
 import androidx.core.net.toUri
-import androidx.core.os.LocaleListCompat
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
@@ -32,19 +31,20 @@ private val DUCK_DUCK_GO_SUPPORTED_LOCALES = listOf(
     "it-it", "jp-jp", "kr-kr", "lv-lv", "lt-lt", "my-en", "mx-es", "nl-nl", "nz-en",
     "no-no", "pk-en", "pe-es", "ph-en", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "xa-ar",
     "sg-en", "sk-sk", "sl-sl", "za-en", "es-ca", "es-es", "se-sv", "ch-de", "ch-fr",
-    "tw-tz", "th-en", "tr-tr", "us-en", "us-es", "ua-uk", "uk-en", "vn-en"
+    "tw-tz", "th-en", "tr-tr", /*"us-en",*/ "us-es", "ua-uk", "uk-en", "vn-en"
 )
 
 internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOutput.Data> {
     // find the locale supported by DuckDuckGo that matches the user locale the most
-    var resolvedLocale: LocaleUtils.LocaleResolutionResult? = null
-    try {
-        resolvedLocale = LocaleUtils.resolveSupportedLocale(
-            LocaleListCompat.create(ctx.locale), DUCK_DUCK_GO_SUPPORTED_LOCALES
-        )
-    } catch (_: LocaleUtils.UnsupportedLocaleException) {
-    }
-    val locale = resolvedLocale?.supportedLocaleString ?: ""
+    val locale = LocaleUtils.resolveValueForSupportedLocale(
+        ctx.locale,
+        DUCK_DUCK_GO_SUPPORTED_LOCALES.associateBy {
+            // DuckDuckGo locale names have first the country and then the language, but the locale
+            // selection function assumes the opposite
+            it.split("-").reversed().joinToString(separator = "_")
+        }
+    // default to English when no locale is supported
+    ) ?: "us-en"
 
     // make request using headers
     val html: String = ConnectionUtils.getPage(

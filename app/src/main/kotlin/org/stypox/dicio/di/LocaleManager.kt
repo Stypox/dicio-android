@@ -71,7 +71,7 @@ class LocaleManager @Inject constructor(
 
     private fun getSentencesLocale(language: Language): LocaleUtils.LocaleResolutionResult {
         return try {
-            LocaleUtils.resolveSupportedLocale(
+            LocaleUtils.resolveSupportedLocaleOrThrow(
                 getAvailableLocalesFromLanguage(language),
                 Sentences.languages
             )

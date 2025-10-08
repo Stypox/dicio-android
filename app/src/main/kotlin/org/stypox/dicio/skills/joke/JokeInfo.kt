@@ -24,10 +24,8 @@ object JokeInfo : SkillInfo("Joke") {
         rememberVectorPainter(Icons.Default.EmojiEmotions)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        val hasSupportedLocale = LocaleUtils.isLanguageSupported(
-            ctx, JokeSkill.JOKE_SUPPORTED_LOCALES
-        )
-       return (Sentences.Joke[ctx.sentencesLanguage] != null) && hasSupportedLocale
+        return (Sentences.Joke[ctx.sentencesLanguage] != null) &&
+                LocaleUtils.isLocaleSupported(ctx.locale, JokeSkill.JOKE_SUPPORTED_LOCALES)
     }
 
     override fun build(ctx: SkillContext): Skill<*> {

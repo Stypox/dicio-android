@@ -1,10 +1,10 @@
 package org.stypox.dicio.util
 
 import androidx.core.os.LocaleListCompat
-import org.dicio.skill.context.SkillContext
 import java.util.Locale
 
 object LocaleUtils {
+
     /**
      * Basically implements Android locale resolution (not sure if exactly the same, probably,
      * though), so it tries, in this order:<br></br>
@@ -24,7 +24,7 @@ object LocaleUtils {
      * @throws UnsupportedLocaleException if the locale resolution failed.
      */
     @Throws(UnsupportedLocaleException::class)
-    fun resolveSupportedLocale(
+    fun resolveSupportedLocaleOrThrow(
         availableLocales: LocaleListCompat,
         supportedLocales: Collection<String>
     ): LocaleResolutionResult {
@@ -49,7 +49,7 @@ object LocaleUtils {
     }
 
     /**
-     * @see resolveSupportedLocale
+     * @see resolveSupportedLocaleOrThrow
      */
     @Throws(UnsupportedLocaleException::class)
     fun resolveLocaleString(
@@ -107,14 +107,61 @@ object LocaleUtils {
         }
     }
 
-    fun isLanguageSupported(ctx: SkillContext, supportedLocales: List<String>): Boolean {
+    /**
+     * Like [resolveSupportedLocaleOrThrow], but returns null instead of throwing an exception.
+     */
+    fun resolveSupportedLocale(
+        availableLocales: LocaleListCompat,
+        supportedLocales: Collection<String>
+    ): LocaleResolutionResult? {
         return try {
-            resolveSupportedLocale(
-                LocaleListCompat.create(ctx.locale),
-                supportedLocales
-            )
-            true
-        } catch (_: UnsupportedLocaleException) { false }
+            resolveSupportedLocaleOrThrow(availableLocales, supportedLocales)
+        } catch (_: UnsupportedLocaleException) {
+            null
+        }
+    }
+
+    /**
+     * Uses [resolveSupportedLocaleOrThrow] to find a supported locale string in [supportedLocales]
+     * matching [currentLocale], and returns it. This is NOT meant to be used for locale resolution
+     * when the app starts, but only to select the correct item from a list using the app's current
+     * locale (that has already been determined, hence the parameter name [currentLocale]).
+     */
+    fun resolveSupportedLocale(
+        currentLocale: Locale,
+        supportedLocales: Collection<String>
+    ): String? {
+        return resolveSupportedLocale(
+            availableLocales = LocaleListCompat.create(currentLocale),
+            supportedLocales = supportedLocales
+        )?.supportedLocaleString
+    }
+
+    /**
+     * Uses [resolveSupportedLocale] to find a supported locale string matching [currentLocale] in
+     * the keys of [supportedLocalesAndValues], and returns the corresponding value.
+     */
+    fun <T> resolveValueForSupportedLocale(
+        currentLocale: Locale,
+        supportedLocalesAndValues: Map<String, T>
+    ): T? {
+        return resolveSupportedLocale(
+            availableLocales = LocaleListCompat.create(currentLocale),
+            supportedLocales = supportedLocalesAndValues.keys
+        )?.let {
+            supportedLocalesAndValues[it.supportedLocaleString]
+        }
+    }
+
+    /**
+     * Returns whether the [currentLocale] matches with any of the [supportedLocales] using
+     * [resolveSupportedLocale].
+     */
+    fun isLocaleSupported(currentLocale: Locale, supportedLocales: List<String>): Boolean {
+        return resolveSupportedLocale(
+            LocaleListCompat.create(currentLocale),
+            supportedLocales
+        ) != null
     }
 
     class UnsupportedLocaleException : Exception {

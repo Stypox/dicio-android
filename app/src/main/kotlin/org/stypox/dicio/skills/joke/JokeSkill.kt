@@ -1,6 +1,5 @@
 package org.stypox.dicio.skills.joke
 
-import androidx.core.os.LocaleListCompat
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.SkillInfo
 import org.dicio.skill.skill.SkillOutput
@@ -14,15 +13,9 @@ import org.stypox.dicio.util.LocaleUtils
 class JokeSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Joke>)
     : StandardRecognizerSkill<Joke>(correspondingSkillInfo, data) {
     override suspend fun generateOutput(ctx: SkillContext, inputData: Joke): SkillOutput {
-        var resolvedLocale: LocaleUtils.LocaleResolutionResult? = null
-        try {
-            resolvedLocale = LocaleUtils.resolveSupportedLocale(
-                LocaleListCompat.create(ctx.locale),
-                JOKE_SUPPORTED_LOCALES
-            )
-        } catch (ignored: LocaleUtils.UnsupportedLocaleException) {
-        }
-        val locale = resolvedLocale?.supportedLocaleString ?: ""
+        // we can use !! because the JokeInfo would have declared this skill unavailable
+        // if the current locale was not among the supported ones
+        val locale = LocaleUtils.resolveSupportedLocale(ctx.locale, JOKE_SUPPORTED_LOCALES)!!
 
         if (locale == "en") {
             val joke: JSONObject = ConnectionUtils.getPageJson(RANDOM_JOKE_URL_EN)
