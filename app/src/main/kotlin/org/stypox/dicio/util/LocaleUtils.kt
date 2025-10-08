@@ -90,9 +90,6 @@ object LocaleUtils {
         val languageCountryArr = languageCountry
             .lowercase()
             .split("[_-]".toRegex())
-            .drop(1)
-            .dropLastWhile { it.isEmpty() }
-            .toTypedArray()
 
         return if (languageCountryArr.size == 1) {
             Locale.Builder()

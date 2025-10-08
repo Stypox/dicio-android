@@ -93,7 +93,8 @@ class LocaleManager @Inject constructor(
             }
             else -> {
                 // exploit the fact that each `Language` is of the form LANGUAGE or LANGUAGE_COUNTRY
-                LocaleListCompat.create(LocaleUtils.parseLanguageCountry(language.toString()))
+                LocaleListCompat.create(LocaleUtils.parseLanguageCountry(
+                    language.toString().removePrefix("LANGUAGE_")))
             }
         }
     }
