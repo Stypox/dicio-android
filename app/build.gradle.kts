@@ -26,12 +26,12 @@ plugins {
 
 android {
     namespace = "org.stypox.dicio"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "org.stypox.dicio"
-        minSdk = 21
-        targetSdk = 36
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 16
         versionName = "3.2"
         testInstrumentationRunner = "org.stypox.dicio.CustomTestRunner"

@@ -9,9 +9,9 @@ plugins {
 
 android {
     namespace = "org.dicio.skill"
-    compileSdk = 35
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.minSdk.get().toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.java.get())
