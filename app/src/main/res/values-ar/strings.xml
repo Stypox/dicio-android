@@ -225,4 +225,11 @@
     <string name="pref_wake_custom_delete_summary">العودة إلى كلمة الإيقاظ الافتراضية مرحبا ديسيو \"Hey Dicio\"</string>
     <string name="pref_wake_custom_import">استيراد كلمة إيقاظ مخصصة</string>
     <string name="pref_wake_custom_import_summary_oww">استبدل كلمة الإيقاظ الافتراضية \"Hey Dicio\" بنموذج TFLite مخصص؛ يمكنك تنزيل بعض النماذج المخصصة من github.com/dscripka/openWakeWord/releases</string>
+    <string name="skill_listening_already_listening">أنا بالفعل أستمع لكلمة الإيقاظ</string>
+    <string name="skill_listening_started_listening">حسناً، سأستمع لكلمة الإيقاظ</string>
+    <string name="skill_listening_not_listening">لم أكن أستمع</string>
+    <string name="skill_listening_stop_listening">حسناً</string>
+    <string name="skill_listening_disabled">خدمة كلمة الإيقاظ معوقة في الإعدادات</string>
+    <string name="skill_name_listening">التحكم في الاستماع إلى كلمة الاستماع</string>
+    <string name="skill_sentence_example_listening">توقف عن الاستماع</string>
 </resources>

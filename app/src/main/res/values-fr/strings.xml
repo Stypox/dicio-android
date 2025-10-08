@@ -229,4 +229,16 @@
     <string name="skill_listening_disabled">Le service d\'écoute du mot d\'activation est désactivé dans les paramètres</string>
     <string name="skill_name_listening">Contrôler l\'écoute du mot d\'activation</string>
     <string name="skill_sentence_example_listening">Arrêter l\'écoute</string>
+    <string name="skill_name_joke">Blague</string>
+    <string name="skill_sentence_example_joke">Fais moi une blague</string>
+    <string name="skill_translation_success">Traduit en %1$s</string>
+    <string name="skill_translation_unknown_language">Je ne reconnais pas la langue %1$s</string>
+    <string name="skill_translation_unsupported_language">La langue de %1$s (%2$s) n\'est pas supportée</string>
+    <string name="skill_translation_failed">Impossible de traduire votre requête en %1$s</string>
+    <string name="skill_translation_failed_no_query">Je n\'ai pas compris ce que vous voulez traduire. Pouvez-vous répéter?</string>
+    <string name="skill_translation_to">en</string>
+    <string name="skill_name_translation">Traduire</string>
+    <string name="skill_sentence_example_translation">Traduis Hola d\'espagnol en anglais</string>
+    <string name="failed_to_copy">Échec de la copie au presse-papier</string>
+    <string name="skill_translation_auto">Auto</string>
 </resources>

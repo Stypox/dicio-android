@@ -234,4 +234,16 @@
     <string name="skill_listening_disabled">唤醒词服务在设置中被停用</string>
     <string name="skill_name_listening">控制唤醒词聆听</string>
     <string name="skill_sentence_example_listening">停止聆听</string>
+    <string name="failed_to_copy">复制到剪贴板失败</string>
+    <string name="skill_name_joke">笑话</string>
+    <string name="skill_sentence_example_joke">讲个笑话</string>
+    <string name="skill_translation_success">已翻译为 %1$s</string>
+    <string name="skill_translation_unknown_language">我不认识 %1$s 语言</string>
+    <string name="skill_translation_unsupported_language">不支持 %1$s 语言（%2$s）</string>
+    <string name="skill_translation_failed">无法将你的查询翻译为 %1$s</string>
+    <string name="skill_translation_failed_no_query">没听清你想翻译什么。可以再说一次吗？</string>
+    <string name="skill_translation_to">到</string>
+    <string name="skill_name_translation">翻译</string>
+    <string name="skill_sentence_example_translation">把西班牙语单词 Hola 翻译成英语</string>
+    <string name="skill_translation_auto">自动</string>
 </resources>

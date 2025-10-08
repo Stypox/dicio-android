@@ -227,4 +227,23 @@
     <string name="skill_weather_kelvin">K</string>
     <string name="skill_weather_meters_per_second">מ׳/שנ׳</string>
     <string name="skill_weather_miles_per_hour">מייל לשעה</string>
+    <string name="skill_listening_already_listening">אני כבר מאזין למילת השכמה</string>
+    <string name="skill_listening_started_listening">בסדר, אאזין למילת ההשכמה</string>
+    <string name="skill_listening_not_listening">לא האזנתי</string>
+    <string name="skill_listening_stop_listening">בסדר</string>
+    <string name="skill_listening_disabled">שירות מילת ההשכמה מושבת בהגדרות</string>
+    <string name="skill_name_listening">שליטה בהאזנה למילת השכמה</string>
+    <string name="skill_sentence_example_listening">עצירת האזנה</string>
+    <string name="failed_to_copy">ההעתקה ללוח הגזירים נכשלה</string>
+    <string name="skill_translation_auto">אוטו׳</string>
+    <string name="skill_name_joke">בדיחה</string>
+    <string name="skill_sentence_example_joke">אשמח לשמוע בדיחה</string>
+    <string name="skill_translation_success">מתורגם ל%1$s</string>
+    <string name="skill_translation_unknown_language">לא הצלחתי לזהות את השפה %1$s</string>
+    <string name="skill_translation_unsupported_language">השפה %1$s (%2$s) לא נתמכת</string>
+    <string name="skill_translation_failed">לא ניתן לתרגם את השאילתה שלך ל%1$s</string>
+    <string name="skill_translation_failed_no_query">לא הבנתי מה מיועד לתרגם. אפשר לשמוע את זה שוב?</string>
+    <string name="skill_translation_to">ל</string>
+    <string name="skill_name_translation">תרגום</string>
+    <string name="skill_sentence_example_translation">נא לתרגם את Hola מספרדית לאנגלית</string>
 </resources>

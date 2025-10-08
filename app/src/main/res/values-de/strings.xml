@@ -234,4 +234,16 @@
     <string name="skill_listening_already_listening">Ich lausche bereits auf das Aktivierungswort</string>
     <string name="skill_name_listening">Steuerung des Aktivierungswortes</string>
     <string name="skill_sentence_example_listening">Zuhören stoppen</string>
+    <string name="skill_name_joke">Witze</string>
+    <string name="skill_sentence_example_joke">Erzähle mir einen Witz</string>
+    <string name="skill_translation_success">Übersetzt in %1$s</string>
+    <string name="skill_translation_unknown_language">Ich kenne die Sprache %1$s nicht</string>
+    <string name="skill_translation_unsupported_language">Sprache %1$s (%2$s) wird nicht unterstützt</string>
+    <string name="skill_translation_failed">Anfrage kann nicht in %1$s übersetzt werden</string>
+    <string name="skill_translation_failed_no_query">Ich habe nicht verstanden, was du übersetzen willst. Kannst du es wiederholen?</string>
+    <string name="skill_translation_to">nach</string>
+    <string name="skill_name_translation">Übersetzen</string>
+    <string name="skill_sentence_example_translation">Übersetze Hola aus dem Spanischen ins Englische</string>
+    <string name="failed_to_copy">Kopieren fehlgeschlagen</string>
+    <string name="skill_translation_auto">Automatisch</string>
 </resources>

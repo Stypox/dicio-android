@@ -196,4 +196,11 @@
     <string name="waiting">Esperando…</string>
     <string name="pref_input_method_vosk_summary">Baixa e executa um modelo Vosk SpeechToText offline no Dicio</string>
     <string name="pref_input_method_external_popup">Pop-up SpeechToText externo</string>
+    <string name="pref_input_method_external_popup_summary">Abre a interface do usuário de outro aplicativo por meio de ACTION​_​RECOGNIZE​_​SPEECH, por exemplo whisperIME, Kõnele, Futo Voice Input</string>
+    <string name="skill_media_pausing">Pausando a mídia…</string>
+    <string name="skill_media_previous">Mídia anterior…</string>
+    <string name="skill_media_next">Próxima mídia…</string>
+    <string name="skill_media_no_media_session">Nenhuma sessão de mídia está ativa</string>
+    <string name="wake_custom_service_foreground_notification">Ouvindo uma palavra de ativação personalizada</string>
+    <string name="skill_listening_already_listening">Já estou ouvindo a palavra de despertar</string>
 </resources>

@@ -234,4 +234,16 @@
     <string name="skill_listening_disabled">Služba probouzecího slova je zakázána v nastavení</string>
     <string name="skill_name_listening">Ovládání poslechu na probouzecí slovo</string>
     <string name="skill_sentence_example_listening">Přestat poslouchat</string>
+    <string name="failed_to_copy">Nepodařilo se zkopírovat do schránky</string>
+    <string name="skill_name_joke">Vtip</string>
+    <string name="skill_sentence_example_joke">Řekni mi vtip</string>
+    <string name="skill_translation_success">Přeloženo do jazyka %1$s</string>
+    <string name="skill_translation_unknown_language">Nerozpoznal jsem jazyk %1$s</string>
+    <string name="skill_translation_unsupported_language">Jazyk %1$s (%2$s) není podporován</string>
+    <string name="skill_translation_failed">Nepodařilo se přeložit váš dotaz do jazyka %1$s</string>
+    <string name="skill_translation_failed_no_query">Přeslechl jsem, co jste chtěli přeložit. Zopakovali byste to prosím?</string>
+    <string name="skill_translation_to">do jazyka</string>
+    <string name="skill_name_translation">Překlad</string>
+    <string name="skill_sentence_example_translation">Přelož Hola z jazyka španělština do jazyka angličtina</string>
+    <string name="skill_translation_auto">Automaticky</string>
 </resources>

@@ -227,4 +227,11 @@
     <string name="waiting">Bekleniyor…</string>
     <string name="pref_input_method_vosk_summary">Dicio içinde bir Vosk SpeechToText modelini çevrimdışı olarak indirir ve çalıştırır</string>
     <string name="pref_input_method_external_popup">Harici SpeechToText açılır penceresi</string>
+    <string name="skill_listening_already_listening">Zaten uyandırma sözcüğünü bekliyorum</string>
+    <string name="skill_listening_started_listening">Tamam, uyandırma sözcüğünü bekleyeceğim</string>
+    <string name="skill_listening_not_listening">Dinlemiyordum</string>
+    <string name="skill_listening_stop_listening">TAMAM</string>
+    <string name="skill_listening_disabled">Uyandırma sözcüğü hizmeti ayarlardan devre dışı bırakılmış</string>
+    <string name="skill_name_listening">Uyandırma sözcüğü dinlemeyi düzenle</string>
+    <string name="skill_sentence_example_listening">Dinlemeyi bırak</string>
 </resources>

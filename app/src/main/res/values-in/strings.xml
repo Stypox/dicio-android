@@ -129,4 +129,16 @@
     <string name="skill_weather_in_city_there_is_description">Saat ini di %1$s ada %2$s</string>
     <string name="pref_stt_auto_finish_title">Kirim langsung hasil ucapan ke layanan teks</string>
     <string name="pref_stt_auto_finish_summary_on">Secara otomatis mengirim hasil ucapan ke aplikasi yang meminta ketika mendengarkan selesai</string>
+    <string name="back">Kembali</string>
+    <string name="clear">Bersihkan</string>
+    <string name="copy_to_clipboard">Salin ke papanklip</string>
+    <string name="done">Selesai</string>
+    <string name="grant_microphone_permission">Berikan izin mikrofon</string>
+    <string name="error_loading">Loading bermasalah</string>
+    <string name="error_unzipping">Kesalahan saat membuka zip</string>
+    <string name="error_downloading">Kesalahan saat mendownload</string>
+    <string name="unzipping">Membongkar file zip…</string>
+    <string name="download">Unduhan</string>
+    <string name="stt_not_available">Ucapan ke Teks tidak tersedia</string>
+    <string name="stt_download">Unduh Ucapan ke Teks</string>
 </resources>
