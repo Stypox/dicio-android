@@ -53,8 +53,6 @@ dependencies {
     implementation(libs.android.tools.build.gradle)
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.kotlinpoet)
-
-    // Gradle chooses an old incorrect version of JGit, so the following line is useless...
     implementation(libs.jgit)
 
     // also depending on sentences compiler for nfkdNormalize

@@ -1,37 +1,48 @@
 package org.stypox.dicio.unicodeCldrPlugin.data
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.errors.GitAPIException
+import org.eclipse.jgit.transport.RefSpec
+import org.eclipse.jgit.transport.URIish
 import org.stypox.dicio.unicodeCldrPlugin.util.UnicodeCldrPluginException
 import java.io.File
 
 @Throws(UnicodeCldrPluginException::class)
 fun ensureGitRepoDownloaded(repo: String, commit: String, directory: File) {
-    if (directory.exists()) {
-        try {
-            Git.open(directory).use { git ->
-                val headCommit = git.repository.resolve("HEAD")?.name
-                if (headCommit != commit) {
-                    println("Commit mismatch for $repo ($headCommit != $commit), deleting and recloning...")
-                    directory.deleteRecursively()
-                } else {
-                    return // no need to clone again
-                }
-            }
-        } catch (_: Exception) {
-            println("Cannot open folder $directory, deleting and recloning...")
+    val git = try {
+        Git.open(directory)
+    } catch (_: Throwable) {
+        println("Cannot open folder $directory, deleting and recloning...")
+        if (directory.exists()) {
             directory.deleteRecursively()
         }
+        Git.init().setDirectory(directory).call()
     }
 
-    Git.cloneRepository()
-        .setURI(repo)
-        .setDirectory(directory)
-        .setCloneAllBranches(false)
-        // TODO Shallow clone is not supported by this version of jgit. We can't change version
-        //  because somehow gradle forces an old version upon us despite all attempts. If you
-        //  uncomment the line below you will see Android Studio gives you no error, because it
-        //  resolves the correct version, but Gradle doesn't...
-        //.setDepth(1)
-        .call()
-        .close()
+    git.use { git ->
+        try {
+            git.remoteAdd()
+                .setName("origin")
+                .setUri(URIish(repo))
+                .call()
+        } catch (_: GitAPIException) {
+            git.remoteSetUrl()
+                .setRemoteName("origin")
+                .setRemoteUri(URIish(repo))
+                .call()
+        }
+
+        git.fetch()
+            .setRemote("origin")
+            // if this doesn't compile, then Gradle is messing with the jgit version used at
+            // runtime; in that case, revert commit "Improve unicode cldr repo cloning"
+            .setDepth(1)
+            .setRefSpecs(RefSpec(commit))
+            .call()
+
+        git.checkout()
+            .setName(commit)
+            .setStartPoint(commit)
+            .call()
+    }
 }
