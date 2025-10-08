@@ -225,7 +225,7 @@
     <string name="skill_translation_unknown_language">I don\'t recognize language %1$s</string>
     <string name="skill_translation_unsupported_language">Language %1$s (%2$s) is not supported</string>
     <string name="skill_translation_failed">Unable to translate your query into %1$s</string>
-    <string name="skill_translation_failed_no_query">I didn\'t catch what you wanted to translate. Could you say that again?</string>
+    <string name="skill_translation_failed_no_query">I didn\'t understand, could you repeat what you want to translate?</string>
     <string name="skill_translation_to">to</string>
     <string name="skill_name_translation">Translate</string>
     <string name="skill_sentence_example_translation">Translate Hola from Spanish to English</string>

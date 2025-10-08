@@ -82,6 +82,7 @@
     <string name="loaded">Caricato</string>
     <string name="here_is_what_i_can_do">Ecco cosa posso fare!</string>
     <string name="skill_sentence_example_media">Metti in pausa</string>
+    <string name="skill_sentence_example_joke">Dimmi uno scherzo</string>
     <string name="skill_name_calculator">Calcolatrice</string>
     <string name="skill_sentence_example_calculator">Quanto fa cinque per quattro meno un milione?</string>
     <string name="skill_media_no_media_session">Nessuna sessione di riproduzione è attiva</string>
@@ -204,6 +205,7 @@
     <string name="skill_media_previous">Passo alla precedente…</string>
     <string name="skill_media_next">Passo alla successiva…</string>
     <string name="skill_sentence_example_listening">Smetti di ascoltarmi</string>
+    <string name="skill_sentence_example_translation">Traduci cetriolo in tedesco</string>
     <string name="pref_weather_temperature_unit">Unità della temperatura</string>
     <string name="pref_input_method_vosk_summary">Scarica ed esegue un modello di riconoscimento vocale offline Vosk</string>
     <string name="pref_input_method_external_popup">Riconoscimento vocale tramite popup esterno</string>
@@ -229,4 +231,15 @@
     <string name="skill_weather_kelvin">K</string>
     <string name="skill_weather_meters_per_second">m/s</string>
     <string name="skill_weather_miles_per_hour">mph</string>
+    <string name="skill_name_joke">Barzellette</string>
+    <string name="skill_translation_success">Tradotto in %1$s</string>
+    <string name="skill_translation_unknown_language">Non riconosco la lingua %1$s</string>
+    <string name="skill_translation_unsupported_language">La lingua %1$s (%2$s) non è supportata</string>
+    <string name="skill_translation_failed">Non son riuscito a tradurre in %1$s</string>
+    <string name="skill_translation_failed_no_query">Non ho capito cosa vuoi tradurre, potresti ripetere?</string>
+    <string name="skill_translation_to">in</string>
+    <string name="skill_name_translation">Traduttore</string>
+    <string name="failed_to_copy">Impossibile copiare negli appunti</string>
+    <string name="skill_translation_auto">Auto</string>
+    <string name="skill_search_duckduckgo_recaptcha">DuckDuckGo non ha fornito risultati: richiede la risoluzione di un Captcha</string>
 </resources>
