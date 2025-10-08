@@ -11,7 +11,7 @@ datastore = "1.1.7"
 desugarJdkLibs = "2.1.5"
 # used in settings.gradle.kts for git dependencies
 dicioNumbers = "66fd44b79585f952b76d16e5578d4d6aa5bc030c"
-dicioSentencesCompiler = "7d83fe5a3d6dff2fc81b5c40783a1d82ada293d3"
+dicioSentencesCompiler = "02fd2515967349374a76f59ed3affe1d5ae85c80"
 exp4j = "0.4.8"
 gradle = "8.9.1"
 dagger = "2.57.2"
