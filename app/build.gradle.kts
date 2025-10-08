@@ -106,11 +106,12 @@ protobuf {
 
 // workaround for https://github.com/google/ksp/issues/1590
 // remove when not needed anymore
+val kspKotlinRegex = "^ksp(.*)Kotlin$".toRegex()
 androidComponents {
     onVariants(selector().all()) { variant ->
         afterEvaluate {
-            val capName = variant.name.replaceFirstChar { it.uppercase() }
-            tasks.named("ksp${capName}Kotlin") {
+            tasks.named(kspKotlinRegex::matches).configureEach {
+                val capName = kspKotlinRegex.find(name)!!.groupValues[1]
                 dependsOn(tasks.named("generate${capName}Proto"))
             }
         }
