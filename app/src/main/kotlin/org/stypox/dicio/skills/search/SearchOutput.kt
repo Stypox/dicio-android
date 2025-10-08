@@ -21,65 +21,21 @@ import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.InteractionPlan
 import org.dicio.skill.skill.SkillOutput
 import org.stypox.dicio.R
-import org.stypox.dicio.io.graphical.Headline
+import org.stypox.dicio.io.graphical.HeadlineSpeechSkillOutput
 import org.stypox.dicio.sentences.Sentences
+import org.stypox.dicio.skills.search.SearchOutput.Data
 import org.stypox.dicio.util.RecognizeEverythingSkill
 import org.stypox.dicio.util.ShareUtils
 import org.stypox.dicio.util.getString
 
-class SearchOutput(
-    private val results: List<Data>?,
-    private val askAgain: Boolean,
-) : SkillOutput {
-    class Data (
-        val title: String,
-        val thumbnailUrl: String,
-        val url: String,
-        val description: String,
-    )
+sealed interface SearchOutput : SkillOutput {
 
-    override fun getSpeechOutput(ctx: SkillContext): String = ctx.getString(
-        if (results == null)
-            R.string.skill_search_what_question
-        else if (results.isNotEmpty())
-            R.string.skill_search_here_is_what_i_found
-        else if (askAgain)
-            R.string.skill_search_no_results
-        else
-            // if the search continues to return 0 results, don't keep asking
-            R.string.skill_search_no_results_stop
-    )
+    data class Results(private val results: List<Data>) : SearchOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_search_here_is_what_i_found)
 
-    override fun getInteractionPlan(ctx: SkillContext): InteractionPlan {
-        if (!results.isNullOrEmpty() || !askAgain) {
-            return InteractionPlan.FinishInteraction
-        }
-
-        val searchAnythingSkill = object : RecognizeEverythingSkill(SearchInfo) {
-            override suspend fun generateOutput(
-                ctx: SkillContext,
-                inputData: String
-            ): SkillOutput {
-                // ask again only if this is the first time we ask the user to provide what
-                // to search for, otherwise we could continue asking indefinitely
-                return SearchOutput(searchOnDuckDuckGo(ctx, inputData), results == null)
-            }
-        }
-
-        return InteractionPlan.StartSubInteraction(
-            reopenMicrophone = true,
-            nextSkills = listOf(
-                SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
-                searchAnythingSkill,
-            ),
-        )
-    }
-
-    @Composable
-    override fun GraphicalOutput(ctx: SkillContext) {
-        if (results.isNullOrEmpty()) {
-            Headline(text = getSpeechOutput(ctx))
-        } else {
+        @Composable
+        override fun GraphicalOutput(ctx: SkillContext) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
@@ -89,15 +45,70 @@ class SearchOutput(
             }
         }
     }
+
+    object NoSearchTerm : SearchOutput, HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_search_what_question)
+
+        override fun getInteractionPlan(ctx: SkillContext): InteractionPlan =
+            getRetryInteractionPlan(ctx)
+    }
+
+    object NoResultAskAgain : SearchOutput, HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_search_no_results)
+
+        override fun getInteractionPlan(ctx: SkillContext): InteractionPlan =
+            getRetryInteractionPlan(ctx)
+    }
+
+    object NoResultStop : SearchOutput, HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_search_no_results_stop)
+    }
+
+    object RecaptchaRequested : SearchOutput, HeadlineSpeechSkillOutput {
+        override fun getSpeechOutput(ctx: SkillContext): String =
+            ctx.getString(R.string.skill_search_duckduckgo_recaptcha)
+    }
+
+
+    class Data (
+        val title: String,
+        val thumbnailUrl: String,
+        val url: String,
+        val description: String,
+    )
+
+    companion object {
+        private fun getRetryInteractionPlan(ctx: SkillContext): InteractionPlan {
+            val searchAnythingSkill = object : RecognizeEverythingSkill(SearchInfo) {
+                override suspend fun generateOutput(
+                    ctx: SkillContext,
+                    inputData: String
+                ): SkillOutput {
+                    // ask again only if this is the first time we ask the user to provide what
+                    // to search for, otherwise we could continue asking indefinitely
+                    return searchOnDuckDuckGo(ctx, inputData, askAgainIfNoResult = false)
+                }
+            }
+
+            return InteractionPlan.StartSubInteraction(
+                reopenMicrophone = true,
+                nextSkills = listOf(
+                    SearchSkill(SearchInfo, Sentences.Search[ctx.sentencesLanguage]!!),
+                    searchAnythingSkill,
+                ),
+            )
+        }
+    }
 }
 
 @Composable
-private fun SearchResult(data: SearchOutput.Data) {
+private fun SearchResult(data: Data) {
     val context = LocalContext.current
     Column(
-        modifier = Modifier.clickable {
-            ShareUtils.openUrlInBrowser(context, data.url)
-        }
+        modifier = Modifier.clickable { ShareUtils.openUrlInBrowser(context, data.url) }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically

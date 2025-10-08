@@ -15,10 +15,8 @@ import org.stypox.dicio.util.LocaleUtils
 class SearchSkill(correspondingSkillInfo: SkillInfo, data: StandardRecognizerData<Search>)
     : StandardRecognizerSkill<Search>(correspondingSkillInfo, data) {
     override suspend fun generateOutput(ctx: SkillContext, inputData: Search): SkillOutput {
-        val query = when (inputData) {
-            is Search.Query -> inputData.what ?: return SearchOutput(null, true)
-        }
-        return SearchOutput(searchOnDuckDuckGo(ctx, query), true)
+        val query = when (inputData) { is Search.Query -> inputData.what }
+        return searchOnDuckDuckGo(ctx, query, true)
     }
 }
 
@@ -31,17 +29,25 @@ private val DUCK_DUCK_GO_SUPPORTED_LOCALES = listOf(
     "it-it", "jp-jp", "kr-kr", "lv-lv", "lt-lt", "my-en", "mx-es", "nl-nl", "nz-en",
     "no-no", "pk-en", "pe-es", "ph-en", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "xa-ar",
     "sg-en", "sk-sk", "sl-sl", "za-en", "es-ca", "es-es", "se-sv", "ch-de", "ch-fr",
-    "tw-tz", "th-en", "tr-tr", /*"us-en",*/ "us-es", "ua-uk", "uk-en", "vn-en"
+    "tw-tz", "th-en", "tr-tr", "us-en", "us-es", "ua-uk", "uk-en", "vn-en"
 )
 
-internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOutput.Data> {
+internal fun searchOnDuckDuckGo(
+    ctx: SkillContext,
+    query: String?,
+    askAgainIfNoResult: Boolean,
+): SearchOutput {
+    if (query.isNullOrBlank()) {
+        return SearchOutput.NoSearchTerm
+    }
+
     // find the locale supported by DuckDuckGo that matches the user locale the most
     val locale = LocaleUtils.resolveValueForSupportedLocale(
         ctx.locale,
         DUCK_DUCK_GO_SUPPORTED_LOCALES.associateBy {
             // DuckDuckGo locale names have first the country and then the language, but the locale
             // selection function assumes the opposite
-            it.split("-").reversed().joinToString(separator = "_")
+            it.split("-").reversed().joinToString(separator = "-")
         }
     // default to English when no locale is supported
     ) ?: "us-en"
@@ -57,16 +63,21 @@ internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOu
         )
     )
 
+    // Sometimes DuckDuckGo replies with a recaptcha request, and no results are provided then
+    if (html.contains("anomaly-modal__title")) {
+        return SearchOutput.RecaptchaRequested
+    }
+
     val document: Document = Jsoup.parse(html)
     val elements = document.select("div[class=links_main links_deep result__body]")
-    val result: MutableList<SearchOutput.Data> = ArrayList()
+    val results: MutableList<SearchOutput.Data> = ArrayList()
     for (element in elements) {
         try {
             // the url is under the "uddg" query parameter
             val ddgUrl = element.select("a[class=result__a]").first()!!.attr("href")
             val url = ddgUrl.toUri().getQueryParameter("uddg")!!
 
-            result.add(
+            results.add(
                 SearchOutput.Data(
                     title = element.select("a[class=result__a]").first()!!.text(),
                     thumbnailUrl = "https:" + element.select("img[class=result__icon__img]")
@@ -79,5 +90,13 @@ internal fun searchOnDuckDuckGo(ctx: SkillContext, query: String): List<SearchOu
         }
     }
 
-    return result
+    return if (results.isEmpty()) {
+        if (askAgainIfNoResult) {
+            SearchOutput.NoResultAskAgain
+        } else {
+            SearchOutput.NoResultStop
+        }
+    } else {
+        SearchOutput.Results(results)
+    }
 }
