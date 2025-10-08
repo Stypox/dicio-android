@@ -21,7 +21,7 @@ import java.io.File
 import java.io.IOException
 
 class OpenWakeWordDevice(
-    @ApplicationContext private val appContext: Context,
+    @param:ApplicationContext private val appContext: Context,
     private val okHttpClient: OkHttpClient,
 ) : WakeDevice {
     private val _state: MutableStateFlow<WakeState>

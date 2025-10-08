@@ -40,7 +40,7 @@ interface WakeDeviceWrapper {
 typealias DataStoreWakeDevice = org.stypox.dicio.settings.datastore.WakeDevice
 
 class WakeDeviceWrapperImpl(
-    @ApplicationContext private val appContext: Context,
+    @param:ApplicationContext private val appContext: Context,
     dataStore: DataStore<UserSettings>,
     private val okHttpClient: OkHttpClient,
 ) : WakeDeviceWrapper {

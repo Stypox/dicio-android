@@ -36,6 +36,7 @@ class AndroidTtsSpeechDevice(private var context: Context, locale: Locale) : Spe
                                 }
                             }
 
+                            @Suppress("OVERRIDE_DEPRECATION")
                             @Deprecated("")
                             override fun onError(utteranceId: String) {
                             }

@@ -26,7 +26,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SpeechOutputDeviceWrapper @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val dataStore: DataStore<UserSettings>,
     private val localeManager: LocaleManager,
     // this is always instantiated, but will do nothing if

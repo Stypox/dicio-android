@@ -25,7 +25,7 @@ import java.util.Locale
 
 
 class ExternalPopupInputDevice(
-    @ApplicationContext val context: Context,
+    @param:ApplicationContext val context: Context,
     private val activityForResultManager: ActivityForResultManager,
     localeManager: LocaleManager,
 ) : SttInputDevice {

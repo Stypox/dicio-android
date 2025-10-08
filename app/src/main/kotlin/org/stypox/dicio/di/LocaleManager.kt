@@ -32,7 +32,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class LocaleManager @Inject constructor(
-    @ApplicationContext private val appContext: Context,
+    @param:ApplicationContext private val appContext: Context,
     dataStore: DataStore<UserSettings>,
 ) {
     // We obtain the system locale list when the app starts (which is also when `LocaleManager` is

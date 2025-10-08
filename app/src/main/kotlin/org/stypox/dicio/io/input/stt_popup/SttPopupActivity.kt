@@ -96,6 +96,7 @@ class SttPopupActivity : BaseActivity() {
                 speechExtras.getBundle(RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT_BUNDLE)
                     ?.let { intent.putExtras(it) }
             }
+            @Suppress("DEPRECATION") // improved API requires Android T
             val resultIntent = speechExtras.getParcelable<PendingIntent>(
                 RecognizerIntent.EXTRA_RESULTS_PENDINGINTENT
             )
