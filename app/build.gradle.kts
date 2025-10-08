@@ -33,8 +33,8 @@ android {
         applicationId = "org.stypox.dicio"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 16
-        versionName = "3.2"
+        versionCode = 17
+        versionName = "4.0"
         testInstrumentationRunner = "org.stypox.dicio.CustomTestRunner"
 
         vectorDrawables.useSupportLibrary = true
