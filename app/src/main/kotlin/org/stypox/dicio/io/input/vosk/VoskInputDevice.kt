@@ -21,7 +21,6 @@ package org.stypox.dicio.io.input.vosk
 
 import android.content.Context
 import android.util.Log
-import androidx.core.os.LocaleListCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -110,15 +109,7 @@ class VoskInputDevice(
 
     private fun init(locale: Locale): VoskState {
         // choose the model url based on the locale
-        val modelUrl = try {
-            val localeResolutionResult = LocaleUtils.resolveSupportedLocale(
-                LocaleListCompat.create(locale),
-                MODEL_URLS.keys
-            )
-            MODEL_URLS[localeResolutionResult.supportedLocaleString]
-        } catch (_: LocaleUtils.UnsupportedLocaleException) {
-            null
-        }
+        val modelUrl = LocaleUtils.resolveValueForSupportedLocale(locale, MODEL_URLS)
 
         // the model url may change if the user changes app language, or in case of model updates
         val modelUrlChanged = try {

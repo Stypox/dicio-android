@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.core.os.LocaleListCompat
 import org.dicio.skill.context.SkillContext
 import org.dicio.skill.skill.Skill
 import org.dicio.skill.skill.SkillInfo
@@ -25,16 +24,8 @@ object TranslationInfo : SkillInfo("translation") {
         rememberVectorPainter(Icons.Default.Language)
 
     override fun isAvailable(ctx: SkillContext): Boolean {
-        val hasSupportedLocale = try {
-            LocaleUtils.resolveSupportedLocale(
-                LocaleListCompat.create(ctx.locale),
-                TranslationSkill.TRANSLATE_SUPPORTED_LOCALES
-            )
-            true
-        } catch (ignored: LocaleUtils.UnsupportedLocaleException) {
-            false
-        }
-        return (Sentences.Translation[ctx.sentencesLanguage] != null) && hasSupportedLocale
+        return (Sentences.Translation[ctx.sentencesLanguage] != null) &&
+                LocaleUtils.isLocaleSupported(ctx.locale, TranslationSkill.TRANSLATE_SUPPORTED_LOCALES)
     }
 
     override fun build(ctx: SkillContext): Skill<*> {
