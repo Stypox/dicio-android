@@ -19,6 +19,6 @@ class SentencesCompilerPlugin : Plugin<Project> {
             .srcDir(generateResourceTask.outputDir)
         target.tasks
             .matching { it.name.contains("Kotlin") }
-            .configureEach { dependsOn(generateResourceTask) }
+            .configureEach { inputs.dir(generateResourceTask.outputDir) }
     }
 }
