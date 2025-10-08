@@ -1,3 +1,4 @@
+import org.eclipse.jgit.api.Git
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.stypox.dicio.unicodeCldrPlugin.UnicodeCldrLanguagesTask
 
@@ -208,12 +209,5 @@ configurations.configureEach {
 }
 
 fun gitBranch(): String {
-    return try {
-        providers.exec {
-            commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
-        }.standardOutput.asText.get().trim()
-    } catch (e: Exception) {
-        logger.warn("Git isn't installed, using default name for debug app.")
-        "debug"
-    }
+    return Git.open(rootDir).use { it.repository.branch }
 }
