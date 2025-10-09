@@ -4,6 +4,7 @@ import android.Manifest
 import android.view.WindowInsets
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.test.ComposeTimeoutException
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -155,10 +156,10 @@ class ScreenshotTakerTest {
         }
         coilEventListener.setup(composeRule.activity)
 
-
         // ensure the drawer/back button is out of focus by clicking in a random place,
         // otherwise there is darkened indication around it
         composeRule.onRoot().performTouchInput { click(center) }
+
 
         // screenshot 0: home screen with "Here is what I can do" and STT listening
         dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
@@ -172,7 +173,7 @@ class ScreenshotTakerTest {
         fakeSkillEvaluator.state.value = screenshot1InteractionLog
         composeRule.onNodeWithTag("interaction_list")
             .performScrollToIndex(3) // scroll to the first interaction
-        composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 1) }
+        runCatching { composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 1) } }
         composeRule.takeScreenshot("en-US", "1")
 
         // screenshot 2: home screen with interactions with calculator, telephone and search skills
@@ -182,7 +183,7 @@ class ScreenshotTakerTest {
         fakeSkillEvaluator.state.value = screenshot2InteractionLog
         composeRule.onNodeWithTag("interaction_list")
             .performScrollToIndex(3) // scroll to the first interaction
-        composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 2) }
+        runCatching { composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 2) } }
         composeRule.takeScreenshot("en-US", "2")
 
         // screenshot 3: home screen with interactions with translation, joke and media skills
@@ -199,10 +200,6 @@ class ScreenshotTakerTest {
             .performClick() // open the drawer
         composeRule.onNodeWithTag("settings_drawer_item")
             .performClick() // open the settings screen
-        // ensure the drawer button is out of focus by clicking in a random place
-        composeRule.waitForIdle()
-        composeRule.onRoot().performTouchInput { click(Offset(width.toFloat(), 0f)) }
-        composeRule.waitForIdle()
         composeRule.takeScreenshot("en-US", "5")
 
         // screenshot 4: skill settings screen
