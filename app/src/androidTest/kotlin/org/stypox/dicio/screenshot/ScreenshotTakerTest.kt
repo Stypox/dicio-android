@@ -3,11 +3,15 @@ package org.stypox.dicio.screenshot
 import android.Manifest
 import android.view.WindowInsets
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performTouchInput
 import androidx.datastore.core.DataStore
 import androidx.test.rule.GrantPermissionRule
 import dagger.Module
@@ -17,24 +21,34 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.stypox.dicio.MainActivity
+import org.stypox.dicio.cldr.CldrLanguages.LocaleAndTranslation
 import org.stypox.dicio.di.SttInputDeviceWrapper
 import org.stypox.dicio.di.SttInputDeviceWrapperModule
 import org.stypox.dicio.di.WakeDeviceWrapper
 import org.stypox.dicio.di.WakeDeviceWrapperModule
 import org.stypox.dicio.eval.SkillEvaluator
 import org.stypox.dicio.eval.SkillEvaluatorModule
+import org.stypox.dicio.io.input.SttState
+import org.stypox.dicio.sentences.Sentences
 import org.stypox.dicio.settings.datastore.Theme
 import org.stypox.dicio.settings.datastore.UserSettings
 import org.stypox.dicio.settings.datastore.copy
 import org.stypox.dicio.skills.calculator.CalculatorInfo
 import org.stypox.dicio.skills.calculator.CalculatorOutput
+import org.stypox.dicio.skills.current_time.CurrentTimeInfo
+import org.stypox.dicio.skills.current_time.CurrentTimeOutput
+import org.stypox.dicio.skills.joke.JokeInfo
+import org.stypox.dicio.skills.joke.JokeOutput
 import org.stypox.dicio.skills.lyrics.LyricsInfo
 import org.stypox.dicio.skills.lyrics.LyricsOutput
+import org.stypox.dicio.skills.media.MediaInfo
+import org.stypox.dicio.skills.media.MediaOutput
 import org.stypox.dicio.skills.search.SearchInfo
 import org.stypox.dicio.skills.search.SearchOutput
 import org.stypox.dicio.skills.telephone.ConfirmCallOutput
@@ -42,14 +56,15 @@ import org.stypox.dicio.skills.telephone.ConfirmedCallOutput
 import org.stypox.dicio.skills.telephone.TelephoneInfo
 import org.stypox.dicio.skills.timer.TimerInfo
 import org.stypox.dicio.skills.timer.TimerOutput
+import org.stypox.dicio.skills.translation.TranslationInfo
+import org.stypox.dicio.skills.translation.TranslationOutput
+import org.stypox.dicio.skills.weather.ResolvedLengthUnit
+import org.stypox.dicio.skills.weather.ResolvedTemperatureUnit
 import org.stypox.dicio.skills.weather.WeatherInfo
 import org.stypox.dicio.skills.weather.WeatherOutput
 import org.stypox.dicio.ui.home.Interaction
 import org.stypox.dicio.ui.home.InteractionLog
 import org.stypox.dicio.ui.home.QuestionAnswer
-import org.stypox.dicio.io.input.SttState
-import org.stypox.dicio.skills.weather.ResolvedLengthUnit
-import org.stypox.dicio.skills.weather.ResolvedTemperatureUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -131,6 +146,7 @@ class ScreenshotTakerTest {
         hiltRule.inject()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun takeScreenshots() = runTest {
         composeRule.activity.runOnUiThread {
@@ -139,6 +155,10 @@ class ScreenshotTakerTest {
         }
         coilEventListener.setup(composeRule.activity)
 
+
+        // ensure the drawer/back button is out of focus by clicking in a random place,
+        // otherwise there is darkened indication around it
+        composeRule.onRoot().performTouchInput { click(center) }
 
         // screenshot 0: home screen with "Here is what I can do" and STT listening
         dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
@@ -149,9 +169,9 @@ class ScreenshotTakerTest {
         dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
         fakeSttInputDeviceWrapper.uiState.emit(SttState.Loaded)
         coilEventListener.resetStartedImages()
-        fakeSkillEvaluator.state.value = screenshot2InteractionLog
+        fakeSkillEvaluator.state.value = screenshot1InteractionLog
         composeRule.onNodeWithTag("interaction_list")
-            .performScrollToIndex(2) // scroll to the first interaction
+            .performScrollToIndex(3) // scroll to the first interaction
         composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 1) }
         composeRule.takeScreenshot("en-US", "1")
 
@@ -159,32 +179,44 @@ class ScreenshotTakerTest {
         dataStore.updateData { it.copy { theme = Theme.THEME_BLACK } }
         fakeSttInputDeviceWrapper.uiState.emit(SttState.Loaded)
         coilEventListener.resetStartedImages()
-        fakeSkillEvaluator.state.value = screenshot3InteractionLog
+        fakeSkillEvaluator.state.value = screenshot2InteractionLog
         composeRule.onNodeWithTag("interaction_list")
-            .performScrollToIndex(2) // scroll to the first interaction
+            .performScrollToIndex(3) // scroll to the first interaction
         composeRule.waitUntil { coilEventListener.isIdle(startedAtLeast = 2) }
         composeRule.takeScreenshot("en-US", "2")
 
-        // screenshot 4: settings screen
-        dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
+        // screenshot 3: home screen with interactions with translation, joke and media skills
+        dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
+        fakeSttInputDeviceWrapper.uiState.emit(SttState.Loaded)
+        fakeSkillEvaluator.state.value = screenshot3InteractionLog
+        composeRule.onNodeWithTag("interaction_list")
+            .performScrollToIndex(3) // scroll to the second interaction
+        composeRule.takeScreenshot("en-US", "3")
+
+        // screenshot 5: settings screen
+        dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
         composeRule.onNodeWithTag("drawer_handle")
             .performClick() // open the drawer
         composeRule.onNodeWithTag("settings_drawer_item")
             .performClick() // open the settings screen
-        composeRule.takeScreenshot("en-US", "4")
+        // ensure the drawer button is out of focus by clicking in a random place
+        composeRule.waitForIdle()
+        composeRule.onRoot().performTouchInput { click(Offset(width.toFloat(), 0f)) }
+        composeRule.waitForIdle()
+        composeRule.takeScreenshot("en-US", "5")
 
-        // screenshot 3: skill settings screen
-        dataStore.updateData { it.copy { theme = Theme.THEME_LIGHT } }
+        // screenshot 4: skill settings screen
+        dataStore.updateData { it.copy { theme = Theme.THEME_DARK } }
         composeRule.onNodeWithTag("skill_settings_item")
             .performClick() // open the skill settings screen
         composeRule.onAllNodesWithTag("expand_skill_settings_handle").apply {
-            fetchSemanticsNodes().forEachIndexed { i, _ -> get(i).performClick() }
+            get(0).performClick()
         } // expand all skill settings
-        composeRule.takeScreenshot("en-US", "3")
+        composeRule.takeScreenshot("en-US", "4")
     }
 
     companion object {
-        private val screenshot2InteractionLog = InteractionLog(listOf(
+        private val screenshot1InteractionLog = InteractionLog(listOf(
             Interaction(WeatherInfo, listOf(
                 QuestionAnswer(
                     question = "what's the weather in milan",
@@ -239,7 +271,7 @@ class ScreenshotTakerTest {
             )),
         ), null)
 
-        private val screenshot3InteractionLog = InteractionLog(listOf(
+        private val screenshot2InteractionLog = InteractionLog(listOf(
             Interaction(CalculatorInfo, listOf(
                 QuestionAnswer(
                     question = "what is twelve plus three fifths minus two to the power of three",
@@ -268,7 +300,7 @@ class ScreenshotTakerTest {
             Interaction(SearchInfo, listOf(
                 QuestionAnswer(
                     question = "search newpipe",
-                    answer = SearchOutput(listOf(
+                    answer = SearchOutput.Results(listOf(
                         SearchOutput.Data(
                             title = "NewPipe - a free YouTube client",
                             description = "NewPipe is an Android app that lets you watch videos " +
@@ -290,8 +322,42 @@ class ScreenshotTakerTest {
                             url = "https://github.com/TeamNewPipe/NewPipe",
                             thumbnailUrl = "https://external-content.duckduckgo.com/ip3/github.com.ico"
                         ),
-                    ), askAgain = false)
+                    ))
                 ),
+            )),
+        ), null)
+
+        private val screenshot3InteractionLog = InteractionLog(listOf(
+            Interaction(MediaInfo, listOf(
+                QuestionAnswer(
+                    question = "pause the song",
+                    answer = MediaOutput(Sentences.Media.Pause)
+                )
+            )),
+            Interaction(TranslationInfo, listOf(
+                QuestionAnswer(
+                    question = "translate hola from spanish to italian",
+                    answer = TranslationOutput.Success(
+                        translation = "Ciao",
+                        sourceLanguage = LocaleAndTranslation("es", "Spanish", ""),
+                        targetLanguage = LocaleAndTranslation("it", "Italian", ""),
+                    )
+                )
+            )),
+            Interaction(JokeInfo, listOf(
+                QuestionAnswer(
+                    question = "tell me a joke",
+                    answer = JokeOutput.Success(
+                        setup = "What is the tallest building in the world?",
+                        delivery = "The library, it's got the most stories!",
+                    )
+                )
+            )),
+            Interaction(CurrentTimeInfo, listOf(
+                QuestionAnswer(
+                    question = "what time is it",
+                    answer = CurrentTimeOutput("13:37"),
+                )
             )),
         ), null)
     }
