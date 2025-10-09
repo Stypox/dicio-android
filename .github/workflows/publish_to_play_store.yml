@@ -13,6 +13,15 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Delete incomplete metadata folder
+        run: |
+          for dir in fastlane/metadata/android/*/; do
+            if [ ! -f "$dir/title.txt" ] || [ ! -f "$dir/short_description.txt" ] || [ ! -f "$dir/full_description.txt" ]; then
+              echo "Deleting incomplete fastlane metadata folder: $dir" >> "$GITHUB_STEP_SUMMARY"
+              rm -rf "$dir"
+            fi
+          done
+
       - name: Set up Java JDK
         uses: actions/setup-java@v4
         with:
