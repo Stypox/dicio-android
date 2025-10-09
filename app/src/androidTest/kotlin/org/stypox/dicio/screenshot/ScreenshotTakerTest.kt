@@ -9,6 +9,7 @@ import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
@@ -159,6 +160,10 @@ class ScreenshotTakerTest {
         // ensure the drawer/back button is out of focus by clicking in a random place,
         // otherwise there is darkened indication around it
         composeRule.onRoot().performTouchInput { click(center) }
+
+        // make sure the app bar shows "Dicio" and not "Dicio-master" or other branch names
+        composeRule.onNodeWithText("Dicio").assertExists()
+        composeRule.onNodeWithText("Dicio-master").assertDoesNotExist()
 
 
         // screenshot 0: home screen with "Here is what I can do" and STT listening

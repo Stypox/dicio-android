@@ -50,7 +50,12 @@ android {
             applicationIdSuffix = ".$normalizedGitBranch"
             versionNameSuffix = "-$normalizedGitBranch"
 
-            resValue("string", "app_name", "Dicio-${gitBranch()}")
+            val isScreenshotTest = (project.findProperty("android.testInstrumentationRunnerArguments.class") as? String)
+                ?.contains("creenshot") == true
+            if (!isScreenshotTest) {
+                // only change the app name if we are not taking screenshots
+                resValue("string", "app_name", "Dicio-${gitBranch()}")
+            }
         }
         release {
             isMinifyEnabled = false
