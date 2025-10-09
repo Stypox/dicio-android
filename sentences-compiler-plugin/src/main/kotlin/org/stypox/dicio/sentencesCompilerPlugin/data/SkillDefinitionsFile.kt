@@ -1,8 +1,6 @@
 package org.stypox.dicio.sentencesCompilerPlugin.data
 
-import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.JsonValue
-import com.fasterxml.jackson.annotation.Nulls
 
 data class SkillDefinitionsFile(
     val skills: List<SkillDefinition>
@@ -22,7 +20,6 @@ enum class Specificity(@JsonValue val serializedValue: String) {
 
 data class SentenceDefinition(
     val id: String,
-    @JsonSetter(nulls = Nulls.SKIP)
     val captures: List<CaptureDefinition> = listOf(),
 )
 
