@@ -1,0 +1,17 @@
+play:
+  - (şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)<yı|ya>? oynat|devam et|duraklatmayı kaldır|başla|(yeniden başla)
+  - oynatıcı<yı?> aç
+  - continue playing (the? şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)?
+
+pause:
+  - (şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)<yı|ya>? durdur|beklet|kapat 
+  - (şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)<yı|ya>? beklemeye|bekletmeye|beklet (koy|bırak)?
+
+previous:
+  - (bir? önceki)|son|(bir? gerideki) (şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)<yı|ya>? yeniden oynat|oynat|(geri|değiş|dön|geri sar|(geri<ye?> git))?
+  - geri sar
+
+next:
+  - (bir? sonraki)|(bir? ilerideki|sıradaki) (şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)<yı|ya>? geç
+  - (bir? sonraki)|(bir? ilerideki|sıradaki) (şarkı|medya|parça|müzik|ses|video|dizi|yayın|film)<yı|ya>? oynat|(git|değiş|geç|zıpla|(ileri sar))? 
+  - ileri sar

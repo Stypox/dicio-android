@@ -1,0 +1,17 @@
+addition:
+  - artı|(ekle|topla|toplama?|toplamı?)
+
+subtraction:
+  - eksi|(azalt|çıkar|çıkart|çıkarma?)
+
+multiplication:
+  - kere|(çarpı|çarpıp|çarpıldı|çarpımı?)
+
+division:
+  - (bölü|bölüm|bölümü|bölündü?)|(üzeri)
+
+power:
+  - (üs<t|tü>|ü<s|sü>)|(kuvvet|kuvveti)?
+
+square_root:
+  - (karekö<k|kü|ğü>)|(kare kö<k|kü|ğü>)
