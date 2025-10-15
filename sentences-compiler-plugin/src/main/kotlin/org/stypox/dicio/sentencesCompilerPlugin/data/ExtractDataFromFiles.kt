@@ -12,7 +12,8 @@ fun extractDataFromFiles(logger: Logger, inputDirFile: File): ExtractedData {
         .map { Pair(it, HashMap<String, ArrayList<RawSentence>>()) }
     val languages = ArrayList<String>()
 
-    for (lang in inputDirFile.listFiles { file -> file.isDirectory }!!) {
+    // sorted() to ensure this executes deterministically, so the APK builds reproduciblyg
+    for (lang in inputDirFile.listFiles { file -> file.isDirectory }!!.sorted()) {
         var langHasSentence = false
         for ((skill, sentences) in skills) {
             val file = File(lang, skill.id + YML_EXT)
