@@ -1,0 +1,9 @@
+stop:
+  - dinlemeyi durdur
+  - mikrofonu? durdur|sessizleştir
+  - mikrofonu kapat
+
+start:
+  - dinlemeyi başlat
+  - mikrofonun? sesini aç
+  - mikrofonu aç
