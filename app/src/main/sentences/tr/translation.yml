@@ -1,0 +1,4 @@
+translate:
+  - lütfen? (senden)? .query.<yi|yı>? ((.source.(den|dan))? (.target.(a|e))?)|((.source.(den|dan)) .target.(de|da|ye|ya)) çevirmen<i>? istiyorum?
+  - (lütfen? bana? söyle)? (.source.(den|dan))? .target.(de|da|ye|ya) (.query. ne demek<tir?>) (ben? öğrenmek istiyorum)?
+  - (ben|biri)? nasıl .target.(de|da|ye|ya) .query. (diyebilir<im?>|denilir|söylenir|söyleyebilir<im?>)
