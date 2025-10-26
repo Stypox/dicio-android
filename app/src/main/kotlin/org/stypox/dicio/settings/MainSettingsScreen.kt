@@ -188,6 +188,11 @@ private fun MainSettingsScreen(
             )
         }
         item {
+            sttSilenceDuration().Render(
+                settings.sttSilenceDuration + 1,
+            ) { viewModel.setSttSilenceDuration(it - 1) }
+        }
+        item {
             sttAutoFinish().Render(
                 settings.autoFinishSttPopup,
                 viewModel::setAutoFinishSttPopup
